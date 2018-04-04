@@ -74,6 +74,25 @@ try {
         // Danke
         window.iridion.push(['goal', 'page_conv']);
         console.log("Danke");
+
+
+        // Revenue
+        var wa_interval = setInterval(function(){
+            if(!!emospro && !!emospro.billing){
+                var wa_price = 0;
+                if(emospro.billing.length > 3){
+                    clearInterval(wa_interval);
+                    wa_price = emospro.billing[3];
+                }else if(!!emospro.ec_Event.length > 0){
+                    clearInterval(wa_interval);
+                    wa_price = emospro.ec_Event[0].price;
+                }
+
+                if(wa_price > 0){
+                    window.iridion.push(["revenue", wa_price, "revenue"]);
+                }
+            }
+        }, 100);
         
     }
     
