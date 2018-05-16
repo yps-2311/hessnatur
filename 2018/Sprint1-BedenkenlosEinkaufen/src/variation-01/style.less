@@ -1,0 +1,287 @@
+/* IMPORT VAR LESS FILE */
+@import "../global/vars.less";
+
+/* IMPORT GLOBAL LESS FILES */
+@import "../global/global.less";
+
+/* DEFINE VARIATION CSS */
+
+
+
+#avail_container {
+    position: relative;
+    min-height: 42px;
+
+    .success {
+        display: block;
+        min-height: 41px;
+        position: absolute;
+        background-color: #e8f8d7;
+        padding: 0 15px;
+        line-height: 41px;
+        min-width: 192px;
+
+        &::before{
+            content: "Lieferzeit: sofort lieferbar";
+            position: absolute;
+            background-color: #e8f8d7;
+            white-space: nowrap;
+        }
+        &::after {
+            content: "";
+            background: transparent url("@{base-url}checks.png") no-repeat scroll  0 16px;
+            width: 15px;
+            height: 30px;
+            display: block;
+            float: right;
+        }
+    }
+
+    .js-availability-info,
+    .warning,
+    .wa_lieferbarkeit,
+    > br {
+        display: none !important;
+    }
+    .warning + .wa_lieferbarkeit {
+        display: block !important;
+        text-transform: capitalize;
+        color: #eea800;
+        line-height: 41px;
+        font-weight: bold;
+    }
+    .alert {
+        line-height: 41px;
+    }
+}
+
+
+.wa_oeffnenwarum {
+    position: absolute;
+    font-size: 0.8rem;
+    font-weight: normal;
+    left: 0;
+    top: 30px;
+    color: #555859;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.wa_warum {
+    // display: none;
+    border: solid 1px #d9d9d8;
+    color: #555859;
+    padding: 19px 18px;
+    margin-bottom: 20px;
+    position: relative;
+    margin-top: 11px;
+
+    h3 {
+        font-family: Roboto,Helvetica,Arial,sans-serif;
+        margin-bottom: 10px;
+        font-size: 1.2rem;
+    }
+    p {
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+    }
+    ul {
+        margin: 0 0 11px;
+    }
+    li{
+        font-weight: 700;
+        line-height: 18px;
+        list-style: none;
+        padding: 0 0 8px 31px;
+        background: transparent url("@{base-url}checks.png") no-repeat scroll  0 -98px;
+    }
+    &::after { // kleiner oberer Pfeil
+        content: "";
+        display: block;
+        width: 15px;
+        height: 15px;
+        border-top: solid 1px #d9d9d8;
+        border-left: solid 1px #d9d9d8;
+        background-color: #fff;
+        transform: rotate(45deg);
+        position: absolute;
+        top: -9px;
+        left: 62%;
+    }
+    .wa_close {
+        cursor: pointer;
+        width: 15px;
+        height: 15px;
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        background: transparent url("@{base-url}close.png") no-repeat scroll  0 0;
+    }
+    img {
+        margin-top: -3px;
+    }
+}
+.wa_klappbar {
+    height: 28.5rem;
+    overflow: hidden;
+    transition: ease-in-out 1s;
+}
+.wa_einkl {
+    height: 0 !important;
+}
+.align-middle.h-largeOffset-bottom-outer {
+    margin-bottom: 25px;
+}
+.pds-cockpit__addProductWrapper {
+    margin-top: 10px;
+}
+.wa_klapp {
+    background-color: #f7f6f5;
+    padding: 15px 18px;
+    position: relative;
+    color: #555859;
+    margin-bottom: 20px;
+
+    h3 {
+        font-family: Roboto,Helvetica,Arial,sans-serif;
+        margin-bottom: 15px;
+        font-size: 1rem;
+
+        &::before {
+            content: "";
+            background: #fff url("@{base-url}checks.png") no-repeat scroll  2px -36px;
+            width: 18px;
+            height: 18px;
+            display: block;
+            border: solid 1px #d9d9d8;
+            float: left;
+            margin-right: 8px;
+            margin-top: -2px;
+            border-radius: .23077rem;
+        }
+    }
+
+    p {
+        // height: 0;
+        overflow: hidden;
+        transition: ease-in-out 0.6s;
+    }
+
+    > div {
+        border-radius: .23077rem;
+        background-color: #fff;
+        margin-bottom: 5px;
+        border: solid 1px #d9d9d8;
+        padding: 10px 20px 10px 59px;
+        background: #fff no-repeat scroll 19px 9px;
+        cursor: pointer;
+        position: relative;
+
+        &::after {
+            content: "";
+            display: block;
+            width: 11px;
+            height: 11px;
+            border-top: solid 2px #555859;
+            border-left: solid 2px #555859;
+            background-color: #fff;
+            transform: rotate(45deg);
+            position: absolute;
+            top: 16px;
+            right: 13px;
+            transition: 0.3s;
+        }
+    }
+    .wa_klima {
+        background-image: url("@{base-url}dhl-icon.png");
+        background-position: 11px 9px;
+        p {
+            height: 3rem;
+        }
+    }
+    .wa_resyc {
+        background-image: url("@{base-url}recycling-icon.png");
+        p {
+            height: 4.3rem;
+        }
+    }
+    .wa_retoure {
+        background-image: url("@{base-url}reverse-icon.png");
+        p {
+            height: 5.6rem;
+        }
+    }
+
+    .wa_einklappen{
+        p {
+            height: 0 !important;
+        }
+        &::after {
+            transform: rotate(225deg);
+            top: 11px;
+        }
+    }
+}
+
+.wa_layer {
+    overflow: hidden;
+    margin-bottom: 40px;
+
+    div {
+        float: left;
+        width: 36%;
+        text-align: center;
+        padding-top: 50px;
+        background: transparent url("@{base-url}flagge.png") no-repeat scroll  center 5px;
+    }
+    ul {
+        float: left;
+        width: 64%;
+        margin: 0;
+    }
+    li{
+        font-weight: 700;
+        line-height: 18px;
+        list-style: none;
+        padding: 0 0 13px 31px;
+        background: transparent url("@{base-url}checks.png") no-repeat scroll  0 -98px;
+    }
+}
+.wa_layer + .wa_layer {
+    display: none;
+}
+
+
+
+
+/* WK */
+
+.h-smallOffset-bottom-outer {
+    .success {
+        display: block;
+        min-height: 41px;
+        position: absolute;
+        background-color: #e8f8d7;
+        padding: 0 15px;
+        line-height: 41px;
+        min-width: 192px;
+
+        &::before{
+            content: "Lieferzeit: sofort lieferbar";
+            position: absolute;
+            background-color: #e8f8d7;
+            white-space: nowrap;
+        }
+        &::after {
+            content: "";
+            background: transparent url("@{base-url}checks.png") no-repeat scroll  0 16px;
+            width: 15px;
+            height: 30px;
+            display: block;
+            float: right;
+        }
+    }
+    
+
+
+
+}
