@@ -8,14 +8,8 @@
  * @name Variation 01
  * @description
  */
-(function(WATO) {
+(function(WATO, window) {
     "use strict";
-
-    // WATO.elem('body', function(element){
-    //     if(element){
-    //         element[0].insertAdjacentHTML("afterbegin", '<img style="position:absolute; z-index: 1000; top: 91px; left:0; opacity: 0.5;" src="https://dev.web-arts.de/hessnatur/2018/Sprint1-BedenkenlosEinkaufen/img/2018-05-14-pds-2.png" >');
-    //     }
-    // });
     
     function addClass(el,className){
 		if (el.classList){
@@ -24,21 +18,114 @@
 			el.className += ' ' + className;
 		}
     }
-
     function removeClass(el,className){
 		if (el && el.classList){
 			el.classList.remove(className);
 		}else if(el && el.className){
 			el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');		
 		}
-	}
+    }
+    function kickout(breite){
+		if(window.innerWidth < breite){
+            addClass(window.document.body, "wa_punchout");
+		}else{
+            removeClass(window.document.body, "wa_punchout");
+        }
+    }
     
-    var imagePath = "https://dev.web-arts.de/hessnatur/2018/Sprint1-BedenkenlosEinkaufen/img/",
-        uri = window.document.location.pathname;
+    function getLieferzeit(string){
+        var _lieferZeit     = string.replace("Lieferbar in",""),
+            _lieferZeitZahl = _lieferZeit.replace("einer","1").replace("zwei","2").replace("drei","3").replace("vier","4").replace("fünf","5")
+            .replace("sechs","6").replace("sieben","4").replace("acht","8").replace("neun","9").replace("zehn","10");
+        
+        return [_lieferZeit, _lieferZeitZahl];
+    }
+
+    function lieferzeitZeileEinbauen(uebergabeEvent, $wa_klappbar, $headlineZeit, $mengeWrapper){
+
+        var $diesesInfobox;
+
+        if(!uebergabeEvent){
+            $diesesInfobox = WATO.qs("#avail_container > .label", $mengeWrapper);
+        }else{
+            $diesesInfobox = uebergabeEvent.target;
+        }
+        
+        var _lieferZeit = getLieferzeit($diesesInfobox.textContent)[0],
+            _lieferZeitZahl = getLieferzeit($diesesInfobox.textContent)[1];
+        console.log('_lieferZeit: ', _lieferZeit);
+        console.log('_lieferZeitZahl: ', _lieferZeitZahl);
+        console.log('$diesesInfobox.className: ', $diesesInfobox.className);
+
+        if(//$diesesInfobox.className.indexOf("warning") !== -1 && 
+        _lieferZeit.indexOf("Sofort lieferbar") === -1 && 
+        _lieferZeit.indexOf("Ausverkauft") === -1 && 
+        _lieferZeit !== ""){
+            
+            if(!window.localStorage.getItem("wa_info")){
+                removeClass($wa_klappbar ,"wa_einkl");
+            }
+
+            $headlineZeit.textContent = _lieferZeit;
+
+            $diesesInfobox.insertAdjacentHTML("afterend", 
+            '<span class="wa_lieferbarkeit">Lieferzeit: '+
+                _lieferZeitZahl+
+                '<span class="wa_oeffnenwarum">Warum dauert die Lieferung so lange?</span>'+
+            '</span>');
+
+            WATO.qs(".wa_oeffnenwarum", $mengeWrapper).addEventListener("click", function(){
+                removeClass($wa_klappbar ,"wa_einkl");
+                window.localStorage.removeItem("wa_info");
+
+                WATO.goalPush("klick_openLayer");
+            });
+        }else{
+            addClass($wa_klappbar ,"wa_einkl");
+        }
+
+        // Versandkosten-Link fix
+        WATO.elem('.btn-simple-link.js-reveal-ajax:not(.wa_listener)', function(element){
+            if(element){
+                // Damit der Listener nicht mehrfach gesetzt wird
+                addClass(element[0], "wa_listener");
+
+                // Bei klick wird die "ORIGINAL"-Funktion der Website neu auf den Link gesetzt
+                // Die Funktion ist lediglich von jQuery in JS umgebaut
+                element[0].addEventListener("click", function(e){
+                    if(typeof window.ACC !== "undefined"){
+                        e.preventDefault();
+                        window.ACC.modals.loadAjaxModal(e.target.getAttribute("href"));
+                    }
+                });
+            }
+        });
+    }
+
+    
+    
+    //imagePath = "https://dev.web-arts.de/hessnatur/2018/Sprint1-BedenkenlosEinkaufen/img/",
+    var imagePath = "https://s3-eu-west-1.amazonaws.com/webarts/Hessnatur/2018/Sprint1/",
+        uri = window.document.location.pathname,
+        htmlInhaltUVPs = '<div class="wa_klima">'+
+                            '<b>Klimaneutraler Versand</b>'+
+                            '<p>Aus Liebe zur Umwelt verschicken wir Ihre Lieferung klimaneutral mit DHL GoGreen.</p>'+
+                        '</div>'+
+                        '<div class="wa_resyc">'+
+                            '<b>Recyceltes Versandmaterial</b>'+
+                            '<p>Unsere Pakete bestehen zu 90% aus recyceltem Papier und belasten die Umwelt deutlich weniger.</p>'+
+                        '</div>'+
+                        '<div class="wa_retoure">'+
+                            '<b>Kostenlose & einfache Retoure</b>'+
+                            '<p>Sollte Ihnen ein Produkt einmal nicht gefallen, können Sie dies jederzeit umtauschen. Der Retourenschein liegt Ihrer Bestellung bei.</p>'+
+                        '</div>';
     
     try {
 
-        console.log("im test");
+        window.addEventListener("resize", function(){
+            kickout(1024);
+        }, false);
+        kickout(1024);
 
         if(uri.indexOf("/p/") !== -1){
             // PDS
@@ -52,11 +139,11 @@
                                 '<div class="wa_close"></div>'+
                                 '<h3>Warum dauert die Lieferung <span>so lange</span>?</h3>'+
                                 '<p>Lieber Kunde,<br>dieser Artikel ist aufgrund dieser Punkte nicht sofort lieferbar:</p>'+
-                                '<ul><li>Wir produzieren nicht auf Masse;<br>Nachhaltigkeit steht im Fokus</li>'+
+                                '<ul><li>Wir produzieren nicht auf Masse; Nachhaltigkeit steht im Fokus</li>'+
                                 '<li>Faire Arbeitsbedingungen im Produktionsland</li>'+
                                 '<li>Ressourcen werden geschont</li></ul>'+
-                                '<p>Wenn Sie den Artikel bestellen möchten, empfehlen wir<br>'+
-                                'Ihnen, das bald zu tun, da er wegen erhöhter Nachfrage<br>'+
+                                '<p>Wenn Sie den Artikel bestellen möchten, empfehlen wir '+
+                                'Ihnen, das bald zu tun, da er wegen erhöhter Nachfrage '+
                                 'wahrscheinlich nicht mehr lange lieferbar sein wird.</p>'+
                                 '<p>Wir bitten Sie vielmals, diese Umstände zu entschuldigen!</p>'+
                                 '<img src="'+imagePath+'team.png">'+
@@ -64,142 +151,195 @@
                         '</div>'+
                     '</div>'
                     );
+
                     var $warumInfobox = WATO.qs(".wa_warum"),
                         $wa_klappbar = $warumInfobox.parentNode,
                         $lieferzeitBox = WATO.qs("#avail_container > .label", $mengeWrapper[0]),
                         $headlineZeit = WATO.qs("h3 span", $warumInfobox);
+
+                    // if($lieferzeitBox.className.indexOf("warning") !== -1){
+                    //     removeClass($wa_klappbar ,"wa_einkl");
+                    // }
     
-                    // console.log('$lieferzeitBox: ', $lieferzeitBox);
-                    if($lieferzeitBox.className.indexOf("warning") !== -1){
-                        removeClass($wa_klappbar ,"wa_einkl");
-                    }
-    
-                    WATO.qs(".wa_close",$warumInfobox).addEventListener("click", function(){
+                    // Infolayer schließen 
+                    WATO.qs(".wa_close", $warumInfobox).addEventListener("click", function(){
                         addClass($wa_klappbar ,"wa_einkl");
                         window.localStorage.setItem("wa_info", "geschlossen");
+
+                        WATO.goalPush("klick_closeLayer");
                     });
+
+                    // lieferzeitZeileEinbauen(false, $wa_klappbar, $headlineZeit, $mengeWrapper[0]);
     
                     $lieferzeitBox.addEventListener('DOMSubtreeModified', function(e) {
-    
-                        var $diesesInfobox = e.target,
-                            _lieferZeit = $diesesInfobox.textContent.replace("Lieferbar in",""),
-                            _lieferZeitZahl = _lieferZeit.replace("einer","1").replace("zwei","2").replace("drei","3").replace("vier","4").replace("fünf","5")
-                            .replace("sechs","6").replace("sieben","4").replace("acht","8").replace("neun","9").replace("zehn","10");
-    
-                        if($diesesInfobox.className.indexOf("warning") !== -1){
-    
-                            if(!window.localStorage.getItem("wa_info")){
-                                removeClass($wa_klappbar ,"wa_einkl");
-                            }
-    
-                            $headlineZeit.textContent = _lieferZeit;
-    
-                            $diesesInfobox.insertAdjacentHTML("afterend", 
-                            '<span class="wa_lieferbarkeit">Lieferzeit: '+
-                                _lieferZeitZahl+
-                                '<span class="wa_oeffnenwarum">Warum dauert die Lieferung so lange?</span>'+
-                            '</span>');
-    
-                            WATO.qs(".wa_oeffnenwarum", $mengeWrapper[0]).addEventListener("click", function(){
-                                removeClass($wa_klappbar ,"wa_einkl");
-                                window.localStorage.removeItem("wa_info");
-                            });
-                        }else{
-                            addClass($wa_klappbar ,"wa_einkl");
-                        }
+                        console.log('e: ', e);
+                        lieferzeitZeileEinbauen(e, $wa_klappbar, $headlineZeit, $mengeWrapper[0]);
                     });
+
+
                 }
             });
     
-    
+            // Die merken und CTA Zeile
             WATO.elem('.pds-cockpit__addProductWrapper', function($addProductWrapper){
                 if($addProductWrapper){
+
+                    // Wrapper für die bestellung inklusive box
                     $addProductWrapper[0].insertAdjacentHTML("afterend", 
                     '<div class="row">'+
                         '<div class="columns">'+
                             '<div class="wa_klapp">'+
-                                '<h3>Für die Bestellung inklusive:</h3>'+
-                                '<div class="wa_klima wa_einklappen">'+
-                                    '<b>Klimaneutraler Versand</b>'+
-                                    '<p>Aus Liebe zur Umwelt verschicken wir Ihre Lieferung klimaneutral mit DHL GoGreen.</p>'+
-                                '</div>'+
-                                '<div class="wa_resyc wa_einklappen">'+
-                                    '<b>Recycletes Versandmaterial</b>'+
-                                    '<p>Unsere Pakete bestehen zu 90% aus recycletem Papier und belasten die Umwelt deutlich weniger.</p>'+
-                                '</div>'+
-                                '<div class="wa_retoure wa_einklappen">'+
-                                    '<b>Kostenlose & einfache Retoure</b>'+
-                                    '<p>Sollte Ihnen Ihnen ein Produkt ein mal nicht gefallen, können Sie dies jederzeit umtauschen. Der Retourenschein liegt Ihrer Bestellung bei.</p>'+
-                                '</div>'+
+                                '<h3>Für diese Bestellung inklusive:</h3>'+
+                                htmlInhaltUVPs+
                             '</div>'+
                         '</div>'+
                     '</div>');
     
-                    var $dieAusklappboxen = WATO.qsa(".wa_klapp > div", $addProductWrapper[0].parentNode);
-    
-                    // Einer der Zufälligen boxen aufklappen
-                    removeClass($dieAusklappboxen[Math.floor(Math.random() * 3)] , "wa_einklappen");
-    
-    
+                    var $dieAusklappboxen           = WATO.qsa(".wa_klapp > div", $addProductWrapper[0].parentNode),
+                        welcheBoxVoreingeblendet    = Math.floor(Math.random() * 3);
+
                     $dieAusklappboxen.forEach(function($box){
+                        var $pTag = WATO.qs("p", $box);
+
+                        // Feste höhe dieses Elements festlegen
+                        $pTag.style.height = $pTag.offsetHeight + "px";
+
+                        // Eine zufällige Box ausklappen
+                        if($dieAusklappboxen[welcheBoxVoreingeblendet] !== $box) {
+                            addClass($box, "wa_einklappen");
+                        }
+
+                        // Öffnen klick
                         $box.addEventListener("click", function($dieseBoxGeklickt){
-    
-                            $dieAusklappboxen.forEach(function(element){
-                                addClass(element , "wa_einklappen");
-                            });
-                            removeClass($dieseBoxGeklickt.target.parentNode , "wa_einklappen");
-                            removeClass($dieseBoxGeklickt.target , "wa_einklappen");
+                            // alle Boxen
+
+                            // interaktion
+                            WATO.goalPush("click_bestellbox");
+
+                            // Definition dass das geklickte Target auch die Box selbst und kein children ist
+                            var $genauDieBox = $dieseBoxGeklickt.target;
+                            if($genauDieBox.tagName !== "DIV"){
+                                $genauDieBox = $dieseBoxGeklickt.target.parentNode;
+                            }
+                            
+                            if($genauDieBox.className.indexOf("wa_einklappen") === -1){
+                                // wenns schon ausgeklappt ist wird es eingeklappt
+                                addClass($genauDieBox , "wa_einklappen");
+                            }else{
+                                $dieAusklappboxen.forEach(function($dieseBox){
+                                    // Die angeklickte ausklappen beide anderen einklappen
+                                    if($dieseBox !== $genauDieBox){
+                                        addClass($dieseBox , "wa_einklappen");
+                                    }else{
+                                        removeClass($dieseBox , "wa_einklappen");
+                                    }
+                                });
+                            }                 
                         });
                     });
                 }
             });
-    
-            var infoOpen = XMLHttpRequest.prototype.open;
-            XMLHttpRequest.prototype.open = function(method, uri, async, user, pass) {
-                this.addEventListener("loadend", function() {
-                    if(this.readyState === 4 && uri.indexOf("/de/component/shippingInformations") !== -1){
-                        // console.log('uri: ', uri);
-                        
-                        WATO.elem('.reveal-overlay:last-child .rteContainer h2', function($infoLayerH2){
-                            if($infoLayerH2){
-                                // console.log('$infoLayerH2[0]: ', $infoLayerH2[0]);
-                                $infoLayerH2[0].insertAdjacentHTML("afterend", 
-                                '<div class="wa_layer">'+
-                                    '<div>'+
-                                        '<span>Versand nach Deutschland:</span><br>'+
-                                        '<b>5,95 €</b>'+
-                                    '</div>'+
-                                    '<ul>'+
-                                        '<li>Faire Lieferkette mit eigener Logistik</li>'+
-                                        '<li>Klimaneutraler Versand mit DHL GoGreen</li>'+
-                                        '<li>Versand mit 90% recycletem Altpapier</li>'+
-                                    '</ul>'+
-                                '</div>');
-                            }
-                        });
-    
-                    }
-                }, false);
-                infoOpen.call(this, method, uri, async, user, pass);
-            };
+
+            WATO.globalGoals();
 
         }else if(uri.indexOf("/de/cart") !== -1){
             // WK
 
-            
+            WATO.elem('.js-availability-status', function($alleProdukteLieferzeit){
+                if($alleProdukteLieferzeit){
 
+                    var pruefArray = [];
+                    
+                    $alleProdukteLieferzeit.forEach(function(produkteLieferzeit) {
+
+                        var statusText = produkteLieferzeit.textContent;
+
+                        // Lieferzeit Textzeile angepasst, mit Ziffer statt ausgeschriebener Zahl
+                        if(statusText.indexOf("sofort") === -1){
+                            produkteLieferzeit.textContent = "Lieferzeit: " + getLieferzeit(statusText)[1];
+                        }
+
+                        // Alle Lieferzeiten werden in einen Array geschrieben
+                        pruefArray.push(statusText);
+                    });
+
+                    // Es wird geprüft ob die Lieferzeiten mindestens einen Unterschied zwischen den Produkten haben
+                    if(!pruefArray.reduce(function(a, b){ return (a === b) ? a : NaN; })) {
+
+                        WATO.elem('.js_backstopWrapper .large-10', function(element){
+                            if(element){
+                                element[0].insertAdjacentHTML("afterbegin", 
+                                '<div class="row">'+
+                                    '<div class="wa_waHinweis">'+
+                                        'Hinweis: Sofort lieferbare Artikel werden seperat und zuerst geliefert.'+
+                                    '</div>'+
+                                '</div>'
+                                );
+                                
+                                WATO.goalPush("show_meldung");
+                            }
+                        });
+                    }
+                }
+            });
+
+            var isHover = false;
+
+            WATO.elem('.yCmsContentSlot.h-largeOffset-bottom-outer', function($nebenZwischensumme){
+                if($nebenZwischensumme){
+
+                    // Umbau der Klassen damit das Originale Grid noch funktioniert
+                    removeClass($nebenZwischensumme[0], "medium-6");
+                    addClass($nebenZwischensumme[0], "medium-7");
+
+                    // Bestellung inklusive Box unter den Produkten
+                    $nebenZwischensumme[0].insertAdjacentHTML("afterbegin", 
+                    '<div class="row">'+
+                        '<div class="columns">'+
+                            '<div class="wa_klapp wa_klappwk">'+
+                                '<h3>Für die Bestellung inklusive:</h3>'+
+                                '<div class="wa_flex">'+
+                                    htmlInhaltUVPs+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>');
+
+                    // Goal bei Mouseover über einer Sekunde abschicken
+                    WATO.elem('.wa_klapp', function($wa_klapp){
+                        if($wa_klapp){
+                            $wa_klapp[0].addEventListener("mouseenter", function(){
+                                isHover = true;
+                                setTimeout(function(){
+                                    if(isHover){
+                                        WATO.goalPush("engagement_bestellbox");
+                                    }
+                                }, 1000);
+                            });
+                            $wa_klapp[0].addEventListener("mouseleave", function(){
+                                isHover = false;
+                            });
+                        }
+                    });
+                }
+            });
+
+            WATO.elem('.h-xLargeOffset-bottom-outer', function($nebenZwischensumme){
+                if($nebenZwischensumme){
+                    $nebenZwischensumme = $nebenZwischensumme[0];
+
+                    // Umbau der Klassen damit das Originale Grid noch funktioniert
+                    removeClass($nebenZwischensumme, "medium-6");
+                    removeClass($nebenZwischensumme, "large-4");
+                    addClass($nebenZwischensumme, "medium-5");
+                    addClass($nebenZwischensumme, "large-3");
+                }
+            });
+
+            WATO.globalGoals();
         }
-
-
-
-        
-
-
-
-        
-        
         
     } catch (error) {
         console.log(error);
     }
-})(new window.WATO());
+})(new window.WATO(), window);

@@ -12,31 +12,6 @@
     position: relative;
     min-height: 42px;
 
-    .success {
-        display: block;
-        min-height: 41px;
-        position: absolute;
-        background-color: #e8f8d7;
-        padding: 0 15px;
-        line-height: 41px;
-        min-width: 192px;
-
-        &::before{
-            content: "Lieferzeit: sofort lieferbar";
-            position: absolute;
-            background-color: #e8f8d7;
-            white-space: nowrap;
-        }
-        &::after {
-            content: "";
-            background: transparent url("@{base-url}checks.png") no-repeat scroll  0 16px;
-            width: 15px;
-            height: 30px;
-            display: block;
-            float: right;
-        }
-    }
-
     .js-availability-info,
     .warning,
     .wa_lieferbarkeit,
@@ -52,6 +27,31 @@
     }
     .alert {
         line-height: 41px;
+    }
+}
+
+body:not(.wa_punchout) #avail_container .success {
+    display: block;
+    min-height: 41px;
+    position: absolute;
+    background-color: #e8f8d7;
+    padding: 0 15px;
+    line-height: 41px;
+    min-width: 192px;
+
+    &::before{
+        content: "Lieferzeit: sofort lieferbar";
+        position: absolute;
+        background-color: #e8f8d7;
+        white-space: nowrap;
+    }
+    &::after {
+        content: "";
+        background: transparent url("@{base-url}checks.png") no-repeat scroll  0 16px;
+        width: 15px;
+        height: 30px;
+        display: block;
+        float: right;
     }
 }
 
@@ -123,6 +123,7 @@
 .wa_klappbar {
     height: 28.5rem;
     overflow: hidden;
+    -webkit-transition:ease-in-out 1s;
     transition: ease-in-out 1s;
 }
 .wa_einkl {
@@ -161,12 +162,12 @@
     }
 
     p {
-        // height: 0;
         overflow: hidden;
+        -webkit-transition:ease-in-out 0.6s;
         transition: ease-in-out 0.6s;
     }
 
-    > div {
+    div:not(.wa_flex) {
         border-radius: .23077rem;
         background-color: #fff;
         margin-bottom: 5px;
@@ -188,37 +189,28 @@
             position: absolute;
             top: 16px;
             right: 13px;
+            -webkit-transition: 0.3s;
             transition: 0.3s;
+        }
+        &.wa_einklappen{
+            p {
+                height: 0 !important;
+            }
+            &::after {
+                transform: rotate(225deg);
+                top: 11px;
+            }
         }
     }
     .wa_klima {
-        background-image: url("@{base-url}dhl-icon.png");
-        background-position: 11px 9px;
-        p {
-            height: 3rem;
-        }
+        background-image: url("@{base-url}dhl-icon.png") !important;
+        background-position: 11px 9px !important;
     }
     .wa_resyc {
-        background-image: url("@{base-url}recycling-icon.png");
-        p {
-            height: 4.3rem;
-        }
+        background-image: url("@{base-url}recycling-icon.png") !important;
     }
     .wa_retoure {
-        background-image: url("@{base-url}reverse-icon.png");
-        p {
-            height: 5.6rem;
-        }
-    }
-
-    .wa_einklappen{
-        p {
-            height: 0 !important;
-        }
-        &::after {
-            transform: rotate(225deg);
-            top: 11px;
-        }
+        background-image: url("@{base-url}reverse-icon.png") !important;
     }
 }
 
@@ -249,13 +241,14 @@
 .wa_layer + .wa_layer {
     display: none;
 }
-
-
+.reveal-overlay .pricing-list {
+    margin-left: 0;
+}
 
 
 /* WK */
 
-.h-smallOffset-bottom-outer {
+body:not(.wa_punchout) .h-smallOffset-bottom-outer {
     .success {
         display: block;
         min-height: 41px;
@@ -280,8 +273,82 @@
             float: right;
         }
     }
+}
+.wa_waHinweis {
+    background-color: #e8f8d7;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    color: #60b60b;
+    border: solid 1px #d1edb3;
+    margin-left: 2.30769rem;
+
+    &::before {
+        content: "";
+        background: transparent url("@{base-url}infoi.png") no-repeat scroll  0 0;
+        width: 18px;
+        height: 18px;
+        display: block;
+        float: left;
+        margin-right: 8px;
+        margin-top: -2px;
+    }
+}
+.wa_klappwk {
+    width: 113%;
+    margin-bottom: -10px;
+
+    .wa_flex {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+
+        .wa_klima {
+            background-position: 11px 15px !important;
+        }
+        .wa_resyc,
+        .wa_retoure {
+            background-position: 19px 15px;
+        }
+        > div {
+            cursor: default;
+            flex: 0 0 32.8%;
+            padding: 12px 12px 12px 56px;
     
+            b {
+                font-size: 0.9rem;
+                margin-bottom: 5px;
+                display: block;
+            }
+            p {
+                font-size: 0.9rem;
+                height: auto;
+            }
+            &::after {
+                display: none;
+            }
+        }
+        
+    }
+}
+
+@media screen and (min-width:64em) {
+    .wa_klappwk {
+        width: 110%;
+    }
+}
 
 
+.wa_punchout {
+    .wa_klappbar,
+    .wa_klapp,
+    #avail_container .wa_lieferbarkeit,
+    .wa_waHinweis {
+        display: none !important;
+    }
 
+    #avail_container .js-availability-info,
+    #avail_container .warning, 
+    #avail_container > br {
+        display: block !important;
+    }
 }
