@@ -3,7 +3,7 @@
 
 /**
  * @function
- * @author Max Mustermann
+ * @author Denis Leno
  * @namespace V1
  * @name Variation 01
  * @description
@@ -32,11 +32,10 @@
             removeClass(window.document.body, "wa_punchout");
         }
     }
-    
     function getLieferzeit(string){
-        var _lieferZeit     = string.replace("Lieferbar in",""),
+        var _lieferZeit     = string.replace("Lieferbar in","").replace("einer Woche","eine Woche"),
             _lieferZeitZahl = _lieferZeit.replace("einer","1").replace("zwei","2").replace("drei","3").replace("vier","4").replace("fünf","5")
-            .replace("sechs","6").replace("sieben","4").replace("acht","8").replace("neun","9").replace("zehn","10");
+            .replace("sechs","6").replace("sieben","7").replace("acht","8").replace("neun","9").replace("zehn","10");
         
         return [_lieferZeit, _lieferZeitZahl];
     }
@@ -53,10 +52,7 @@
         
         var _lieferZeit = getLieferzeit($diesesInfobox.textContent)[0],
             _lieferZeitZahl = getLieferzeit($diesesInfobox.textContent)[1];
-        console.log('_lieferZeit: ', _lieferZeit);
-        console.log('_lieferZeitZahl: ', _lieferZeitZahl);
-        console.log('$diesesInfobox.className: ', $diesesInfobox.className);
-
+        
         if(//$diesesInfobox.className.indexOf("warning") !== -1 && 
         _lieferZeit.indexOf("Sofort lieferbar") === -1 && 
         _lieferZeit.indexOf("Ausverkauft") === -1 && 
@@ -101,8 +97,6 @@
             }
         });
     }
-
-    
     
     //imagePath = "https://dev.web-arts.de/hessnatur/2018/Sprint1-BedenkenlosEinkaufen/img/",
     var imagePath = "https://s3-eu-west-1.amazonaws.com/webarts/Hessnatur/2018/Sprint1/",
@@ -121,6 +115,8 @@
                         '</div>';
     
     try {
+
+        console.log("aaa");
 
         window.addEventListener("resize", function(){
             kickout(1024);
@@ -145,7 +141,7 @@
                                 '<p>Wenn Sie den Artikel bestellen möchten, empfehlen wir '+
                                 'Ihnen, das bald zu tun, da er wegen erhöhter Nachfrage '+
                                 'wahrscheinlich nicht mehr lange lieferbar sein wird.</p>'+
-                                '<p>Wir bitten Sie vielmals, diese Umstände zu entschuldigen!</p>'+
+                                // '<p>Wir bitten Sie vielmals, diese Umstände zu entschuldigen!</p>'+
                                 '<img src="'+imagePath+'team.png">'+
                             '</div>'+
                         '</div>'+
@@ -172,7 +168,6 @@
                     // lieferzeitZeileEinbauen(false, $wa_klappbar, $headlineZeit, $mengeWrapper[0]);
     
                     $lieferzeitBox.addEventListener('DOMSubtreeModified', function(e) {
-                        console.log('e: ', e);
                         lieferzeitZeileEinbauen(e, $wa_klappbar, $headlineZeit, $mengeWrapper[0]);
                     });
 
@@ -198,45 +193,61 @@
                     var $dieAusklappboxen           = WATO.qsa(".wa_klapp > div", $addProductWrapper[0].parentNode),
                         welcheBoxVoreingeblendet    = Math.floor(Math.random() * 3);
 
-                    $dieAusklappboxen.forEach(function($box){
-                        var $pTag = WATO.qs("p", $box);
+                    // console.log('$dieAusklappboxen: ', $dieAusklappboxen);
 
-                        // Feste höhe dieses Elements festlegen
-                        $pTag.style.height = $pTag.offsetHeight + "px";
+                    if($dieAusklappboxen){
 
-                        // Eine zufällige Box ausklappen
-                        if($dieAusklappboxen[welcheBoxVoreingeblendet] !== $box) {
-                            addClass($box, "wa_einklappen");
-                        }
+                        // function oeffnenKlick(e){
 
-                        // Öffnen klick
-                        $box.addEventListener("click", function($dieseBoxGeklickt){
-                            // alle Boxen
+                        //     var $dieseBoxGeklickt = e.target;
+                        //     console.log('$dieseBoxGeklickt: ', $dieseBoxGeklickt);
+                        // }
 
-                            // interaktion
-                            WATO.goalPush("click_bestellbox");
-
-                            // Definition dass das geklickte Target auch die Box selbst und kein children ist
-                            var $genauDieBox = $dieseBoxGeklickt.target;
-                            if($genauDieBox.tagName !== "DIV"){
-                                $genauDieBox = $dieseBoxGeklickt.target.parentNode;
-                            }
+                        for (var i = 0; i < $dieAusklappboxen.length; i++) {
+                            var $box = $dieAusklappboxen[i],
+                                $pTag = WATO.qs("p", $box);
                             
-                            if($genauDieBox.className.indexOf("wa_einklappen") === -1){
-                                // wenns schon ausgeklappt ist wird es eingeklappt
-                                addClass($genauDieBox , "wa_einklappen");
-                            }else{
-                                $dieAusklappboxen.forEach(function($dieseBox){
-                                    // Die angeklickte ausklappen beide anderen einklappen
-                                    if($dieseBox !== $genauDieBox){
-                                        addClass($dieseBox , "wa_einklappen");
-                                    }else{
-                                        removeClass($dieseBox , "wa_einklappen");
+                            // Feste höhe dieses Elements festlegen
+                            $pTag.style.height = $pTag.offsetHeight + "px";
+    
+                            // Eine zufällige Box ausklappen
+                            if($dieAusklappboxen[welcheBoxVoreingeblendet] !== $box) {
+                                addClass($box, "wa_einklappen");
+                            }
+    
+                            // Öffnen klick
+                            $box.addEventListener("click", function($dieseBoxGeklickt){
+                                // interaktion
+                                WATO.goalPush("click_bestellbox");
+                                                                
+                                // Definition dass das geklickte Target auch die Box selbst und kein children ist
+                                var $genauDieBox = $dieseBoxGeklickt.target;
+                                if($genauDieBox.tagName !== "DIV"){
+                                    $genauDieBox = $dieseBoxGeklickt.target.parentNode;
+                                }
+
+                                if($genauDieBox.className.indexOf("wa_einklappen") === -1){
+                                    // wenns schon ausgeklappt ist wird es eingeklappt
+                                    addClass($genauDieBox , "wa_einklappen");
+                                }else{
+                                    for (var k = 0; k < $dieAusklappboxen.length; k++) {
+                                        var $dieseBox = $dieAusklappboxen[k];
+
+                                        // Die angeklickte ausklappen beide anderen einklappen
+                                        if($dieseBox !== $genauDieBox){
+                                            addClass($dieseBox , "wa_einklappen");
+                                        }else{
+                                            removeClass($dieseBox , "wa_einklappen");
+                                        }
                                     }
-                                });
-                            }                 
-                        });
-                    });
+                                }
+                            });
+                        }
+                        // $dieAusklappboxen.forEach(function($box){
+                            
+                        // });
+                    }
+
                 }
             });
 
@@ -249,19 +260,32 @@
                 if($alleProdukteLieferzeit){
 
                     var pruefArray = [];
-                    
-                    $alleProdukteLieferzeit.forEach(function(produkteLieferzeit) {
 
-                        var statusText = produkteLieferzeit.textContent;
+                    for (var j = 0; j < $alleProdukteLieferzeit.length; j++) {
+                        var produkteLieferzeit = $alleProdukteLieferzeit[j],
+                            statusText = produkteLieferzeit.textContent;
 
                         // Lieferzeit Textzeile angepasst, mit Ziffer statt ausgeschriebener Zahl
-                        if(statusText.indexOf("sofort") === -1){
+                        if(statusText.indexOf("sofort") === -1 && statusText.indexOf("Ausverkauft") === -1){
                             produkteLieferzeit.textContent = "Lieferzeit: " + getLieferzeit(statusText)[1];
                         }
 
                         // Alle Lieferzeiten werden in einen Array geschrieben
                         pruefArray.push(statusText);
-                    });
+                    }
+                    
+                    // $alleProdukteLieferzeit.forEach(function(produkteLieferzeit) {
+
+                    //     var statusText = produkteLieferzeit.textContent;
+
+                    //     // Lieferzeit Textzeile angepasst, mit Ziffer statt ausgeschriebener Zahl
+                    //     if(statusText.indexOf("sofort") === -1 && statusText.indexOf("Ausverkauft") === -1){
+                    //         produkteLieferzeit.textContent = "Lieferzeit: " + getLieferzeit(statusText)[1];
+                    //     }
+
+                    //     // Alle Lieferzeiten werden in einen Array geschrieben
+                    //     pruefArray.push(statusText);
+                    // });
 
                     // Es wird geprüft ob die Lieferzeiten mindestens einen Unterschied zwischen den Produkten haben
                     if(!pruefArray.reduce(function(a, b){ return (a === b) ? a : NaN; })) {
@@ -271,7 +295,7 @@
                                 element[0].insertAdjacentHTML("afterbegin", 
                                 '<div class="row">'+
                                     '<div class="wa_waHinweis">'+
-                                        'Hinweis: Sofort lieferbare Artikel werden seperat und zuerst geliefert.'+
+                                        'Hinweis: Sofort lieferbare Artikel werden separat und zuerst geliefert.'+
                                     '</div>'+
                                 '</div>'
                                 );
@@ -282,6 +306,22 @@
                     }
                 }
             });
+
+            // Direkt vom Hersteller - das "d" klein machen
+            WATO.elem('.js-availability-delivery.warning', function($meldungenZurLieferung){
+                if($meldungenZurLieferung){
+                    for (var k = 0; k < $meldungenZurLieferung.length; k++) {
+                        var ZurLieferung = $meldungenZurLieferung[k],
+                            statusText = ZurLieferung.textContent;
+
+                        if(statusText.indexOf("Direkt") !== -1){
+                            ZurLieferung.textContent = statusText.replace("Direkt","direkt");
+                        }
+                    }
+                }
+            });
+
+            
 
             var isHover = false;
 
