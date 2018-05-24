@@ -106,8 +106,10 @@
                             wa_price = window.emospro.ec_Event[0].price;
                         }
     
-                        if(parseInt(wa_price) > -1){
-                            window.iridion.push(["revenue", wa_price, wa_buyid]);
+                        if(parseInt(wa_price) !== 0){
+                            window.iridion.push(["revenue2", wa_price, wa_buyid]);
+                        }else{
+                            goalPush('error_revenue');
                         }
                     }
                 } catch (error) {

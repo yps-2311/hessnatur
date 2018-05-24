@@ -51,13 +51,13 @@
             }else{
                 $diesesInfobox = uebergabeEvent.target;
             }
-            console.log('$diesesInfobox: ', $diesesInfobox);
+            // console.log('$diesesInfobox: ', $diesesInfobox);
             
             var _lieferZeit = getLieferzeit($diesesInfobox.textContent)[0],
             _lieferZeitZahl = getLieferzeit($diesesInfobox.textContent)[1],
             _infoAusgeblendet = true;
             
-            console.log('_lieferZeit: ', _lieferZeit);
+            // console.log('_lieferZeit: ', _lieferZeit);
             // Timing Problem
             setTimeout(function(){
 
@@ -74,7 +74,7 @@
                     _lieferZeit !== "" &&
                     _infoAusgeblendet
                 ){
-                    console.log(1);
+                    // console.log(1);
                     if(!window.localStorage.getItem("wa_info")){
                         removeClass($wa_klappbar ,"wa_einkl");
                     }
@@ -95,7 +95,7 @@
                         WATO.goalPush("klick_openLayer");
                     });
                 }else{
-                    console.log(2);
+                    // console.log(2);
                     addClass($wa_klappbar ,"wa_einkl");
                 }
 
@@ -207,7 +207,7 @@
                     // lieferzeitZeileEinbauen(false, $wa_klappbar, $headlineZeit, $mengeWrapper[0]);
     
                     $lieferzeitBox.addEventListener('DOMSubtreeModified', function(e) {
-                        console.log('e: ', e);
+                        // console.log('e: ', e);
                         lieferzeitZeileEinbauen(e, $wa_klappbar, $headlineZeit, $mengeWrapper[0]);
                     });
 
@@ -298,60 +298,7 @@
         }else if(uri.indexOf("/de/cart") !== -1){
             // WK
 
-            WATO.elem('.js-availability-status', function($alleProdukteLieferzeit){
-                if($alleProdukteLieferzeit){
-
-                    var pruefArray = [];
-
-                    for (var j = 0; j < $alleProdukteLieferzeit.length; j++) {
-                        var produkteLieferzeit = $alleProdukteLieferzeit[j],
-                            statusText = produkteLieferzeit.textContent;
-
-                        // Lieferzeit Textzeile angepasst, mit Ziffer statt ausgeschriebener Zahl
-                        if(statusText.indexOf("sofort") === -1 && statusText.indexOf("Ausverkauft") === -1){
-                            produkteLieferzeit.textContent = "Lieferzeit: " + getLieferzeit(statusText)[1];
-                        }
-
-                        // Alle Lieferzeiten werden in einen Array geschrieben
-                        pruefArray.push(statusText);
-                    }
-                    
-                    // $alleProdukteLieferzeit.forEach(function(produkteLieferzeit) {
-
-                    //     var statusText = produkteLieferzeit.textContent;
-
-                    //     // Lieferzeit Textzeile angepasst, mit Ziffer statt ausgeschriebener Zahl
-                    //     if(statusText.indexOf("sofort") === -1 && statusText.indexOf("Ausverkauft") === -1){
-                    //         produkteLieferzeit.textContent = "Lieferzeit: " + getLieferzeit(statusText)[1];
-                    //     }
-
-                    //     // Alle Lieferzeiten werden in einen Array geschrieben
-                    //     pruefArray.push(statusText);
-                    // });
-
-                    // Es wird geprüft ob die Lieferzeiten mindestens einen Unterschied zwischen den Produkten haben
-                    if(!pruefArray.reduce(function(a, b){ return (a === b) ? a : NaN; })) {
-
-                        WATO.elem('.js_backstopWrapper .large-10', function(element){
-                            if(element){
-                                element[0].insertAdjacentHTML("afterbegin", 
-                                '<div class="row">'+
-                                    '<div class="wa_waHinweis">'+
-                                        'Hinweis: Sofort lieferbare Artikel werden separat und zuerst geliefert.'+
-                                    '</div>'+
-                                '</div>'
-                                );
-                                
-                                WATO.goalPush("show_meldung");
-                            }
-                        });
-                    }
-                }
-            });
-
-
             direktUmschreiben();
-
 
             var isHover = false;
 
@@ -391,6 +338,54 @@
                             });
                         }
                     });
+
+                    WATO.elem('.listing__table--item', function($alleProdukte){
+                        if($alleProdukte){
+                            console.log('$alleProdukte.length: ', $alleProdukte.length);
+                            // console.log('$alleProdukteLieferzeit: ', $alleProdukteLieferzeit);
+                            // console.log('$alleProdukteLieferzeit.length: ', $alleProdukteLieferzeit.length);
+        
+                            var pruefArray = [];
+        
+                            for (var j = 0; j < $alleProdukte.length; j++) {
+        
+                                var $produkteLieferzeit = WATO.qs(".js-availability-status",$alleProdukte[j]),
+                                    statusText = $produkteLieferzeit.textContent;
+                                
+                                console.log('produkteLieferzeit: ', $produkteLieferzeit);
+        
+                                // Lieferzeit Textzeile angepasst, mit Ziffer statt ausgeschriebener Zahl
+                                if(statusText.indexOf("sofort") === -1 && statusText.indexOf("Ausverkauft") === -1){
+                                    $produkteLieferzeit.textContent = "Lieferzeit: " + getLieferzeit(statusText)[1];
+                                }
+        
+                                // Alle Lieferzeiten werden in einen Array geschrieben
+                                pruefArray.push(statusText);
+                            }
+        
+                            console.log('pruefArray: ', pruefArray);
+        
+                            // Es wird geprüft ob die Lieferzeiten mindestens einen Unterschied zwischen den Produkten haben
+                            if(!pruefArray.reduce(function(a, b){ return (a === b) ? a : NaN; })) {
+        
+                                WATO.elem('.js_backstopWrapper .large-10', function(element){
+                                    if(element){
+                                        console.log('js_backstopWrapper: ', element);
+                                        element[0].insertAdjacentHTML("afterbegin", 
+                                        '<div class="row">'+
+                                            '<div class="wa_waHinweis">'+
+                                                'Hinweis: Sofort lieferbare Artikel werden separat und zuerst geliefert.'+
+                                            '</div>'+
+                                        '</div>'
+                                        );
+                                        
+                                        WATO.goalPush("show_meldung");
+                                    }
+                                });
+                            }
+                        }
+                    });
+
                 }
             });
 
@@ -412,4 +407,6 @@
     } catch (error) {
         console.log(error);
     }
+
+    
 })(new window.WATO(), window);

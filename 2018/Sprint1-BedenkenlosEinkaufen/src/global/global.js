@@ -11,7 +11,7 @@
     "use strict";
     
 	WATO.prototype.goalPush = function(key){
-		// console.log('goal: ', key);
+		console.log('goal: ', key);
 		window.iridion.push(['goal', key]);
 	};
 	
@@ -30,7 +30,7 @@
         
         var infoOpen = XMLHttpRequest.prototype.open;
         XMLHttpRequest.prototype.open = function(method, uri, async, user, pass) {
-            // console.log('uri: ', uri);
+            console.log('uri: ', uri);
             this.addEventListener("loadend", function() {
                 // Wenn Info zu Versandkosten geöffnet wird
                 if(this.readyState === 4 && uri.indexOf("/de/component/shippingInformations") !== -1){
@@ -50,7 +50,7 @@
                                     '<ul>'+
                                         '<li>Faire Lieferkette mit eigener Logistik</li>'+
                                         '<li>Klimaneutraler Versand mit DHL GoGreen</li>'+
-                                        '<li>Versand mit 90% recyceltem Altpapier</li>'+
+                                        '<li>Versand mit 90% recyceltem Versandmaterial</li>'+
                                     '</ul>'+
                                 '</div>');
                             }
