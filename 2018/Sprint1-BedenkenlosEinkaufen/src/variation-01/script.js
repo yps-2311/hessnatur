@@ -42,58 +42,99 @@
 
     function lieferzeitZeileEinbauen(uebergabeEvent, $wa_klappbar, $headlineZeit, $mengeWrapper){
 
-        var $diesesInfobox;
+        try {
 
-        if(!uebergabeEvent){
-            $diesesInfobox = WATO.qs("#avail_container > .label", $mengeWrapper);
-        }else{
-            $diesesInfobox = uebergabeEvent.target;
-        }
-        
-        var _lieferZeit = getLieferzeit($diesesInfobox.textContent)[0],
-            _lieferZeitZahl = getLieferzeit($diesesInfobox.textContent)[1];
-        
-        if(//$diesesInfobox.className.indexOf("warning") !== -1 && 
-        _lieferZeit.indexOf("Sofort lieferbar") === -1 && 
-        _lieferZeit.indexOf("Ausverkauft") === -1 && 
-        _lieferZeit !== ""){
-            
-            if(!window.localStorage.getItem("wa_info")){
-                removeClass($wa_klappbar ,"wa_einkl");
+            var $diesesInfobox;
+
+            if(!uebergabeEvent){
+                $diesesInfobox = WATO.qs("#avail_container > .label", $mengeWrapper);
+            }else{
+                $diesesInfobox = uebergabeEvent.target;
             }
+            console.log('$diesesInfobox: ', $diesesInfobox);
+            
+            var _lieferZeit = getLieferzeit($diesesInfobox.textContent)[0],
+            _lieferZeitZahl = getLieferzeit($diesesInfobox.textContent)[1],
+            _infoAusgeblendet = true;
+            
+            console.log('_lieferZeit: ', _lieferZeit);
+            // Timing Problem
+            setTimeout(function(){
 
-            $headlineZeit.textContent = _lieferZeit;
+                // Ist die Statusbox vom System ausgeblendet, wenn ja unsere Infobox auch ausblenden
+                if(typeof $diesesInfobox.getAttribute("style") !== "undefined"){
+                    console.log('$diesesInfobox.style.display === "none": ', $diesesInfobox.style.display === "none");
+                    if($diesesInfobox.style.display === "none"){
+                        _infoAusgeblendet = false;
+                    }
+                }
 
-            $diesesInfobox.insertAdjacentHTML("afterend", 
-            '<span class="wa_lieferbarkeit">Lieferzeit: '+
-                _lieferZeitZahl+
-                '<span class="wa_oeffnenwarum">Warum dauert die Lieferung so lange?</span>'+
-            '</span>');
+                if( _lieferZeit.indexOf("Sofort lieferbar") === -1 && 
+                    _lieferZeit.indexOf("Ausverkauft") === -1 && 
+                    _lieferZeit !== "" &&
+                    _infoAusgeblendet
+                ){
+                    console.log(1);
+                    if(!window.localStorage.getItem("wa_info")){
+                        removeClass($wa_klappbar ,"wa_einkl");
+                    }
 
-            WATO.qs(".wa_oeffnenwarum", $mengeWrapper).addEventListener("click", function(){
-                removeClass($wa_klappbar ,"wa_einkl");
-                window.localStorage.removeItem("wa_info");
+                    $headlineZeit.textContent = _lieferZeit;
 
-                WATO.goalPush("klick_openLayer");
-            });
-        }else{
-            addClass($wa_klappbar ,"wa_einkl");
-        }
+                    console.log('$diesesInfobox: ', $diesesInfobox);
+                    $diesesInfobox.insertAdjacentHTML("afterend", 
+                    '<span class="wa_lieferbarkeit">Lieferzeit: '+
+                        _lieferZeitZahl+
+                        '<span class="wa_oeffnenwarum">Warum dauert die Lieferung so lange?</span>'+
+                    '</span>');
 
-        // Versandkosten-Link fix
-        WATO.elem('.btn-simple-link.js-reveal-ajax:not(.wa_listener)', function(element){
-            if(element){
-                // Damit der Listener nicht mehrfach gesetzt wird
-                addClass(element[0], "wa_listener");
+                    WATO.qs(".wa_oeffnenwarum", $mengeWrapper).addEventListener("click", function(){
+                        removeClass($wa_klappbar ,"wa_einkl");
+                        window.localStorage.removeItem("wa_info");
 
-                // Bei klick wird die "ORIGINAL"-Funktion der Website neu auf den Link gesetzt
-                // Die Funktion ist lediglich von jQuery in JS umgebaut
-                element[0].addEventListener("click", function(e){
-                    if(typeof window.ACC !== "undefined"){
-                        e.preventDefault();
-                        window.ACC.modals.loadAjaxModal(e.target.getAttribute("href"));
+                        WATO.goalPush("klick_openLayer");
+                    });
+                }else{
+                    console.log(2);
+                    addClass($wa_klappbar ,"wa_einkl");
+                }
+
+                // Versandkosten-Link fix
+                WATO.elem('.btn-simple-link.js-reveal-ajax:not(.wa_listener)', function(element){
+                    if(element){
+                        // Damit der Listener nicht mehrfach gesetzt wird
+                        addClass(element[0], "wa_listener");
+
+                        // Bei klick wird die "ORIGINAL"-Funktion der Website neu auf den Link gesetzt
+                        // Die Funktion ist lediglich von jQuery in JS umgebaut
+                        element[0].addEventListener("click", function(e){
+                            if(typeof window.ACC !== "undefined"){
+                                e.preventDefault();
+                                window.ACC.modals.loadAjaxModal(e.target.getAttribute("href"));
+                            }
+                        });
                     }
                 });
+
+            }, 200);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    function direktUmschreiben(){
+        // Direkt vom Hersteller - das "d" klein machen
+        WATO.elem('.js-availability-delivery.warning', function($meldungenZurLieferung){
+            if($meldungenZurLieferung){
+                for (var k = 0; k < $meldungenZurLieferung.length; k++) {
+                    var ZurLieferung = $meldungenZurLieferung[k],
+                        statusText = ZurLieferung.textContent;
+
+                    if(statusText.indexOf("Direkt") !== -1){
+                        ZurLieferung.textContent = statusText.replace("Direkt","direkt");
+                    }
+                }
             }
         });
     }
@@ -115,8 +156,6 @@
                         '</div>';
     
     try {
-
-        console.log("aaa");
 
         window.addEventListener("resize", function(){
             kickout(1024);
@@ -168,6 +207,7 @@
                     // lieferzeitZeileEinbauen(false, $wa_klappbar, $headlineZeit, $mengeWrapper[0]);
     
                     $lieferzeitBox.addEventListener('DOMSubtreeModified', function(e) {
+                        console.log('e: ', e);
                         lieferzeitZeileEinbauen(e, $wa_klappbar, $headlineZeit, $mengeWrapper[0]);
                     });
 
@@ -251,7 +291,9 @@
                 }
             });
 
-            WATO.globalGoals();
+            WATO.globalGoals(1);
+
+            direktUmschreiben();
 
         }else if(uri.indexOf("/de/cart") !== -1){
             // WK
@@ -307,21 +349,9 @@
                 }
             });
 
-            // Direkt vom Hersteller - das "d" klein machen
-            WATO.elem('.js-availability-delivery.warning', function($meldungenZurLieferung){
-                if($meldungenZurLieferung){
-                    for (var k = 0; k < $meldungenZurLieferung.length; k++) {
-                        var ZurLieferung = $meldungenZurLieferung[k],
-                            statusText = ZurLieferung.textContent;
 
-                        if(statusText.indexOf("Direkt") !== -1){
-                            ZurLieferung.textContent = statusText.replace("Direkt","direkt");
-                        }
-                    }
-                }
-            });
+            direktUmschreiben();
 
-            
 
             var isHover = false;
 
@@ -376,7 +406,7 @@
                 }
             });
 
-            WATO.globalGoals();
+            WATO.globalGoals(1);
         }
         
     } catch (error) {

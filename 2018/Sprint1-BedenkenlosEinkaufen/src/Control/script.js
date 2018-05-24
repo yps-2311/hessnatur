@@ -29,7 +29,7 @@
         kickout(1024);
 
         if(uri.indexOf("/de/cart") !== -1 || uri.indexOf("/p/") !== -1){
-            WATO.globalGoals();
+            WATO.globalGoals(0);
         }
         
     } catch (error) {

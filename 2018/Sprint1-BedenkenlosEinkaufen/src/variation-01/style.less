@@ -12,17 +12,18 @@
     position: relative;
     min-height: 42px;
 
-    .warning,
+    .js-availability-status.warning,
     .wa_lieferbarkeit,
     > br {
         display: none !important;
     }
     .warning + .wa_lieferbarkeit {
-        display: block !important;
+        display: inline !important;
         text-transform: capitalize;
         color: #eea800;
         line-height: 41px;
         font-weight: bold;
+        font-size: 13px;
     }
     .alert {
         line-height: 41px;
@@ -33,6 +34,9 @@ body:not(.wa_punchout) #avail_container{
 
     .js-availability-info {
         display: none !important;
+    }
+    .js-availability-delivery {
+        font-size: 13px;
     }
 
     .success {
@@ -51,7 +55,7 @@ body:not(.wa_punchout) #avail_container{
             // background-color: #e8f8d7;
             white-space: nowrap;
             padding-right: 30px;
-            background: #e8f8d7 url("@{base-url}checks.png") no-repeat scroll  0 16px;
+            background: #e8f8d7 url("@{base-url}checks.png") no-repeat scroll right 16px;
         }
         &::after {
             content: "Das Produkt ist innerhalb 24 h versandfertig.";
@@ -63,6 +67,7 @@ body:not(.wa_punchout) #avail_container{
             color: #393939;
             left: 0;
             bottom: -26px;
+            font-weight: normal;
         }
     }
 
