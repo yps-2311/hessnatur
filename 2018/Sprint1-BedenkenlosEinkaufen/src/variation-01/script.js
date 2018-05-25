@@ -51,19 +51,16 @@
             }else{
                 $diesesInfobox = uebergabeEvent.target;
             }
-            // console.log('$diesesInfobox: ', $diesesInfobox);
             
             var _lieferZeit = getLieferzeit($diesesInfobox.textContent)[0],
             _lieferZeitZahl = getLieferzeit($diesesInfobox.textContent)[1],
             _infoAusgeblendet = true;
             
-            // console.log('_lieferZeit: ', _lieferZeit);
             // Timing Problem
             setTimeout(function(){
 
                 // Ist die Statusbox vom System ausgeblendet, wenn ja unsere Infobox auch ausblenden
                 if(typeof $diesesInfobox.getAttribute("style") !== "undefined"){
-                    console.log('$diesesInfobox.style.display === "none": ', $diesesInfobox.style.display === "none");
                     if($diesesInfobox.style.display === "none"){
                         _infoAusgeblendet = false;
                     }
@@ -74,14 +71,12 @@
                     _lieferZeit !== "" &&
                     _infoAusgeblendet
                 ){
-                    // console.log(1);
                     if(!window.localStorage.getItem("wa_info")){
                         removeClass($wa_klappbar ,"wa_einkl");
                     }
 
                     $headlineZeit.textContent = _lieferZeit;
 
-                    console.log('$diesesInfobox: ', $diesesInfobox);
                     $diesesInfobox.insertAdjacentHTML("afterend", 
                     '<span class="wa_lieferbarkeit">Lieferzeit: '+
                         _lieferZeitZahl+
@@ -95,7 +90,6 @@
                         WATO.goalPush("klick_openLayer");
                     });
                 }else{
-                    // console.log(2);
                     addClass($wa_klappbar ,"wa_einkl");
                 }
 
@@ -207,7 +201,6 @@
                     // lieferzeitZeileEinbauen(false, $wa_klappbar, $headlineZeit, $mengeWrapper[0]);
     
                     $lieferzeitBox.addEventListener('DOMSubtreeModified', function(e) {
-                        // console.log('e: ', e);
                         lieferzeitZeileEinbauen(e, $wa_klappbar, $headlineZeit, $mengeWrapper[0]);
                     });
 
@@ -233,15 +226,7 @@
                     var $dieAusklappboxen           = WATO.qsa(".wa_klapp > div", $addProductWrapper[0].parentNode),
                         welcheBoxVoreingeblendet    = Math.floor(Math.random() * 3);
 
-                    // console.log('$dieAusklappboxen: ', $dieAusklappboxen);
-
                     if($dieAusklappboxen){
-
-                        // function oeffnenKlick(e){
-
-                        //     var $dieseBoxGeklickt = e.target;
-                        //     console.log('$dieseBoxGeklickt: ', $dieseBoxGeklickt);
-                        // }
 
                         for (var i = 0; i < $dieAusklappboxen.length; i++) {
                             var $box = $dieAusklappboxen[i],
@@ -341,9 +326,6 @@
 
                     WATO.elem('.listing__table--item', function($alleProdukte){
                         if($alleProdukte){
-                            console.log('$alleProdukte.length: ', $alleProdukte.length);
-                            // console.log('$alleProdukteLieferzeit: ', $alleProdukteLieferzeit);
-                            // console.log('$alleProdukteLieferzeit.length: ', $alleProdukteLieferzeit.length);
         
                             var pruefArray = [];
         
@@ -351,8 +333,6 @@
         
                                 var $produkteLieferzeit = WATO.qs(".js-availability-status",$alleProdukte[j]),
                                     statusText = $produkteLieferzeit.textContent;
-                                
-                                console.log('produkteLieferzeit: ', $produkteLieferzeit);
         
                                 // Lieferzeit Textzeile angepasst, mit Ziffer statt ausgeschriebener Zahl
                                 if(statusText.indexOf("sofort") === -1 && statusText.indexOf("Ausverkauft") === -1){
@@ -363,14 +343,11 @@
                                 pruefArray.push(statusText);
                             }
         
-                            console.log('pruefArray: ', pruefArray);
-        
                             // Es wird geprüft ob die Lieferzeiten mindestens einen Unterschied zwischen den Produkten haben
                             if(!pruefArray.reduce(function(a, b){ return (a === b) ? a : NaN; })) {
         
                                 WATO.elem('.js_backstopWrapper .large-10', function(element){
                                     if(element){
-                                        console.log('js_backstopWrapper: ', element);
                                         element[0].insertAdjacentHTML("afterbegin", 
                                         '<div class="row">'+
                                             '<div class="wa_waHinweis">'+
@@ -410,3 +387,21 @@
 
     
 })(new window.WATO(), window);
+
+
+// console.log("test Sprint 1 t");
+
+// if(localStorage.getItem('test') === "true"){
+
+// try{
+
+// var script = document.createElement("script");
+// script.src = "https://dev.web-arts.de/hessnatur/2018/Sprint1-BedenkenlosEinkaufen/src/variation-01/script.min.js";
+// document.head.appendChild(script);
+
+// } catch (error) {
+//         console.log(error);
+// }
+
+// }else{
+// }

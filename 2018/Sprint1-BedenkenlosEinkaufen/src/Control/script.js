@@ -37,7 +37,6 @@
     var uri = window.document.location.pathname;
     
     try {
-        console.log("!!!! control !!!!");
 
         window.addEventListener("resize", function(){
             kickout(1024);
@@ -45,21 +44,15 @@
         kickout(1024);
 
         if(uri.indexOf("/de/cart") !== -1 || uri.indexOf("/p/") !== -1){
-            console.log("1");
 
             // Globale Goals mit übergabe der Variante 0
             WATO.globalGoals(0);
 
-            console.log("2");
-
             // Klick Goal auf InfoLayer geöffnet "Wieder öffnen Warum dauert die Lieferung so lange? Layer"
             WATO.elem('#avail_container .js-availability-info', function(element){
 
-                console.log("3");
                 if(element){
                     element[0].addEventListener("click", function(){
-
-                        console.log("4");
                         WATO.goalPush("klick_openLayer");
                     });
                 }
