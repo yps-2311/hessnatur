@@ -11,6 +11,7 @@
 #avail_container {
     position: relative;
     min-height: 42px;
+    white-space: nowrap;
 
     .js-availability-status.warning,
     .wa_lieferbarkeit,
@@ -37,6 +38,8 @@ body:not(.wa_punchout) #avail_container{
     }
     .js-availability-delivery {
         font-size: 13px;
+        display: inline;
+        white-space: nowrap;
     }
 
     .success {
