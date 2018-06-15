@@ -32,354 +32,161 @@
             removeClass(window.document.body, "wa_punchout");
         }
     }
-    function getLieferzeit(string){
-        var _lieferZeit     = string.replace("Lieferbar in","").replace("einer Woche","eine Woche"),
-            _lieferZeitZahl = _lieferZeit.replace("einer","1").replace("zwei","2").replace("drei","3").replace("vier","4").replace("fünf","5")
-            .replace("sechs","6").replace("sieben","7").replace("acht","8").replace("neun","9").replace("zehn","10");
-        
-        return [_lieferZeit, _lieferZeitZahl];
-    }
 
-    function lieferzeitZeileEinbauen(uebergabeEvent, $wa_klappbar, $headlineZeit, $mengeWrapper){
+    function layerEinbauen(){
 
-        try {
+        WATO.elem('body', function(pbody){
+            if(pbody){
 
-            var $diesesInfobox;
+                try {
+                    
+                    pbody = pbody[0];
+                    // console.log('pbody: ', pbody);
+                    
+                    var pBild = WATO.qs("#zoom img", pbody),
+                        pHeadline = WATO.qs("h1.pds-cockpit__productName", pbody),
+                        pFarbe = WATO.qs(".show-for-large.js-color-name", pbody),
+                        pGroesse = WATO.qs("#desc__size", pbody),
+                        pMenge = WATO.qs("#desc__amount", pbody),
+                        sTheLook = "",
+                        aCompleteTheLook = WATO.qsa(".pds-completeTheLookWrapper .productitem", pbody); 
 
-            if(!uebergabeEvent){
-                $diesesInfobox = WATO.qs("#avail_container > .label", $mengeWrapper);
-            }else{
-                $diesesInfobox = uebergabeEvent.target;
-            }
-            
-            var _lieferZeit = getLieferzeit($diesesInfobox.textContent)[0],
-            _lieferZeitZahl = getLieferzeit($diesesInfobox.textContent)[1],
-            _infoAusgeblendet = true;
-            
-            // Timing Problem
-            setTimeout(function(){
-
-                // Ist die Statusbox vom System ausgeblendet, wenn ja unsere Infobox auch ausblenden
-                if(typeof $diesesInfobox.getAttribute("style") !== "undefined"){
-                    if($diesesInfobox.style.display === "none"){
-                        _infoAusgeblendet = false;
-                    }
-                }
-
-                if( _lieferZeit.indexOf("Sofort lieferbar") === -1 && 
-                    _lieferZeit.indexOf("Ausverkauft") === -1 && 
-                    _lieferZeit !== "" &&
-                    _infoAusgeblendet
-                ){
-                    if(!window.localStorage.getItem("wa_info")){
-                        removeClass($wa_klappbar ,"wa_einkl");
+                    
+                    for (var i = 0; i < aCompleteTheLook.length; i++) {
+                        sTheLook += '<div class="carousel-cell">'+aCompleteTheLook[i].innerHTML+"</div>";
                     }
 
-                    $headlineZeit.textContent = _lieferZeit;
 
-                    $diesesInfobox.insertAdjacentHTML("afterend", 
-                    '<span class="wa_lieferbarkeit">Lieferzeit: '+
-                        _lieferZeitZahl+
-                        '<span class="wa_oeffnenwarum">Warum dauert die Lieferung so lange?</span>'+
-                    '</span>');
+                    pbody.insertAdjacentHTML("beforeend", 
+                        '<div class="reveal-overlay wa_overlay" style="display: block;">'+
+                            '<div class="reveal" data-reveal="8pd3zy-reveal" data-close-on-click="true" data-animation-in="fade-in" data-animation-out="fade-out" role="dialog" aria-hidden="false" style="display: block; top: 125px;" tabindex="-1">'+
+                                
+                                '<div class="wa_wrapper">'+
+                                    '<button class="close-button" data-close="" aria-label="Close reveal" type="button">'+
+                                        '<span aria-hidden="true">×</span>'+
+                                    '</button>'+
+                                    '<div class="row wa_content">'+
+                                        '<div class="column small-3">'+
+                                            '<div class="h3">Gute Wahl!</div>'+
+                                            '<p>Der Artikel liegt in Ihrem Warenkorb.</p>'+
+                                            '<img src="'+pBild.getAttribute("src")+'">'+
+                                            '<p>'+pHeadline.textContent+'</p>'+
+                                            '<div><b>FARBE:</b> '+pFarbe.textContent+'</div>'+
+                                            '<div><b>GRÖße:</b> '+pGroesse.value+'</div>'+
+                                            '<div><b>MENGE:</b> '+pMenge.value+'</div>'+
+                                        '</div>'+
+                                        '<div class="column small-9">'+
+                                            '<div class="main-carousel">'+
+                                                sTheLook+
+                                            '</div>'+
+                                        '</div>'+
+                                    '</div>'+
+                                    '<div class="row wa_footer">'+
+                                        '<div class="column small-4">'+
+                                            '<button href="/de/cart" class="button expanded pds-cockpit__addToCartButton js-add-to-cart-button">'+
+                                                '<span>Weiter einkaufen</span>'+
+                                            '</button>'+
+                                        '</div>'+
+                                        '<div class="column small-4">'+
+                                        '</div>'+
+                                        '<div class="column small-4">'+
+                                            '<a href="/de/cart" class="button success expanded pds-cockpit__addToCartButton js-add-to-cart-button">'+
+                                                '<span>Zum Warenkorb</span>'+
+                                            '</a>'+
+                                        '</div>'+
+                                    
+                                    '</div>'+
+                                '</div>'+
+                            
+                                // '<div class="callout white">'+
+                                //     '<div class="rteContainer">'+
+                                //         '<h2>Versandinformationen</h2>'+
+                                //         '<p>Wir liefern bestellte Ware nur innerhalb der Europäischen Union (EU), mit Ausnahme der Bundesrepublik Österreich, aus.</p>'+
+                                //         '<div class="row">'+
+                                //             '<ul class="small-6 columns pricing-list"><li>Deutschland<strong>€ 5,95</strong></li><li>Luxemburg<strong>€ 7,95</strong></li>'+
+                                //                 '<li>Belgien<strong>€ 9,95</strong></li><li>Dänemark<strong>€ 9,95</strong></li><li>Frankreich<strong>€ 9,95</strong></li>'+
+                                //             '</ul>'+
+                                //         '</div>'+
+                                //         '<button class="close-button" data-close="" aria-label="Close reveal" type="button">'+
+                                //             '<span aria-hidden="true">×</span>'+
+                                //         '</button>'+
+                                //     '</div>'+
+                                // '</div>'+
+                            '</div>'+
+                        '</div>');
 
-                    WATO.qs(".wa_oeffnenwarum", $mengeWrapper).addEventListener("click", function(){
-                        removeClass($wa_klappbar ,"wa_einkl");
-                        window.localStorage.removeItem("wa_info");
+                    var pOverlay = WATO.qs(".wa_overlay", pbody);
+                    console.log('pOverlay: ', pOverlay);
 
-                        WATO.goalPush("klick_openLayer");
+                    pOverlay.addEventListener("click", function(event) {
+                        if(event.target.classList.contains("wa_overlay")){
+                            pOverlay.style.display = "none";
+                        }
+                    })
+
+                    $('.main-carousel').flickity({
+                        // options
+                        cellAlign: 'left',
+                        contain: true
                     });
-                }else{
-                    addClass($wa_klappbar ,"wa_einkl");
+
+
+                } catch (error) {
+                    console.log(error);
                 }
 
-                // Versandkosten-Link fix
-                WATO.elem('.btn-simple-link.js-reveal-ajax:not(.wa_listener)', function(element){
-                    if(element){
-                        // Damit der Listener nicht mehrfach gesetzt wird
-                        addClass(element[0], "wa_listener");
+                
 
-                        // Bei klick wird die "ORIGINAL"-Funktion der Website neu auf den Link gesetzt
-                        // Die Funktion ist lediglich von jQuery in JS umgebaut
-                        element[0].addEventListener("click", function(e){
-                            if(typeof window.ACC !== "undefined"){
-                                e.preventDefault();
-                                window.ACC.modals.loadAjaxModal(e.target.getAttribute("href"));
-                            }
-                        });
-                    }
-                });
-
-            }, 200);
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    function direktUmschreiben(){
-        // Direkt vom Hersteller - das "d" klein machen
-        WATO.elem('.js-availability-delivery.warning', function($meldungenZurLieferung){
-            if($meldungenZurLieferung){
-                for (var k = 0; k < $meldungenZurLieferung.length; k++) {
-                    var ZurLieferung = $meldungenZurLieferung[k],
-                        statusText = ZurLieferung.textContent;
-
-                    if(statusText.indexOf("Direkt") !== -1){
-                        ZurLieferung.textContent = statusText.replace("Direkt","direkt");
-                    }
-                }
             }
         });
     }
     
     //imagePath = "https://dev.web-arts.de/hessnatur/2018/Sprint1-BedenkenlosEinkaufen/img/",
     var imagePath = "https://s3-eu-west-1.amazonaws.com/webarts/Hessnatur/2018/Sprint1/",
-        uri = window.document.location.pathname,
-        htmlInhaltUVPs = '<div class="wa_klima">'+
-                            '<b>Klimaneutraler Versand</b>'+
-                            '<p>Aus Liebe zur Umwelt verschicken wir Ihre Lieferung klimaneutral mit DHL GoGreen.</p>'+
-                        '</div>'+
-                        '<div class="wa_resyc">'+
-                            '<b>Recyceltes Versandmaterial</b>'+
-                            '<p>Unsere Pakete bestehen zu 90% aus recyceltem Papier und belasten die Umwelt deutlich weniger.</p>'+
-                        '</div>'+
-                        '<div class="wa_retoure">'+
-                            '<b>Kostenlose & einfache Retoure</b>'+
-                            '<p>Sollte Ihnen ein Produkt einmal nicht gefallen, können Sie dies jederzeit umtauschen. Der Retourenschein liegt Ihrer Bestellung bei.</p>'+
-                        '</div>';
+        uri = window.document.location.pathname;
     
     try {
 
         window.addEventListener("resize", function(){
-            kickout(1024);
+            // kickout(1024);
         }, false);
-        kickout(1024);
-
-        if(uri.indexOf("/p/") !== -1){
-            // PDS
-
-            WATO.elem('.align-middle.h-largeOffset-bottom-outer', function($mengeWrapper){
-                if($mengeWrapper){
-                    $mengeWrapper[0].insertAdjacentHTML("afterend", 
-                    '<div class="row">'+
-                        '<div class="columns wa_klappbar wa_einkl">'+
-                            '<div class="wa_warum">'+
-                                '<div class="wa_close"></div>'+
-                                '<h3>Warum dauert die Lieferung <span>so lange</span>?</h3>'+
-                                '<p>Lieber Kunde,<br>dieser Artikel ist aufgrund dieser Punkte nicht sofort lieferbar:</p>'+
-                                '<ul><li>Wir produzieren nicht auf Masse; Nachhaltigkeit steht im Fokus</li>'+
-                                '<li>Faire Arbeitsbedingungen im Produktionsland</li>'+
-                                '<li>Ressourcen werden geschont</li></ul>'+
-                                '<p>Wenn Sie den Artikel bestellen möchten, empfehlen wir '+
-                                'Ihnen, das bald zu tun, da er wegen erhöhter Nachfrage '+
-                                'wahrscheinlich nicht mehr lange lieferbar sein wird.</p>'+
-                                // '<p>Wir bitten Sie vielmals, diese Umstände zu entschuldigen!</p>'+
-                                '<img src="'+imagePath+'team.png">'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>'
-                    );
-
-                    var $warumInfobox = WATO.qs(".wa_warum"),
-                        $wa_klappbar = $warumInfobox.parentNode,
-                        $lieferzeitBox = WATO.qs("#avail_container > .label", $mengeWrapper[0]),
-                        $headlineZeit = WATO.qs("h3 span", $warumInfobox);
-
-                    // if($lieferzeitBox.className.indexOf("warning") !== -1){
-                    //     removeClass($wa_klappbar ,"wa_einkl");
-                    // }
-    
-                    // Infolayer schließen 
-                    WATO.qs(".wa_close", $warumInfobox).addEventListener("click", function(){
-                        addClass($wa_klappbar ,"wa_einkl");
-                        window.localStorage.setItem("wa_info", "geschlossen");
-
-                        WATO.goalPush("klick_closeLayer");
-                    });
-
-                    // lieferzeitZeileEinbauen(false, $wa_klappbar, $headlineZeit, $mengeWrapper[0]);
-    
-                    $lieferzeitBox.addEventListener('DOMSubtreeModified', function(e) {
-                        lieferzeitZeileEinbauen(e, $wa_klappbar, $headlineZeit, $mengeWrapper[0]);
-                    });
+        // kickout(1024);
 
 
-                }
-            });
-    
-            // Die merken und CTA Zeile
-            WATO.elem('.pds-cockpit__addProductWrapper', function($addProductWrapper){
-                if($addProductWrapper){
+        // Minibasket nicht anzeigen
+        WATO.elem('#miniCartDropdown', function(pMiniCartDropdown){
+            if(pMiniCartDropdown){                
+                addClass(pMiniCartDropdown, "wa_nichtanzeigen");
 
-                    // Wrapper für die bestellung inklusive box
-                    $addProductWrapper[0].insertAdjacentHTML("afterend", 
-                    '<div class="row">'+
-                        '<div class="columns">'+
-                            '<div class="wa_klapp">'+
-                                '<h3>Für diese Bestellung inklusive:</h3>'+
-                                htmlInhaltUVPs+
-                            '</div>'+
-                        '</div>'+
-                    '</div>');
-    
-                    var $dieAusklappboxen           = WATO.qsa(".wa_klapp > div", $addProductWrapper[0].parentNode),
-                        welcheBoxVoreingeblendet    = Math.floor(Math.random() * 3);
+                // Infolayer schließen 
+                // WATO.qs(".wa_close", $warumInfobox).addEventListener("click", function(){
+                //     addClass($wa_klappbar ,"wa_einkl");
+                //     window.localStorage.setItem("wa_info", "geschlossen");
 
-                    if($dieAusklappboxen){
+                //     WATO.goalPush("klick_closeLayer");
+                // });
 
-                        for (var i = 0; i < $dieAusklappboxen.length; i++) {
-                            var $box = $dieAusklappboxen[i],
-                                $pTag = WATO.qs("p", $box);
-                            
-                            // Feste höhe dieses Elements festlegen
-                            $pTag.style.height = $pTag.offsetHeight + "px";
-    
-                            // Eine zufällige Box ausklappen
-                            if($dieAusklappboxen[welcheBoxVoreingeblendet] !== $box) {
-                                addClass($box, "wa_einklappen");
-                            }
-    
-                            // Öffnen klick
-                            $box.addEventListener("click", function($dieseBoxGeklickt){
-                                // interaktion
-                                WATO.goalPush("click_bestellbox");
-                                                                
-                                // Definition dass das geklickte Target auch die Box selbst und kein children ist
-                                var $genauDieBox = $dieseBoxGeklickt.target;
-                                if($genauDieBox.tagName !== "DIV"){
-                                    $genauDieBox = $dieseBoxGeklickt.target.parentNode;
-                                }
+                // lieferzeitZeileEinbauen(false, $wa_klappbar, $headlineZeit, $mengeWrapper[0]);
 
-                                if($genauDieBox.className.indexOf("wa_einklappen") === -1){
-                                    // wenns schon ausgeklappt ist wird es eingeklappt
-                                    addClass($genauDieBox , "wa_einklappen");
-                                }else{
-                                    for (var k = 0; k < $dieAusklappboxen.length; k++) {
-                                        var $dieseBox = $dieAusklappboxen[k];
+                // $lieferzeitBox.addEventListener('DOMSubtreeModified', function(e) {
+                //     lieferzeitZeileEinbauen(e, $wa_klappbar, $headlineZeit, $mengeWrapper[0]);
+                // });
 
-                                        // Die angeklickte ausklappen beide anderen einklappen
-                                        if($dieseBox !== $genauDieBox){
-                                            addClass($dieseBox , "wa_einklappen");
-                                        }else{
-                                            removeClass($dieseBox , "wa_einklappen");
-                                        }
-                                    }
-                                }
-                            });
-                        }
-                        // $dieAusklappboxen.forEach(function($box){
-                            
-                        // });
-                    }
 
-                }
-            });
+            }
+        });
 
-            WATO.globalGoals(1);
+        setTimeout(function(){
+            layerEinbauen();
+        }, 2000);
 
-            direktUmschreiben();
+       
 
-        }else if(uri.indexOf("/de/cart") !== -1){
-            // WK
 
-            direktUmschreiben();
-
-            var isHover = false;
-
-            WATO.elem('.yCmsContentSlot.h-largeOffset-bottom-outer', function($nebenZwischensumme){
-                if($nebenZwischensumme){
-
-                    // Umbau der Klassen damit das Originale Grid noch funktioniert
-                    removeClass($nebenZwischensumme[0], "medium-6");
-                    addClass($nebenZwischensumme[0], "medium-7");
-
-                    // Bestellung inklusive Box unter den Produkten
-                    $nebenZwischensumme[0].insertAdjacentHTML("afterbegin", 
-                    '<div class="row">'+
-                        '<div class="columns">'+
-                            '<div class="wa_klapp wa_klappwk">'+
-                                '<h3>Für die Bestellung inklusive:</h3>'+
-                                '<div class="wa_flex">'+
-                                    htmlInhaltUVPs+
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>');
-
-                    // Goal bei Mouseover über einer Sekunde abschicken
-                    WATO.elem('.wa_klapp', function($wa_klapp){
-                        if($wa_klapp){
-                            $wa_klapp[0].addEventListener("mouseenter", function(){
-                                isHover = true;
-                                setTimeout(function(){
-                                    if(isHover){
-                                        WATO.goalPush("engagement_bestellbox");
-                                    }
-                                }, 1000);
-                            });
-                            $wa_klapp[0].addEventListener("mouseleave", function(){
-                                isHover = false;
-                            });
-                        }
-                    });
-
-                    WATO.elem('.listing__table--item', function($alleProdukte){
-                        if($alleProdukte){
         
-                            var pruefArray = [];
-        
-                            for (var j = 0; j < $alleProdukte.length; j++) {
-        
-                                var $produkteLieferzeit = WATO.qs(".js-availability-status",$alleProdukte[j]),
-                                    statusText = $produkteLieferzeit.textContent;
-        
-                                // Lieferzeit Textzeile angepasst, mit Ziffer statt ausgeschriebener Zahl
-                                if(statusText.indexOf("sofort") === -1 && statusText.indexOf("Ausverkauft") === -1){
-                                    $produkteLieferzeit.textContent = "Lieferzeit: " + getLieferzeit(statusText)[1];
-                                }
-        
-                                // Alle Lieferzeiten werden in einen Array geschrieben
-                                pruefArray.push(statusText);
-                            }
-        
-                            // Es wird geprüft ob die Lieferzeiten mindestens einen Unterschied zwischen den Produkten haben
-                            if(!pruefArray.reduce(function(a, b){ return (a === b) ? a : NaN; })) {
-        
-                                WATO.elem('.js_backstopWrapper .large-10', function(element){
-                                    if(element){
-                                        element[0].insertAdjacentHTML("afterbegin", 
-                                        '<div class="row">'+
-                                            '<div class="wa_waHinweis">'+
-                                                'Hinweis: Sofort lieferbare Artikel werden separat und zuerst geliefert.'+
-                                            '</div>'+
-                                        '</div>'
-                                        );
-                                        
-                                        WATO.goalPush("show_meldung");
-                                    }
-                                });
-                            }
-                        }
-                    });
 
-                }
-            });
 
-            WATO.elem('.h-xLargeOffset-bottom-outer', function($nebenZwischensumme){
-                if($nebenZwischensumme){
-                    $nebenZwischensumme = $nebenZwischensumme[0];
-
-                    // Umbau der Klassen damit das Originale Grid noch funktioniert
-                    removeClass($nebenZwischensumme, "medium-6");
-                    removeClass($nebenZwischensumme, "large-4");
-                    addClass($nebenZwischensumme, "medium-5");
-                    addClass($nebenZwischensumme, "large-3");
-                }
-            });
-
-            WATO.globalGoals(1);
-        }
+        // WATO.globalGoals(1);
         
     } catch (error) {
         console.log(error);
