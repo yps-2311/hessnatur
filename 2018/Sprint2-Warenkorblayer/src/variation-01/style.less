@@ -14,24 +14,156 @@
 
 .wa_overlay {
     .reveal {
-        width: 958px;
-        max-width: 958px;
+        width: 946px;
+        max-width: 946px;
+        min-height: 610px;
+        display: block;
+        top: 70px;
     }
+    .close-button {
+        right: 20px;
+        top: 13px;
+    }
+    
 }
 .wa_content {
-    .small-3 {
-        background-color: #f5ffeb;
-    }
-    .small-9 {
-        background-color: #f9f8f5;
+    min-height: 532px;
 
-        > a {
-            
+    .small-3 {
+        // background-color: #f5ffeb;
+        max-width: 27%;
+        padding: 26px 19px 13px;
+        min-height: 532px;
+        flex: 0 0 27%;
+        -ms-flex: 0 0 27%;
+        position: relative;
+        background: #f5ffeb url("https://s3-eu-west-1.amazonaws.com/webarts/Hessnatur/2018/Sprint2/greencheck.png") no-repeat scroll 45px 27px;
+
+        p {
+            text-align: center;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+        img {
+            border: solid 1px #cdcdcd;
+            margin-bottom: 28px;
+        }
+        &::after {
+            content: "";
+            height: 30px;
+            width: 50px;
+            background: transparent url(https://s3-eu-west-1.amazonaws.com/webarts/Hessnatur/2018/Sprint2/arrowright.png) no-repeat scroll 0 0;
+            position: absolute;
+            right: -44px;
+            top: 221px;
         }
     }
+
+    .h3 {
+        font-family: "Roboto",Helvetica,Arial,sans-serif;
+        font-weight: normal;
+        font-size: 22px;
+        margin-bottom: 5px;
+        text-align: center;
+    }
+
+    .small-9 {
+        background-color: #f9f8f5;
+        max-width: 73%;
+        flex: 0 0 73%;
+        -ms-flex: 0 0 73%;
+        padding: 0 33px 0 40px;
+
+        // .flickity-page-dots {
+        //     display: none;
+        // }
+    }
+
+    .carousel-cell {
+        width: 33%;
+        padding-right: 1.15385rem;
+        padding-left: 1.15385rem;
+        text-align: center;
+        display: inline-block;
+        padding: 0 10px;
+        min-height: 350px;
+        height: 350px;
+
+        img {
+            border: solid 10px #fff;
+            box-shadow: 1px 3px 3px #ccc;
+        }
+        .item__desc {
+            margin-top: 29px;
+        }
+        h4 {
+            font-weight: 700;
+            line-height: 1.3;
+        }
+       .desc-price {
+            font-size: 16px;
+            margin-top: 8px;
+        }
+       
+    }
+
+    .flickity-prev-next-button {
+        border-radius: 50%;
+        top: 36%;
+        height: 24px;
+        width: 24px;
+        border: solid 1px #888888;
+
+        svg {
+            width: 14px;
+            height: 14px;
+            margin: 0;
+        }
+        .arrow {
+            fill: #888888;
+        }
+        &:disabled {
+            display: none;
+            // border-color: #dadada;
+        }
+        
+    }
+    
+
+}
+.wa_attr {
+    margin-bottom: 1px;
+    font-size: 12px;
+}
+.wa_produkttitle {
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+.wa_price {
+    position: absolute;
+    right: 18px;
+    bottom: 19px;
+    font-size: 17px;
+    font-weight: 700;
+}
+.wa_headline {
+    text-align: center;
+    padding: 68px 0 60px;
+    font-size: 26px;
 }
 .wa_footer {
     border-top: solid 1px #cdcdcd;
+    padding-top: 18px;
+
+    .column {
+        padding: 0 19px;
+    }
+    .button {
+        width: 218px;
+    }
+    a {
+        float: right;
+    }
 }
 
 

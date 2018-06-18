@@ -165,31 +165,31 @@
      * @param {string} url -
      * @param {function} callback -
      */
-    // window.WATO.prototype.ajax = function(url, callback) {
-    //     var request = XMLHttpRequest.prototype.open;
+    window.WATO.prototype.ajax = function(url, callback) {
+        var request = XMLHttpRequest.prototype.open;
 
-    //     XMLHttpRequest.prototype.open = function(
-    //         method,
-    //         uri,
-    //         async,
-    //         user,
-    //         pass
-    //     ) {
-    //         this.addEventListener(
-    //             "loadend",
-    //             function() {
-    //                 if (this.readyState === 4) {
-    //                     if (uri.indexOf(url) !== -1) {
-    //                         callback();
-    //                     }
-    //                 }
-    //             },
-    //             false
-    //         );
+        XMLHttpRequest.prototype.open = function(
+            method,
+            uri,
+            async,
+            user,
+            pass
+        ) {
+            this.addEventListener(
+                "loadend",
+                function() {
+                    if (this.readyState === 4) {
+                        if (uri.indexOf(url) !== -1) {
+                            callback();
+                        }
+                    }
+                },
+                false
+            );
 
-    //         request.call(this, method, uri, async, user, pass);
-    //     };
-    // };
+            request.call(this, method, uri, async, user, pass);
+        };
+    };
 
     /**
      * @function getCookie
