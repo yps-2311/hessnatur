@@ -26,29 +26,50 @@ try {
     //     window.iridion.push(["run", "1528721919728"]);
     // });
 
-    var request = XMLHttpRequest.prototype.open;
+    if(document.cookie.indexOf("iridion_debug=true") !== -1){
+        console.log("to activate");
+        var request = XMLHttpRequest.prototype.open;
 
-    XMLHttpRequest.prototype.open = function(
-        method,
-        uri,
-        async,
-        user,
-        pass
-    ) {
-        this.addEventListener(
-            "loadend",
-            function() {
-                if (this.readyState === 4) {
-                    if (uri.indexOf('https://www.hessnatur.com/de/cart/add') !== -1) {
-                        window.iridion.push(["run", "1528721919728"]);
+        XMLHttpRequest.prototype.open = function(
+            method,
+            uri,
+            async,
+            user,
+            pass
+        ) {
+            this.addEventListener(
+                "loadend",
+                function() {
+                    if (this.readyState === 4) {
+                        if (uri.indexOf('https://www.hessnatur.com/de/cart/add') !== -1) {
+                            console.log("activate push");
+
+                            try {
+                                // Minicart schnell ausbelden damit man es nicht beim AddToCart sieht
+                                var pMiniCart = document.getElementById("miniCartDropdown");
+
+                                if(pMiniCart){
+                                    pMiniCart.style.display = "none";
+
+                                    setTimeout(function(){
+                                        // Minicart wieder einblendbar machen
+                                        pMiniCart.style.display = "inherit";
+                                    }, 3000);
+                                }
+                            } catch (error) {
+                                console.log(error);
+                            }
+
+                            // In den Test
+                            window.iridion.push(["run", "1528721919728"]);
+                        }
                     }
-                }
-            },
-            false
-        );
-        request.call(this, method, uri, async, user, pass);
-    };
-
+                },
+                false
+            );
+            request.call(this, method, uri, async, user, pass);
+        };
+    }
 
 } catch (error) {
     console.log(error);

@@ -79,6 +79,13 @@
         // }
     }
 
+    .wa_wrapper {
+        .flickity-slider,
+        .flickity-viewport {
+            height: 390px !important;
+        }
+    }    
+
     .carousel-cell {
         width: 33%;
         padding-right: 1.15385rem;
@@ -86,8 +93,8 @@
         text-align: center;
         display: inline-block;
         padding: 0 10px;
-        min-height: 350px;
-        height: 350px;
+        min-height: 390px;
+        height: 390px;
 
         img {
             border: solid 10px #fff;
@@ -126,8 +133,17 @@
             display: none;
             // border-color: #dadada;
         }
+
+        &.next svg {
+            left: 4px;
+        }
+        &.previous svg {
+            left: 5px;
+        }
         
     }
+
+
     
 
 }
@@ -160,6 +176,10 @@
     }
     .button {
         width: 218px;
+
+        span {
+            line-height: 18px;
+        }
     }
     a {
         float: right;

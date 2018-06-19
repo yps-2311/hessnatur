@@ -18,20 +18,23 @@
     //     }
     // });
 
+    function goalPush(key){
+        window.iridion.push(['goal', key]);
+    }
     
     function addClass(el,className){
-		if (el.classList){
+		// if (el.classList){
 			el.classList.add(className);
-		}else if(el.className){
-			el.className += ' ' + className;
-		}
+		// }else if(el.className){
+			// el.className += ' ' + className;
+		// }
     }
     function removeClass(el,className){
-		if (el && el.classList){
+		// if (el && el.classList){
 			el.classList.remove(className);
-		}else if(el && el.className){
-			el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');		
-		}
+		// }else if(el && el.className){
+			// el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');		
+		// }
     }
     // function kickout(breite){
 	// 	if(window.innerWidth < breite){
@@ -40,6 +43,19 @@
     //         removeClass(window.document.body, "wa_punchout");
     //     }
     // }
+
+    function miniBasketClose(){
+        // Minibasket nicht anzeigen
+        WATO.elem('#miniCartDropdown', function(pMiniCartDropdown){
+            if(pMiniCartDropdown){
+                addClass(pMiniCartDropdown[0], "wa_nichtanzeigen");
+
+                setTimeout(function(){
+                    removeClass(pMiniCartDropdown[0], "wa_nichtanzeigen");
+                }, 6000);
+            }
+        });
+    }
 
     function isJqueryReady(auszufuehrendeFunction){
 		var isJquery = typeof jQuery;
@@ -55,17 +71,62 @@
 				}
 			}, 200);
 		}
-	}
+    }
+
+    function neuenTabOeffnen(url){
+        window.open(url, '_blank');
+    }
+
+    // DOM-Element entfernen
+    function removeItem(itemClass){
+        var pItem = WATO.qs(itemClass);
+        if(pItem){
+            pItem.parentNode.removeChild(pItem);
+        }
+    }
+    
+    function setGeklickteProdute(produktID, callback){
+        console.log('produktID: ', produktID);
+        var localSt = window.localStorage.getItem('wa_geklickteProdukte');
+        if(localSt){
+            // Update
+            var alteEintraege = localSt.split(",");
+            // console.log('alteEintraege: ', alteEintraege);
+
+            // console.log('alteEintraege.contains(produktID): ', alteEintraege.includes(produktID));
+            if(!alteEintraege.includes(produktID)){
+                alteEintraege.push(produktID);
+                window.localStorage.setItem('wa_geklickteProdukte', alteEintraege);
+            }
+            // console.log('window.localStorage.setItem(wa_geklickteProdukte, alteEintraege);: ', window.localStorage.getItem('wa_geklickteProdukte'));
+            
+        }else{
+            // neu anlegen
+
+            // console.log("neu");
+            window.localStorage.setItem('wa_geklickteProdukte', [produktID]);
+        }
+
+        callback();
+    }
+
 
     function layerEinbauen(){
+
+        console.log("layerEinbauen");
+
+        miniBasketClose();
 
         WATO.elem('body', function(pbody){
             if(pbody){
 
                 try {
+
+                    // Wenn schon ein Layer vorhanden ist wird dieser gelöscht
+                    removeItem(".wa_overlay");
                     
                     pbody = pbody[0];
-                    // console.log('pbody: ', pbody);
+                    console.log('pbody: ', pbody);
                     
                     var pBild = WATO.qs("#zoom img", pbody),
                         pHeadline = WATO.qs("h1.pds-cockpit__productName", pbody),
@@ -76,16 +137,26 @@
                         sTheLook = "",
                         sHeadline = "",
                         aCompleteTheLook = WATO.qsa(".pds-completeTheLookWrapper .productitem", pbody),
-                        sEndpreis = String(parseFloat(pEinzelpreis.value) * iMenge).replace(".",",");
+                        sEndpreis = String((parseFloat(pEinzelpreis.value) * iMenge).toFixed(2)).replace(".",","),
+                        isCompleteTheLookVorhanden = aCompleteTheLook.length !== 0;
 
-                    if(aCompleteTheLook.length !== 0){
+                    if(isCompleteTheLookVorhanden){
                         // Wenn es "Complete the Look" gibt
 
                         sHeadline = "Zum kompletten Outfit";
 
                         for (var i = 0; i < aCompleteTheLook.length; i++) {
-                            sTheLook += '<div class="carousel-cell">'+aCompleteTheLook[i].innerHTML+"</div>";
+
+                            var sProduktID = aCompleteTheLook[i].getAttribute("data-productid");
+
+                            if(sProduktID.length > 0){
+                                sTheLook += '<div class="carousel-cell" data-prid="'+sProduktID.substr(0, 5)+'">'+aCompleteTheLook[i].innerHTML+"</div>";
+                            }
                         }
+
+                        // GOAL WKLayer Complete the Look vorhanden
+                        goalPush('wkLayerCTL');
+
                     }else{
                         // Wenn es KEIN "Complete the Look" gibt, wird Crossselling genutzt
 
@@ -96,8 +167,35 @@
                             sTheLook += '<div class="carousel-cell">'+pCrossselling[j].innerHTML+"</div>";
                         }
                     }
-                    
-                    
+
+                    // GOAL
+                    var localSt = window.localStorage.getItem('wa_geklickteProdukte');
+                    if(localSt){
+                        var alteEintraege = localSt.split(","),
+                            produktID = WATO.qs('input[name="ff_id"]', pbody).value;
+                            console.log('produktID: ', produktID);
+                            console.log('alteEintraege: ', alteEintraege);
+                        
+                            // produktID.substr(0,5)
+                            // console.log('produktID.substr(0,5): ', produktID.substr(0,5));
+                            // produktID.substr(6,7)
+                            // console.log(' produktID.substr(6,7): ',  produktID.substr(6,7));
+
+                        for (var i = 0; i < alteEintraege.length; i++) {
+                            if(alteEintraege[i].indexOf(produktID) !== -1){ //.includes(produktID.substr(0,5))
+                                console.log("csProduktAddToCart");
+                                // CS-Produkt addToCart
+                                goalPush('csProduktAddToCart');
+                            }else{
+                                console.log("clProduktAddToCart");
+                                // CtL-Produkt addToCart
+                                goalPush('clProduktAddToCart');
+                            }
+                        }
+
+                        
+                    }
+
 
                     pbody.insertAdjacentHTML("beforeend", 
                         '<div class="reveal-overlay wa_overlay" style="display: block;">'+
@@ -159,9 +257,50 @@
                             '</div>'+
                         '</div>');
 
-                    var pOverlay = WATO.qs(".wa_overlay", pbody);
+                    // function closest(el, predicate) {
+                    //     return predicate(el) ? el : (
+                    //         el && closest(el.parentNode, predicate)
+                    //     );
+                    // }
 
-                    console.log('pOverlay: ', pOverlay);
+                    var pNeueProdukte = WATO.qsa(".carousel-cell a", pbody);
+
+                    for (var i = 0; i < pNeueProdukte.length; i++) {
+                        pNeueProdukte[i].addEventListener("click", function(event) {
+                            event.preventDefault();
+
+                            if(isCompleteTheLookVorhanden){
+                                // GOAL WKLayer Complete the Look Produkt klick
+                                goalPush('wkLayerCTLklick');
+                            }else{
+                                // GOAL WKLayer Crossselling Produkt klick
+                                goalPush('wkLayerCSklick');
+                            }
+
+                            var pParentLink = event.target.closest(".carousel-cell"),
+                                sKuerzel = isCompleteTheLookVorhanden ? "cl" : "cs", // cs steht für Crossselling und cl für Complete the Look
+                                sUrlZumProdukt = WATO.qs("a", pParentLink).getAttribute("href")
+
+                            if(pParentLink){
+
+                                setGeklickteProdute(pParentLink.getAttribute("data-prid") + sKuerzel , function(){
+                                    // Danach wird der User zum Produkt weitergeleitet
+                                    neuenTabOeffnen(sUrlZumProdukt);
+                                });
+
+                            }else{
+                                // direkt weiterleiten
+                                // window.location.href = WATO.qs("a", pParentLink).getAttribute("href");
+                                neuenTabOeffnen(sUrlZumProdukt);
+                            }
+    
+                            return false;
+                        });
+                    }
+                    
+                    
+
+                    var pOverlay = WATO.qs(".wa_overlay", pbody);
 
                     pOverlay.addEventListener("click", function(event) {
                         var aKlickElementKlassen = event.target.classList;
@@ -190,31 +329,19 @@
                     });
 
                 } catch (error) {
+                    goalPush('error_sprint2');
                     console.log(error);
                 }
 
-                
+                // WKLayer Complete the Look vorhanden
+                // WKLayer Complete the Look Produkt klick
+                // WKLayer Crossselling Produkt klick
+                // CTL-Produkt addToCart
+                // CS-Produkt addToCart
 
             }
         });
     }
-
-    function miniBasketClose(){
-        // Minibasket nicht anzeigen
-        WATO.elem('#miniCartDropdown', function(pMiniCartDropdown){
-            if(pMiniCartDropdown){
-                addClass(pMiniCartDropdown[0], "wa_nichtanzeigen");
-
-                setTimeout(function(){
-                    removeClass(pMiniCartDropdown[0], "wa_nichtanzeigen");
-                }, 6000);
-            }
-        });
-    }
-    
-    //imagePath = "https://dev.web-arts.de/hessnatur/2018/Sprint1-BedenkenlosEinkaufen/img/",
-    // var imagePath = "https://s3-eu-west-1.amazonaws.com/webarts/Hessnatur/2018/Sprint1/",
-    //     uri = window.document.location.pathname;
     
     try {
 
@@ -264,20 +391,24 @@
         // });
 
 
-        if(!localStorage.getItem('wa_inSprint2')){
-            localStorage.setItem('wa_inSprint2', 'true');
-            layerEinbauen();
-        }
+        // if(!localStorage.getItem('wa_inSprint2')){
+        //     localStorage.setItem('wa_inSprint2', 'true');
+        // layerEinbauen();
+        // }
 
-        WATO.ajax('https://www.hessnatur.com/de/cart/add', function(){
-            miniBasketClose();
-            layerEinbauen();
-        });
+        layerEinbauen();
+
+        // WATO.ajax('https://www.hessnatur.com/de/cart/add', function(){
+        // console.log("ajax");
+        //     // miniBasketClose();
+        //     layerEinbauen();
+        // });
 
 
         // WATO.globalGoals(1);
         
     } catch (error) {
+        goalPush('error_sprint2');
         console.log(error);
     }
 
