@@ -12738,6 +12738,8 @@ ACC.autoSuggest = {
                 success: function(e, n, a) {
                     if (!s || !i || !o) return void console.log("Cannot locate component to replace HTML. componentUid = " + s + ", components: " + i.length + ", component = " + o);
                     t = s;
+                    console.log(n);
+                    console.log(a);
                     var r = $(".js-completeTheLookWrapper"),
                         l = $(".js-product-references-wrapper"),
                         c = '[data-componentid="' + t + '"]',

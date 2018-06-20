@@ -87,6 +87,7 @@
     
     function setGeklickteProdute(produktID, callback){
         console.log('produktID: ', produktID);
+
         var localSt = window.localStorage.getItem('wa_geklickteProdukte');
         if(localSt){
             // Update
@@ -110,6 +111,10 @@
         callback();
     }
 
+    function floatToPrice(floatzahl){
+        return String((floatzahl).toFixed(2)).replace(".",",").toLocaleString('de-DE');
+    }
+
 
     function layerEinbauen(){
 
@@ -126,7 +131,7 @@
                     removeItem(".wa_overlay");
                     
                     pbody = pbody[0];
-                    console.log('pbody: ', pbody);
+                    // console.log('pbody: ', pbody);
                     
                     var pBild = WATO.qs("#zoom img", pbody),
                         pHeadline = WATO.qs("h1.pds-cockpit__productName", pbody),
@@ -137,8 +142,20 @@
                         sTheLook = "",
                         sHeadline = "",
                         aCompleteTheLook = WATO.qsa(".pds-completeTheLookWrapper .productitem", pbody),
-                        sEndpreis = String((parseFloat(pEinzelpreis.value) * iMenge).toFixed(2)).replace(".",","),
-                        isCompleteTheLookVorhanden = aCompleteTheLook.length !== 0;
+                        sEndpreis = "€ "+ floatToPrice(parseFloat(pEinzelpreis.value) * iMenge),
+                        isCompleteTheLookVorhanden = aCompleteTheLook.length !== 0,
+                        pStreichpreis = WATO.qsa(".js-price-container .strikeValue span", pbody);
+                    
+                    // wenn Streichpreis Anpassung des Preises
+                    if(pStreichpreis.length > 0){
+                        var floatStreichpreis = parseFloat(pStreichpreis[0].textContent.replace(",",".").replace("€",""));                        
+                        sEndpreis = '<span class="price full">€ '+floatToPrice((parseFloat(floatStreichpreis) * iMenge))+' </span> '+
+                                    '<span class="price special">'+sEndpreis+'</span>';
+                    }
+
+                    // Größe als Text der Auswahl übergeben nicht nur das Value des Dropdowns
+                    pGroesse = WATO.qs('#desc__size option[value="'+pGroesse.value+'"]', pbody);
+                    
 
                     if(isCompleteTheLookVorhanden){
                         // Wenn es "Complete the Look" gibt
@@ -163,8 +180,12 @@
                         sHeadline = "Andere Kunden kauften auch:";
 
                         var pCrossselling = WATO.qsa(".flickity-productslider .productitem", pbody);
+
                         for (var j = 0; j < pCrossselling.length; j++) {
-                            sTheLook += '<div class="carousel-cell">'+pCrossselling[j].innerHTML+"</div>";
+
+                            var sProduktID = pCrossselling[j].getAttribute("data-productid");
+
+                            sTheLook += '<div class="carousel-cell" data-prid="'+sProduktID.substr(0, 5)+'">'+pCrossselling[j].innerHTML+"</div>";
                         }
                     }
 
@@ -173,29 +194,26 @@
                     if(localSt){
                         var alteEintraege = localSt.split(","),
                             produktID = WATO.qs('input[name="ff_id"]', pbody).value;
-                            console.log('produktID: ', produktID);
-                            console.log('alteEintraege: ', alteEintraege);
+                            // console.log('produktID: ', produktID);
+                            // console.log('alteEintraege: ', alteEintraege);
                         
                             // produktID.substr(0,5)
                             // console.log('produktID.substr(0,5): ', produktID.substr(0,5));
                             // produktID.substr(6,7)
                             // console.log(' produktID.substr(6,7): ',  produktID.substr(6,7));
 
-                        for (var i = 0; i < alteEintraege.length; i++) {
-                            if(alteEintraege[i].indexOf(produktID) !== -1){ //.includes(produktID.substr(0,5))
-                                console.log("csProduktAddToCart");
+                        for (var k = 0; k < alteEintraege.length; k++) {
+                            if(alteEintraege[k].indexOf(produktID) !== -1){ //.includes(produktID.substr(0,5))
+                                // console.log("csProduktAddToCart");
                                 // CS-Produkt addToCart
                                 goalPush('csProduktAddToCart');
                             }else{
-                                console.log("clProduktAddToCart");
+                                // console.log("clProduktAddToCart");
                                 // CtL-Produkt addToCart
                                 goalPush('clProduktAddToCart');
                             }
                         }
-
-                        
                     }
-
 
                     pbody.insertAdjacentHTML("beforeend", 
                         '<div class="reveal-overlay wa_overlay" style="display: block;">'+
@@ -212,9 +230,9 @@
                                             '<img src="'+pBild.getAttribute("src")+'">'+
                                             '<div class="wa_produkttitle">'+pHeadline.textContent+'</div>'+
                                             '<div class="wa_attr"><b>FARBE:</b> '+pFarbe.textContent+'</div>'+
-                                            '<div class="wa_attr"><b>GRÖßE:</b> '+pGroesse.value+'</div>'+
+                                            '<div class="wa_attr"><b>GRÖßE:</b> '+pGroesse.textContent+'</div>'+
                                             '<div class="wa_attr"><b>MENGE:</b> '+iMenge+'</div>'+
-                                            '<div class="wa_price">€ '+sEndpreis+'</div>'+
+                                            '<div class="wa_price item__desc">'+sEndpreis+'</div>'+
                                         '</div>'+
                                         '<div class="column small-9">'+
                                             '<div class="wa_headline">'+sHeadline+'</div>'+
@@ -265,8 +283,8 @@
 
                     var pNeueProdukte = WATO.qsa(".carousel-cell a", pbody);
 
-                    for (var i = 0; i < pNeueProdukte.length; i++) {
-                        pNeueProdukte[i].addEventListener("click", function(event) {
+                    for (var l = 0; l < pNeueProdukte.length; l++) {
+                        pNeueProdukte[l].addEventListener("click", function(event) {
                             event.preventDefault();
 
                             if(isCompleteTheLookVorhanden){
@@ -277,9 +295,13 @@
                                 goalPush('wkLayerCSklick');
                             }
 
+                            // console.log('event.target: ', event.target);
+
                             var pParentLink = event.target.closest(".carousel-cell"),
                                 sKuerzel = isCompleteTheLookVorhanden ? "cl" : "cs", // cs steht für Crossselling und cl für Complete the Look
-                                sUrlZumProdukt = WATO.qs("a", pParentLink).getAttribute("href")
+                                sUrlZumProdukt = WATO.qs("a", pParentLink).getAttribute("href");
+
+                            // console.log('pParentLink: ', pParentLink);
 
                             if(pParentLink){
 
@@ -302,15 +324,21 @@
 
                     var pOverlay = WATO.qs(".wa_overlay", pbody);
 
+                    // Layer schließen
                     pOverlay.addEventListener("click", function(event) {
-                        var aKlickElementKlassen = event.target.classList;
+                        var aKlickElementKlassen = event.target.classList,
+                            aParent = event.target.parentNode.classList;
+
                         if(aKlickElementKlassen.contains("wa_overlay") || 
                             aKlickElementKlassen.contains("close-button") || 
-                            aKlickElementKlassen.contains("wa_weiter")){
+                            aParent.contains("close-button") || 
+                            aKlickElementKlassen.contains("wa_weiter") || 
+                            aParent.contains("wa_weiter")){
                             pOverlay.style.display = "none";
                         }
                     });
 
+                    // Galerie initialisieren
                     isJqueryReady(function(){
                         jQuery('.main-carousel').flickity({
                             // options
