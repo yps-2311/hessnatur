@@ -12,13 +12,12 @@
     "use strict";
 
     // INIT MUTATION OBSERVER
-    WATO.initObserver(function(error){
-
-        console.log(error);
-    });
+    // WATO.initObserver(function(error){
+    //     console.log(error);
+    // });
 
     // FIND ELEMENT
-    WATO.observer('.smoBoxContainer', function(smoBoxContainer){
+    WATO.elem('.smoBoxContainer', function(smoBoxContainer){
 
         function addListener(object, listener, callback) {
 
@@ -48,129 +47,362 @@
             
             jQuery('#wa-badge').animate({
                 left: badge,
-            }, 1000);
+            }, 750);
 
             jQuery("#wa-survey").animate({
                 right: survey,
-            }, 1000, function() {
+            }, 750, function() {
 
                 callback();
             });
         }
 
-        function showLayer() {
+        function showLayer(content) {
+
+            content = parseInt(content);
+
+            setStorage('finished');
+
+            var html    = '',
+                segment = false;
+
+
+            if(content === 0){
+                
+                segment = 32774;
+            } else if(content === 1) {
+
+                segment = 32775;
+            } else if(content === 2) {
+
+                segment = 32776;
+
+                // redirect to content
+                content = 1;
+            }
 
             manageClass($waSurvey, 'hide');
             manageClass($waLayerBG, 'show');
-            manageClass($waLayer, 'show');
+            manageClass($waLayer, 'fade-in');
+
+            for(var i = 0; i < 3; i++){
+    
+                html += '<div class="wa-uvp wa-animated wa-icon-' + uvps[content][i][0] + '">' + 
+                    '<h3>' + uvps[content][i][1] + '</h3>' +
+                    '<p>' + uvps[content][i][2] + '</p>' +
+                '</div>';
+            }
+
+            $waLayerUVPs.innerHTML = html;
+
+            if(segment){
+                
+                window.iridion.push(['segment', segment]);
+            }
+
+            window.setTimeout(function(){
+
+                manageClass(WATO.qs('.wa-uvp:nth-child(1)'), 'fade-in');
+
+                window.setTimeout(function(){
+
+                    manageClass(WATO.qs('.wa-uvp:nth-child(2)'), 'fade-in');
+
+                    window.setTimeout(function(){
+                    
+                        manageClass(WATO.qs('.wa-uvp:nth-child(3)'), 'fade-in');
+                    }, 500);
+                }, 500);
+            }, 500);
         }
 
         function hideLayer() {
 
             manageClass($waLayerBG, 'show', true);
-            manageClass($waLayer, 'show', true);
+            manageClass($waLayerBG, 'fade-out');
+            manageClass($waLayer, 'fade-in', true);
+            manageClass($waLayer, 'fade-out');
         }
 
-        smoBoxContainer[0].insertAdjacentHTML('afterend', 
-            '<div id="wa-survey" class="wa-small wa-first">' + 
-                '<div id="wa-pulse" class="wa-animated">1</div>' +
-                '<div id="wa-badge" class="wa-animated"></div>' +
-                '<div id="wa-wrapper">' + 
-                    '<h1>Hier</h1>' +
-                    '<button type="button">klick</button>' +
+        function preload(images) {
+
+            var temp = [];
+
+            for (i = 0; i < images.length; i++) {
+
+                temp[i] = new Image();
+                temp[i].src = path + images[i] + '.png';
+            }
+        }
+
+        function getStorage() {
+
+            return window.localStorage.getItem('wa-survey');
+        }
+
+        function setStorage(value) {
+
+            if(getStorage() !== 'finished'){
+
+                window.localStorage.setItem('wa-survey', value);
+            }
+        }
+
+
+        /**
+         * START - ONLY FOR QS - START
+         */
+        smoBoxContainer[0].insertAdjacentHTML('afterend', '<div id="wa-reset" style="cursor:pointer;text-align:center;line-height:25px;font-weight:bold;position:fixed;top:15px;left:15px;padding:0 15px;height:25px;background:red;color:#fff;z-index:99999999;">QS: Reset Layer</div>');
+
+        WATO.qs('#wa-reset').addEventListener('click', function(){
+
+            window.localStorage.removeItem('wa-survey');
+            
+            alert("Storage wurde zurückgesetzt. Reload.");
+
+            window.location.href = window.location.href;
+            window.location.reload();
+        });
+        /**
+         * END - ONLY FOR QS - END
+         */
+
+
+
+        if(getStorage() !== 'finished'){
+
+            smoBoxContainer[0].insertAdjacentHTML('afterend', 
+                '<div id="wa-survey" class="wa-small wa-first">' + 
+                    (getStorage() === 'true' ? '<div id="wa-pulse" class="wa-animated">1</div>' : '') +
+                    '<div id="wa-badge" class="wa-animated"></div>' +
+                    '<div id="wa-arrow"></div>' +
+                    '<div id="wa-wrapper">' + 
+                        '<div class="wa-show">' + 
+                            '<h3>Wie wichtig ist Ihnen<br/>Nachhaltigkeit in der Mode?</h3>' +
+                            '<label>' + 
+                                '<span>weniger wichtig</span>' +
+                                '<input type="radio" name="wa-question" value="0">' +
+                                '<input type="radio" name="wa-question" value="0">' +
+                                '<input type="radio" name="wa-question" value="1">' +
+                                '<input type="radio" name="wa-question" value="1">' +
+                                '<span>sehr wichtig</span>' +
+                            '</label>' +
+                            '<div id="wa-link">' +
+                                '<a href="javascript:void(0);">Ich weiß nicht, was Nachhaltigkeit<br/>in der Mode bedeutet</a>' +
+                            '</div>' +
+                            '<button data-target="next" type="button">Antwort absenden</button>' +
+                        '</div>' +
+                        // '<div class="wa-hide">' + 
+                        //     '<h3>Ist Ihnen Nachhaltigkeit<br/>in der Mode wichtig?</h3>' +
+                        //     '<button data-target="yes" type="button">Ja</button>' +
+                        //     '<button data-target="no" type="button">Nein</button>' +
+                        //     '<a href="javascript:void(0);">Ich weiß nicht, was Nachhaltigkeit<br/>in der Mode bedeutet</a>' +
+                        // '</div>' +
+                    '</div>' +
                 '</div>' +
-            '</div>' +
-            '<div id="wa-layer-bg"></div>' +
-            '<div id="wa-layer">' + 
-                '<div id="wa-layer-close">X</div>' +
-            '</div>'
-        );
+                '<div id="wa-layer-bg"></div>' +
+                '<div id="wa-layer" class="wa-animated">' + 
+                    '<div id="wa-layer-close"></div>' +
+                    '<div id="wa-uvps"></div>' +
+                '</div>'
+            );
 
-        var $waSurvey         = WATO.qs('#wa-survey'),
-            $waSurveyPulse    = WATO.qs('#wa-pulse', $waSurvey),
-            $waSurveyBadge    = WATO.qs('#wa-badge', $waSurvey),
-            $waSurveyButton   = WATO.qs('#wa-wrapper button', $waSurvey),
-            $waLayerBG        = WATO.qs('#wa-layer-bg'),
-            $waLayer          = WATO.qs('#wa-layer'),
-            $waLayerClose      = WATO.qs('#wa-layer-close');
+            var uvps = [
+                    [
+                        ["1", "Großes Sortiment an<br/>qualitativer Mode", "Viele Produkte aus nachhaltigen<br/>Stoffen wie Bio-Baumwolle –<br/>hochwertig verarbeitet und<br/>in zeitlosem Design."],
+                        ["4", "Kostenlose<br/>Rücksendung", "Sollte Ihnen ein Produkt<br/>einmal nicht gefallen, können<br/>Sie dies jederzeit umtauschen."],
+                        ["5", "Vielfältige<br/>Zahlungsarten", "Bei uns können Sie zwischen<br/>Kauf auf Rechnung, Kreditkarte<br/>oder Paypal wählen."]
+                    ],
+                    [
+                        ["1", "Mode, die Umwelt respektiert<br/>und Ressourcen schont", "Viele Produkte aus nachhaltigen<br/>Stoffen wie Bio-Baumwolle –<br/>hochwertig verarbeitet und in<br/>zeitlosem Design."],
+                        ["2", "Klimaneutraler<br/>Versand", "Aus liebe zur Umwelt verschicken<br/>wir Ihre Lieferung klimaneutral<br/>mit DHL GoGreen."],
+                        ["3", "Faire Bedingungen auch<br/>im Produktionsland", "Wir sind Vorreiter für<br/>Verbesserung der sozialen<br/>Standards in der textilen<br/>Lieferkette."]
+                    ]
+                ],
+                path              = "https://s3-eu-west-1.amazonaws.com/webarts/Hessnatur/2018/Sprint3/wa-",
+                $waSurvey         = WATO.qs('#wa-survey'),
+                $waSurveyPulse    = WATO.qs('#wa-pulse', $waSurvey),
+                $waSurveyBadge    = WATO.qs('#wa-badge', $waSurvey),
+                $waSurveyButtons  = WATO.qsa('#wa-wrapper button', $waSurvey),
+                $waLayerBG        = WATO.qs('#wa-layer-bg'),
+                $waLayer          = WATO.qs('#wa-layer'),
+                $waLayerClose     = WATO.qs('#wa-layer-close', $waLayer),
+                $waLayerUVPs      = WATO.qs('#wa-uvps', $waLayer);
 
-        // set pulse animation after 1500ms
-        window.setTimeout(function(){
+            if($waSurveyPulse){
 
-            manageClass($waSurveyPulse, 'pulse');
-        }, 1500);
+                // set pulse animation after 1500ms
+                window.setTimeout(function(){
 
-        /**
-         * SURVERY EVENTS
-         */
-        // survery mouseover
-        // addListener($waSurvey, 'mouseover', function(){
+                    manageClass($waSurveyPulse, 'pulse');
+                }, 1500);
+            }
 
-        //     // remove class wa-first, hide wa-pulse element
-        //     manageClass($waSurvey, 'first', true);
+            /**
+             * SURVERY EVENTS
+             */
+            // survery mouseover
+            addListener($waSurvey, 'mouseover', function(){
 
-        //     // if(this.classList.contains('wa-small')){
-        //     if(classContains(this, 'small')){
+                // if(this.classList.contains('wa-small')){
+                if(classContains(this, 'small')){
 
-        //         manageClass($waSurveyBadge, 'fade-out', true);
-        //         manageClass($waSurveyBadge, 'fade-in');
-        //     }
-        // });
+                    manageClass($waSurveyBadge, 'fade-out', true);
+                    manageClass($waSurveyBadge, 'fade-in');
+                }
+            });
 
-        // // survery mouseout
-        // addListener($waSurvey, 'mouseout', function(){
+            // survery mouseout
+            addListener($waSurvey, 'mouseout', function(){
 
-        //     // if(this.classList.contains('wa-small')){
-        //     if(classContains(this, 'small')){
+                if(classContains($waSurvey, 'small')){
 
-        //         manageClass($waSurveyBadge, 'fade-in', true);
-        //         manageClass($waSurveyBadge, 'fade-out');
-        //     // } else if(this.classList.contains('wa-large')){
-        //     } else if(classContains(this, 'large')){
+                    manageClass($waSurveyBadge, 'fade-in', true);
+                    manageClass($waSurveyBadge, 'fade-out');
+                }
+            });
 
-        //         animate("-105", "-519", function() {
-    
-        //             manageClass($waSurvey, 'large', true);
-        //             manageClass($waSurvey, 'small');
-        //             manageClass($waSurveyBadge, 'fade-out');
-        //         });
-        //     }
-        // });
+            // document click
+            addListener(document, 'click', function(event){
 
-        // addListener($waSurvey, 'click', function(){
+                if($waSurvey.classList.contains('wa-large')){
 
-        //     manageClass($waSurvey, 'animate');
+                    if(event.target.id !== "wa-arrow"){
 
-        //     animate("57", "0", function() {
-    
-        //         manageClass($waSurvey, 'small', true);
-        //         manageClass($waSurvey, 'animate', true);
-        //         manageClass($waSurvey, 'large');
-        //     });
-        // });
+                        var mouseStillOverSurvey = false;
 
-        /**
-         * LAYER EVENTS
-         */
-        // window.onscroll = function(){
-        //     var top  = window.pageYOffset || document.documentElement.scrollTop
-        // };
+                        for(var i = 0; i < event.path.length; i++){ 
 
-        addListener($waSurveyButton, 'click', function(){
+                            if(event.path[i].id === 'wa-survey'){
 
-            showLayer();
-        });
+                                mouseStillOverSurvey = true;
+                                break;
+                            }
+                        }
 
-        addListener($waLayerBG, 'click', function(){
+                        if(mouseStillOverSurvey){
 
-            hideLayer();
-        });
+                            return false;
+                        }
+                    }
 
-        addListener($waLayerClose, 'click', function(){
+                    // if(this.classList.contains('wa-small')){
+                    if(classContains($waSurvey, 'small')){
 
-            hideLayer();
-        });
+                        manageClass($waSurveyBadge, 'fade-in', true);
+                        manageClass($waSurveyBadge, 'fade-out');
+                    // } else if(this.classList.contains('wa-large')){
+                    } else if(classContains($waSurvey, 'large')){
 
+                        animate("-41", "-564", function() {
+            
+                            manageClass($waSurvey, 'large', true);
+                            manageClass($waSurvey, 'small');
+                            manageClass($waSurveyBadge, 'fade-out');
+                        });
+                    }
+                }
+            });
+
+            addListener($waSurvey, 'click', function(){
+
+                setStorage(false);
+
+                // remove class wa-first, hide wa-pulse element
+                manageClass($waSurvey, 'first', true);
+                manageClass($waSurvey, 'animate');
+
+                animate("102", "0", function() {
+        
+                    manageClass($waSurvey, 'small', true);
+                    manageClass($waSurvey, 'animate', true);
+                    manageClass($waSurvey, 'large');
+                });
+            });
+
+            /**
+             * LAYER EVENTS
+             */
+            for(var i = 0; i < $waSurveyButtons.length; i++){
+
+                addListener($waSurveyButtons[i], 'click', function(){
+        
+                    var event = this.getAttribute('data-target');
+
+                    // if(event === "next"){
+
+                        var $view       = WATO.qs('#wa-wrapper .wa-show', $waSurvey),
+                            $radios     = WATO.qsa('input[name="wa-question"]'),        // jshint ignore:line
+                            validation  = false;
+                        
+                        /* jshint ignore:start */
+                        for(var i = 0; i < $radios.length; i++){
+                            
+                            if($radios[i].checked){
+                                
+                                showLayer($radios[i].value);
+
+                                validation = true;
+                                break;
+                            }
+                        }
+                        /* jshint ignore:end */
+
+                        if(!validation){
+
+                            manageClass(WATO.qs('#wa-wrapper label', $waSurvey), 'error');
+
+                            return false;
+                        }
+
+                        // manageClass($view, 'show', true);
+                        // manageClass($view, 'hide');
+                        // manageClass($view.nextElementSibling, 'hide', true);
+                        // manageClass($view.nextElementSibling, 'show');
+                    // } else if(event === "yes"){
+
+                    //     showLayer(0);
+                    // } else {
+                        
+                    //     showLayer(1);
+                    // }
+                });
+            }
+
+            // showLayer(1);
+
+            addListener(WATO.qs('#wa-link a', $waSurvey), 'click', function(){
+
+                showLayer(2);
+            });
+
+            addListener($waLayerBG, 'click', function(){
+
+                hideLayer();
+            });
+
+            addListener($waLayerClose, 'click', function(){
+
+                hideLayer();
+            });
+
+            preload([
+                'badge',
+                'layer',
+                'icon-1',
+                'icon-2',
+                'icon-3',
+                'icon-4',
+                'icon-5'
+            ]);
+        } else {
+
+            console.info("Die Umfrage wird nicht länger ausgespielt!");
+        }
+
+        if(getStorage() === null){
+
+            setStorage(true);
+        }
     });
-
 })(new window.WATO());

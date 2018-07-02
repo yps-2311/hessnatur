@@ -43,7 +43,6 @@
      *
      * @return {object} NodeList object - Returns all elements in the document that matches a specified CSS selector(s), as a static NodeList object.
      */
-    /*
     window.WATO.prototype.elem = function(waitFor, callback, timeout, self, time) {
 
         var _self = this || self,
@@ -69,7 +68,6 @@
 
         return _status === true ? callback(_result) : setTimeout(_self.elem.bind(null, waitFor, callback, timeout, _self, _time), timeout || 20);
     };
-    */
 
     /**
      * @function qs
@@ -135,6 +133,7 @@
      *
      * @param {function} errorCallback - Callback-Funktion bei einem Fehler des Mutation Observers
      */
+    /*
     window.WATO.prototype.initObserver = function(errorCallback){
 
         var _self = this;
@@ -200,6 +199,7 @@
             }
         }
     };
+    */
 
     /**
      * @function observer
@@ -210,10 +210,12 @@
      * @param {string} selector - CSS Selector des zu findenden DOM Elements
      * @param {function} callback - Callback-Funktion für gefundenene DOM ELemente
      */
+    /*
     window.WATO.prototype.observer = function(selector, callback){
 
         window.WATOObserver.push([selector, callback]);
     };
+    */
 
     /**
      * @function classlist
@@ -344,7 +346,6 @@
      * @param {number} width -
      * @param {function} callback
      */
-    /*
 	window.WATO.prototype.exclude = function(width, callback){
 		
 		function _checkWidth() {
@@ -371,7 +372,6 @@
 			};
 		}
 	};
-	*/
 
     /**
      * @function storageAvailable
