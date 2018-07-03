@@ -21,10 +21,21 @@
 
         function pushGoal(key) {
 
-            WATO.qs('#wa-goals > li:last-child').insertAdjacentHTML('afterend', '<li style="list-style:none;">goal - ' + 's3_' + key + '</li>');
-            console.log("pushGoal: " + key);
+            if(goalsSend.indexOf(key) === -1){
 
-            window.iridion.push(['goal', 's3_' + key]);
+                goalsSend.push(key);
+
+                /**
+                 * START QS
+                 */
+                WATO.qs('#wa-goals > li:last-child').insertAdjacentHTML('afterend', '<li style="list-style:none;">goal - ' + 's3_' + key + '</li>');
+                console.log("pushGoal: " + key);
+                /**
+                 * END QS
+                 */
+    
+                window.iridion.push(['goal', 's3_' + key]);
+            }
         }
 
         function addListener(object, listener, callback) {
@@ -67,8 +78,6 @@
 
         function showLayer(content) {
 
-            console.log("showLayer: " + content);
-
             content = parseInt(content);
 
             setStorage('finished');
@@ -88,12 +97,9 @@
                 segment = 32776;
 
                 // redirect to content
-                content = 0;
+                content = 1;
                 headlineIndex = 2;
             }
-
-            console.log(headlineIndex);
-            console.log(headlines[headlineIndex]);
 
             manageClass($waSurvey, 'hide');
             manageClass($waLayerBG, 'show');
@@ -114,9 +120,12 @@
 
             if(segment){
                 
+                WATO.qs('#wa-goals > li:last-child').insertAdjacentHTML('afterend', '<li style="list-style:none;">segment - 32777</li>');
                 WATO.qs('#wa-goals > li:last-child').insertAdjacentHTML('afterend', '<li style="list-style:none;">segment - ' + segment + '</li>');
+                console.log("pushSegment: 32777");
                 console.log("pushSegment: " + segment);
 
+                window.iridion.push(['segment', '32777']);
                 window.iridion.push(['segment', segment]);
             }
 
@@ -212,10 +221,10 @@
                             '<p class="wa-hide">Wir würden uns über eine kurze Antwort freuen. Falls sie unsicher sind, klicken Sie<br/>auf den Text unterhalb der Auswahlmöglichkeiten<p>' +
                             '<label>' + 
                                 '<span>weniger wichtig</span>' +
-                                '<input type="radio" name="wa-question" value="0">' +
-                                '<input type="radio" name="wa-question" value="0">' +
                                 '<input type="radio" name="wa-question" value="1">' +
-                                '<input type="radio" name="wa-question" value="1">' +
+                                '<input type="radio" name="wa-question" value="2">' +
+                                '<input type="radio" name="wa-question" value="3">' +
+                                '<input type="radio" name="wa-question" value="4">' +
                                 '<span>sehr wichtig</span>' +
                             '</label>' +
                             '<div id="wa-link">' +
@@ -257,6 +266,7 @@
                     ["Danke für Ihr Feedback!", "Schön, dass Ihnen Nachhaltigkeit auch so wichtig ist wie uns!<br/>Bei uns sind Sie an der richtigen Stelle."],
                     ["Danke für ihr Feedback!", "Unsere hohen Ansprüche an die Nachhaltigkeit setzen<br/>wir folgendermaßen in die Tat um:"],
                 ],
+                goalsSend         = [],
                 path              = "https://s3-eu-west-1.amazonaws.com/webarts/Hessnatur/2018/Sprint3/wa-",
                 $waSurvey         = WATO.qs('#wa-survey'),
                 $waSurveyPulse    = WATO.qs('#wa-pulse', $waSurvey),
@@ -291,6 +301,8 @@
                 // if(this.classList.contains('wa-small')){
                 if(classContains(this, 'small')){
 
+                    pushGoal('layer_hover');
+
                     manageClass($waSurveyBadge, 'fade-out', true);
                     manageClass($waSurveyBadge, 'fade-in');
                 }
@@ -300,6 +312,8 @@
             addListener($waSurvey, 'mouseout', function(){
 
                 if(classContains($waSurvey, 'small')){
+
+                    pushGoal('layer_closed');
 
                     manageClass($waSurveyBadge, 'fade-in', true);
                     manageClass($waSurveyBadge, 'fade-out');
@@ -329,6 +343,8 @@
                             return false;
                         }
                     }
+
+                    pushGoal('layer_closed');
 
                     // if(this.classList.contains('wa-small')){
                     if(classContains($waSurvey, 'small')){
@@ -389,7 +405,25 @@
                         
                         if($radios[i].checked){
                             
-                            showLayer($radios[i].value);
+                            if($radios[i].value === '1'){
+
+                                showLayer(0);
+                                pushGoal('layer_question_1');
+                            } else if($radios[i].value === '2'){
+
+                                showLayer(0);
+                                pushGoal('layer_question_2');
+                            } else if($radios[i].value === '3'){
+
+                                showLayer(1);
+                                pushGoal('layer_question_3');
+                            } else if($radios[i].value === '4'){
+
+                                showLayer(1);
+                                pushGoal('layer_question_4');
+                            }
+
+                            pushGoal('layer_send');
 
                             validation = true;
                             break;
@@ -400,13 +434,9 @@
                     if(!validation){
 
                         pushGoal('layer_send_error');
-
                         manageClass(WATO.qs('#wa-wrapper', $waSurvey), 'error');
-
                         return false;
                     }
-
-                    pushGoal('layer_send');
 
                         // manageClass($view, 'show', true);
                         // manageClass($view, 'hide');
@@ -423,6 +453,17 @@
             }
 
             // showLayer(1);
+
+            var $radios = WATO.qsa('input[name="wa-question"]');        // jshint ignore:line
+            
+            /* jshint ignore:start */
+            for(var i = 0; i < $radios.length; i++){
+
+                addListener($radios[i], 'click', function(){
+    
+                    pushGoal('layer_question');
+                });
+            }
 
             addListener(WATO.qs('#wa-link a', $waSurvey), 'click', function(){
 
