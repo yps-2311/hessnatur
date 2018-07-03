@@ -19,6 +19,14 @@
     // FIND ELEMENT
     WATO.elem('.smoBoxContainer', function(smoBoxContainer){
 
+        function pushGoal(key) {
+
+            WATO.qs('#wa-goals > li:last-child').insertAdjacentHTML('afterend', '<li style="list-style:none;">goal - ' + 's3_' + key + '</li>');
+            console.log("pushGoal: " + key);
+
+            window.iridion.push(['goal', 's3_' + key]);
+        }
+
         function addListener(object, listener, callback) {
 
             object.addEventListener(listener, callback);
@@ -59,13 +67,15 @@
 
         function showLayer(content) {
 
+            console.log("showLayer: " + content);
+
             content = parseInt(content);
 
             setStorage('finished');
 
-            var html    = '',
-                segment = false;
-
+            var html            = '',
+                headlineIndex   = content,
+                segment         = false;
 
             if(content === 0){
                 
@@ -78,12 +88,19 @@
                 segment = 32776;
 
                 // redirect to content
-                content = 1;
+                content = 0;
+                headlineIndex = 2;
             }
+
+            console.log(headlineIndex);
+            console.log(headlines[headlineIndex]);
 
             manageClass($waSurvey, 'hide');
             manageClass($waLayerBG, 'show');
             manageClass($waLayer, 'fade-in');
+
+            WATO.qs('h3', $waLayer).innerHTML = headlines[headlineIndex][0];
+            WATO.qs('p', $waLayer).innerHTML = headlines[headlineIndex][1];
 
             for(var i = 0; i < 3; i++){
     
@@ -97,6 +114,9 @@
 
             if(segment){
                 
+                WATO.qs('#wa-goals > li:last-child').insertAdjacentHTML('afterend', '<li style="list-style:none;">segment - ' + segment + '</li>');
+                console.log("pushSegment: " + segment);
+
                 window.iridion.push(['segment', segment]);
             }
 
@@ -110,6 +130,8 @@
 
                     window.setTimeout(function(){
                     
+                        pushGoal('uvps_open');
+
                         manageClass(WATO.qs('.wa-uvp:nth-child(3)'), 'fade-in');
                     }, 500);
                 }, 500);
@@ -117,6 +139,8 @@
         }
 
         function hideLayer() {
+
+            pushGoal('uvps_closed');
 
             manageClass($waLayerBG, 'show', true);
             manageClass($waLayerBG, 'fade-out');
@@ -152,7 +176,13 @@
         /**
          * START - ONLY FOR QS - START
          */
-        smoBoxContainer[0].insertAdjacentHTML('afterend', '<div id="wa-reset" style="cursor:pointer;text-align:center;line-height:25px;font-weight:bold;position:fixed;top:15px;left:15px;padding:0 15px;height:25px;background:red;color:#fff;z-index:99999999;">QS: Reset Layer</div>');
+        smoBoxContainer[0].insertAdjacentHTML('afterend', 
+            '<div id="wa-qs" style="border:1px solid black;padding:15px;position:fixed;top:15px;left:15px;z-index:99999999;background:#fff;">' +
+                '<div id="wa-reset" style="cursor:pointer;text-align:center;line-height:25px;font-weight:bold;padding:0 15px;height:25px;background:red;color:#fff;">QS: Reset Layer</div>' +
+                '<hr/>' +
+                '<ul id="wa-goals" style="margin:0;"><li style="font-weight:bold;list-style:none;">Goals</li></ul>' +
+            '</div>'
+        );
 
         WATO.qs('#wa-reset').addEventListener('click', function(){
 
@@ -179,6 +209,7 @@
                     '<div id="wa-wrapper">' + 
                         '<div class="wa-show">' + 
                             '<h3>Wie wichtig ist Ihnen<br/>Nachhaltigkeit in der Mode?</h3>' +
+                            '<p class="wa-hide">Wir würden uns über eine kurze Antwort freuen. Falls sie unsicher sind, klicken Sie<br/>auf den Text unterhalb der Auswahlmöglichkeiten<p>' +
                             '<label>' + 
                                 '<span>weniger wichtig</span>' +
                                 '<input type="radio" name="wa-question" value="0">' +
@@ -203,6 +234,8 @@
                 '<div id="wa-layer-bg"></div>' +
                 '<div id="wa-layer" class="wa-animated">' + 
                     '<div id="wa-layer-close"></div>' +
+                    '<h3></h3>' +
+                    '<p></p>' +
                     '<div id="wa-uvps"></div>' +
                 '</div>'
             );
@@ -219,6 +252,11 @@
                         ["3", "Faire Bedingungen auch<br/>im Produktionsland", "Wir sind Vorreiter für<br/>Verbesserung der sozialen<br/>Standards in der textilen<br/>Lieferkette."]
                     ]
                 ],
+                headlines = [
+                    ["Danke für Ihr Feedback!", "Unabhängig von der Nachhaltigkeit können Sie sich<br/>bei uns auch auf folgende Services freuen:"],
+                    ["Danke für Ihr Feedback!", "Schön, dass Ihnen Nachhaltigkeit auch so wichtig ist wie uns!<br/>Bei uns sind Sie an der richtigen Stelle."],
+                    ["Danke für ihr Feedback!", "Unsere hohen Ansprüche an die Nachhaltigkeit setzen<br/>wir folgendermaßen in die Tat um:"],
+                ],
                 path              = "https://s3-eu-west-1.amazonaws.com/webarts/Hessnatur/2018/Sprint3/wa-",
                 $waSurvey         = WATO.qs('#wa-survey'),
                 $waSurveyPulse    = WATO.qs('#wa-pulse', $waSurvey),
@@ -233,8 +271,14 @@
 
                 // set pulse animation after 1500ms
                 window.setTimeout(function(){
-
-                    manageClass($waSurveyPulse, 'pulse');
+                    
+                    manageClass($waSurveyPulse, 'fade-in');
+                    
+                    window.setTimeout(function(){
+                        
+                        manageClass($waSurveyPulse, 'fade-in', true);
+                        manageClass($waSurveyPulse, 'pulse');
+                    }, 1500);
                 }, 1500);
             }
 
@@ -306,18 +350,23 @@
 
             addListener($waSurvey, 'click', function(){
 
-                setStorage(false);
+                if(!$waSurvey.classList.contains('wa-large')){
 
-                // remove class wa-first, hide wa-pulse element
-                manageClass($waSurvey, 'first', true);
-                manageClass($waSurvey, 'animate');
-
-                animate("102", "0", function() {
-        
-                    manageClass($waSurvey, 'small', true);
-                    manageClass($waSurvey, 'animate', true);
-                    manageClass($waSurvey, 'large');
-                });
+                    setStorage(false);
+    
+                    // remove class wa-first, hide wa-pulse element
+                    manageClass($waSurvey, 'first', true);
+                    // manageClass($waSurvey, 'animate');
+    
+                    animate("102", "0", function() {
+            
+                        pushGoal("layer_open");
+    
+                        manageClass($waSurvey, 'small', true);
+                        // manageClass($waSurvey, 'animate', true);
+                        manageClass($waSurvey, 'large');
+                    });
+                }
             });
 
             /**
@@ -327,33 +376,37 @@
 
                 addListener($waSurveyButtons[i], 'click', function(){
         
-                    var event = this.getAttribute('data-target');
+                    // var event = this.getAttribute('data-target');
 
                     // if(event === "next"){
 
-                        var $view       = WATO.qs('#wa-wrapper .wa-show', $waSurvey),
-                            $radios     = WATO.qsa('input[name="wa-question"]'),        // jshint ignore:line
-                            validation  = false;
+                    // var $view       = WATO.qs('#wa-wrapper .wa-show', $waSurvey),
+                    var $radios     = WATO.qsa('input[name="wa-question"]'),        // jshint ignore:line
+                        validation  = false;
+                    
+                    /* jshint ignore:start */
+                    for(var i = 0; i < $radios.length; i++){
                         
-                        /* jshint ignore:start */
-                        for(var i = 0; i < $radios.length; i++){
+                        if($radios[i].checked){
                             
-                            if($radios[i].checked){
-                                
-                                showLayer($radios[i].value);
+                            showLayer($radios[i].value);
 
-                                validation = true;
-                                break;
-                            }
+                            validation = true;
+                            break;
                         }
-                        /* jshint ignore:end */
+                    }
+                    /* jshint ignore:end */
 
-                        if(!validation){
+                    if(!validation){
 
-                            manageClass(WATO.qs('#wa-wrapper label', $waSurvey), 'error');
+                        pushGoal('layer_send_error');
 
-                            return false;
-                        }
+                        manageClass(WATO.qs('#wa-wrapper', $waSurvey), 'error');
+
+                        return false;
+                    }
+
+                    pushGoal('layer_send');
 
                         // manageClass($view, 'show', true);
                         // manageClass($view, 'hide');
