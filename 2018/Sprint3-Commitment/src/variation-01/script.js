@@ -256,15 +256,15 @@
                         ["5", "Vielfältige<br/>Zahlungsarten", "Bei uns können Sie zwischen<br/>Kauf auf Rechnung, Kreditkarte<br/>oder Paypal wählen."]
                     ],
                     [
-                        ["1", "Mode, die Umwelt respektiert<br/>und Ressourcen schont", "Viele Produkte aus nachhaltigen<br/>Stoffen wie Bio-Baumwolle –<br/>hochwertig verarbeitet und in<br/>zeitlosem Design."],
-                        ["2", "Klimaneutraler<br/>Versand", "Aus liebe zur Umwelt verschicken<br/>wir Ihre Lieferung klimaneutral<br/>mit DHL GoGreen."],
+                        ["1", "Mode, die die Umwelt respektiert<br/>und Ressourcen schont", "Viele Produkte aus nachhaltigen<br/>Stoffen wie Bio-Baumwolle –<br/>hochwertig verarbeitet und in<br/>zeitlosem Design."],
+                        ["2", "Klimaneutraler<br/>Versand", "Aus Liebe zur Umwelt verschicken<br/>wir Ihre Lieferung klimaneutral<br/>mit DHL GoGreen."],
                         ["3", "Faire Bedingungen auch<br/>im Produktionsland", "Wir sind Vorreiter für<br/>Verbesserung der sozialen<br/>Standards in der textilen<br/>Lieferkette."]
                     ]
                 ],
                 headlines = [
                     ["Danke für Ihr Feedback!", "Unabhängig von der Nachhaltigkeit können Sie sich<br/>bei uns auch auf folgende Services freuen:"],
                     ["Danke für Ihr Feedback!", "Schön, dass Ihnen Nachhaltigkeit auch so wichtig ist wie uns!<br/>Bei uns sind Sie an der richtigen Stelle."],
-                    ["Danke für ihr Feedback!", "Unsere hohen Ansprüche an die Nachhaltigkeit setzen<br/>wir folgendermaßen in die Tat um:"],
+                    ["Danke für Ihr Feedback!", "Unsere hohen Ansprüche an die Nachhaltigkeit setzen<br/>wir folgendermaßen in die Tat um:"],
                 ],
                 goalsSend         = [],
                 path              = "https://s3-eu-west-1.amazonaws.com/webarts/Hessnatur/2018/Sprint3/wa-",
@@ -305,6 +305,13 @@
 
                     manageClass($waSurveyBadge, 'fade-out', true);
                     manageClass($waSurveyBadge, 'fade-in');
+                } else {
+
+                    if(!classContains($waSurveyBadge, 'fade-in')){
+
+                        manageClass($waSurveyBadge, 'fade-out', true);
+                        manageClass($waSurveyBadge, 'fade-in');
+                    }
                 }
             });
 
@@ -354,7 +361,7 @@
                     // } else if(this.classList.contains('wa-large')){
                     } else if(classContains($waSurvey, 'large')){
 
-                        animate("-41", "-564", function() {
+                        animate("-105", "-564", function() {
             
                             manageClass($waSurvey, 'large', true);
                             manageClass($waSurvey, 'small');
@@ -374,7 +381,7 @@
                     manageClass($waSurvey, 'first', true);
                     // manageClass($waSurvey, 'animate');
     
-                    animate("102", "0", function() {
+                    animate("52", "0", function() {
             
                         pushGoal("layer_open");
     
