@@ -11,8 +11,6 @@
 (function(WATO) {
     "use strict";
 
-    console.log("DA!");
-
     // INIT MUTATION OBSERVER
     // WATO.initObserver(function(error){
     //     console.log(error);
@@ -30,8 +28,8 @@
                 /**
                  * START QS
                  */
-                WATO.qs('#wa-goals > li:last-child').insertAdjacentHTML('afterend', '<li style="list-style:none;">goal - ' + 's3_' + key + '</li>');
-                console.log("pushGoal: " + key);
+                // WATO.qs('#wa-goals > li:last-child').insertAdjacentHTML('afterend', '<li style="list-style:none;">goal - ' + 's3_' + key + '</li>');
+                // console.log("pushGoal: " + key);
                 /**
                  * END QS
                  */
@@ -123,10 +121,10 @@
 
             if(segment){
                 
-                WATO.qs('#wa-goals > li:last-child').insertAdjacentHTML('afterend', '<li style="list-style:none;">segment - 32777</li>');
-                WATO.qs('#wa-goals > li:last-child').insertAdjacentHTML('afterend', '<li style="list-style:none;">segment - ' + segment + '</li>');
-                console.log("pushSegment: 32777");
-                console.log("pushSegment: " + segment);
+                // WATO.qs('#wa-goals > li:last-child').insertAdjacentHTML('afterend', '<li style="list-style:none;">segment - 32777</li>');
+                // WATO.qs('#wa-goals > li:last-child').insertAdjacentHTML('afterend', '<li style="list-style:none;">segment - ' + segment + '</li>');
+                // console.log("pushSegment: 32777");
+                // console.log("pushSegment: " + segment);
 
                 window.iridion.push(['segment', '32777']);
                 window.iridion.push(['segment', segment]);
@@ -188,23 +186,23 @@
         /**
          * START - ONLY FOR QS - START
          */
-        smoBoxContainer[0].insertAdjacentHTML('afterend', 
-            '<div id="wa-qs" style="border:1px solid black;padding:15px;position:fixed;top:15px;left:15px;z-index:99999999;background:#fff;">' +
-                '<div id="wa-reset" style="cursor:pointer;text-align:center;line-height:25px;font-weight:bold;padding:0 15px;height:25px;background:red;color:#fff;">QS: Reset Layer</div>' +
-                '<hr/>' +
-                '<ul id="wa-goals" style="margin:0;"><li style="font-weight:bold;list-style:none;">Goals</li></ul>' +
-            '</div>'
-        );
+        // smoBoxContainer[0].insertAdjacentHTML('afterend', 
+        //     '<div id="wa-qs" style="border:1px solid black;padding:15px;position:fixed;top:15px;left:15px;z-index:99999999;background:#fff;">' +
+        //         '<div id="wa-reset" style="cursor:pointer;text-align:center;line-height:25px;font-weight:bold;padding:0 15px;height:25px;background:red;color:#fff;">QS: Reset Layer</div>' +
+        //         '<hr/>' +
+        //         '<ul id="wa-goals" style="margin:0;"><li style="font-weight:bold;list-style:none;">Goals</li></ul>' +
+        //     '</div>'
+        // );
 
-        WATO.qs('#wa-reset').addEventListener('click', function(){
+        // WATO.qs('#wa-reset').addEventListener('click', function(){
 
-            window.localStorage.removeItem('wa-survey');
+        //     window.localStorage.removeItem('wa-survey');
             
-            alert("Storage wurde zurückgesetzt. Reload.");
+        //     alert("Storage wurde zurückgesetzt. Reload.");
 
-            window.location.href = window.location.href;
-            window.location.reload();
-        });
+        //     window.location.href = window.location.href;
+        //     window.location.reload();
+        // });
         /**
          * END - ONLY FOR QS - END
          */
@@ -516,7 +514,7 @@
             ]);
         } else {
 
-            console.info("Die Umfrage wird nicht länger ausgespielt!");
+            // console.info("Die Umfrage wird nicht länger ausgespielt!");
         }
 
         if(getStorage() === null){
