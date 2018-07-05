@@ -11,6 +11,8 @@
 (function(WATO) {
     "use strict";
 
+    console.log("DA!");
+
     // INIT MUTATION OBSERVER
     // WATO.initObserver(function(error){
     //     console.log(error);
@@ -80,6 +82,7 @@
 
             content = parseInt(content);
 
+            // setStorage(false);
             setStorage('finished');
 
             var html            = '',
@@ -218,14 +221,26 @@
                     '<div id="wa-wrapper">' + 
                         '<div class="wa-show">' + 
                             '<h3>Wie wichtig ist Ihnen<br/>Nachhaltigkeit in der Mode?</h3>' +
-                            '<p class="wa-hide">Wir würden uns über eine kurze Antwort freuen. Falls sie unsicher sind, klicken Sie<br/>auf den Text unterhalb der Auswahlmöglichkeiten<p>' +
+                            '<p class="wa-hide">Wir würden uns über eine kurze Antwort freuen. Falls Sie unsicher sind, klicken Sie<br/>auf den Text unterhalb der Auswahlmöglichkeiten.<p>' +
                             '<label>' + 
-                                '<span>weniger wichtig</span>' +
-                                '<input type="radio" name="wa-question" value="1">' +
-                                '<input type="radio" name="wa-question" value="2">' +
-                                '<input type="radio" name="wa-question" value="3">' +
-                                '<input type="radio" name="wa-question" value="4">' +
-                                '<span>sehr wichtig</span>' +
+                                '<span class="wa-p">weniger wichtig</span>' +
+                                '<span>' +
+                                '<input id="wa-1" type="radio" name="wa-question" value="1">' +
+                                '<label for="wa-1"></label>' + 
+                                '</span>' +
+                                '<span>' +
+                                    '<input id="wa-2" type="radio" name="wa-question" value="2">' +
+                                    '<label for="wa-2"></label>' + 
+                                '</span>' +
+                                '<span>' +
+                                    '<input id="wa-3" type="radio" name="wa-question" value="3">' +
+                                    '<label for="wa-3"></label>' + 
+                                '</span>' +
+                                '<span>' +
+                                    '<input id="wa-4" type="radio" name="wa-question" value="4">' +
+                                    '<label for="wa-4"></label>' + 
+                                '</span>' +
+                                '<span class="wa-p">sehr wichtig</span>' +
                             '</label>' +
                             '<div id="wa-link">' +
                                 '<a href="javascript:void(0);">Ich weiß nicht, was Nachhaltigkeit<br/>in der Mode bedeutet</a>' +
@@ -251,12 +266,12 @@
 
             var uvps = [
                     [
-                        ["1", "Großes Sortiment an<br/>qualitativer Mode", "Viele Produkte aus nachhaltigen<br/>Stoffen wie Bio-Baumwolle –<br/>hochwertig verarbeitet und<br/>in zeitlosem Design."],
+                        ["1", "Großes Sortiment an<br/>Qualitäts-Mode", "Viele Produkte aus nachhaltigen<br/>Stoffen wie Bio-Baumwolle –<br/>hochwertig verarbeitet und<br/>in zeitlosem Design."],
                         ["4", "Kostenlose<br/>Rücksendung", "Sollte Ihnen ein Produkt<br/>einmal nicht gefallen, können<br/>Sie dies jederzeit umtauschen."],
                         ["5", "Vielfältige<br/>Zahlungsarten", "Bei uns können Sie zwischen<br/>Kauf auf Rechnung, Kreditkarte<br/>oder Paypal wählen."]
                     ],
                     [
-                        ["1", "Mode, die die Umwelt respektiert<br/>und Ressourcen schont", "Viele Produkte aus nachhaltigen<br/>Stoffen wie Bio-Baumwolle –<br/>hochwertig verarbeitet und in<br/>zeitlosem Design."],
+                        ["1", "Mode, die Umwelt respektiert<br/>und Ressourcen schont", "Viele Produkte aus nachhaltigen<br/>Stoffen wie Bio-Baumwolle –<br/>hochwertig verarbeitet und in<br/>zeitlosem Design."],
                         ["2", "Klimaneutraler<br/>Versand", "Aus Liebe zur Umwelt verschicken<br/>wir Ihre Lieferung klimaneutral<br/>mit DHL GoGreen."],
                         ["3", "Faire Bedingungen auch<br/>im Produktionsland", "Wir sind Vorreiter für<br/>Verbesserung der sozialen<br/>Standards in der textilen<br/>Lieferkette."]
                     ]
@@ -318,9 +333,7 @@
             // survery mouseout
             addListener($waSurvey, 'mouseout', function(){
 
-                if(classContains($waSurvey, 'small')){
-
-                    pushGoal('layer_closed');
+                if(classContains($waSurvey, 'small') && !classContains($waSurvey, 'animate')){
 
                     manageClass($waSurveyBadge, 'fade-in', true);
                     manageClass($waSurveyBadge, 'fade-out');
@@ -334,11 +347,12 @@
 
                     if(event.target.id !== "wa-arrow"){
 
-                        var mouseStillOverSurvey = false;
+                        var mouseStillOverSurvey    = false,
+                            elementPath             = event.path || (event.composedPath && event.composedPath());
 
-                        for(var i = 0; i < event.path.length; i++){ 
+                        for(var i = 0; i < elementPath.length; i++){ 
 
-                            if(event.path[i].id === 'wa-survey'){
+                            if(elementPath[i].id === 'wa-survey'){
 
                                 mouseStillOverSurvey = true;
                                 break;
@@ -351,8 +365,6 @@
                         }
                     }
 
-                    pushGoal('layer_closed');
-
                     // if(this.classList.contains('wa-small')){
                     if(classContains($waSurvey, 'small')){
 
@@ -363,6 +375,8 @@
 
                         animate("-105", "-564", function() {
             
+                            pushGoal('layer_closed');
+
                             manageClass($waSurvey, 'large', true);
                             manageClass($waSurvey, 'small');
                             manageClass($waSurveyBadge, 'fade-out');
@@ -375,18 +389,16 @@
 
                 if(!$waSurvey.classList.contains('wa-large')){
 
-                    setStorage(false);
-    
                     // remove class wa-first, hide wa-pulse element
                     manageClass($waSurvey, 'first', true);
-                    // manageClass($waSurvey, 'animate');
+                    manageClass($waSurvey, 'animate');
     
                     animate("52", "0", function() {
             
                         pushGoal("layer_open");
     
                         manageClass($waSurvey, 'small', true);
-                        // manageClass($waSurvey, 'animate', true);
+                        manageClass($waSurvey, 'animate', true);
                         manageClass($waSurvey, 'large');
                     });
                 }
@@ -468,6 +480,13 @@
 
                 addListener($radios[i], 'click', function(){
     
+                    for(var i = 0; i < $radios.length; i++){
+
+                        $radios[i].parentNode.classList.remove('wa-selected');
+                    }
+
+                    this.parentNode.classList.add('wa-selected');
+
                     pushGoal('layer_question');
                 });
             }
@@ -477,10 +496,9 @@
                 showLayer(2);
             });
 
-            addListener($waLayerBG, 'click', function(){
-
-                hideLayer();
-            });
+            // addListener($waLayerBG, 'click', function(){
+            //     hideLayer();
+            // });
 
             addListener($waLayerClose, 'click', function(){
 

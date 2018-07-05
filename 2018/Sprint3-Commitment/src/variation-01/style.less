@@ -87,7 +87,7 @@
     opacity: 0;
     position: absolute;
     top: 185px;
-    left: 60px;
+    left: 65px;
     width: 238px;
     height: 268px;
     border: 1px solid #d9d9d8;
@@ -111,11 +111,11 @@
     }
 
     &:nth-child(2) {
-        left: 320px;
+        left: 325px;
     }
 
     &:nth-child(3) {
-        left: 580px;
+        left: 585px;
     }
 
     &.wa-icon-1 {
@@ -147,7 +147,9 @@
     right: -564px;
     // right: 0;
 
-    top: 20%;
+    top: 22%;
+    // top: 250px;
+    
     height: 326px;
     // padding-left: 50px;
     width: 617px;
@@ -222,6 +224,8 @@
         line-height: 28px;
         color: #393939;
         text-align: center;
+        font-family: 'Roboto', Arial, Helvetica, sans-serif;
+        font-weight: normal;
     }
 
     button {
@@ -239,6 +243,38 @@
         line-height: 20px;
         // display: block;
         text-align: center;
+    }
+
+    input {
+        position: relative;
+        margin-right: 22px;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+
+        // &:before {
+        //     position: absolute;
+        //     content: " ";
+        //     left: -6px;
+        //     top: -7px;
+        //     width: 30px;
+        //     height: 30px;
+        //     background: url('@{base-url}wa-radio.png') no-repeat 0 0;
+        // }
+
+        // &.wa-selected:after {
+        //     content: " ";
+        //     position: absolute;
+        //     content: " ";
+        //     left: 1px;
+        //     top: 0px;
+        //     width: 16px;
+        //     height: 16px;
+        //     -webkit-border-radius: 16px 16px 16px 16px;
+        //     border-radius: 16px 16px 16px 16px;
+        //     background: #00a8ff;
+        //     -moz-appearance: none;
+        //     -webkit-appearance: none;
+        // }
     }
 
     &.wa-error {
@@ -259,9 +295,19 @@
         }
 
         input {
+            // position: relative;
             margin-bottom: 0px;
             height: 20px;
             width: 20px;
+
+            // &:before {
+            //     position: absolute;
+            //     left: 0; 
+            //     top: 0;
+            //     width: 30px;
+            //     height: 30px;
+            //     background: #fff url('@{base-url}wa-radio.png') no-repeat 0 0;
+            // }
         }
     }
 
@@ -273,9 +319,38 @@
             display: block;
             text-align: center;
 
-            span {
+            span {
+                position: relative;
+
+                label {
+                    position: absolute;
+                    top: -8px;
+                    left: -12px;
+                    width: 30px;
+                    height: 30px;
+                    // border: 1px solid red;
+                    background: url('@{base-url}wa-radio.png') no-repeat 0 0;
+                }
+
+                &.wa-selected label:after {
+                    content: " ";
+                    position: absolute;
+                    content: " ";
+                    left: 7px;
+                    top: 7px;
+                    width: 16px;
+                    height: 16px;
+                    -webkit-border-radius: 16px 16px 16px 16px;
+                    border-radius: 16px 16px 16px 16px;
+                    background: #00a8ff;
+                    -moz-appearance: none;
+                    -webkit-appearance: none;
+                }
+            }
+
+            span.wa-p {
                 font-size: 14px;
-                padding: 0 22px 0 11px;
+                padding: 0 26px 0 8px;
             }
 
             input {
@@ -304,6 +379,10 @@
     //         }
     //     }
     // }
+}
+
+html[data-magic-ua="ie"] #wa-wrapper label span label {
+    top: -15px;
 }
 
 #wa-arrow {
