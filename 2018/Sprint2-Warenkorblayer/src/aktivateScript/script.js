@@ -53,3 +53,25 @@
         // }
     } catch(error){}
 })();
+
+// var _1 = {
+//     "first" : {
+//         submitHandler: function(){
+
+//         }
+//     },
+//     "first" : {
+//         submitHandler: function(){
+
+//         }
+//     }
+// }
+
+// <form data-target="first"></form>
+
+// obj = document.querySelectorAll('form');
+
+// for(var i = 0; i < obj.length; i++{
+
+//     $(i).validate(obj[i].getAttribute('data-target'));
+// }
