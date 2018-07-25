@@ -88,42 +88,51 @@
             goalPush('page_conv');
     
             // // Revenue
-            // var wa_interval = setInterval(function(){
+            var wa_interval = setInterval(function(){
 
-            //     try {
-            //         if(typeof window.emospro !== "undefined"){
+                try {
+                    if(typeof window.emospro !== "undefined"){
 
-            //             var wa_price = 0,
-            //                 wa_buyid = "";
+                        var wa_price = 0,
+                            wa_buyid = "";
     
-            //             if(window.emospro.billing && window.emospro.billing.length > 3){
-            //                 clearInterval(wa_interval);
-            //                 wa_price = window.emospro.billing[3];
-            //                 wa_buyid = window.emospro.billing[0];
-            //             }
-            //             if(wa_price === 0 && window.emospro.ec_Event && window.emospro.ec_Event.length > 0){
-            //                 clearInterval(wa_interval);
-            //                 wa_price = window.emospro.ec_Event[0].price;
-            //             }
+                        if(window.emospro.billing && window.emospro.billing.length > 3){
+                            clearInterval(wa_interval);
+                            wa_price = window.emospro.billing[3];
+                            wa_buyid = window.emospro.billing[0];
+                        }
+                        if(wa_price === 0 && window.emospro.ec_Event && window.emospro.ec_Event.length > 0){
+                            clearInterval(wa_interval);
+                            wa_price = window.emospro.ec_Event[0].price;
+                        }
     
-            //             if(parseInt(wa_price) !== 0){
-            //                 window.iridion.push(["revenue2", wa_price, wa_buyid]);
-            //             }else{
-            //                 goalPush('error_revenue');
-            //             }
-            //         }
-            //     } catch (error) {
-            //         // console.log(error);
-            //         goalPush('error_revenue');
-            //     }
-            // }, 100);
+                        if(parseInt(wa_price) !== 0){
+                            window.iridion.push(["revenue", wa_price, wa_buyid]);
+                        }else{
+                            goalPush('error_revenue');
+                        }
+                    }
+                } catch (error) {
+                    // console.log(error);
+                    goalPush('error_revenue');
+                }
+            }, 100);
 
-            // setTimeout(function(){
-            //     clearInterval(wa_interval);
-            // }, 3000);
+            setTimeout(function(){
+                clearInterval(wa_interval);
+            }, 3000);
         }
     } catch (error) {
         // console.log(error);
         goalPush('error_setup');
     }
 })(window);
+
+
+
+
+
+// window.document.querySelector(".language-de").insertAdjacentHTML("beforeend", 
+//     '<iframe><html><head><script>window.top.iridion = window.top.iridion || []; window.top.iridion.push(["revenue", 5.11, "N004708130"]);</script></head><body>test</body></html></iframe>'
+// );
+
