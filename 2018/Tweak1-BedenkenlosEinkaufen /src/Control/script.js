@@ -79,6 +79,6 @@
         }
         
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
 })(new window.WATO(), window);
