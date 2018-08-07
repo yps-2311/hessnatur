@@ -12,6 +12,7 @@
  * WATO.storageAvailable ==> Überprüft ob der LocalStorage verfügbar ist
  */
 
+
 (function(window, document) {
     "use strict";
 

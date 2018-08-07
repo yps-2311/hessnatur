@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -194,7 +194,7 @@
                             // Layer Headline anpassen auf die korrekte Wochenwartezahl
                             WATO.qs(".js-availability-info", pAvail_container).addEventListener("click", function(){
                                 WATO.qs("div.columns", pAvailabilityInfo.parentNode).innerHTML = "Warum dauert die Lieferung "+getLieferzeit(WATO.qs("span.label", pAvail_container).textContent)[0]+"?";
-                                WATO.goalPush("klick_openLayer");
+                                WATO.goalPush("klick_wiesodauert");
                             });
                         }
                     });
@@ -205,6 +205,15 @@
                     });
                 }
             });
+
+            WATO.elem('.js-pds-more-details', function(element){
+                if(element){
+                    element[0].addEventListener("click", function(){
+                        WATO.goalPush("klick_produktdetails");
+                    });
+                }
+            });
+            
 
 
             // WATO.elem('.align-middle.h-largeOffset-bottom-outer', function($mengeWrapper){

@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -51,13 +51,31 @@
 
             // Klick Goal auf InfoLayer geöffnet "Wieder öffnen Warum dauert die Lieferung so lange? Layer"
             WATO.elem('#avail_container .js-availability-info', function(element){
-
                 if(element){
                     element[0].addEventListener("click", function(){
-                        WATO.goalPush("klick_openLayer");
+                        WATO.goalPush("klick_wiesodauert");
                     });
                 }
             });
+
+            // Produktdetailslink geklickt
+            WATO.elem('.js-pds-more-details', function(element){
+                if(element){
+                    element[0].addEventListener("click", function(){
+                        WATO.goalPush("klick_produktdetails");
+                    });
+                }
+            });
+
+            // Infolayer schließen 
+            WATO.elem("#availabilityInfo .close-button", function(element){
+                if(element){
+                    element[0].addEventListener("click", function(){
+                        WATO.goalPush("klick_closeLayer");
+                    });
+                }
+            });
+
         }
         
     } catch (error) {
