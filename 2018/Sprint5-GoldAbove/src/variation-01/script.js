@@ -120,7 +120,7 @@
                                 WATO.qs(".js-badges-container").insertAdjacentHTML("beforeend", '<div id="wa-ger"></div>');
 
                             } else if (new RegExp("Bosnien Herzegowina|Griechenland|Bulgarien|Italien|Kroatien|Litauen|Mazedonien|Österreich|Polen|Portugal|Rumänien|Slowenien|Spanien|Tschechische Republik|Türkei|Ungarn|Weißrussland").test($_InfoBox.innerText)) {
-                                WATO.qs(".js-badges-container").insertAdjacentHTML("beforeend", '<div id="wa-eu"></div>');
+                                WATO.qs(".js-badges-container").insertAdjacentHTML("beforeend", '<div id="wa-eu" class="tooltip-right" data-tt="'+$_InfoBox.innerText.replace("Made in", "")+'"></div>');
                             }
                         }  else if ($_h3.innerText === "Ausgezeichnete Qualität") {
 
@@ -135,25 +135,26 @@
                     }
                 }
 
-                if ($_quality && $_madeIn) {
+
+                function setQuality($_element) {
 
                     if ($_fitting) {
-                        $_madeIn.parentNode.insertBefore($_quality, $_madeIn.nextSibling);
+                        $_element.parentNode.insertBefore($_quality, $_element.nextSibling);
                     } else {
                         WATO.qs(".productInfoTop > .row").insertAdjacentHTML("beforeend", '<div id="wa-box"></div>');
                         WATO.qs("#wa-box").appendChild($_quality);
                     }
 
-                    $_madeIn.insertAdjacentHTML("afterend", '<div id="wa-qualitySeal"></div>');
+                    $_element.insertAdjacentHTML("afterend", '<div id="wa-qualitySeal"></div>');
+                }
 
-                } else if ($_fitting && $_quality && $_material) {
 
-                    if ($_fitting) {
-                        $_material.parentNode.insertBefore($_quality, $_material.nextSibling);
-                    }
 
-                    $_material.insertAdjacentHTML("afterend", '<div id="wa-qualitySeal"></div>');
+                if ($_quality && $_madeIn) {
+                    setQuality($_madeIn);
 
+                } else if ($_quality && $_material) {
+                    setQuality($_material);
                 }
 
                 if ($_madeIn) {
