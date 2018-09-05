@@ -1,1 +1,268 @@
-.pds-cockpit__badge{margin:0 5px 5px 0}.js-pds-more-details{float:right}.js-pds-more-details:before{content:"";display:inline-block;background-image:url(https://webarts.s3.amazonaws.com/Hessnatur/2018/Sprint5/right.png);width:5px;height:9px;margin-right:5px}.pds-cockpit__shortDescription li{line-height:18px}.productInfoTop{padding-top:37px}.productInfoTop>.row>.large-6{flex:0 0 51%;max-width:51%}.productInfoTop>.row>.large-3{padding:0;margin:0;max-width:30%;flex:0 0 30%;padding-left:2px}.productInfoTop>.row>.large-3 .certificateWrapper>columns{align-items:flex-start;align-content:flex-start}.productInfoTop>.row>.large-3 .certificateWrapper .column.shrink{width:100%;margin-bottom:25px;height:144px;display:flex;align-items:flex-start}.productInfoTop>.row>.large-3 .certificateWrapper .column.shrink img{align-self:auto}[data-tt]{position:relative;cursor:pointer}[data-tt]:after,[data-tt]:before{position:absolute;visibility:hidden;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(Opacity=0);opacity:0;-webkit-transition:opacity .2s ease-in-out,visibility .2s ease-in-out,-webkit-transform .2s cubic-bezier(.71,1.7,.77,1.24);-moz-transition:opacity .2s ease-in-out,visibility .2s ease-in-out,-moz-transform .2s cubic-bezier(.71,1.7,.77,1.24);transition:opacity .2s ease-in-out,visibility .2s ease-in-out,transform .2s cubic-bezier(.71,1.7,.77,1.24);-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);transform:translate3d(0,0,0);pointer-events:none}[data-tt]:focus:after,[data-tt]:focus:before,[data-tt]:hover:after,[data-tt]:hover:before{visibility:visible;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";filter:alpha(Opacity=100);opacity:1}[data-tt]:before{z-index:1001;border:6px solid transparent;background:0 0;content:""}[data-tt]:after{z-index:1000;padding:8px;width:230px;background-color:#f7f6f5;color:#313131;content:attr(data-tt);font-size:12px;line-height:1.2;text-align:center}[data-tt]:after,[data-tt]:before{bottom:100%;left:50%}[data-tt]:before{margin-left:-6px;margin-bottom:-12px;border-top-color:#f7f6f5}[data-tt]:after{margin-left:-80px}[data-tt]:focus:after,[data-tt]:focus:before,[data-tt]:hover:after,[data-tt]:hover:before{-webkit-transform:translateY(-12px);-moz-transform:translateY(-12px);transform:translateY(-12px)}.tooltip-right:after,.tooltip-right:before{bottom:50%;left:100%}.tooltip-right:before{margin-bottom:0;margin-left:-12px;border-top-color:transparent;border-right-color:#f7f6f5}.tooltip-right:focus:after,.tooltip-right:focus:before,.tooltip-right:hover:after,.tooltip-right:hover:before{-webkit-transform:translateX(12px);-moz-transform:translateX(12px);transform:translateX(12px)}.tooltip-right:before{top:6px}.tooltip-right:after{margin-left:0;margin-bottom:-16px}.wa-show-shortDesc{height:54px;overflow:hidden;margin-bottom:20px;pointer-events:none;position:relative}.wa-show-shortDesc::before{pointer-events:all;content:"";width:100%;height:34px;background:#fffbf;display:block;position:absolute;margin-top:36px;background:url(https://webarts.s3.amazonaws.com/Hessnatur/2018/Sprint5/down.png) transparent 43% 22px no-repeat;cursor:pointer;z-index:2;bottom:-3px}.wa-show-shortDesc::after{content:"";background-image:linear-gradient(-179deg,rgba(255,255,255,.45) 0,#FFF 99%);z-index:1;width:400px;height:25px;display:block;bottom:-3px;position:absolute}.wa-show-more{text-align:center;background:#f7f6f5;color:#00042}.wa-show-more span{width:10px;height:6px;display:inline-block;background:url(https://webarts.s3.amazonaws.com/Hessnatur/2018/Sprint5/down.png) 0 0 no-repeat;background-size:contain;opacity:.6}#wa-material{margin-top:15px}#wa-material p{margin-bottom:4px}#wa-material>p{margin-bottom:8px}#wa-material strong{font-weight:400}#wa-material ul{display:flex;background:#F7F6F5;margin:0;padding:10px}#wa-material li{width:50%;margin:0;font-size:12px}#wa-material .shrink{padding:0}#wa-material .column.h-no-padding-left{padding-right:20px}#wa-material img{margin-right:10px}#wa-qualitySeal{background:url(https://webarts.s3.amazonaws.com/Hessnatur/2018/Sprint5/qa.png) 0 0 no-repeat;background-size:100%;max-width:393px;height:523px}#wa-eu{background:url(https://webarts.s3.amazonaws.com/Hessnatur/2018/Sprint5/flag_eu.png) 0 0 no-repeat;width:42px;height:25px;display:inline-block;margin:0 10px -7px 0;cursor:default}#wa-ger{background:url(https://imgs7.hessnatur.com/is/content/HessNatur/Zertifikate/Zertifikat_Made-In-Germany.svg) 0 0 no-repeat;width:50px;background-size:contain;height:50px;display:inline-block;margin:0;margin-top:-13px;position:absolute}.wa-m-t{margin-top:50px}#wa-box{margin-left:10.3%;width:79.5%}#wa-box .productInfosItem .columns.row{flex:0 0 30.5%}
+/* IMPORT VAR LESS FILE */
+/* DEFINE VARS */
+/* IMPORT GLOBAL LESS FILES */
+/* IMPORT VAR LESS FILE */
+/* DEFINE VARIATION CSS */
+.pds-cockpit__badge {
+  margin: 0 5px 5px 0;
+}
+.js-pds-more-details {
+  float: right;
+}
+.js-pds-more-details:before {
+  content: "";
+  display: inline-block;
+  background-image: url("https://webarts.s3.amazonaws.com/Hessnatur/2018/Sprint5/right.png");
+  width: 5px;
+  height: 9px;
+  margin-right: 5px;
+}
+.pds-cockpit__shortDescription li {
+  line-height: 18px;
+}
+.productInfoTop {
+  padding-top: 37px;
+}
+.productInfoTop > .row > .large-6 {
+  flex: 0 0 51%;
+  max-width: 51%;
+}
+.productInfoTop > .row > .large-3 {
+  padding: 0px;
+  margin: 0px;
+  max-width: 30%;
+  flex: 0 0 30%;
+  padding-left: 2px;
+}
+.productInfoTop > .row > .large-3 .certificateWrapper > columns {
+  align-items: flex-start;
+  align-content: flex-start;
+}
+.productInfoTop > .row > .large-3 .certificateWrapper .column.shrink {
+  width: 100%;
+  margin-bottom: 25px;
+  height: 144px;
+  display: flex;
+  align-items: center;
+}
+.productInfoTop > .row > .large-3 .certificateWrapper .column.shrink img {
+  align-self: auto;
+}
+/**
+   * Tooltip Styles
+   */
+/* Base styles for the element that has a tooltip */
+[data-tt] {
+  position: relative;
+  cursor: pointer;
+}
+/* Base styles for the entire tooltip */
+[data-tt]:before,
+[data-tt]:after {
+  position: absolute;
+  visibility: hidden;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+  opacity: 0;
+  -webkit-transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, -webkit-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+  -moz-transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, -moz-transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out, transform 0.2s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  pointer-events: none;
+}
+/* Show the entire tooltip on hover and focus */
+[data-tt]:hover:before,
+[data-tt]:hover:after,
+[data-tt]:focus:before,
+[data-tt]:focus:after {
+  visibility: visible;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
+  opacity: 1;
+}
+/* Base styles for the tooltip's directional arrow */
+[data-tt]:before {
+  z-index: 1001;
+  border: 6px solid transparent;
+  background: transparent;
+  content: "";
+}
+/* Base styles for the tooltip's content area */
+[data-tt]:after {
+  z-index: 1000;
+  padding: 8px;
+  width: 230px;
+  background-color: #f7f6f5;
+  color: #313131;
+  content: attr(data-tt);
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+}
+/* Directions */
+/* Top (default) */
+[data-tt]:before,
+[data-tt]:after {
+  bottom: 100%;
+  left: 50%;
+}
+[data-tt]:before {
+  margin-left: -6px;
+  margin-bottom: -12px;
+  border-top-color: #f7f6f5;
+}
+/* Horizontally align top/bottom tooltips */
+[data-tt]:after {
+  margin-left: -80px;
+}
+[data-tt]:hover:before,
+[data-tt]:hover:after,
+[data-tt]:focus:before,
+[data-tt]:focus:after {
+  -webkit-transform: translateY(-12px);
+  -moz-transform: translateY(-12px);
+  transform: translateY(-12px);
+}
+/* Right */
+.tooltip-right:before,
+.tooltip-right:after {
+  bottom: 50%;
+  left: 100%;
+}
+.tooltip-right:before {
+  margin-bottom: 0;
+  margin-left: -12px;
+  border-top-color: transparent;
+  border-right-color: #f7f6f5;
+}
+.tooltip-right:hover:before,
+.tooltip-right:hover:after,
+.tooltip-right:focus:before,
+.tooltip-right:focus:after {
+  -webkit-transform: translateX(12px);
+  -moz-transform: translateX(12px);
+  transform: translateX(12px);
+}
+/* Move directional arrows down a bit for left/right tooltips */
+.tooltip-right:before {
+  top: 6px;
+}
+/* Vertically center tooltip content for left/right tooltips */
+.tooltip-right:after {
+  margin-left: 0;
+  margin-bottom: -16px;
+}
+.wa-show-shortDesc {
+  height: 54px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  pointer-events: none;
+  position: relative;
+}
+.wa-show-shortDesc::before {
+  pointer-events: all;
+  content: "";
+  width: 100%;
+  height: 34px;
+  background: #ffffffbf;
+  display: block;
+  position: absolute;
+  margin-top: 36px;
+  background: url("https://webarts.s3.amazonaws.com/Hessnatur/2018/Sprint5/down.png") transparent 43% 22px no-repeat;
+  cursor: pointer;
+  z-index: 2;
+  bottom: -3px;
+}
+.wa-show-shortDesc::after {
+  content: "";
+  background-image: linear-gradient(-179deg, rgba(255, 255, 255, 0.45) 0%, #FFFFFF 99%);
+  z-index: 1;
+  width: 400px;
+  height: 25px;
+  display: block;
+  bottom: -3px;
+  position: absolute;
+}
+.wa-show-more {
+  text-align: center;
+  background: #f7f6f5;
+  color: #00000042;
+  cursor: pointer;
+}
+.wa-show-more span {
+  width: 10px;
+  height: 6px;
+  display: inline-block;
+  background: url("https://webarts.s3.amazonaws.com/Hessnatur/2018/Sprint5/down.png") 0 0 no-repeat;
+  background-size: contain;
+  opacity: 0.6;
+}
+#wa-material {
+  margin-top: 15px;
+}
+#wa-material p {
+  margin-bottom: 4px;
+}
+#wa-material > p {
+  margin-bottom: 8px;
+}
+#wa-material ul {
+  display: flex;
+  background: #F7F6F5;
+  margin: 0px;
+  padding: 10px;
+}
+#wa-material li {
+  width: 50%;
+  margin: 0;
+  font-size: 12px;
+}
+#wa-material .shrink {
+  padding: 0;
+}
+#wa-material .column.h-no-padding-left {
+  padding-right: 20px;
+}
+#wa-material img {
+  margin-right: 10px;
+}
+#wa-qualitySeal {
+  background: url("https://webarts.s3.amazonaws.com/Hessnatur/2018/Sprint5/qa.png") 0 0 no-repeat;
+  background-size: 100%;
+  max-width: 393px;
+  height: 523px;
+}
+#wa-eu {
+  background: url("https://webarts.s3.amazonaws.com/Hessnatur/2018/Sprint5/flag_eu.png") 0 0 no-repeat;
+  width: 42px;
+  height: 25px;
+  display: inline-block;
+  margin: 0 10px -7px 0;
+  cursor: default;
+}
+#wa-ger {
+  background: url("https://imgs7.hessnatur.com/is/content/HessNatur/Zertifikate/Zertifikat_Made-In-Germany.svg") 0 0 no-repeat;
+  width: 50px;
+  background-size: contain;
+  height: 50px;
+  display: inline-block;
+  margin: 0px;
+  margin-top: -13px;
+  position: absolute;
+}
+.wa-m-t {
+  margin-top: 50px;
+}
+#wa-box {
+  margin-left: 10.3%;
+  width: 79.5%;
+}
+#wa-box .productInfosItem .columns.row {
+  flex: 0 0 30.5%;
+}
+.wa-desc-material ul.small-12 > li {
+  width: 50%;
+  float: left;
+}

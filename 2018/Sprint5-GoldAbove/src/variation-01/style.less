@@ -62,7 +62,8 @@
             margin-bottom: 25px;
             height: 144px;
             display: flex;
-            align-items: flex-start;
+            //align-items: flex-start;
+            align-items: center;
 
             img {
               align-self: auto;
@@ -254,6 +255,7 @@ position: absolute;
   text-align: center;
   background: #f7f6f5;
   color: #00000042;
+  cursor: pointer;
 
   span {
     width: 10px;
@@ -276,10 +278,6 @@ position: absolute;
 
   > p {
     margin-bottom: 8px;
-  }
-
-  strong {
-    font-weight: normal;
   }
 
   ul {
@@ -344,6 +342,13 @@ position: absolute;
 
   .productInfosItem .columns.row {
     flex: 0 0 30.5%;
+  }
+}
+
+.wa-desc-material {
+  ul.small-12 > li {
+    width: 50%;
+    float: left;
   }
 }
 

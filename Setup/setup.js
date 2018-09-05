@@ -71,7 +71,9 @@
                 clearInterval(wa_loginButtonInterval);
             },5000);
             
-        }else if(URL.indexOf("/addresses/add-delivery-address") !== -1){
+        } else if (URL.indexOf("magazin/textillexikon") !== -1) {
+            goalPush('page_material');
+        } else if(URL.indexOf("/addresses/add-delivery-address") !== -1){
             // Adresse
             goalPush('page_address');
             

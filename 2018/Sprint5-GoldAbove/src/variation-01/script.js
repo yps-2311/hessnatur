@@ -17,6 +17,27 @@
 
     function klickDetails(){
         WATO.qs(".js-pds-more-details").click();
+        goalPush("s5_click_plus");
+    }
+
+
+
+
+    WATO.elem("a[data-open=availability-matrix]", function (oAvailMatrix){
+
+        if (oAvailMatrix) {
+            oAvailMatrix[0].addEventListener("click", function(){
+                goalPush("s5_click_availability");
+            });
+        }
+    });
+
+
+
+
+
+    function goalPush(key){
+        window.iridion.push(['goal', key]);
     }
 
     // Check if short Description is < 3
@@ -31,7 +52,11 @@
 
                     WATO.qs(".wa-show-shortDesc").addEventListener("click", function(){
                         $_ShortDescription.classList.remove("wa-show-shortDesc");
+
+                        goalPush("s5_click_bullets");
                     });
+
+                    goalPush("s5_manipulated_bullets");
                 }
             }
 
@@ -42,9 +67,14 @@
     });
 
     WATO.elem(".js-pds-more-details", function(a_showMore) {
+
         try {
 
             if (a_showMore) {
+                a_showMore[0].addEventListener("click", function(){
+                    goalPush("s5_more_details");
+
+                });
                 a_showMore[0].innerText = "Mehr Produktinformationen";
             }
 
@@ -55,9 +85,12 @@
     });
 
 
-    WATO.elem('.productInfosItem .row[itemprop="description"]', function(elem) {
+    // Polling the after element, because there was a timing error when polling the original elements
+    WATO.elem('.js-product-detail-images', function(elem) {
         if(elem){        
             try {
+                console.log("polled:");
+                console.log(WATO.qsa(".productInfosItem").length);
 
                 var a_productInfos = WATO.qsa(".productInfosItem"),
                     $_productDescription = false,
@@ -88,41 +121,52 @@
                                 $_productDescription.classList.add("wa-m-t");
 
 
-
-
-
                             } else if ($_h3.innerText === "Material") {
 
                                 $_material = $_InfoBox;
 
-                                var a_Materials = WATO.qsa("li.row", $_InfoBox),
+
+                                $_material.classList.add("wa-desc-material");
+
+                                var a_Materials = WATO.qsa("li.row", $_material),
                                     insertHTML = '',
                                     moreLink = false;
 
-                                for (var x = 0; x < a_Materials.length; ++x) {
-                                    if (x === 2) {
-                                        moreLink = true;
-                                        break;
+                                console.log(a_Materials.length);
+
+                                    for (var x = 0; x < a_Materials.length; ++x) {
+                                        if (x === 2) {
+                                            moreLink = true;
+                                            break;
+                                        }
+                                        insertHTML += a_Materials[x].outerHTML;
                                     }
-                                    insertHTML += a_Materials[x].outerHTML;
-                                }
-
-                                insertHTML = '<div id="wa-material">' +
-                                    '<p>MATERIAL</p>' +
-                                    '<ul>' +
-                                    insertHTML +
-                                    '</ul>' +
-                                    (moreLink ? '<div class="wa-show-more">+ ' + (a_Materials.length - 2) + ' weitere <span></span></div>': '') +
-                                    '</div>';
-
-                                WATO.qs(".pds-cockpit__shortDescription").insertAdjacentHTML("afterend", insertHTML);
-
-                                if (moreLink) {
-                                    WATO.qs(".wa-show-more").addEventListener("click", klickDetails);
-                                }
 
 
-                                
+
+                                    insertHTML = '<div id="wa-material">' +
+                                        '<p>MATERIAL</p>' +
+                                        '<ul>' +
+                                        insertHTML +
+                                        '</ul>' +
+                                        (moreLink ? '<div class="wa-show-more">+ ' + (a_Materials.length - 2) + ' weitere <span></span></div>': '') +
+                                        '</div>';
+
+                                    if (WATO.qs(".pds-cockpit__shortDescription") !== null) {
+                                        WATO.qs(".pds-cockpit__shortDescription").insertAdjacentHTML("afterend", insertHTML);
+                                    } else {
+                                        WATO.qs(".js-price-container").insertAdjacentHTML("afterend", insertHTML);
+                                    }
+
+
+
+
+                                    if (moreLink) {
+                                        goalPush("s5_more_materials");
+                                        WATO.qs(".wa-show-more").addEventListener("click", klickDetails);
+                                    }
+
+
 
                             } else if ($_h3.innerText === "Made in") {
 
@@ -131,8 +175,16 @@
                                 if ($_InfoBox.innerText.indexOf("Deutschland") !== -1) {
                                     WATO.qs(".js-badges-container").insertAdjacentHTML("beforeend", '<div id="wa-ger"></div>');
 
+                                    WATO.qs("#wa-ger").addEventListener("mouseover", function(){
+                                        goalPush("s5_hover_flag");
+                                    });
+
                                 } else if (new RegExp("Bosnien Herzegowina|Griechenland|Bulgarien|Italien|Kroatien|Litauen|Mazedonien|Österreich|Polen|Portugal|Rumänien|Slowenien|Spanien|Tschechische Republik|Türkei|Ungarn|Weißrussland").test($_InfoBox.innerText)) {
                                     WATO.qs(".js-badges-container").insertAdjacentHTML("beforeend", '<div id="wa-eu" class="tooltip-right" data-tt="'+$_InfoBox.innerText.replace("Made in", "")+'"></div>');
+
+                                    WATO.qs("#wa-eu").addEventListener("mouseover", function(){
+                                       goalPush("s5_hover_flag");
+                                    });
                                 }
 
 
@@ -158,20 +210,32 @@
 
                     var setQuality = function($_element) {
                         console.log('$_element: ', $_element);
+                        // Wenn keine Passform vorhanden ist, soll es unten stehen wie im Screenshot. Sind es jedoch nur 1 oder 2 Siegel, sollte es dennoch unterhalb der Qualitätsbox stehen.
 
-                        if ($_fitting) {
-                            $_element.parentNode.insertBefore($_quality, $_element.nextSibling);
-                        } else {
+
+                        if (!$_fitting && WATO.qsa(".column.shrink", $_quality).length >= 3) {
                             WATO.qs(".productInfoTop > .row").insertAdjacentHTML("beforeend", '<div id="wa-box"></div>');
                             WATO.qs("#wa-box").appendChild($_quality);
+                        } else {
+                            $_element.parentNode.insertBefore($_quality, $_element.nextSibling);
                         }
 
                         $_element.insertAdjacentHTML("afterend", '<div id="wa-qualitySeal"></div>');
+
+                        WATO.qs("#qa-qualitySeal").addEventListener("click", function(){
+                            goalPush("s5_click_quality");
+                        });
+
+                        WATO.qs("#qa-qualitySeal").addEventListener("mouseover", function(){
+                            goalPush("s5_hover_quality");
+                        });
                     };
 
+                    //goalPush("s5_engagement_details");
                     console.log('$_quality: ', $_quality);
                     console.log('$_madeIn: ', $_madeIn);
                     console.log('$_material: ', $_material);
+
 
 
                     if ($_quality && $_madeIn) {
