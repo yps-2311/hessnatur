@@ -11,9 +11,13 @@
 (function(WATO) {
     "use strict";
 
-    console.log("Sprint 5 - Variant Code");
+    console.log("Sprint 5 - Variant Code b");
 
     document.documentElement.classList.add('wa-s5');
+
+    function klickDetails(){
+        WATO.qs(".js-pds-more-details").click();
+    }
 
     // Check if short Description is < 3
     WATO.elem(".pds-cockpit__shortDescription", function(a_ShortDescription) {
@@ -51,124 +55,145 @@
     });
 
 
-    WATO.elem(".productInfosItem", function(a_productInfos) {
-        try {
+    WATO.elem('.productInfosItem .row[itemprop="description"]', function(elem) {
+        if(elem){        
+            try {
 
-            var $_productDescription = false,
-                $_madeIn = false,
-                $_material = false,
-                $_quality = false,
-                $_fitting = false;
+                var a_productInfos = WATO.qsa(".productInfosItem"),
+                    $_productDescription = false,
+                    $_madeIn = false,
+                    $_material = false,
+                    $_quality = false,
+                    $_fitting = false;
+                
+                console.log('a_productInfos: ', a_productInfos);
+
+                if (a_productInfos) {
+
+                    for (var i = 0; i < a_productInfos.length; i++) {
+
+                        var $_InfoBox = a_productInfos[i],
+                            $_h3 = WATO.qs(".h3", $_InfoBox);
+
+                        console.log($_InfoBox);
+
+                        if ($_h3 !== null) {
+
+                            console.log($_h3.innerText);
+
+                            if ($_h3.innerText === "Produktbeschreibung") {
+
+                                $_productDescription = $_InfoBox;
+
+                                $_productDescription.classList.add("wa-m-t");
 
 
-            if (a_productInfos) {
 
-                for (var i = 0; i < a_productInfos.length; i++) {
 
-                    var $_InfoBox = a_productInfos[i],
-                        $_h3 = WATO.qs(".h3", $_InfoBox);
 
-                    console.log($_InfoBox);
+                            } else if ($_h3.innerText === "Material") {
 
-                    if ($_h3 !== null) {
+                                $_material = $_InfoBox;
 
-                        console.log($_h3.innerText);
+                                var a_Materials = WATO.qsa("li.row", $_InfoBox),
+                                    insertHTML = '',
+                                    moreLink = false;
 
-                        if ($_h3.innerText === "Produktbeschreibung") {
-
-                            $_productDescription = $_InfoBox;
-
-                            $_productDescription.classList.add("wa-m-t");
-
-                        } else if ($_h3.innerText === "Material") {
-
-                            $_material = $_InfoBox;
-
-                            var a_Materials = WATO.qsa("li.row", $_InfoBox),
-                                insertHTML = '',
-                                moreLink = false;
-
-                            for (var x = 0; x < a_Materials.length; ++x) {
-                                if (x === 2) {
-                                    moreLink = true;
-                                    break;
+                                for (var x = 0; x < a_Materials.length; ++x) {
+                                    if (x === 2) {
+                                        moreLink = true;
+                                        break;
+                                    }
+                                    insertHTML += a_Materials[x].outerHTML;
                                 }
-                                insertHTML += a_Materials[x].outerHTML;
+
+                                insertHTML = '<div id="wa-material">' +
+                                    '<p>MATERIAL</p>' +
+                                    '<ul>' +
+                                    insertHTML +
+                                    '</ul>' +
+                                    (moreLink ? '<div class="wa-show-more">+ ' + (a_Materials.length - 2) + ' weitere <span></span></div>': '') +
+                                    '</div>';
+
+                                WATO.qs(".pds-cockpit__shortDescription").insertAdjacentHTML("afterend", insertHTML);
+
+                                if (moreLink) {
+                                    WATO.qs(".wa-show-more").addEventListener("click", klickDetails);
+                                }
+
+
+                                
+
+                            } else if ($_h3.innerText === "Made in") {
+
+                                $_madeIn = $_InfoBox;
+
+                                if ($_InfoBox.innerText.indexOf("Deutschland") !== -1) {
+                                    WATO.qs(".js-badges-container").insertAdjacentHTML("beforeend", '<div id="wa-ger"></div>');
+
+                                } else if (new RegExp("Bosnien Herzegowina|Griechenland|Bulgarien|Italien|Kroatien|Litauen|Mazedonien|Österreich|Polen|Portugal|Rumänien|Slowenien|Spanien|Tschechische Republik|Türkei|Ungarn|Weißrussland").test($_InfoBox.innerText)) {
+                                    WATO.qs(".js-badges-container").insertAdjacentHTML("beforeend", '<div id="wa-eu" class="tooltip-right" data-tt="'+$_InfoBox.innerText.replace("Made in", "")+'"></div>');
+                                }
+
+
+
+                            }  else if ($_h3.innerText === "Ausgezeichnete Qualität") {
+
+                                $_quality = $_InfoBox;
+
+
+
+
+                            } else if ($_h3.innerText === "Passform") {
+
+                                $_fitting = $_InfoBox;
+
                             }
-
-                            insertHTML = '<div id="wa-material">' +
-                                '<p>MATERIAL</p>' +
-                                '<ul>' +
-                                insertHTML +
-                                '</ul>' +
-                                (moreLink ? '<div class="wa-show-more">+ ' + (a_Materials.length - 2) + ' weitere <span></span></div>': '') +
-                                '</div>';
-
-                            WATO.qs(".pds-cockpit__shortDescription").insertAdjacentHTML("afterend", insertHTML);
-
-                            if (moreLink) {
-                                WATO.qs(".wa-show-more").addEventListener("click", function(){
-                                    WATO.qs(".js-pds-more-details").click();
-                                });
-                            }
-
-                        } else if ($_h3.innerText === "Made in") {
-
-                            $_madeIn = $_InfoBox;
-
-                            if ($_InfoBox.innerText.indexOf("Deutschland") !== -1) {
-                                WATO.qs(".js-badges-container").insertAdjacentHTML("beforeend", '<div id="wa-ger"></div>');
-
-                            } else if (new RegExp("Bosnien Herzegowina|Griechenland|Bulgarien|Italien|Kroatien|Litauen|Mazedonien|Österreich|Polen|Portugal|Rumänien|Slowenien|Spanien|Tschechische Republik|Türkei|Ungarn|Weißrussland").test($_InfoBox.innerText)) {
-                                WATO.qs(".js-badges-container").insertAdjacentHTML("beforeend", '<div id="wa-eu" class="tooltip-right" data-tt="'+$_InfoBox.innerText.replace("Made in", "")+'"></div>');
-                            }
-                        }  else if ($_h3.innerText === "Ausgezeichnete Qualität") {
-
-                            $_quality = $_InfoBox;
-
-                        } else if ($_h3.innerText === "Passform") {
-
-                            $_fitting = $_InfoBox;
 
                         }
+                    }
 
+                    console.log("a");
+
+
+                    var setQuality = function($_element) {
+                        console.log('$_element: ', $_element);
+
+                        if ($_fitting) {
+                            $_element.parentNode.insertBefore($_quality, $_element.nextSibling);
+                        } else {
+                            WATO.qs(".productInfoTop > .row").insertAdjacentHTML("beforeend", '<div id="wa-box"></div>');
+                            WATO.qs("#wa-box").appendChild($_quality);
+                        }
+
+                        $_element.insertAdjacentHTML("afterend", '<div id="wa-qualitySeal"></div>');
+                    };
+
+                    console.log('$_quality: ', $_quality);
+                    console.log('$_madeIn: ', $_madeIn);
+                    console.log('$_material: ', $_material);
+
+
+                    if ($_quality && $_madeIn) {
+                        setQuality($_madeIn);
+
+                    } else if ($_quality && $_material) {
+                        setQuality($_material);
+                    }
+
+                    if ($_madeIn) {
+                        $_productDescription.parentNode.insertBefore($_madeIn, $_productDescription.nextSibling);
+                    }
+
+                    if ($_material) {
+                        $_productDescription.parentNode.insertBefore($_material, $_productDescription.nextSibling);
                     }
                 }
 
-
-                function setQuality($_element) {
-
-                    if ($_fitting) {
-                        $_element.parentNode.insertBefore($_quality, $_element.nextSibling);
-                    } else {
-                        WATO.qs(".productInfoTop > .row").insertAdjacentHTML("beforeend", '<div id="wa-box"></div>');
-                        WATO.qs("#wa-box").appendChild($_quality);
-                    }
-
-                    $_element.insertAdjacentHTML("afterend", '<div id="wa-qualitySeal"></div>');
-                }
-
-
-
-                if ($_quality && $_madeIn) {
-                    setQuality($_madeIn);
-
-                } else if ($_quality && $_material) {
-                    setQuality($_material);
-                }
-
-                if ($_madeIn) {
-                    $_productDescription.parentNode.insertBefore($_madeIn, $_productDescription.nextSibling);
-                }
-
-                if ($_material) {
-                    $_productDescription.parentNode.insertBefore($_material, $_productDescription.nextSibling);
-                }
+            } catch(e) {
+                console.log("POLL: productInfosItem:");
+                console.log(e);
             }
-
-        } catch(e) {
-            console.log("POLL: productInfosItem:");
-            console.log(e);
         }
     });
 
