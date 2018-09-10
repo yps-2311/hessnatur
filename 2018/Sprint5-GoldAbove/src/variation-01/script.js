@@ -20,6 +20,10 @@
         goalPush("s5_click_plus");
     }
 
+    function goalFlag(){
+        goalPush("s5_hover_flag");
+    }
+
 
 
 
@@ -167,6 +171,7 @@
                                     }
 
 
+                                    
 
                             } else if ($_h3.innerText === "Made in") {
 
@@ -175,16 +180,12 @@
                                 if ($_InfoBox.innerText.indexOf("Deutschland") !== -1) {
                                     WATO.qs(".js-badges-container").insertAdjacentHTML("beforeend", '<div id="wa-ger"></div>');
 
-                                    WATO.qs("#wa-ger").addEventListener("mouseover", function(){
-                                        goalPush("s5_hover_flag");
-                                    });
+                                    WATO.qs("#wa-ger").addEventListener("mouseover", goalFlag);
 
                                 } else if (new RegExp("Bosnien Herzegowina|Griechenland|Bulgarien|Italien|Kroatien|Litauen|Mazedonien|Österreich|Polen|Portugal|Rumänien|Slowenien|Spanien|Tschechische Republik|Türkei|Ungarn|Weißrussland").test($_InfoBox.innerText)) {
                                     WATO.qs(".js-badges-container").insertAdjacentHTML("beforeend", '<div id="wa-eu" class="tooltip-right" data-tt="'+$_InfoBox.innerText.replace("Made in", "")+'"></div>');
 
-                                    WATO.qs("#wa-eu").addEventListener("mouseover", function(){
-                                       goalPush("s5_hover_flag");
-                                    });
+                                    WATO.qs("#wa-eu").addEventListener("mouseover", goalFlag);
                                 }
 
 
@@ -215,20 +216,30 @@
 
                         if (!$_fitting && WATO.qsa(".column.shrink", $_quality).length >= 3) {
                             WATO.qs(".productInfoTop > .row").insertAdjacentHTML("beforeend", '<div id="wa-box"></div>');
+                            console.log('WATO.qs(".productInfoTop > .row"): ', WATO.qs(".productInfoTop > .row"));
                             WATO.qs("#wa-box").appendChild($_quality);
+                            console.log('WATO.qs("#wa-box"): ', WATO.qs("#wa-box"));
                         } else {
                             $_element.parentNode.insertBefore($_quality, $_element.nextSibling);
                         }
 
-                        $_element.insertAdjacentHTML("afterend", '<div id="wa-qualitySeal"></div>');
+                        if($_element){
+                            $_element.insertAdjacentHTML("afterend", '<div id="wa-qualitySeal"></div>');
 
-                        WATO.qs("#qa-qualitySeal").addEventListener("click", function(){
-                            goalPush("s5_click_quality");
-                        });
+                            console.log('WATO.qs("#wa-qualitySeal"): ', WATO.qs("#wa-qualitySeal"));
 
-                        WATO.qs("#qa-qualitySeal").addEventListener("mouseover", function(){
-                            goalPush("s5_hover_quality");
-                        });
+                            var pQualitySeal = WATO.qs("#wa-qualitySeal");
+                            
+                            pQualitySeal.addEventListener("click", function(){
+                                goalPush("s5_click_quality");
+                            });
+    
+                            pQualitySeal.addEventListener("mouseover", function(){
+                                goalPush("s5_hover_quality");
+                            });
+                        }
+
+                        
                     };
 
                     //goalPush("s5_engagement_details");
