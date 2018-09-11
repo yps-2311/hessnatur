@@ -12,6 +12,11 @@
 
 // overwrites
 // .wa-s5 {
+
+  .js-badges-container {
+    height: 30px;
+  }
+
   .pds-cockpit__badge {
     margin: 0 5px 5px 0;
   }
@@ -52,7 +57,7 @@
         padding-left: 2px;
 
         .certificateWrapper {
-          > columns {
+          > .columns {
             align-items: flex-start;
             align-content: flex-start;
           }
@@ -72,8 +77,6 @@
         }
       }
     }
-    
-
   }
 
   /**
@@ -201,6 +204,15 @@
     top: 6px;
   }
 
+  #wa-ger:before {
+      top: 20px;
+    left: 39px;
+  }
+  #wa-ger:after {
+    bottom: 25px;
+    left: 39px;
+  }
+
   /* Vertically center tooltip content for left/right tooltips */
   .tooltip-right:after {
     margin-left: 0;
@@ -214,47 +226,71 @@
 
 // new elements
 
-.wa-show-shortDesc {
-  height: 54px;
-  overflow: hidden;
-  margin-bottom: 20px;
-  pointer-events: none;
-  position: relative;
-}
 
-.wa-show-shortDesc::before {
-  pointer-events: all;
-  content: "";
-  width: 100%;
-  height: 34px;
-  background: #ffffffbf;
-  display: block;
-  position: absolute;
-  margin-top: 36px;
-  background: url("https://webarts.s3.amazonaws.com/Hessnatur/2018/Sprint5/down.png") transparent 43% 22px no-repeat;
-  // background-position: ;
-  // background-repeat: no-repeat;
-  cursor: pointer;
-  z-index: 2;
-  bottom: -3px;
-}
-
-.wa-show-shortDesc::after {
-  content: "";
-  background-image: linear-gradient(-179deg, rgba(255,255,255,0.45) 0%, #FFFFFF 99%);
-  z-index: 1;
-  bottom: -3px;
+#wa-trigger-show {
+  display: none;
+  background: url("https://webarts.s3.amazonaws.com/Hessnatur/2018/Sprint5/down.png") transparent  43% 0px no-repeat;
+  height: 9px;
+  opacity: 0.4;
+  margin-top: -1px;
   width: 400px;
-  height: 25px;
-  display: block;
-bottom: -3px;
-position: absolute;
+  margin-bottom: 20px;
+  cursor: pointer;
 }
+
+
+.wa-show-shortDesc {
+
+  #wa-trigger-show {
+    display: block;
+  }
+
+
+
+  .pds-cockpit__shortDescription {
+    cursor: pointer;
+    height: 58px;
+    overflow: hidden;
+    position: relative;
+  }
+  /*.pds-cockpit__shortDescription::before {
+    pointer-events: all;
+    content: "";
+    width: 100%;
+    height: 34px;
+    background: #ffffffbf;
+    display: block;
+    position: absolute;
+    margin-top: 36px;
+
+    // background-position: ;
+    // background-repeat: no-repeat;
+    cursor: pointer;
+    z-index: 2;
+    bottom: -4px;
+  }*/
+  .pds-cockpit__shortDescription::after {
+    content: "";
+    background-image: linear-gradient(-179deg, rgba(255,255,255,0.45) 0%, #FFFFFF 99%);
+    z-index: 1;
+    width: 400px;
+    height: 20px;
+    display: block;
+    bottom: 0px;
+    position: absolute;
+    cursor: pointer;
+  }
+
+}
+
+
+
+
 
 .wa-show-more {
   text-align: center;
   background: #f7f6f5;
-  color: #00000042;
+  color: rgba(196, 196, 196, 1);
   cursor: pointer;
 
   span {
@@ -278,6 +314,7 @@ position: absolute;
 
   > p {
     margin-bottom: 8px;
+    font-weight: bold;
   }
 
   ul {
@@ -301,6 +338,7 @@ position: absolute;
 
   img {
     margin-right: 10px;
+    width: 36px;
   }
 }
 
@@ -321,7 +359,7 @@ position: absolute;
 }
 
 #wa-ger {
-  background: url("https://imgs7.hessnatur.com/is/content/HessNatur/Zertifikate/Zertifikat_Made-In-Germany.svg") 0 0 no-repeat;
+  background: url("https://webarts.s3.amazonaws.com/Hessnatur/2018/Sprint5/made_in_germany.svg") 0 0 no-repeat;
   width: 50px;
   background-size: contain;
   height: 50px;
@@ -329,7 +367,7 @@ position: absolute;
   margin: 0px;
   margin-top: -13px;
   position: absolute;
-
+  z-index: 100;
 }
 
 .wa-m-t {
@@ -350,5 +388,10 @@ position: absolute;
     width: 50%;
     float: left;
   }
+}
+
+.wa-placeholder {
+  width: 7.5rem;
+  height: 36px;
 }
 
