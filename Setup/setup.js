@@ -29,6 +29,8 @@
 
                 origOpen.call(this, method, uri, async, user, pass);
             };
+
+            
     
         }else if(
             URL.indexOf("/de/damen") !== -1 ||
@@ -70,9 +72,11 @@
             setInterval(function(){
                 clearInterval(wa_loginButtonInterval);
             },5000);
+
+        } else if (URL.indexOf("/merkzettel") !== -1) {
+            // Merkzettel
+            goalPush('click_merken');
             
-        } else if (URL.indexOf("magazin/textillexikon") !== -1) {
-            goalPush('page_material');
         } else if(URL.indexOf("/addresses/add-delivery-address") !== -1){
             // Adresse
             goalPush('page_address');
