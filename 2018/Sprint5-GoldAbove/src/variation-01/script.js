@@ -11,12 +11,19 @@
 (function(WATO) {
     "use strict";
 
+    var bMouseOver = false,
+        bMouseOverFlag = false;
+
     function goalPush(key){
+        // console.log('key: ', key);
         window.iridion.push(['goal', key]);
     }
 
     function goalFlag(){
-        goalPush("s5_hover_flag");
+        if(!bMouseOverFlag){
+            goalPush("s5_hover_flag");
+            bMouseOverFlag = true;
+        }
     }
 
     function showBullets($_SDParent) {
@@ -25,11 +32,12 @@
     }
 
     function showMoreMaterials() {
-            WATO.qs(".js-pds-more-details").click();
-            goalPush("s5_click_plus");
+        WATO.qs(".js-pds-more-details").click();
+        goalPush("s5_click_plus");
     }
 
-    var setQuality = function($_element, $_fitting, $_quality) {
+    var sQS = '<div id="wa-qualitySeal"></div>',
+        setQuality = function($_element, $_fitting, $_quality) {
             if($_element){
                 // Wenn keine Passform vorhanden ist, soll es unten stehen wie im Screenshot. Sind es jedoch nur 1 oder 2 Siegel, sollte es dennoch unterhalb der Qualitätsbox stehen.
                 if (!$_fitting && WATO.qsa(".column.shrink", $_quality).length >= 3) {
@@ -41,9 +49,9 @@
                     $_element.parentNode.insertBefore($_quality, $_element.nextSibling);
                 }
 
-                $_element.insertAdjacentHTML("afterend", '<div id="wa-qualitySeal"></div>');
+                $_element.insertAdjacentHTML("afterend", sQS);
             } else {
-                WATO.qs(".productInfoTop > .row > .large-3").insertAdjacentHTML("afterbegin", '<div id="wa-qualitySeal"></div>');
+                WATO.qs(".productInfoTop > .row > .large-3").insertAdjacentHTML("afterbegin", sQS);
             }
             var pQualitySeal = WATO.qs("#wa-qualitySeal");
 
@@ -52,24 +60,21 @@
             });
 
             pQualitySeal.addEventListener("mouseover", function(){
-                goalPush("s5_hover_quality");
+                if(!bMouseOver){
+                    goalPush("s5_hover_quality");
+                    bMouseOver = true;
+                }
             });
         },
         tmp_set = false;
 
-
-
-
     WATO.elem("a[data-open=availability-matrix]", function (oAvailMatrix){
-
         if (oAvailMatrix) {
             oAvailMatrix[0].addEventListener("click", function(){
                 goalPush("s5_click_availability");
             });
         }
     });
-
-
 
     // Check if short Description is < 3
     WATO.elem(".pds-cockpit__shortDescription", function(a_ShortDescription) {
@@ -87,6 +92,7 @@
                     WATO.qs("#wa-trigger-show").addEventListener("click", function(){
                         showBullets($_SDParent);
                     });
+
                     $_ShortDescription.addEventListener("click", function(){
                         showBullets($_SDParent);
                     });
@@ -103,9 +109,7 @@
     });
 
     WATO.elem(".js-pds-more-details", function(a_showMore) {
-
         try {
-
             if (a_showMore) {
 
                 a_showMore[0].innerText = "Mehr Produktinformationen";
@@ -125,7 +129,7 @@
 
     // Polling the after element, because there was a timing error when polling the original elements
     WATO.elem('.js-product-detail-images', function(elem) {
-        if(elem){        
+        if(elem){
             try {
                 //console.log("polled:");
                 //console.log(WATO.qsa(".productInfosItem").length);
@@ -162,17 +166,16 @@
 
                                 var a_Materials = WATO.qsa("li.row", $_material),
                                     insertHTML = '',
-                                    addable = 0,
-                                    tmp_where = false;
+                                    addable = 0;
+                                    // tmp_where = false;
 
                                     for (var x = 0; x < a_Materials.length; ++x) {
 
+                                        // var check_icon = WATO.qsa("span",a_Materials[x]).length;
 
-                                        var check_icon = WATO.qsa("span",a_Materials[x]).length;
+                                        if (WATO.qsa("span",a_Materials[x]).length === 1) {
 
-                                        if (check_icon === 1) {
-
-                                        //<img src="https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_baumwolle.svg" alt="100% <a target='_blank' href='https://www.hessnatur.com/magazin/textillexikon/baumwolle/'>Baumwolle</a>">
+                                            //<img src="https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_baumwolle.svg" alt="100% <a target='_blank' href='https://www.hessnatur.com/magazin/textillexikon/baumwolle/'>Baumwolle</a>">
                                             WATO.qs("span", a_Materials[x]).insertAdjacentHTML('beforebegin', '<div class="column shrink"><img src="https://webarts.s3.amazonaws.com/Hessnatur/2018/Sprint5/divers.svg" width="36px"></div>');
                                         }
 
@@ -194,20 +197,28 @@
                                     insertHTML = '<div id="wa-material">' +
                                         '<p>MATERIAL</p>' +
                                         '<ul>' +
-                                        insertHTML +
+                                            insertHTML +
                                         '</ul>' +
                                         (a_Materials.length - 2 > 0 ? '<div class="wa-show-more">+ ' + (a_Materials.length - 2) + ((a_Materials.length - 2 === 1) ? ' weiteres ' : ' weitere ' ) + ' <span></span></div>': '') +
                                         '</div>';
 
+                                    var pElem1 = WATO.qs("#wa-trigger-show"),
+                                        pElem2 = WATO.qs(".pds-cockpit__shortDescription"),
+                                        pElem3 = WATO.qs(".js-price-container");
 
-                                    if (WATO.qs("#wa-trigger-show") !== null) {
-                                        tmp_where = "#wa-trigger-show";
-                                    } else if (WATO.qs(".pds-cockpit__shortDescription") !== null) {
-                                        tmp_where = ".pds-cockpit__shortDescription";
-                                    } else {
-                                        tmp_where = ".js-price-container";
+                                    if (pElem1 !== null) {
+                                        // tmp_where = "#wa-trigger-show";
+                                        pElem1.insertAdjacentHTML("afterend", insertHTML);
+
+                                    } else if (pElem2 !== null) {
+                                        pElem2.insertAdjacentHTML("afterend", insertHTML);
+
+                                    } else if (pElem3 !== null) {
+                                        // tmp_where = ".js-price-container";
+                                        pElem3.insertAdjacentHTML("afterend", insertHTML);
                                     }
-                                    WATO.qs(tmp_where).insertAdjacentHTML("afterend", insertHTML);
+
+                                    // WATO.qs(tmp_where).insertAdjacentHTML("afterend", insertHTML);
 
                                     if (a_Materials.length - 2 > 0) {
                                         goalPush("s5_more_materials");
