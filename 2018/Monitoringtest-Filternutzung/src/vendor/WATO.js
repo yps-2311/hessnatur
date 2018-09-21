@@ -15,6 +15,8 @@
 (function(window, document) {
     "use strict";
 
+    console.log("a");
+
     if (window.WATO === undefined) {
         /**
          * @class
@@ -42,44 +44,83 @@
      *
      * @return {object} NodeList object - Returns all elements in the document that matches a specified CSS selector(s), as a static NodeList object.
      */
-    window.WATO.prototype.elem = function(
-        waitFor,
-        callback,
-        timeout,
-        self,
-        time
-    ) {
+
+    // window.WATO.prototype.elem = function(
+    //     waitFor,
+    //     callback,
+    //     timeout,
+    //     self,
+    //     time
+    // ) {
+    //     try {
+
+    //         var _self = this || self,
+    //             _time = time || Date.now(),
+    //             _status = false,
+    //             _result;
+
+    //         console.log("elem");
+
+    //         if (Date.now() - _time > 10000) {
+    //             callback(false);
+
+    //             return false;
+    //         }
+
+    //         if (typeof waitFor === "string") {
+    //             _result = document.querySelectorAll(waitFor);
+
+    //             _status = _result.length > 0;
+    //         } else {
+    //             _result = _status = waitFor() === true;
+    //         }
+
+    //         return _status === true ? callback(_result) : setTimeout(
+    //                 _self.elem.bind(
+    //                     null,
+    //                     waitFor,
+    //                     callback,
+    //                     timeout,
+    //                     _self,
+    //                     _time
+    //                 ),
+    //                 timeout || 20
+    //             );
+            
+    //     } catch (error) {
+    //         console.log(error);
+    //     }        
+    // };
+
+    window.WATO.prototype.elem = function(waitFor, callback, timeout, self, time) {
+
+        console.log("elem");
+
         var _self = this || self,
             _time = time || Date.now(),
             _status = false,
             _result;
 
         if (Date.now() - _time > 10000) {
+
             callback(false);
 
             return false;
         }
 
         if (typeof waitFor === "string") {
-            _result = document.querySelectorAll(waitFor);
 
+            _result = document.querySelectorAll(waitFor);
             _status = _result.length > 0;
         } else {
+
             _result = _status = waitFor() === true;
         }
 
-        return _status === true ? callback(_result) : setTimeout(
-                  _self.elem.bind(
-                      null,
-                      waitFor,
-                      callback,
-                      timeout,
-                      _self,
-                      _time
-                  ),
-                  timeout || 20
-              );
+        return _status === true ? callback(_result) : setTimeout(_self.elem.bind(null, waitFor, callback, timeout, _self, _time), timeout || 20);
     };
+
+
 
     /**
      * @function qs

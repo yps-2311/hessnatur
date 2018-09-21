@@ -11,7 +11,7 @@
     "use strict";
     
 	WATO.prototype.goalPush = function(key){
-		// console.log('goal: ', key);
+		console.log('goal: ', key);
 		window.iridion.push(['goal', key]);
 	};
 	

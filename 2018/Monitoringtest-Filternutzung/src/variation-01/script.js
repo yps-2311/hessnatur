@@ -11,17 +11,29 @@
 (function(WATO) {
     "use strict";
 
+    console.log(1);
+
     function filterGenutzt(e){
+        console.log("filterGenutzt");
+
         var pButton = e.target;
+        console.log('pButton: ', pButton);
 
         if(!pButton.classList.contains("button")){
+            console.log('pButton: ', pButton.classList);
             pButton = pButton.parentNode;
         }
+
+        console.log('pButton: ', pButton);
+
         // Nur Anwenden Button (nicht schließen Button)
         if(!WATO.qs(".js-filter-apply", pButton).classList.contains("hide")){
             
             // Goal "allgemein" Filter genutzt
             WATO.goalPush("filter_genutzt");
+
+            // In Segment "Filter genutzt"
+            window.iridion.push(["segment", "32780"]);
 
             var sAttr = pButton.getAttribute("data-yeti-box"), // Attribut zur identifikation des Filters
                 sFilterType = "";
@@ -60,13 +72,26 @@
             }
         }
     }
+
+    console.log(2);
     
     try {
 
+        console.log(3);
+
+
+        // console.log('WATO.qs(".gridviewProductFilterDesktopWrapper .dropdown-pane button"): ', WATO.qs(".gridviewProductFilterDesktopWrapper .dropdown-pane button"));
+
+        // console.log('WATO.qs(".filterTagReset"): ', WATO.qs(".filterTagReset"));
+
+
         // Alle einzelnen Filter-"Anwenden" Buttons geklickt
         WATO.elem('.gridviewProductFilterDesktopWrapper .dropdown-pane button', function(pButtons){
+            console.log(4);
             if(pButtons){
+                console.log(5);
                 for (var i = 0; i < pButtons.length; i++) {
+                    console.log(6);
                     pButtons[i].addEventListener("click", filterGenutzt);
                 }
             }
