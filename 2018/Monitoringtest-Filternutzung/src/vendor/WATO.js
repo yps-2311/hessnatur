@@ -93,8 +93,9 @@
     // };
 
     window.WATO.prototype.elem = function(waitFor, callback, timeout, self, time) {
-
-        console.log("elem");
+        
+        console.log('waitFor: ', waitFor);
+        // console.log("elem");
 
         var _self = this || self,
             _time = time || Date.now(),
@@ -142,9 +143,9 @@
      *
      * @param {string} selector - CSS Selector des zu findenden DOM Elements.
      */
-    // window.WATO.prototype.qsa = function(selector, parent) {
-    //     return (parent ? parent : document).querySelectorAll(selector);
-    // };
+    window.WATO.prototype.qsa = function(selector, parent) {
+        return (parent ? parent : document).querySelectorAll(selector);
+    };
 
     /**
      * @function ready

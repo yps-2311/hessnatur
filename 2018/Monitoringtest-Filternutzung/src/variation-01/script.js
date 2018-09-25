@@ -14,6 +14,11 @@
     console.log(1);
 
     function filterGenutzt(e){
+        console.log('e: ', e);
+        // var eventOrginal = e;
+        // e.preventDefault();
+        // e.stopPropogation();
+
         console.log("filterGenutzt");
 
         var pButton = e.target;
@@ -64,11 +69,25 @@
                     case "toggle_filter_material":
                         sFilterType = "material";
                         break;
+                    case "toggle_filter_FFlaenge":
+                        sFilterType = "laenge";
+                        break;
+                    case "toggle_filter_FFweite":
+                        sFilterType = "weite";
+                        break;
+                    case "toggle_filter_FFbraFit":
+                        sFilterType = "bhform";
+                        break;
                     default:
                         sFilterType = "unbekannt"; // ... außer es passt keines der oberen Goals
                         break;
                 }
                 WATO.goalPush("filter_"+sFilterType);
+
+                // setTimeout(function(){
+                    // console.log(eventOrginal.target);
+                    // eventOrginal.target.dispatchEvent(eventOrginal);
+                // }, 5000);
             }
         }
     }
@@ -92,23 +111,34 @@
                 console.log(5);
                 for (var i = 0; i < pButtons.length; i++) {
                     console.log(6);
-                    pButtons[i].addEventListener("click", filterGenutzt);
+                    pButtons[i].addEventListener("mousedown", filterGenutzt);
                 }
-            }
-        });
 
-        // Filter zurücksetzen Button geklickt
-        WATO.elem('.filterTagReset', function(pZuruecksetzen){
-            if(pZuruecksetzen){
-                pZuruecksetzen[0].addEventListener("click",function (){
-                    WATO.goalPush("filter_zuruecksetzen");
-                });
+                // Filter zurücksetzen Button geklickt
+                // WATO.elem('.filterTagReset', function(pZuruecksetzen){
+                //     if(pZuruecksetzen){
+                //         console.log("filterTagReset");
+                //         pZuruecksetzen[0].addEventListener("click",function (){
+                //             WATO.goalPush("filter_zuruecksetzen");
+                //         });
+                //     }
+                // });
+
+                var filterTagReset = WATO.qsa(".filterTagReset");
+                if(filterTagReset && filterTagReset.length > 0){
+                    console.log("filterTagReset");
+                    filterTagReset[0].addEventListener("click",function (){
+                        WATO.goalPush("filter_zuruecksetzen");
+                    });
+                }
+
             }
         });
 
         // Sortierung geändert
         WATO.elem('#desktop__sort', function(pSortieren){
             if(pSortieren){
+                console.log("desktop__sort");
                 pSortieren[0].addEventListener("change",function (){
                     WATO.goalPush("sortierung_geaendert");
                 });
@@ -118,6 +148,4 @@
     } catch (error) {
         console.log(error);
     }
-
-    
 })(new window.WATO());
