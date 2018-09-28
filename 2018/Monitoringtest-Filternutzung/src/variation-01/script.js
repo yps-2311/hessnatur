@@ -11,25 +11,13 @@
 (function(WATO) {
     "use strict";
 
-    console.log(1);
-
     function filterGenutzt(e){
-        console.log('e: ', e);
-        // var eventOrginal = e;
-        // e.preventDefault();
-        // e.stopPropogation();
-
-        console.log("filterGenutzt");
 
         var pButton = e.target;
-        console.log('pButton: ', pButton);
 
         if(!pButton.classList.contains("button")){
-            console.log('pButton: ', pButton.classList);
             pButton = pButton.parentNode;
         }
-
-        console.log('pButton: ', pButton);
 
         // Nur Anwenden Button (nicht schließen Button)
         if(!WATO.qs(".js-filter-apply", pButton).classList.contains("hide")){
@@ -83,50 +71,21 @@
                         break;
                 }
                 WATO.goalPush("filter_"+sFilterType);
-
-                // setTimeout(function(){
-                    // console.log(eventOrginal.target);
-                    // eventOrginal.target.dispatchEvent(eventOrginal);
-                // }, 5000);
             }
         }
     }
-
-    console.log(2);
     
     try {
 
-        console.log(3);
-
-
-        // console.log('WATO.qs(".gridviewProductFilterDesktopWrapper .dropdown-pane button"): ', WATO.qs(".gridviewProductFilterDesktopWrapper .dropdown-pane button"));
-
-        // console.log('WATO.qs(".filterTagReset"): ', WATO.qs(".filterTagReset"));
-
-
         // Alle einzelnen Filter-"Anwenden" Buttons geklickt
         WATO.elem('.gridviewProductFilterDesktopWrapper .dropdown-pane button', function(pButtons){
-            console.log(4);
             if(pButtons){
-                console.log(5);
                 for (var i = 0; i < pButtons.length; i++) {
-                    console.log(6);
                     pButtons[i].addEventListener("mousedown", filterGenutzt);
                 }
 
-                // Filter zurücksetzen Button geklickt
-                // WATO.elem('.filterTagReset', function(pZuruecksetzen){
-                //     if(pZuruecksetzen){
-                //         console.log("filterTagReset");
-                //         pZuruecksetzen[0].addEventListener("click",function (){
-                //             WATO.goalPush("filter_zuruecksetzen");
-                //         });
-                //     }
-                // });
-
                 var filterTagReset = WATO.qsa(".filterTagReset");
                 if(filterTagReset && filterTagReset.length > 0){
-                    console.log("filterTagReset");
                     filterTagReset[0].addEventListener("click",function (){
                         WATO.goalPush("filter_zuruecksetzen");
                     });
@@ -138,7 +97,6 @@
         // Sortierung geändert
         WATO.elem('#desktop__sort', function(pSortieren){
             if(pSortieren){
-                console.log("desktop__sort");
                 pSortieren[0].addEventListener("change",function (){
                     WATO.goalPush("sortierung_geaendert");
                 });
@@ -146,6 +104,6 @@
         });
         
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
 })(new window.WATO());

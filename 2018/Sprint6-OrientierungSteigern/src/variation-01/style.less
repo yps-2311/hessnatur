@@ -1,0 +1,53 @@
+/* IMPORT VAR LESS FILE */
+@import "../global/vars.less";
+
+/* IMPORT GLOBAL LESS FILES */
+@import "../global/global.less";
+
+/* DEFINE VARIATION CSS */
+
+.yCmsComponent {
+    position: relative;
+}
+
+.kk_nudgeLeft {
+    border: solid #e1c9cb 5px;
+    padding: 15px 15px 15px 80px;
+    background: #fff url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2018/Sprint06/lupe.png") no-repeat 12px center;
+    position: absolute;
+    left: -348px;
+    top: -25px;
+    min-width: 312px;
+    opacity: 0;
+    transition: all 1s;
+
+    b {
+        font-size: 14px;
+    }
+    p {
+        font-size: 12px;
+    }
+    &::after {
+        content: "";
+        position: absolute;
+        right: -15px;
+        top: 37%;
+        background: transparent url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2018/Sprint06/nudgeEcke.png") no-repeat 0 0;
+        width: 15px;
+        height: 21px;
+    }
+    .close-button {
+        padding: 0;
+        margin: -11px -13px 0 0;
+        width: 25px;
+        height: 25px;
+        line-height: 28px;
+        
+        span {
+            font-size: 20px;
+        }
+    }
+
+}
+
+
