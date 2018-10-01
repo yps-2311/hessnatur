@@ -80,7 +80,7 @@
                         console.log('suchfeld: ', suchfeld);
 
 
-                        userIstImView(suchfeld[0], function(){
+                        // userIstImView(suchfeld[0], function(){
                             suchfeld[0].insertAdjacentHTML('beforebegin', 
                             '<div class="kk_nudgeLeft">'+
                                 '<button class="align-right close-button js-actionbar-close" type="button" data-close=""><span>×</span></button>'+
@@ -100,7 +100,7 @@
                                     }, 1000);
                                 });
                             }, 500);
-                        });
+                        // });
 
 
                         
