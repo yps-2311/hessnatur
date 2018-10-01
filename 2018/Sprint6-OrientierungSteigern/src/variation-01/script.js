@@ -13,7 +13,8 @@
 
     console.log("sprint06");
 
-    var URLpath = window.document.location.pathname;
+    var URLpath = window.document.location.pathname,
+        doScroll = true;
 
     function getLocalstorage(name){
         // if(isLS){
@@ -36,26 +37,25 @@
         try {
             window.addEventListener("scroll", function(){
                 if(doScroll){
-                    doScroll = false;
-        
-                    setTimeout(function(){
-                        doScroll = true;
-                    }, 50);
-        
                     try {
                         var offsetTop = element.getBoundingClientRect().top;
                         // bNachDerCTA = (Math.max(window.document.documentElement.clientHeight, window.innerHeight || 0)) >= zFormOffsetTop;
                         
                         console.log('offsetTop: ', offsetTop);
     
-                        // if(offsetTop < 330 && offsetTop > -330){
-        
-        
-                        // }
+                        if(offsetTop < 330 && offsetTop > -330){
+                            callback();
+                        }
         
                     } catch (e){
                         console.log(e);
                     }
+
+                    setTimeout(function(){
+                        doScroll = true;
+                    }, 50);
+
+                    doScroll = false;
                 }
             });
         } catch (error) {
@@ -63,7 +63,7 @@
         }
     }
 
-    var doScroll = true;
+   
 
 
     if(URLpath === "/de/" || new RegExp("/de/(NEU|herren|damen|baby|home|sale)").test(URLpath)){
@@ -73,7 +73,7 @@
         if(!getLocalstorage("kk_homeNudge")){
 
             // Nach X Sekunden eingeblendet
-            // setTimeout(function(){
+            setTimeout(function(){
 
                 WATO.elem('#search_form', function(suchfeld){
                     if(suchfeld){
@@ -90,13 +90,13 @@
                             setTimeout(function(){
                                 var nudge = WATO.qs(".kk_nudgeLeft");
                                 nudge.style.opacity = 1;
-                                // setLocalstorage("kk_homeNudge", false);
+                                setLocalstorage("kk_homeNudge", false);
         
                                 WATO.qs(".close-button", nudge).addEventListener('click', function(){
                                     nudge.style.opacity = 0;
                                     setTimeout(function(){
                                         nudge.style.display = "none";
-                                        // setLocalstorage("kk_homeNudge", true);
+                                        setLocalstorage("kk_homeNudge", true);
                                     }, 1000);
                                 });
                             }, 500);
@@ -106,7 +106,7 @@
                         
                     }
                 });
-            // }, 1500);
+            }, 1500);
         }
 
     }else if(URLpath.indexOf("/p/") !== -1){
