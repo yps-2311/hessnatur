@@ -16,12 +16,13 @@
     var URLpath = window.document.location.pathname,
         nDelayHome = 7500,
         nDelayPDP = 7500,
-        nDelayCart = 7500,
+        nDelayCart = 1500,
         bChoseSize = false,
     	bSizeIsVisible = true,
     	bMoreDetailIsVisible = true,
     	bProdInfosIsVisible = false,
     	bCtaIsVisible = true,
+    	bSizeSelectIsVisible = false,
     	sExcludeCookie = "iridion_1538128684835_exclude",
 		nPunchout = 1024,
 		bWaEclude = document.cookie.indexOf(sExcludeCookie+'=true') !== -1,
@@ -276,7 +277,7 @@
     							
     							WATO.elem('.btn-simple-link.js-pds-more-details', function(aMoreDetails){
     		    		    		try{
-    		    		    			if(aMoreDetails){
+    		    		    			if(aMoreDetails && !bSizeSelectIsVisible){
     		    		    				
     		    		    				// Parent relativ setzen
     		    		    				aMoreDetails[0].classList.add('wa-pos-relative');
@@ -360,16 +361,20 @@
     		    					
     		    					if(event.currentTarget.value !== ""){
     		    						
-    		    						if(WATO.qs("#kk_nudgeSelectSize") !== null && WATO.qs("#kk_nudgeSelectSize").style.display !== "none"){
+    		    						var oNudgeSelectSize = WATO.qs("#kk_nudgeSelectSize");
+    		    						
+    		    						if(oNudgeSelectSize !== null && oNudgeSelectSize.style.display !== "none"){
     		    							
-    		    							 WATO.qs("#kk_nudgeSelectSize").style.display = "none";
+    		    							oNudgeSelectSize.style.display = "none";
+    		    							 
+    		    							oNudgeSelectSize.classList.remove('wa-show-nudge');
+    		    							
+    		    							bSizeSelectIsVisible = false;
     		    						}
     		    					}
     		    				});   		    				
     		    				window.addEventListener('scroll', function(){
     		    					nScrollPos = window.pageYOffset + nNavHeight;
-    		    					
-//    		    					console.log(nScrollPos, nSelectPos, nMoreDetailPos);
     		    					
     		    					if(nScrollPos >= nSelectPos && bSizeIsVisible){
     		    						bSizeIsVisible = false;
@@ -396,7 +401,7 @@
     		    					
     		    					// Timeout für die Anzeige der Box
     		    					window.setTimeout(function(){
-    		    						if(!bChoseSize && bSizeIsVisible){
+    		    						if(!bChoseSize && bSizeIsVisible && !bSizeSelectIsVisible){
     		    							
     		    							// Parent relativ setzen
     		    							aSizeAdvisor[0].parentNode.classList.add('wa-pos-relative');
@@ -443,50 +448,79 @@
     		        		    			if(aAddToCart){
     		        		    				
     		        		    				aAddToCart[0].addEventListener('mouseenter', function(){
-    		        		    					
+
     		        		    					if(!bChoseSize){
     		        		    						
-    		        		    						// Parent relativ setzen
-    		        		    						aSizeSelect[0].parentNode.classList.add('wa-pos-relative');
-    		    		    							
-    		        		    						aSizeSelect[0].insertAdjacentHTML('beforebegin', 
-    		    	                                            '<div id="kk_nudgeSelectSize">'+
-    		    	                                                '<button class="align-right close-button js-actionbar-close" type="button" data-close=""><span>&times;</span></button>'+
-    		    	                                                '<h4>Bitte w&auml;hlen Sie eine Gr&ouml;&szlig;e aus.</h4>'+
-    		    	                                                '<p>Sollten Sie noch unsicher sein, welche Gr&ouml;&szlig;e die richtige ist, nutzen Sie gerne unseren <a href="#" id="wa-size-advisor">Gr&ouml;&szlig;enberater</a>.</p>'+
-    		    	                                            '</div>');
-    		    		    							
-    		    		    							var oNudgeSelectSize =  WATO.qs("#kk_nudgeSelectSize");
-    		    		    							
-    		    		    							oNudgeSelectSize.classList.add('wa-show-nudge');
-    		    		    							
-    		    		    							pushIridionGoal('s6_show_nudge_sizeadvisor');
-    		    		    							
-    		    		    							setLocalstorage(aNudgeName.selectsize, false);
-    		    		    							
-    		    		    							WATO.qs('#wa-size-advisor').addEventListener('click', function(event){
-    		    		    								
-    		    		    								event.preventDefault();
-    		    		    								
-    		    		    								removeNudge(oNudgeSelectSize);
-    		    		    								
-    		    		    								pushIridionGoal('s6_click_nudge_sizeadvisor_link');
-    		    		    								
-    		    		    								bClickNudgeLink = true;
-    		    		    								
-    		    		    								aSizeAdvisor[0].click();
-    		    		    								
-    		    		    							});
+    		        		    						bSizeSelectIsVisible = true;
+    		        		    						
+    		        		    						var oNudgeSelectSize =  WATO.qs("#kk_nudgeSelectSize"),
+    		        		    							oNudgeProdDetail = WATO.qs("#kk_nudgeProdDetail"),
+    		        		    							oNudgeSize = WATO.qs('#kk_nudgeSize');
+    		        		    						
+    		        		    						if(oNudgeProdDetail !== null && oNudgeProdDetail.style.display !== "none"){
+    		        		    							 
+    		        		    							oNudgeProdDetail.style.display = "none";
+    		        		    						}
+    		        		    						if(oNudgeSize !== null && oNudgeSize.style.display !== "none"){
+   		        		    							 
+    		        		    							oNudgeSize.style.display = "none";
+    		        		    						}
+    		        		    						
+    		        		    						if(oNudgeSelectSize === null){
+    		        		    						
+    		        		    							// Parent relativ setzen
+        		        		    						aSizeSelect[0].parentNode.classList.add('wa-pos-relative');
+        		    		    							
+        		        		    						aSizeSelect[0].insertAdjacentHTML('beforebegin', 
+        		    	                                            '<div id="kk_nudgeSelectSize">'+
+        		    	                                                '<button class="align-right close-button js-actionbar-close" type="button" data-close=""><span>&times;</span></button>'+
+        		    	                                                '<h4>Bitte w&auml;hlen Sie eine Gr&ouml;&szlig;e aus.</h4>'+
+        		    	                                                '<p>Sollten Sie noch unsicher sein, welche Gr&ouml;&szlig;e die richtige ist, nutzen Sie gerne unseren <a href="#" id="wa-size-advisor">Gr&ouml;&szlig;enberater</a>.</p>'+
+        		    	                                            '</div>');
+        		    		    							
+        		    		    							oNudgeSelectSize =  WATO.qs("#kk_nudgeSelectSize");
+        		    		    							
+        		    		    							oNudgeSelectSize.classList.add('wa-show-nudge');
+        		    		    							
+        		    		    							pushIridionGoal('s6_show_nudge_sizeadvisor');
+        		    		    							
+        		    		    							setLocalstorage(aNudgeName.selectsize, false);
+        		    		    							
+        		    		    							WATO.qs('#wa-size-advisor').addEventListener('click', function(event){
+        		    		    								
+        		    		    								event.preventDefault();
+        		    		    								
+        		    		    								removeNudge(oNudgeSelectSize);
+        		    		    								
+        		    		    								pushIridionGoal('s6_click_nudge_sizeadvisor_link');
+        		    		    								
+        		    		    								bClickNudgeLink = true;
+        		    		    								
+        		    		    								aSizeAdvisor[0].click();
+        		    		    								
+        		    		    								bSizeSelectIsVisible = false;
+        		    		    								
+        		    		    							});
 
-    		    	                                    WATO.qs(".close-button", oNudgeSelectSize).addEventListener('click', function(){
-    		    	                                    	
-    		    	                                    	removeNudge(oNudgeSelectSize);
-    		    	                                    	
-    		    	                                    	pushIridionGoal('s6_close_nudge_sizeadvisor');
-    		    	                                    	
-    		    	                                    	setLocalstorage(aNudgeName.selectsize, true);
-    		    	                                    	
-    		    	                                    });
+        		    	                                    WATO.qs(".close-button", oNudgeSelectSize).addEventListener('click', function(){
+        		    	                                    	
+        		    	                                    	removeNudge(oNudgeSelectSize);
+        		    	                                    	
+        		    	                                    	bSizeSelectIsVisible = false;
+        		    	                                    	
+        		    	                                    	pushIridionGoal('s6_close_nudge_sizeadvisor');
+        		    	                                    	
+        		    	                                    	setLocalstorage(aNudgeName.selectsize, true);
+        		    	                                    	
+        		    	                                    });
+    		        		    							
+    		        		    						} else {
+    		        		    							
+    		        		    							oNudgeSelectSize.style.display = 'block';
+    		        		    							
+    		        		    							oNudgeSelectSize.classList.add('wa-show-nudge');
+    		        		    							
+    		        		    						}
     		        		    					}
     		        		    				});
     		        		    				
@@ -552,19 +586,42 @@
     	console.log('WA: Warenkorb');
     	
     	// Nudge geschlossen oder gesehen
-        if(!getLocalstorage(aNudgeName.cart)){
+//        if(!getLocalstorage(aNudgeName.cart)){
         	
         	WATO.elem('a.button.success', function(aCTA){
         		try{
         			if(aCTA){
         				
+        				var nNavHeight 		= WATO.qs('div.headerWrapper').offsetHeight,
+							nScrollPos 		= window.pageYOffset,
+							nCtaTopHeight	= aCTA[0].offsetHeight,
+							nCtaTopPos 		= aCTA[0].getBoundingClientRect().top;
+        				
+        				if(nScrollPos +  nNavHeight >= nCtaTopPos + nCtaTopHeight){
+        					
+							bCtaIsVisible = false;
+						}
+        				
+        				window.addEventListener('scroll', function(){
+	    					nScrollPos = window.pageYOffset + nNavHeight;
+	    					    					
+	    					if(nScrollPos >= nCtaTopPos + nCtaTopHeight && bCtaIsVisible){
+	    						bCtaIsVisible = false;
+	    						
+	    					} else if(!bCtaIsVisible && nScrollPos < nCtaTopPos){
+	    						
+	    						bCtaIsVisible = true;
+	    					}
+	    				});
+        				
+        				
         				// Timeout für die Anzeige der Nudge
     					window.setTimeout(function(){
-    						
+
     						if(bCtaIsVisible){
-    							
     							// Parent relativ setzen
     							aCTA[0].parentNode.classList.add('wa-pos-relative');
+    							
     							
     							aCTA[0].insertAdjacentHTML('beforebegin', 
                                         '<div id="kk_nudgeCart_top">'+
@@ -572,14 +629,10 @@
                                             '<h4>Flexibel zuhause entscheiden</h4>'+
                                             '<p>Mit <b>Kauf auf Rechnung</b> haben Sie 14 Tage Zeit, die Ware anzuprobieren. Sollte Ihnen etwas nicht passen oder gefallen, können Sie einfach unseren <b>kostenlosen Retouren-Service</b> nutzen.</p>'+
                                         '</div>');
-    							
+
     							var oNudgeCartTop =  WATO.qs("#kk_nudgeCart_top");
     							
     							oNudgeCartTop.classList.add('wa-show-nudge');
-    							
-    							pushIridionGoal('s6_show_nudge_cart');
-    							
-    							setLocalstorage(aNudgeName.cart, false);
 
                                 WATO.qs(".close-button", oNudgeCartTop).addEventListener('click', function(){
                                 	
@@ -590,14 +643,43 @@
                                 	setLocalstorage(aNudgeName.cart, true);
 
                                 });
+                               
+	    					} else {
+	    						aCTA[1].parentNode.classList.add('wa-pos-relative');
+	    						
+	    						aCTA[1].insertAdjacentHTML('beforebegin', 
+                                        '<div id="kk_nudgeCart_bottom">'+
+                                            '<button class="align-right close-button js-actionbar-close" type="button" data-close=""><span>&times;</span></button>'+
+                                            '<h4>Flexibel zuhause entscheiden</h4>'+
+                                            '<p>Mit <b>Kauf auf Rechnung</b> haben Sie 14 Tage Zeit, die Ware anzuprobieren. Sollte Ihnen etwas nicht passen oder gefallen, können Sie einfach unseren <b>kostenlosen Retouren-Service</b> nutzen.</p>'+
+                                        '</div>');
+	    						
+	    						var oNudgeCartBottom =  WATO.qs("#kk_nudgeCart_bottom");
+	    						
+	    						oNudgeCartBottom.classList.add('wa-show-nudge');
+	    						
+	    						WATO.qs(".close-button", oNudgeCartBottom).addEventListener('click', function(){
+	    							
+	    							removeNudge(oNudgeCartBottom);
+	    							
+	    							pushIridionGoal('s6_close_nudge_cart');
+	    							
+	    							setLocalstorage(aNudgeName.cart, true);
+
+	                             });
 	    					}
+
+    						pushIridionGoal('s6_show_nudge_cart');
+							
+							setLocalstorage(aNudgeName.cart, false);
+    						
     					}, nDelayCart);
         			}
         		} catch(error){
 	    			showErrorInfo(error);
 	    		}
         	});
-        }
+//        }
     	
     	
     }
