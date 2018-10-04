@@ -6,35 +6,46 @@
 
 /* DEFINE VARIATION CSS */
 
-.yCmsComponent {
+.wa-pos-relative {
     position: relative;
 }
 
-.kk_nudgeLeft {
+#kk_nudgeSearch, #kk_nudgeCart_bottom{
     border: solid #e1c9cb 5px;
     padding: 15px 15px 15px 80px;
-    background: #fff url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2018/Sprint06/lupe.png") no-repeat 12px center;
     position: absolute;
-    left: -348px;
-    top: -25px;
-    min-width: 312px;
     opacity: 0;
-    transition: all 1s;
+    transition: opacity 1s;
 
-    b {
+    h4 {
         font-size: 14px;
+        margin: 0px 0px 1rem 0px;
+        font-family: "Roboto";
     }
     p {
         font-size: 12px;
     }
-    &::after {
-        content: "";
-        position: absolute;
-        right: -15px;
-        top: 37%;
-        background: transparent url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2018/Sprint06/nudgeEcke.png") no-repeat 0 0;
-        width: 15px;
-        height: 21px;
+    &:after, &:before {
+		left: 100%;
+		top: 50%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+    }
+    &:after{
+    	border-color: rgba(255, 255, 255, 0);
+		border-left-color: #FFF;
+		border-width: 9px 9px;
+		margin-top: -9px;
+    }
+    &:before{
+    	border-color: rgba(225, 201, 203, 0);
+		border-left-color: #e1c9cb;
+		border-width: 16px;
+		margin-top: -16px;
     }
     .close-button {
         padding: 0;
@@ -47,5 +58,251 @@
             font-size: 20px;
         }
     }
+}
+#kk_nudgeSearch{
+	background: #fff url("@{base-url}wa-lupe.png") no-repeat 12px center;
+	right: 290px;
+	top: -100%;
+	min-width: 312px;
+	margin-right: 4.6rem;
+}
+#kk_nudgeCart_top{
+	background: #fff url("@{base-url}wa-home.png") no-repeat 12px 20px;
+	right: -45px;
+	top: 4rem;
+	min-width: 360px;
+	max-width: 360px;
+	text-align: left;
+	border: solid #e1c9cb 5px;
+    padding: 15px 15px 15px 80px;
+    position: absolute;
+    opacity: 0;
+    transition: opacity 1s;
+    
+    h4 {
+        font-size: 14px;
+        margin: 0px 0px 1rem 0px;
+        font-family: "Roboto";
+        line-height: 18px;
+    }
+    p {
+        font-size: 12px;
+    }
+    
+	&:after, &:before {
+		bottom: 100%;
+		left: 50%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+	
+	.close-button {
+        padding: 0;
+        margin: -11px -13px 0 0;
+        width: 25px;
+        height: 25px;
+        line-height: 28px;
+        
+        span {
+            font-size: 20px;
+        }
+    }
+	
+	&:after {
+		border-color: rgba(255, 255, 255, 0);
+		border-bottom-color: #FFF;
+		border-width: 9px;
+		margin-left: -9px;
+	}
+	&:before {
+		border-color: rgba(225, 201, 203, 0);
+		border-bottom-color: #e1c9cb;
+		border-width: 16px;
+		margin-left: -16px;
+	}
+}
+#kk_nudgeCart_bottom{
+	background: #fff url("@{base-url}wa-home.png") no-repeat 12px center;
+	left: -330px;
+	top: -100%;
+	min-width: 312px;
+	display: none;	
+}
 
+#kk_nudgeSize, #kk_nudgeProdDetail{
+	border: 5px solid #e1c9cb;
+    padding: 15px 15px 15px 80px;
+    position: absolute;
+    text-align: left;
+    opacity: 0;
+    transition: opacity 1s;
+    
+    h4 {
+        font-size: 14px;
+        margin: 0px 0px 1rem 0px;
+        font-family: "Roboto";
+        line-height: 18px;
+    }
+    p {
+        font-size: 12px;
+    }
+    
+	.close-button {
+        padding: 0;
+        margin: -11px -13px 0 0;
+        width: 25px;
+        height: 25px;
+        line-height: 28px;
+        
+        span {
+            font-size: 20px;
+        }
+    }
+	&:after, &:before {
+		top: 100%;
+		left: 50%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+	
+	&:after {
+		border-color: rgba(255, 255, 255, 0);
+		border-top-color: #FFF;
+		border-width: 9px;
+		margin-left: -9px;
+	}
+	&:before {
+		border-color: rgba(225, 201, 203, 0);
+		border-top-color: #e1c9cb;
+		border-width: 16px;
+		margin-left: -16px;
+	}
+    
+}
+
+#wa-size-advisor{
+	cursor: pointer;
+	font-weight: bold;
+	display: inline-block;
+}
+
+#kk_nudgeSize{
+	right: -25%;
+	bottom: 3.5rem;
+	min-width: 312px;
+    width: 368px;
+    max-width: 368px;
+	background: #fff url("@{base-url}wa-massband.png") no-repeat 17px 17px;
+}
+#kk_nudgeProdDetail{
+	bottom: 2.5rem;
+	left: -108px;
+    width: 333px;
+    max-width: 333px;
+	background: #fff url("@{base-url}wa-checklist.png") no-repeat 12px 20px;
+	z-index: 10;
+}
+#kk_nudgeSelectSize{
+	border: 1px solid #eea800;
+	border-radius: 5px;
+    padding: 20px 45px 20px 25px;
+    position: absolute;
+    text-align: left;
+    opacity: 0;
+    background-color: #fffbf1;
+    transition: opacity 1s;
+    right: -25%;
+	bottom: 4.5rem;
+	min-width: 312px;
+    width: 368px;
+    max-width: 368px;
+    
+     h4 {
+        font-size: 14px;
+        margin: 0px 0px 1rem 0px;
+        font-family: "Roboto";
+        line-height: 18px;
+        color: #eea800;
+    }
+    p {
+        font-size: 12px;
+    }
+    
+	&:after, &:before {
+		top: 100%;
+		left: 50%;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+	
+	&:after {
+		border-color: rgba(255, 251, 241, 0);
+		border-top-color: #fffbf1;
+		border-width: 9px;
+		margin-left: -9px;
+	}
+	&:before {
+		border-color: rgba(238, 168, 0, 0);
+		border-top-color: #eea800;
+		border-width: 10px;
+		margin-left: -10px;
+	}
+}
+
+.wa-show-nudge{
+	opacity: 1 !important;
+}
+#wa-more-product-wrapper{
+	a{
+		display: block;
+		text-align: left;
+		padding: 0px;
+	}
+}
+#wa-more-product-recos{
+	text-align: center;
+	margin: 4rem 0 5rem 0;
+	
+	a{
+		font-size: 12px;
+		font-family: 'Roboto';
+		min-width: 228px;
+		text-align: center;
+		display: inline-block;
+		padding: 15px 15px;
+		color: #c69296;
+		border: 1px solid #e1c9cb;
+		text-decoration: none;
+		margin-right: 30px;
+	}
+	a.button:last-of-type{
+		margin-right: 0px;
+	}
+	a:hover{
+		background-color: #faf6f7; 
+	}
+	
+}
+
+@media all and (max-width: 1150px){
+	#kk_nudgeSize{
+		right: -55%;
+	}
+}
+@media all and (max-width: 1199px){
+	#kk_nudgeSearch{
+		margin-right: 2.3rem;
+	}
 }
