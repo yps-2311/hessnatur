@@ -15,8 +15,9 @@
 
     var URLpath = window.document.location.pathname,
         nDelayHome = 7500,
+//        nDelayCat = 0,
         nDelayPDP = 7500,
-        nDelayCart = 1500,
+        nDelayCart = 7500,
         bChoseSize = false,
     	bSizeIsVisible = true,
     	bMoreDetailIsVisible = true,
@@ -27,6 +28,7 @@
 		nPunchout = 1024,
 		bWaEclude = document.cookie.indexOf(sExcludeCookie+'=true') !== -1,
     	aNudgeName = {	'home'			: 'kk_nudgeHome',
+    					'category'		: 'kk_nudgeCat',
     					'sizeadvisor' 	: 'kk_nudgeSizeadvisor',
     					'selectsize'	: 'kk_nudgeSelectSize',
     					'detail'		: 'kk_nudgePDPdetail',
@@ -34,9 +36,14 @@
 
     
     
+    function getStorage(name){
+    	
+    	return window.localStorage.getItem(name) || window.sessionStorage.getItem(name);
+    }
+    
     function getLocalstorage(name){
 
-    	return window.localStorage.getItem(name) || window.sessionStorage.getItem(name);
+    	return window.localStorage.getItem(name);
     }
     
     function setLocalstorage(name, isLS){
@@ -50,9 +57,9 @@
     
 	function showErrorInfo(error){
 		
-//		console.log('try/catch error', error);
+		console.log('try/catch error', error);
 		
-		pushIridionGoal('wa_setup_monitoring');
+//		pushIridionGoal('wa_setup_monitoring');
 	}
     
 	function removeNudge(oNudge){
@@ -91,12 +98,12 @@
 	});
 
     // Startseite & Verteilerseite
-    if((URLpath === "/de/" || new RegExp("/de/(NEU|herren|damen|baby|home|sale)").test(URLpath)) && URLpath.indexOf("/p/") === -1){
+    if((URLpath === "/de/" || new RegExp("/de/(NEU|herren|damen|baby|home|sale)").test(URLpath)) && URLpath.indexOf("/p/") === -1 && URLpath.indexOf("/c/") === -1){
     	
     	console.log('WA: Home or Verteiler');
         
         // Nudge geschlossen oder gesehen
-//        if(!getLocalstorage(aNudgeName.home)){
+        if(!getStorage(aNudgeName.home)){
 
             // Nach X Sekunden eingeblendet
             
@@ -166,8 +173,55 @@
                 		showErrorInfo(error);
                 	}
                 });
-//        }
-
+        }
+    } else if(URLpath.indexOf("/c/") !== -1){
+    	// Kategorie
+    	console.log('WA: Kategorie');
+    	
+    	WATO.elem('.gridviewProductFilterDesktopWrapper form.js-filter-form', function(aFilterRow){
+    		try{
+    			if(aFilterRow){
+    				
+    				aFilterRow = aFilterRow[0];
+    				
+    				if(!getStorage(aNudgeName.category)){
+    					
+    					// Parent relativ setzen   					
+    					aFilterRow.parentNode.classList.add('wa-pos-relative');
+    					
+    					aFilterRow.insertAdjacentHTML('beforebegin', 
+                                '<div id="kk_nudgeCategory">'+
+                                    '<button class="align-right close-button js-actionbar-close" type="button" data-close=""><span>&times;</span></button>'+
+                                    '<h4>Nutzen Sie die Filter</h4>'+
+                                    '<p>So finden Sie schneller einen Artikel, der zu Ihnen passt.</p>'+
+                                '</div>');
+    					
+    					var oNudgeCategory = WATO.qs('#kk_nudgeCategory');
+	    				
+    					oNudgeCategory.classList.add('wa-show-nudge');
+	    				
+	    				pushIridionGoal('s6_show_nudge_filter');
+						
+						setLocalstorage(aNudgeName.category, false);
+						
+						WATO.qs(".close-button", oNudgeCategory).addEventListener('click', function(){
+                        	
+                        	removeNudge(oNudgeCategory);
+                        	
+                        	pushIridionGoal('s6_close_nudge_filter');
+                        	
+                        	setLocalstorage(aNudgeName.category, true);
+                        	
+                        });
+    				}
+    			}
+    		} catch(error){
+    			showErrorInfo(error);
+    		}
+    	});
+    	
+    	
+    	
     } else if(URLpath.indexOf("/p/") !== -1){
 
     	// PDS
@@ -178,6 +232,7 @@
     			if(aBreadcrumbLinks){
     				var sMoreLinks = '',
     					sMainCat = '',
+    					sLinkText = '',
     					nCnt = 0;
     				
    				
@@ -191,8 +246,17 @@
     							
     							sMoreLinks += '<a class="kk_more_products textLink button" href="' + oBreadcrumbLink.href + '" target="_blank">Weitere Artikel aus ' + oBreadcrumbLink.title.toUpperCase() + '</a>';
     						} else {
+
+    							sLinkText = oBreadcrumbLink.title.toUpperCase().replace(sMainCat, '');
     							
-    							sMoreLinks += '<a class="kk_more_products textLink button" href="' + oBreadcrumbLink.href + '" target="_blank">Weitere Artikel aus ' + sMainCat + '-' + oBreadcrumbLink.title.toUpperCase() + '</a>';
+    							if(sLinkText.substring(0, 1) === " "){
+    								
+    								sLinkText = sLinkText.replace(/^\s+/, '');
+    							}
+    							
+    							sLinkText = sLinkText.replace('--', '-');
+
+    							sMoreLinks += '<a class="kk_more_products textLink button" href="' + oBreadcrumbLink.href + '" target="_blank">Weitere Artikel aus ' + sMainCat + '-' + sLinkText + '</a>';
     						}
     						nCnt++;
     					}
@@ -200,10 +264,13 @@
     				
     				if(sMoreLinks !== ''){
     					
-    					WATO.elem('.pds-cockpit__wrapper', function(aWrapper){
+    					WATO.elem('.pds-cockpit__wrapper .js-jump-references', function(aWrapper){
     						try{
     							if(aWrapper){
-    								aWrapper[0].insertAdjacentHTML('beforeend', '<div id="wa-more-product-wrapper">' +
+    								
+    								aWrapper = WATO.qs('.pds-cockpit__wrapper');
+    								
+    								aWrapper.insertAdjacentHTML('beforeend', '<div id="wa-more-product-wrapper">' +
     																				sMoreLinks +
     																			'</div>');
     								
@@ -234,8 +301,11 @@
 																							'</div>' + 
     																					'</div>' +
     																				'</div>');
+    								
     								Array.prototype.forEach.call(WATO.qsa('#wa-more-product-recos a'), function(domLink){
+    									
     									domLink.addEventListener('click', function(){
+    										
     										pushIridionGoal('s6_click_link_moreproducts_crossselling');
     									});
     								});
@@ -245,7 +315,6 @@
     	                		showErrorInfo(error);
     	                	}
     					});
-    					
     				}
     			}
     		} catch(error){
@@ -271,7 +340,7 @@
 
     				var showMoreProdInfos = function(){
     					
-    					if(!bProdInfosIsVisible && !getLocalstorage(aNudgeName.detail)){
+    					if(!bProdInfosIsVisible && !getStorage(aNudgeName.detail)){
     						
     						window.setTimeout(function(){
     							
@@ -286,7 +355,7 @@
     	                                            '<div id="kk_nudgeProdDetail">'+
     	                                                '<button class="align-right close-button js-actionbar-close" type="button" data-close=""><span>&times;</span></button>'+
     	                                                '<h4>M&ouml;chten Sie mehr &uuml;ber das<br />Produkt erfahren?</h4>'+
-    	                                                '<p>Klicken Sie auf "Mehr Produktinformationen", um weitere Informationen zum Produkt sowie Hinweise zur Pflege zu erhalten.</p>'+
+    	                                                '<p>Klicken Sie auf "' + aMoreDetails[0].textContent.trim() + '", um mehr &uuml;ber Material und Hinweise zur Pflege zu erfahren.</p>'+
     	                                            '</div>');
     		    		    				
     		    		    				var oNudgeProdDetail = WATO.qs('#kk_nudgeProdDetail');
@@ -341,13 +410,19 @@
     		    				}
     		    				// Event Listener bei Veränderung der Größenauswahl
     		    				aSizeSelect[0].addEventListener('change', function(event){
-    		    					
+
     		    					if(event.currentTarget.value !== ""){
     		    						
-//    		    						if(WATO.qs("#kk_nudgeSelectSize") !== null && WATO.qs("#kk_nudgeSelectSize").style.display !== "none"){
-//    		    							
-//    		    							 WATO.qs("#kk_nudgeSelectSize").style.display = "none";
-//    		    						}
+    		    						var oNudgeSelectSize = WATO.qs("#kk_nudgeSelectSize");
+    		    						
+    		    						if(oNudgeSelectSize !== null && oNudgeSelectSize.style.display !== "none" && navigator.userAgent.indexOf('Safari') !== -1){
+    		    							
+    		    							oNudgeSelectSize.style.display = "none";
+    		    							 
+    		    							oNudgeSelectSize.classList.remove('wa-show-nudge');
+    		    							
+    		    							bSizeSelectIsVisible = false;
+    		    						}
     		    						
     		    						bChoseSize = true;
     		    					} else {
@@ -397,65 +472,83 @@
     		    					}
     		    				});
 
-    		    				if(!getLocalstorage(aNudgeName.sizeadvisor) && window.getComputedStyle(aSizeAdvisor[0].parentNode).display !== 'none'){
+//    		    				console.log(!getStorage(aNudgeName.sizeadvisor), window.getComputedStyle(aSizeAdvisor[0].parentNode).display !== 'none');
+    		    				
+    		    				if(!getStorage(aNudgeName.sizeadvisor)){
     		    					
     		    					// Timeout für die Anzeige der Box
     		    					window.setTimeout(function(){
+    		    						
     		    						if(!bChoseSize && bSizeIsVisible && !bSizeSelectIsVisible){
     		    							
-    		    							// Parent relativ setzen
-    		    							aSizeAdvisor[0].parentNode.classList.add('wa-pos-relative');
-    		    							
-    		    							aSizeAdvisor[0].insertAdjacentHTML('beforebegin', 
-    	                                            '<div id="kk_nudgeSize">'+
-    	                                                '<button class="align-right close-button js-actionbar-close" type="button" data-close=""><span>&times;</span></button>'+
-    	                                                '<h4>Unsicher, welche Gr&ouml;&szlig;e<br />die richtige ist?</h4>'+
-    	                                                '<p>Mit unserem Gr&ouml;&szlig;enberater finden Sie leicht Ihre richtige Passform und m&uuml;ssen nichts doppelt bestellen. Die Umwelt wird es Ihnen danken!</p>'+
-    	                                            '</div>');
-    		    							
-    		    							var oNudgeSize =  WATO.qs("#kk_nudgeSize");
-    		    							
-    		    							oNudgeSize.classList.add('wa-show-nudge');
-    		    							
-    		    							pushIridionGoal('s6_show_nudge_size');
-    		    							
-    		    							setLocalstorage(aNudgeName.sizeadvisor, false);
-
-    	                                    WATO.qs(".close-button", oNudgeSize).addEventListener('click', function(){
-    	                                    	
-    	                                    	removeNudge(oNudgeSize);
-    	                                    	
-    	                                    	setLocalstorage(aNudgeName.sizeadvisor, true);
-    	                                    	
-    	                                    	pushIridionGoal('s6_close_nudge_size');
-    	                                    	
-    	                                    	showMoreProdInfos();
-    	                                    	
-    	                                    });
+    		    							if(window.getComputedStyle(aSizeAdvisor[0].parentNode).display !== 'none'){
+    		    								
+    		    								// Parent relativ setzen
+	    		    							aSizeAdvisor[0].parentNode.classList.add('wa-pos-relative');
+	    		    							
+	    		    							aSizeAdvisor[0].insertAdjacentHTML('beforebegin', 
+	    	                                            '<div id="kk_nudgeSizeAdvisor">'+
+	    	                                                '<button class="align-right close-button js-actionbar-close" type="button" data-close=""><span>&times;</span></button>'+
+	    	                                                '<h4>Unsicher, welche Gr&ouml;&szlig;e<br />die richtige ist?</h4>'+
+	    	                                                '<p>Mit unserem Gr&ouml;&szlig;enberater finden Sie leicht Ihre richtige Passform und m&uuml;ssen nichts doppelt bestellen. Die Umwelt wird es Ihnen danken!</p>'+
+	    	                                            '</div>');
+	    		    							
+	    		    							var oNudgeSize =  WATO.qs("#kk_nudgeSizeAdvisor");
+	    		    							
+	    		    							oNudgeSize.classList.add('wa-show-nudge');
+	    		    							
+	    		    							pushIridionGoal('s6_show_nudge_size');
+	    		    							
+	    		    							setLocalstorage(aNudgeName.sizeadvisor, false);
+	
+	    	                                    WATO.qs(".close-button", oNudgeSize).addEventListener('click', function(){
+	    	                                    	
+	    	                                    	removeNudge(oNudgeSize);
+	    	                                    	
+	    	                                    	setLocalstorage(aNudgeName.sizeadvisor, true);
+	    	                                    	
+	    	                                    	pushIridionGoal('s6_close_nudge_size');
+	    	                                    	
+	    	                                    	showMoreProdInfos();
+	    	                                    	
+	    	                                    });
+	    	                                    
+	    	                                    aSizeAdvisor[0].addEventListener('click', function(){
+	    	                                    	
+	    	                                    	removeNudge(oNudgeSize);
+	    	                                    	
+	    	                                    	showMoreProdInfos();
+	    	                                    });
+    		    							} else if(!getStorage(aNudgeName.detail)) {
+    		    								
+    		    								showMoreProdInfos();
+    		    							}
+    			    					} else {
+    			    						showMoreProdInfos();	
     			    					}
     		    					}, nDelayPDP);
     		    					
-    		    				} else if(!getLocalstorage(aNudgeName.detail)){
+    		    				} else if(!getStorage(aNudgeName.detail)){
     		    					
     		    					showMoreProdInfos();
     		    				}
     		    				
     		    				
     		    				// Nudge Select Size
-    		    				if(!getLocalstorage(aNudgeName.selectsize)){
+    		    				if(!getStorage(aNudgeName.selectsize)){
     		    					WATO.elem('#addToCartButton', function(aAddToCart){
     		        					try{
     		        		    			if(aAddToCart){
     		        		    				
     		        		    				aAddToCart[0].addEventListener('mouseenter', function(){
 
-    		        		    					if(!bChoseSize){
+    		        		    					if(!bChoseSize && !getLocalstorage(aNudgeName.selectsize)){
     		        		    						
     		        		    						bSizeSelectIsVisible = true;
     		        		    						
     		        		    						var oNudgeSelectSize =  WATO.qs("#kk_nudgeSelectSize"),
     		        		    							oNudgeProdDetail = WATO.qs("#kk_nudgeProdDetail"),
-    		        		    							oNudgeSize = WATO.qs('#kk_nudgeSize');
+    		        		    							oNudgeSize = WATO.qs('#kk_nudgeSizeAdvisor');
     		        		    						
     		        		    						if(oNudgeProdDetail !== null && oNudgeProdDetail.style.display !== "none"){
     		        		    							 
@@ -470,13 +563,44 @@
     		        		    						
     		        		    							// Parent relativ setzen
         		        		    						aSizeSelect[0].parentNode.classList.add('wa-pos-relative');
+        		        		    						
+        		        		    						if(window.getComputedStyle(aSizeAdvisor[0].parentNode).display !== 'none'){
+        		        		    							
+        		        		    							aSizeSelect[0].insertAdjacentHTML('beforebegin', 
+            		    	                                            '<div id="kk_nudgeSelectSize">'+
+            		    	                                                '<button class="align-right close-button js-actionbar-close" type="button" data-close=""><span>&times;</span></button>'+
+            		    	                                                '<h4>Bitte w&auml;hlen Sie eine Gr&ouml;&szlig;e aus.</h4>'+
+            		    	                                                '<p>Sollten Sie noch unsicher sein, welche Gr&ouml;&szlig;e die richtige ist, nutzen Sie gerne unseren <a href="#" id="wa-size-advisor">Gr&ouml;&szlig;enberater</a>.</p>'+
+            		    	                                            '</div>');
+        		        		    							
+        		        		    							
+        		        		    							WATO.qs('#wa-size-advisor').addEventListener('click', function(event){
+            		    		    								
+            		    		    								event.preventDefault();
+            		    		    								
+            		    		    								removeNudge(oNudgeSelectSize);
+            		    		    								
+            		    		    								pushIridionGoal('s6_click_nudge_sizeadvisor_link');
+            		    		    								
+            		    		    								bClickNudgeLink = true;
+            		    		    								
+            		    		    								aSizeAdvisor[0].click();
+            		    		    								
+            		    		    								bSizeSelectIsVisible = false;
+            		    		    								
+            		    		    							});
+        		        		    							
+        		        		    						} else {
+        		        		    							
+        		        		    							aSizeSelect[0].insertAdjacentHTML('beforebegin', 
+            		    	                                            '<div id="kk_nudgeSelectSize">'+
+            		    	                                                '<button class="align-right close-button js-actionbar-close" type="button" data-close=""><span>&times;</span></button>'+
+            		    	                                                '<h4>Bitte w&auml;hlen Sie eine Gr&ouml;&szlig;e aus.</h4>'+
+            		    	                                                '<p>Um das Produkt in den Warenkorb zu legen, w&auml;hlen sie bitte die gew&uuml;nschte Gr&ouml;&szlig;e aus.</p>'+
+            		    	                                            '</div>');
+        		        		    						}
         		    		    							
-        		        		    						aSizeSelect[0].insertAdjacentHTML('beforebegin', 
-        		    	                                            '<div id="kk_nudgeSelectSize">'+
-        		    	                                                '<button class="align-right close-button js-actionbar-close" type="button" data-close=""><span>&times;</span></button>'+
-        		    	                                                '<h4>Bitte w&auml;hlen Sie eine Gr&ouml;&szlig;e aus.</h4>'+
-        		    	                                                '<p>Sollten Sie noch unsicher sein, welche Gr&ouml;&szlig;e die richtige ist, nutzen Sie gerne unseren <a href="#" id="wa-size-advisor">Gr&ouml;&szlig;enberater</a>.</p>'+
-        		    	                                            '</div>');
+        		        		    						
         		    		    							
         		    		    							oNudgeSelectSize =  WATO.qs("#kk_nudgeSelectSize");
         		    		    							
@@ -485,22 +609,6 @@
         		    		    							pushIridionGoal('s6_show_nudge_sizeadvisor');
         		    		    							
         		    		    							setLocalstorage(aNudgeName.selectsize, false);
-        		    		    							
-        		    		    							WATO.qs('#wa-size-advisor').addEventListener('click', function(event){
-        		    		    								
-        		    		    								event.preventDefault();
-        		    		    								
-        		    		    								removeNudge(oNudgeSelectSize);
-        		    		    								
-        		    		    								pushIridionGoal('s6_click_nudge_sizeadvisor_link');
-        		    		    								
-        		    		    								bClickNudgeLink = true;
-        		    		    								
-        		    		    								aSizeAdvisor[0].click();
-        		    		    								
-        		    		    								bSizeSelectIsVisible = false;
-        		    		    								
-        		    		    							});
 
         		    	                                    WATO.qs(".close-button", oNudgeSelectSize).addEventListener('click', function(){
         		    	                                    	
@@ -525,6 +633,12 @@
     		        		    				});
     		        		    				
     		        		    				aAddToCart[0].addEventListener('click', function(){
+    		        		    					
+    		        		    					if(WATO.qs('#kk_nudgeSelectSize').classList.contains('wa-show-nudge')){
+    		        		    						
+    		        		    						removeNudge(WATO.qs('#kk_nudgeSelectSize'));
+    		        		    					}
+    		        		    					
     		        		    					if(!bChoseSize){
     		        		    						pushIridionGoal('s6_show_size_error');
     		        		    					}
@@ -586,7 +700,7 @@
     	console.log('WA: Warenkorb');
     	
     	// Nudge geschlossen oder gesehen
-//        if(!getLocalstorage(aNudgeName.cart)){
+        if(!getStorage(aNudgeName.cart)){
         	
         	WATO.elem('a.button.success', function(aCTA){
         		try{
@@ -679,9 +793,7 @@
 	    			showErrorInfo(error);
 	    		}
         	});
-//        }
-    	
-    	
+        }
     }
 
 })(new window.WATO(), window);
