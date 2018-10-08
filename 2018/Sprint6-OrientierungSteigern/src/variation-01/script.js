@@ -11,12 +11,11 @@
 (function(WATO, window) {
     "use strict";
 
-    console.log("sprint06 - V1");
-
     var URLpath = window.document.location.pathname,
         nDelayHome = 7500,
 //        nDelayCat = 0,
-        nDelayPDP = 7500,
+        nDelaySizeAdvisor = 7500,
+        nDelayProdInfo = 5000,
         nDelayCart = 7500,
         bChoseSize = false,
     	bSizeIsVisible = true,
@@ -57,9 +56,9 @@
     
 	function showErrorInfo(error){
 		
-		console.log('try/catch error', error);
+//		console.log('try/catch error', error);
 		
-//		pushIridionGoal('wa_setup_monitoring');
+		pushIridionGoal('wa_setup_monitoring');
 	}
     
 	function removeNudge(oNudge){
@@ -99,8 +98,6 @@
 
     // Startseite & Verteilerseite
     if((URLpath === "/de/" || new RegExp("/de/(NEU|herren|damen|baby|home|sale)").test(URLpath)) && URLpath.indexOf("/p/") === -1 && URLpath.indexOf("/c/") === -1){
-    	
-    	console.log('WA: Home or Verteiler');
         
         // Nudge geschlossen oder gesehen
         if(!getStorage(aNudgeName.home)){
@@ -121,7 +118,7 @@
                                             '<div id="kk_nudgeSearch" ' + (WATO.qs('.row', suchfeld[0]).offsetWidth < 290 ? 'style="right: ' + WATO.qs('.row', suchfeld[0]).offsetWidth + 'px;"' : '') + '>'+
                                                 '<button class="align-right close-button js-actionbar-close" type="button" data-close=""><span>×</span></button>'+
                                                 '<h4>Wer suchet, der findet.</h4>'+
-                                                '<p>Sie k&ouml;nnen ebenfalls Bestellnummern<br/>aus unserem Katalog eingeben.</p>'+
+                                                '<p>Sie k&ouml;nnen auch Artikelnummern in unserer Suche eingeben.</p>'+
                                             '</div>');
                             		
                                     suchfeld[0].parentNode.classList.add('wa-pos-relative');
@@ -176,7 +173,6 @@
         }
     } else if(URLpath.indexOf("/c/") !== -1){
     	// Kategorie
-    	console.log('WA: Kategorie');
     	
     	WATO.elem('.gridviewProductFilterDesktopWrapper form.js-filter-form', function(aFilterRow){
     		try{
@@ -223,9 +219,7 @@
     	
     	
     } else if(URLpath.indexOf("/p/") !== -1){
-
     	// PDS
-    	console.log('WA: PDS');
     	
     	WATO.elem('.breadcrumbs[itemprop="breadcrumb"] > li > a', function(aBreadcrumbLinks){
     		try{
@@ -394,7 +388,7 @@
     		    		    	});
         						
         						
-        					},nDelayPDP);	
+        					}, nDelaySizeAdvisor);	
     					}
     				};
 
@@ -462,17 +456,25 @@
     		    					if(nScrollPos >= nMoreDetailPos && bMoreDetailIsVisible){
     		    						
     		    						bMoreDetailIsVisible = false;
+    		    						
+    		    						var nudgeProdDetail = WATO.qs('#kk_nudgeProdDetail');
+    		    						
+    		    						if(nudgeProdDetail !== null && nudgeProdDetail.classList.contains('wa-show-nudge')){
+    		    							
+    		    							removeNudge(nudgeProdDetail);
+    		    						}
+    		    						
     		    					} else if(!bMoreDetailIsVisible && nScrollPos < nMoreDetailPos){
     		    						
     		    						bMoreDetailIsVisible = true;
     		    					}
     		    					
+    		    					
     		    					if(nScrollPos >= nProdInfosPos && !bProdInfosIsVisible){
+    		    						
     		    						bProdInfosIsVisible = true;
     		    					}
     		    				});
-
-//    		    				console.log(!getStorage(aNudgeName.sizeadvisor), window.getComputedStyle(aSizeAdvisor[0].parentNode).display !== 'none');
     		    				
     		    				if(!getStorage(aNudgeName.sizeadvisor)){
     		    					
@@ -493,29 +495,28 @@
 	    	                                                '<p>Mit unserem Gr&ouml;&szlig;enberater finden Sie leicht Ihre richtige Passform und m&uuml;ssen nichts doppelt bestellen. Die Umwelt wird es Ihnen danken!</p>'+
 	    	                                            '</div>');
 	    		    							
-	    		    							var oNudgeSize =  WATO.qs("#kk_nudgeSizeAdvisor");
+	    		    							var oNudgeSizeAdvisor =  WATO.qs("#kk_nudgeSizeAdvisor");
 	    		    							
-	    		    							oNudgeSize.classList.add('wa-show-nudge');
+	    		    							oNudgeSizeAdvisor.classList.add('wa-show-nudge');
 	    		    							
-	    		    							pushIridionGoal('s6_show_nudge_size');
+	    		    							pushIridionGoal('s6_show_nudge_sizeadvisor');
 	    		    							
 	    		    							setLocalstorage(aNudgeName.sizeadvisor, false);
 	
-	    	                                    WATO.qs(".close-button", oNudgeSize).addEventListener('click', function(){
+	    	                                    WATO.qs(".close-button", oNudgeSizeAdvisor).addEventListener('click', function(){
 	    	                                    	
-	    	                                    	removeNudge(oNudgeSize);
+	    	                                    	removeNudge(oNudgeSizeAdvisor);
 	    	                                    	
 	    	                                    	setLocalstorage(aNudgeName.sizeadvisor, true);
-	    	                                    	
-	    	                                    	pushIridionGoal('s6_close_nudge_size');
+
+	    	                                    	pushIridionGoal('s6_close_nudge_sizeadvisor');
 	    	                                    	
 	    	                                    	showMoreProdInfos();
-	    	                                    	
 	    	                                    });
 	    	                                    
 	    	                                    aSizeAdvisor[0].addEventListener('click', function(){
 	    	                                    	
-	    	                                    	removeNudge(oNudgeSize);
+	    	                                    	removeNudge(oNudgeSizeAdvisor);
 	    	                                    	
 	    	                                    	showMoreProdInfos();
 	    	                                    });
@@ -526,7 +527,7 @@
     			    					} else {
     			    						showMoreProdInfos();	
     			    					}
-    		    					}, nDelayPDP);
+    		    					}, nDelayProdInfo);
     		    					
     		    				} else if(!getStorage(aNudgeName.detail)){
     		    					
@@ -573,7 +574,6 @@
             		    	                                                '<p>Sollten Sie noch unsicher sein, welche Gr&ouml;&szlig;e die richtige ist, nutzen Sie gerne unseren <a href="#" id="wa-size-advisor">Gr&ouml;&szlig;enberater</a>.</p>'+
             		    	                                            '</div>');
         		        		    							
-        		        		    							
         		        		    							WATO.qs('#wa-size-advisor').addEventListener('click', function(event){
             		    		    								
             		    		    								event.preventDefault();
@@ -587,7 +587,6 @@
             		    		    								aSizeAdvisor[0].click();
             		    		    								
             		    		    								bSizeSelectIsVisible = false;
-            		    		    								
             		    		    							});
         		        		    							
         		        		    						} else {
@@ -600,13 +599,11 @@
             		    	                                            '</div>');
         		        		    						}
         		    		    							
-        		        		    						
-        		    		    							
         		    		    							oNudgeSelectSize =  WATO.qs("#kk_nudgeSelectSize");
         		    		    							
         		    		    							oNudgeSelectSize.classList.add('wa-show-nudge');
         		    		    							
-        		    		    							pushIridionGoal('s6_show_nudge_sizeadvisor');
+        		    		    							pushIridionGoal('s6_show_nudge_size');
         		    		    							
         		    		    							setLocalstorage(aNudgeName.selectsize, false);
 
@@ -616,10 +613,9 @@
         		    	                                    	
         		    	                                    	bSizeSelectIsVisible = false;
         		    	                                    	
-        		    	                                    	pushIridionGoal('s6_close_nudge_sizeadvisor');
+        		    	                                    	pushIridionGoal('s6_close_nudge_size');
         		    	                                    	
         		    	                                    	setLocalstorage(aNudgeName.selectsize, true);
-        		    	                                    	
         		    	                                    });
     		        		    							
     		        		    						} else {
@@ -627,14 +623,13 @@
     		        		    							oNudgeSelectSize.style.display = 'block';
     		        		    							
     		        		    							oNudgeSelectSize.classList.add('wa-show-nudge');
-    		        		    							
     		        		    						}
     		        		    					}
     		        		    				});
     		        		    				
     		        		    				aAddToCart[0].addEventListener('click', function(){
     		        		    					
-    		        		    					if(WATO.qs('#kk_nudgeSelectSize').classList.contains('wa-show-nudge')){
+    		        		    					if(WATO.qs('#kk_nudgeSelectSize') !== null && WATO.qs('#kk_nudgeSelectSize').classList.contains('wa-show-nudge')){
     		        		    						
     		        		    						removeNudge(WATO.qs('#kk_nudgeSelectSize'));
     		        		    					}
@@ -690,14 +685,9 @@
     			showErrorInfo(error);
     		}
     	});
-    	
-    	
-    	
-    	 
 
     } else if(URLpath.indexOf("/cart") !== -1){
         // Warenkorb
-    	console.log('WA: Warenkorb');
     	
     	// Nudge geschlossen oder gesehen
         if(!getStorage(aNudgeName.cart)){
@@ -779,7 +769,6 @@
 	    							pushIridionGoal('s6_close_nudge_cart');
 	    							
 	    							setLocalstorage(aNudgeName.cart, true);
-
 	                             });
 	    					}
 
