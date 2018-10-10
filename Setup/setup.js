@@ -3,6 +3,14 @@
     function goalPush(key){
         window.iridion.push(['goal', key]);
     }
+    
+    function docReady(callback) {
+    	if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
+    		callback();
+    	} else {
+    		document.addEventListener('DOMContentLoaded', callback);
+    	}
+	}
 
     try {
 
@@ -89,6 +97,20 @@
             // Zusammenfassung
             goalPush('page_sum');
             
+            try{            	
+            	docReady(function(){
+            		var zahlart = window.document.querySelectorAll('#checkoutContentPanel > div > .row > div .h-smallOffset-bottom-inner');
+            		
+            		if(	zahlart.length !== 0 && 
+            			zahlart[0].textContent.trim().toLowerCase().indexOf('rechnung') !== -1){
+
+            			document.querySelector('button.success').addEventListener('click', function(){
+            				window.iridion.push(["segment", "32785"]);
+                		});
+            		}
+            	});
+            } catch(error){}
+
         }else if(URL.indexOf("/checkout/orderConfirmation") !== -1){
             // Danke
             goalPush('page_conv');

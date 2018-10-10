@@ -93,6 +93,22 @@
     			showErrorInfo(error);
     		}
     	});
+    	
+    	WATO.elem('.btn-simple-link.js-pds-more-details', function(aMoreDetails){
+    		try{
+    			if(aMoreDetails){
+    				
+    				aMoreDetails[0].addEventListener('click', function(){
+						
+    					pushIridionGoal('klick_produktdetails');
+                    });
+    			}
+    		}catch(error){
+    			
+    			showErrorInfo(error);
+    		}
+    	});
+    	
     } else if(URLpath.indexOf("/cart") !== -1){
     	
     }

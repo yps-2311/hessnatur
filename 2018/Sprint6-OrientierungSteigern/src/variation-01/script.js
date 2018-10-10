@@ -377,6 +377,8 @@
     		    								}
     		    							});
     		    							aMoreDetails[0].addEventListener('click', function(){
+    		    								
+    		    								pushIridionGoal('klick_produktdetails');
     	                                    	
     	                                    	removeNudge(oNudgeProdDetail);
     	                                    });
