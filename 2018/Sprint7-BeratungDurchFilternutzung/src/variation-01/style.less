@@ -18,35 +18,40 @@
 .large-3.sticky-container {
     margin-top: .76919rem;
 }
+.gridviewProductFilterDesktopWrapper {
+    margin: 0 30px;
+}
 .js-filter-form {
     > input + .filterRow {
         display: none;
         + .filterRow {
-            background: transparent url("https://dev.web-arts.de/hessnatur/2018/Sprint7-BeratungDurchFilternutzung/img/kat-bg.jpg") no-repeat 0 0;
-            background-size: 100% 317px;
+            background: transparent url("https://dev.web-arts.de/hessnatur/2018/Sprint7-BeratungDurchFilternutzung/img/kat-bg2.jpg") no-repeat 0 0;
+            background-size: 100% 40px;
             position: relative;
 
             &::before {
                 content: "";
-                background: transparent url("https://dev.web-arts.de/hessnatur/2018/Sprint7-BeratungDurchFilternutzung/img/kat-bg-left.jpg") no-repeat 0 0;
+                background: transparent url("https://dev.web-arts.de/hessnatur/2018/Sprint7-BeratungDurchFilternutzung/img/kat-bg-left.png") no-repeat 0 0;
                 background-size: 40px 100%;
                 height: 100%;
-                width: 40px;
+                width: 70px;
                 position: absolute;
-                left: 0;
+                left: -30px;
                 top: 0;
                 z-index: 2000;
+                border-left: solid 30px #fff;
             }
             &::after {
                 content: "";
-                background: transparent url("https://dev.web-arts.de/hessnatur/2018/Sprint7-BeratungDurchFilternutzung/img/kat-bg-right.jpg") no-repeat 0 0;
+                background: transparent url("https://dev.web-arts.de/hessnatur/2018/Sprint7-BeratungDurchFilternutzung/img/kat-bg-right.png") no-repeat 0 0;
                 background-size: 40px 100%;
                 height: 100%;
-                width: 40px;
+                width: 70px;
                 position: absolute;
-                right: 0;
+                right: 30px;
                 top: 0;
                 z-index: 2000;
+                border-right: solid 30px #fff;
             }
 
             > .column {
@@ -54,9 +59,10 @@
                 padding: 28px;
                 background-color: #fff;
                 // max-width: 88%;
-                flex: 0 0 93%;
-                max-width: 93%;
-                min-height: 277px;
+                flex: 0 0 91%;
+                max-width: 91%;
+                // min-height: 277px;
+                min-height: 160px;
                 position: relative;
                 // overflow: hidden;
             }
@@ -69,11 +75,14 @@
         font-family: "Roboto" ,Helvetica,Arial,sans-serif;
         margin-bottom: 10px;
     }
+    .buttonTab {
+        border-radius: 3px;
+    }
 }
 .filterVariations {
     margin: 0;
     // position: relative;
-    width: 2000px;
+    width: 2500px;
     height: 52px;
     margin: -2px 0 0 !important; // 46px
     transition: left .5s ease-in-out;
@@ -117,6 +126,7 @@
     padding: 0;
     border: none;
     visibility: visible;
+    z-index: 199;
 
     &::before {
         content: "Sind Ihnen bestimmte Materialien wichtig? (Mehrfachauswahl möglich)";
@@ -133,17 +143,24 @@
         position: absolute;
         top: 0;
         left: 0;
+        transition: left .5s ease-in-out;
 
         > li {
             position: relative;
             margin: 0 20px 0 0;
-            -ms-flex: 0 0 137px;
-            flex: 0 0 137px;
+            -ms-flex: 0 0 138px;
+            flex: 0 0 138px;
             padding: 0;
             height: 57px;
             border-radius: 2px;
             background-color: #f7f6f5;
             border: 1px solid #e5e4e3;
+            overflow: visible;
+            border-radius: 5px;
+
+            &:last-child {
+                margin: 0;
+            }
         }
     }
     > .colunm {
@@ -151,6 +168,10 @@
     }
     .productFilterInput {
         display: none;
+        border-radius: 3px;
+        &:checked + label {
+            background-color: #81B539;
+        }
     }
     .productFilterLabel {
         position: absolute;
@@ -178,11 +199,17 @@
     width: 184px;
     position: absolute;
     z-index: 1000;
-    right: 0;
+    right: 28px;
     top: 76px;
     cursor: pointer;
     border-right: solid 30px #fff;
 }
+.kk_filter + .kk_filterweiter,
+.kk_filter + .kk_filterweiter + .kk_filterzurueck {
+    top: 183px;
+    z-index: 200;
+}
+
 .kk_filterzurueck {
     right: auto;
     left: 0;
@@ -190,9 +217,165 @@
     display: none;
 }
 
-.gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+4) .-dropdown-pane-custom,
-.gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+5) .-dropdown-pane-custom,
-.gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+6) .-dropdown-pane-custom {
-    right: 0.75rem;
+.gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+4) .dropdown-pane,
+.gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+5) .dropdown-pane,
+.gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+6) .dropdown-pane,
+.gridviewProductFilterDesktopWrapper .filterVariations .column:nth-last-child(2) .dropdown-pane,
+.gridviewProductFilterDesktopWrapper .filterVariations .column:nth-last-child(3) .dropdown-pane,
+.gridviewProductFilterDesktopWrapper .filterVariations .column:last-child .dropdown-pane {
+    right: .76923rem !important;
+}
+
+
+
+.productFilterLabel {
+    cursor: pointer;
+    background: transparent no-repeat center 4px;
+    background-size: auto 30px;
+
+    &[for="desktop__filter_FFmaterial_Baumwolle"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_baumwolle.svg);
+    }
+    &[for="desktop__filter_FFmaterial_Schurwolle"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_schurwolle.svg);
+    }
+    &[for="desktop__filter_FFmaterial_Hanf"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_hanf.svg);
+    }
+    &[for="desktop__filter_FFmaterial_Yakwolle"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_yakwolle.svg);
+    }
+    &[for="desktop__filter_FFmaterial_Kaschmir"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_kaschmir.svg);
+    }
+    &[for="desktop__filter_FFmaterial_Rindleder"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_leder.svg);
+    }
+    &[for="desktop__filter_FFmaterial_Viskose"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_neutral.svg);
+        background-size: auto 26px;
+    }
+    &[for="desktop__filter_FFmaterial_Alpaka"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_alpaka.svg);
+        background-size: auto 26px;
+    }
+    &[for="desktop__filter_FFmaterial_Gummi"],
+    &[for="desktop__filter_FFmaterial_Kautschuk"]  {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_kautschuk.svg);
+        background-size: auto 26px;
+    }
+    &[for="desktop__filter_FFmaterial_Modal"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_modal.svg);
+        background-size: auto 26px;
+    }
+    &[for="desktop__filter_FFmaterial_Seide"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_seide.svg);
+        background-size: auto 26px;
+    }
+    &[for="desktop__filter_FFmaterial_Leinen"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_leinen.svg);
+        background-size: auto 26px;
+    }
+    &[for="desktop__filter_FFmaterial_Mohair"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_mohair.svg);
+        background-size: auto 26px;
+    }
+    
+}
+
+.kk_arrowbox {
+    background: #fff;
+    border: 1px solid #959493;
+    padding: 5px;
+    border-radius: 3px;
+    position: absolute;
+    bottom: -42px;
+    left: -1px;
+    width: 138px;
+    display: none;
+    z-index: 100;
+
+    button {
+        background-color: #393939;
+        color: #fff;
+        text-align: center;
+        width: 100%;
+        line-height: 32px;
+        text-transform: uppercase;
+        font-size: 12px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #303030;
+        }
+    }
+}
+.kk_arrowbox:after, 
+.kk_arrowbox:before {
+	bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.kk_arrowbox:after {
+	border-color: rgba(255, 255, 255, 0);
+	border-bottom-color: #fff;
+	border-width: 7px;
+	margin-left: -7px;
+}
+.kk_arrowbox:before {
+	border-color: rgba(149, 148, 147, 0);
+	border-bottom-color: #959493;
+	border-width: 8px;
+	margin-left: -8px;
+}
+
+
+.kk_inforow {
+    margin-top: 20px;
+    margin-right: 30px !important;
+    margin-bottom: 20px;
+    height: 40px;
+    line-height: 40px;
+
+    display: flex;
+    justify-content: space-between;
+
+    > span {
+        margin-right: 8rem;
+        input {
+            margin: 10px -3px 0 0;
+        }
+        label {
+            line-height: 40px !important;
+        }
+    }
+}
+
+#desktop__sort {
+    min-width: 200px;
+}
+
+.breadcrumb-productList .js-filter-form {
+    display: none;
+}
+
+.kk_noMaterials {
+    > .filterRow {
+        // height: 200px;
+        &::before,
+        &::after {
+            background-size: auto auto;
+        }
+        > .column:not(.shrink) {
+            // min-height: 160px !important;
+            height: 160px;
+        }
+    }
 }
 
