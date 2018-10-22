@@ -22,19 +22,24 @@
     margin: 0 30px;
 }
 .js-filter-form {
+    display: flex;
+    flex-direction: column;
+
     > input + .filterRow {
         display: none;
         + .filterRow {
-            background: transparent url("https://dev.web-arts.de/hessnatur/2018/Sprint7-BeratungDurchFilternutzung/img/kat-bg2.jpg") no-repeat 0 0;
+            background: transparent url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2018/Sprint07/kat-bg2.jpg") no-repeat 0 0;
             background-size: 100% 40px;
             position: relative;
+            order: 1;
 
             &::before {
                 content: "";
-                background: transparent url("https://dev.web-arts.de/hessnatur/2018/Sprint7-BeratungDurchFilternutzung/img/kat-bg-left.png") no-repeat 0 0;
-                background-size: 40px 100%;
+                background: transparent url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2018/Sprint07/kat-bg-left.png") no-repeat 0 0;
+                background-size: 100% 100%; // 40px
                 height: 100%;
-                width: 70px;
+                // width: 70px;
+                width: 5.5rem;
                 position: absolute;
                 left: -30px;
                 top: 0;
@@ -43,30 +48,34 @@
             }
             &::after {
                 content: "";
-                background: transparent url("https://dev.web-arts.de/hessnatur/2018/Sprint7-BeratungDurchFilternutzung/img/kat-bg-right.png") no-repeat 0 0;
-                background-size: 40px 100%;
+                background: transparent url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2018/Sprint07/kat-bg-right.png") no-repeat 0 0;
+                background-size: 100% 100%;
                 height: 100%;
-                width: 70px;
+                // width: 70px;
+                width: 5.5rem;
                 position: absolute;
-                right: 30px;
+                // right: 30px;
+                right: 2rem;
                 top: 0;
                 z-index: 2000;
                 border-right: solid 30px #fff;
             }
 
             > .column {
-                margin: 40px 40px 0;
+                margin: 40px 2.9% 0;
                 padding: 28px;
                 background-color: #fff;
                 // max-width: 88%;
-                flex: 0 0 91%;
-                max-width: 91%;
+                flex: 0 0 90%;
+                max-width: 90%;
                 // min-height: 277px;
                 min-height: 160px;
                 position: relative;
                 // overflow: hidden;
             }
-
+            + .filterRow {
+                order: 2;
+            }
         }
     }
     h2 {
@@ -139,7 +148,8 @@
     }
     > ul {
         margin: 0;
-        width: 2000px;
+        width: 3000px;
+        max-width: 3000px;
         position: absolute;
         top: 0;
         left: 0;
@@ -170,7 +180,7 @@
         display: none;
         border-radius: 3px;
         &:checked + label {
-            background-color: #81B539;
+            background-color: #daeec6;
         }
     }
     .productFilterLabel {
@@ -194,12 +204,13 @@
 }
 .kk_filterweiter,
 .kk_filterzurueck {
-    background: transparent url("https://dev.web-arts.de/hessnatur/2018/Sprint7-BeratungDurchFilternutzung/img/filterweiter.png") no-repeat right 0;
+    background: transparent url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2018/Sprint07/filterweiter.png") no-repeat right 0;
     height: 57px;
     width: 184px;
     position: absolute;
     z-index: 1000;
-    right: 28px;
+    // right: 28px;
+    right: 0;
     top: 76px;
     cursor: pointer;
     border-right: solid 30px #fff;
@@ -217,6 +228,7 @@
     display: none;
 }
 
+// TODO optimieren
 .gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+4) .dropdown-pane,
 .gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+5) .dropdown-pane,
 .gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+6) .dropdown-pane,
@@ -260,7 +272,8 @@
         background-size: auto 26px;
     }
     &[for="desktop__filter_FFmaterial_Gummi"],
-    &[for="desktop__filter_FFmaterial_Kautschuk"]  {
+    &[for="desktop__filter_FFmaterial_Kautschuk"],
+    &[for="desktop__filter_FFmaterial_Naturkautschuk"]  {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_kautschuk.svg);
         background-size: auto 26px;
     }
@@ -280,6 +293,7 @@
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_mohair.svg);
         background-size: auto 26px;
     }
+
     
 }
 
@@ -342,7 +356,7 @@
     margin-bottom: 20px;
     height: 40px;
     line-height: 40px;
-
+    order: 4;
     display: flex;
     justify-content: space-between;
 
@@ -379,3 +393,46 @@
     }
 }
 
+
+.kk_vegan {
+    visibility: hidden;
+    input {
+        cursor: pointer;
+    }
+}
+
+.kk_msg {
+    // background-color: #daeec6;
+    margin: 10px 0 0 0;
+    margin-right: 30px !important;
+    order: 3;
+}
+.kk_msgRow {
+    background: #daeec6 url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2018/Sprint07/check.png") no-repeat 15px center;
+    height: 42px;
+    line-height: 42px;
+    color: #679935;
+    padding: 1px 20px 0 48px;
+    margin-bottom: 3px;
+    width: 100%;
+}
+
+
+@media screen and (max-width: 1550px) {
+    .js-filter-form > input + .filterRow + .filterRow > .column {
+        flex: 0 0 89%;
+        max-width: 89%;
+    }
+}
+@media screen and (max-width: 1350px) {
+    .js-filter-form > input + .filterRow + .filterRow > .column {
+        flex: 0 0 88%;
+        max-width: 88%;
+    }
+}
+@media screen and (max-width: 1050px) {
+    .js-filter-form > input + .filterRow + .filterRow > .column {
+        flex: 0 0 87%;
+        max-width: 87%;
+    }
+}
