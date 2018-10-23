@@ -229,14 +229,28 @@
 }
 
 // TODO optimieren
-.gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+4) .dropdown-pane,
-.gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+5) .dropdown-pane,
-.gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+6) .dropdown-pane,
-.gridviewProductFilterDesktopWrapper .filterVariations .column:nth-last-child(2) .dropdown-pane,
-.gridviewProductFilterDesktopWrapper .filterVariations .column:nth-last-child(3) .dropdown-pane,
-.gridviewProductFilterDesktopWrapper .filterVariations .column:last-child .dropdown-pane {
-    right: .76923rem !important;
+// .gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+4) .dropdown-pane,
+// .gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+5) .dropdown-pane,
+// .gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+6) .dropdown-pane,
+// .gridviewProductFilterDesktopWrapper .filterVariations .column:nth-last-child(2) .dropdown-pane,
+// .gridviewProductFilterDesktopWrapper .filterVariations .column:nth-last-child(3) .dropdown-pane,
+// .gridviewProductFilterDesktopWrapper .filterVariations .column:last-child .dropdown-pane {
+//     right: .76923rem !important;
+// }
+.filterVariations .column {
+    & > .dropdown-pane {
+        right: .76923rem !important;
+    }
+    &:first-child > .dropdown-pane,
+    &:nth-child(2) > .dropdown-pane,
+    &:nth-child(3) > .dropdown-pane,
+    &:nth-child(4) > .dropdown-pane {
+        right: auto !important
+    }
 }
+
+
+// 3 + ( n - 1 ) * 1
 
 
 
@@ -248,7 +262,8 @@
     &[for="desktop__filter_FFmaterial_Baumwolle"] {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_baumwolle.svg);
     }
-    &[for="desktop__filter_FFmaterial_Schurwolle"] {
+    &[for="desktop__filter_FFmaterial_Schurwolle"],
+    &[for="desktop__filter_FFmaterial_Schaffell"] {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_schurwolle.svg);
     }
     &[for="desktop__filter_FFmaterial_Hanf"] {
@@ -273,7 +288,8 @@
     }
     &[for="desktop__filter_FFmaterial_Gummi"],
     &[for="desktop__filter_FFmaterial_Kautschuk"],
-    &[for="desktop__filter_FFmaterial_Naturkautschuk"]  {
+    &[for="desktop__filter_FFmaterial_Naturkautschuk"],
+    &[for="desktop__filter_FFmaterial_Naturlatex"]  {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_kautschuk.svg);
         background-size: auto 26px;
     }
@@ -293,7 +309,15 @@
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_mohair.svg);
         background-size: auto 26px;
     }
-
+    &[for="desktop__filter_FFmaterial_Daunen"],
+    &[for="desktop__filter_FFmaterial_Federn"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_daunen.svg);
+        background-size: auto 26px;
+    }
+    &[for="desktop__filter_FFmaterial_Kokosnuß"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_kokosnuss.svg);
+        background-size: auto 26px;
+    }
     
 }
 
@@ -423,6 +447,19 @@
         flex: 0 0 89%;
         max-width: 89%;
     }
+    .kk_filter[data-step=start] .column {
+        &:nth-child(4) > .dropdown-pane,
+        &:nth-child(5) > .dropdown-pane {
+            right: .76923rem !important;
+        }
+    }
+    .kk_filter[data-step=end] .column {
+        &:nth-last-child(5) > .dropdown-pane,
+        &:nth-last-child(6) > .dropdown-pane {
+            right: auto !important;
+        }
+    }
+    
 }
 @media screen and (max-width: 1350px) {
     .js-filter-form > input + .filterRow + .filterRow > .column {

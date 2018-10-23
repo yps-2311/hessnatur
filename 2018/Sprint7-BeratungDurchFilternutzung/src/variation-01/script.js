@@ -83,6 +83,15 @@
     function getLeftpx(widthFilters, widthlistWrapper, inclMaterial) {
         return ((widthFilters - widthlistWrapper - (inclMaterial ? 0 : 10)) - 10);
     }
+    function buttonsFade(list, inclMaterial) {
+        var listWrapper = list.parentNode;
+        
+        if((158*(list.children.length - inclMaterial)) > (listWrapper.parentNode.offsetWidth - 165)) {
+            displayBlock(listWrapper.previousSibling.previousSibling);
+        }else{
+            displayNone(listWrapper.previousSibling.previousSibling);
+        }
+    }
     function scrollBox(list, inclMaterial) {
 
         if(list){
@@ -99,63 +108,65 @@
             // "data-step" wird true wenn es beim sliden mehr als ganz links und ganz rechts gibt
             // bedeutet: sollte der User sehr viele Filter und einen kleine Bildschirmbreite haben
             // wird nicht nur die Scrollfunktion eingebaut sondern auch ein Zwischenhalt
-            listWrapper.setAttribute("data-step", "false");
+            listWrapper.setAttribute("data-step", "start"); // false
 
-            if(widthFilters > (widthBox - 165)) {
+            // if(widthFilters > (widthBox - 165)) {
 
-                var sliderZwischenstop = widthFilters > ((widthBox - 250) *2);
+            var sliderZwischenstop = widthFilters > ((widthBox - 250) *2);
 
-                // weiterbutton
-                continueButton.addEventListener("click", function(){
-                    // var newLeft = ((widthFilters - listWrapper.offsetWidth - (inclMaterial ? 0 : 10)) - 10);
-                    var newLeft = getLeftpx(widthFilters, listWrapper.offsetWidth, inclMaterial);
+            // weiterbutton
+            continueButton.addEventListener("click", function(){
+                // var newLeft = ((widthFilters - listWrapper.offsetWidth - (inclMaterial ? 0 : 10)) - 10);
+                var newLeft = getLeftpx(widthFilters, listWrapper.offsetWidth, inclMaterial);
 
-                    if(listWrapper.getAttribute("data-step") === "false" && sliderZwischenstop){
-                        newLeft = newLeft / 2;
-                        listWrapper.setAttribute("data-step", "true");
-                    }else{
-                        displayNone(continueButton);
-                        listWrapper.setAttribute("data-step", "false");
-                    }
+                if(listWrapper.getAttribute("data-step") === "start" && sliderZwischenstop){ // false
+                    newLeft = newLeft / 2;
+                    listWrapper.setAttribute("data-step", "mid"); //true
+                }else{
+                    displayNone(continueButton);
+                    listWrapper.setAttribute("data-step", "end"); // false
+                }
 
-                    // Verschieben
-                    list.style.left = "-"+newLeft+"px";
+                // Verschieben
+                list.style.left = "-"+newLeft+"px";
 
-                    // Zurückbutton einblenden
-                    displayBlock(backButton);
+                // Zurückbutton einblenden
+                displayBlock(backButton);
 
-                    closeAllFilters();
-                });
+                closeAllFilters();
+            });
 
-                // zurückbutton
-                backButton.addEventListener("click", function(){
-                    var newLeft = 0;
+            // zurückbutton
+            backButton.addEventListener("click", function(){
+                var newLeft = 0;
 
-                    if(listWrapper.getAttribute("data-step") === "false" && sliderZwischenstop){
-                        newLeft = getLeftpx(widthFilters, listWrapper.offsetWidth, inclMaterial) / 2;
-                        listWrapper.setAttribute("data-step", "true");
-                    }else{
-                        displayNone(backButton);
-                        listWrapper.setAttribute("data-step", "false");
-                    }
+                if(listWrapper.getAttribute("data-step") === "end" && sliderZwischenstop){ // false
+                    newLeft = getLeftpx(widthFilters, listWrapper.offsetWidth, inclMaterial) / 2;
+                    listWrapper.setAttribute("data-step", "mid"); // true
+                }else{
+                    displayNone(backButton);
+                    listWrapper.setAttribute("data-step", "start"); // false
+                }
 
-                    // Verschieben
-                    list.style.left = "-"+newLeft+"px";
+                // Verschieben
+                list.style.left = "-"+newLeft+"px";
 
-                    displayBlock(continueButton);
+                displayBlock(continueButton);
 
-                    closeAllFilters();
-                });
+                closeAllFilters();
+            });
 
-            }else{
-                // Weiterbutton wird ausgeblendet
-                // continueButton.style.display = "none";
-                displayNone(continueButton);
-                console.log("else");
-            }
+
+            buttonsFade(list, inclMaterial);
+            // if(widthFilters > (widthBox - 165)) {
+            //     displayBlock(continueButton);
+            // }else{
+            //     // Weiterbutton wird ausgeblendet
+            //     // continueButton.style.display = "none";
+            //     displayNone(continueButton);
+            // }
         }
     }
-
     function allScrollingToDefault() {
         WATO.elem('.kk_filter > ul, #toggle_filter_FFmaterial > ul', function(slider){
             if(slider){
@@ -165,11 +176,13 @@
                     
                     if(slider1){
                         slider1.style.left = "0";
-                        displayBlock(displayNone(slider1.parentNode.previousSibling).previousSibling);
+                        buttonsFade(slider1, 1);
+                        // displayBlock(displayNone(slider1.parentNode.previousSibling).previousSibling);
                     }
                     if(slider2){
                         slider2.style.left = "0";
-                        displayBlock(displayNone(slider2.parentNode.previousSibling).previousSibling);
+                        buttonsFade(slider2, 0);
+                        // displayBlock(displayNone(slider2.parentNode.previousSibling).previousSibling);
                     }
                 } catch (error) {
                     console.log(error);
@@ -231,9 +244,18 @@
                         interactButtons+
                         '<div class="kk_filter"></div>');
 
-                    var pFilter = WATO.qs(".kk_filter", filterform);
-
+                    var pFilter = WATO.qs(".kk_filter", filterform),
+                        filterReihenfolge = ["FFpassform", "FFprice","colorgroup","FFfilterSize", "FFassortment", "FFproductgroup"]; // Reihenfolge ist von hinten nach vorne
+                    
                     pFilter.insertAdjacentElement("afterbegin", alleFilterUl);
+
+                    // Filterreihenfolge nach Konzept wechseln
+                    for (var i = 0; i < filterReihenfolge.length; i++) {
+                        var filterElement = WATO.qs("#toggle_filter_"+filterReihenfolge[i], alleFilterUl);
+                        if(filterElement){
+                            alleFilterUl.insertAdjacentElement("afterbegin", filterElement.parentNode);
+                        }
+                    }
 
                     scrollBox(alleFilterUl, 1);
 
@@ -288,10 +310,7 @@
                     for (var k = 0; k < alleInputs.length; k++) {
                         alleInputs[k].addEventListener("click", clickInputFilter);
                     }
-
-
                 }
-
 
                 var countArticle = WATO.qs(".breadcrumbs strong:last-child"),
                     sort = WATO.qs(".breadcrumb-productList .js-filter-form"),
