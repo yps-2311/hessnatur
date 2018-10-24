@@ -11,55 +11,16 @@
 (function(WATO, window) {
     "use strict";
 
-    // var urlSearch = window.location.search,
+    // Nachrichten die nach Anwendung von Filtern und dem Reload angezeigt werden
     var msgArray = [
                 '<b>Das passt:</b> Sie sehen nur noch Produkte, die auch auch in den von Ihnen gewählten Größen verfügbar sind.',
-                // '<b>Tipp:</b> Sie können auf der Artikel-Detailseite den Größenberater nutzen.',
                 '<b>Das ist uns wichtig:</b> Alle Farben entsprechen den höchsten derzeit möglichen ökologischen Standards.',
                 '<b>Fair Fashion zu fairen Preisen:</b> Es werden nur noch Produkte in Ihren Preisvorstellungen angezeigt.',
-                '<b>Wussten Sie das?</b> Die Materialen werden über das hauseigene Qualitätssicherungssystem kontinuierlich überprüft.',
-                '<b>Der Filter wurde erfolgreich angewendet:</b> Sie machen Ihre Auswahl leichter.'
+                '<b>Wussten Sie das?</b> Die Materialien werden über das hauseigene Qualitätssicherungssystem kontinuierlich überprüft.',
+                '<b>Sehr gut!</b> Sie sehen jetzt nur noch vegane Produkte.', 
+                '<b>Sehr gut!</b> Sie haben erfolgreich Ihre Auswahl verfeinert.'
                 ];
-
-    function closeAllFilters() {
-        // Alle offenden Filter werden geschlossen
-        var openFilter = WATO.qs(".buttonTab.hover");
-        if(openFilter){
-            openFilter.click();
-        }
-    }
-    // function getMsgrow(wohin, id1, id2) {
-    //     if(wohin){
-    //         wohin.innerHTML =  '<div class="kk_msgRow">'+msgArray[id1]+'</div>'+
-    //                             (id2 ? '<div class="kk_msgRow">'+msgArray[id2]+'</div>' : "");
-    //     }
-    // }
-    function setMessageRow(id) {
-        // Die Zeile mit dem zuletzt angewanten Filter wird geschrieben
-        var msg = WATO.qs(".kk_msg");
-        if(msg){
-            msg.innerHTML = '<div class="kk_msgRow">'+msgArray[id]+'</div>';
-        }
-    }
-    function clickInputFilter(e) {
-        // Die geklickten Filter werden je nach Typ ins Localstorage geschrieben
-        if(e.target){
-            switch (e.target.getAttribute("data-facet-code")) {
-                case "FFfilterSize":
-                    setLSFilterType("s");
-                    break;
-                case "colorgroup":
-                    setLSFilterType("c");
-                    break;
-                case "price":
-                    setLSFilterType("p");
-                    break;
-                default:
-                    setLSFilterType("d");
-                    break;
-            }
-        }
-    }
+    
     function displayNone(elem) {
         if(elem){
             elem.style.display = "none";
@@ -72,6 +33,41 @@
             return elem;
         }
     }
+    function closeMaterialCTA() {
+        // die "Anwenden" Buttons die unter den Materialien eingeblendet werden können,
+        // werden hiermit geschlossen
+        var openLayer = WATO.qs(".kk_arrowbox[style*=block]");
+        console.log('openLayer: ', openLayer);
+        if(openLayer){
+            displayNone(openLayer);
+        }
+    }
+    function closeAllFilters() {
+        // Alle offenden Filter werden geschlossen
+        var openFilter = WATO.qs(".buttonTab.hover");
+        if(openFilter){
+            openFilter.click();
+        }
+        closeMaterialCTA();
+    }
+    function setMessageRow(id) {
+        // Die Zeile mit dem zuletzt angewanten Filter wird geschrieben
+        var msg = WATO.qs(".kk_msg");
+        if(msg){
+            msg.innerHTML = '<div class="kk_msgRow">'+msgArray[id]+'</div>';
+        }
+    }
+    function setFilterGreen(thisFilterLi) {
+        // Von allen aktiven Filter-Inputs werden die Dropdown-Heads grün gefärbt
+        if(thisFilterLi){
+            console.log('thisFilterLi: ', thisFilterLi);
+            thisFilterLi.classList.remove("kk_green");
+
+            if(WATO.qs("input:checked", thisFilterLi) !== null){
+                thisFilterLi.classList.add("kk_green");
+            }
+        }
+    }
     function setLSFilterType(typeString) {
         window.localStorage.setItem("kk_filterType",typeString);
     }
@@ -80,7 +76,42 @@
         setLSFilterType("");
         return type;
     }
+    function clickInputFilter(e) {
+        var thisTarget = e.target;
+        if(thisTarget){
+            // Die geklickten Filter werden je nach Typ ins Localstorage geschrieben
+            switch (thisTarget.getAttribute("data-facet-code")) {
+                case "FFfilterSize":
+                    setLSFilterType("s");
+                    break;
+                case "colorgroup":
+                    setLSFilterType("c");
+                    break;
+                case "price":
+                    setLSFilterType("p");
+                    break;
+                case "FFvegan":
+                    setLSFilterType("v");
+                    break;
+                default:
+                    setLSFilterType("d");
+                    break;
+            }
+
+            // Beim Klick auf eine Checkbox wird das jeweinige Dropdown-Head grün gefärbt
+            var thisFilterLi = thisTarget.closest(".h-pos-relative");
+
+            thisFilterLi.classList.remove("kk_green");
+
+            if(WATO.qs("input:checked", thisFilterLi) !== null){
+                thisFilterLi.classList.add("kk_green");
+            }
+            setFilterGreen(thisTarget.closest(".h-pos-relative"));
+        }
+    }
     function getLeftpx(widthFilters, widthlistWrapper, inclMaterial) {
+        // Bei der Filter-Zeile "Material" müssen weitere 10px entfernt werden,
+        // damit beim nach rechts scrollen der letzte Filter den richtigen Abstand zum Rand hat
         return ((widthFilters - widthlistWrapper - (inclMaterial ? 0 : 10)) - 10);
     }
     function buttonsFade(list, inclMaterial) {
@@ -91,6 +122,7 @@
         }else{
             displayNone(listWrapper.previousSibling.previousSibling);
         }
+        displayNone(listWrapper.previousSibling);
     }
     function scrollBox(list, inclMaterial) {
 
@@ -198,12 +230,21 @@
 
             closeAllFilters();
 
-            var openLayer = WATO.qs(".kk_arrowbox[style*=block]");
-            if(openLayer){
-                displayNone(openLayer);
-            }
+            // var openLayer = WATO.qs(".kk_arrowbox[style*=block]");
+            // if(openLayer){
+            //     displayNone(openLayer);
+            // }
 
-            displayBlock(WATO.qs(".kk_arrowbox", e.target.closest(".column")));
+            //WATO.qs(".kk_arrowbox", e.target.closest(".column"))
+
+            var thisTargetParent = e.target.parentNode;
+            
+            if(thisTargetParent.classList.contains("productFilterLabel")){
+                thisTargetParent = thisTargetParent.parentNode;
+            }
+            WATO.qs(".kk_arrowbox", thisTargetParent)
+
+            displayBlock();
 
         } catch (error) {
             console.log(error);
@@ -225,7 +266,12 @@
                 var filterform = filterformX[0],
                     alleFilterUl = WATO.qs(".filterVariations", filterform),
                     ausgewaehlterNaviPunkt = WATO.qsa(".sidebarNav--nav .h-text-bold"),
-                    breadcrumbLastPoint = WATO.qs(".breadcrumbs.h-no-margin >li:last-child span strong:first-child");
+                    breadcrumbLastPoint = WATO.qs(".breadcrumbs.h-no-margin >li:last-child span strong:first-child"),
+                    ogTitleMeta = WATO.qs('meta[property="og:title"]');
+                    
+                    console.log('alleFilterUl: ', alleFilterUl);
+                    console.log('ausgewaehlterNaviPunkt: ', ausgewaehlterNaviPunkt);
+                    console.log('breadcrumbLastPoint: ', breadcrumbLastPoint);
 
                 filterform.classList.add("kk_noMaterials");
 
@@ -235,10 +281,14 @@
                                             '<div class="kk_filterzurueck"></div>';
 
                     if(ausgewaehlterNaviPunkt.length > 0){
-                        titleSeite = ausgewaehlterNaviPunkt[0].innerHTML;
-                    }else{
+                        titleSeite = ausgewaehlterNaviPunkt[ausgewaehlterNaviPunkt.length-1].innerHTML;
+                    }else if(breadcrumbLastPoint){
                         titleSeite = breadcrumbLastPoint.innerHTML;
+                    }else if(ogTitleMeta){
+                        titleSeite = ogTitleMeta.getAttribute("content");
                     }
+
+
                     alleFilterUl.insertAdjacentHTML("beforebegin", '<h2>'+titleSeite+'</h2>'+
                         '<p class="kk_info">Nutzen Sie die Filter, um schnell einen passenden Artikel zu finden:</p>'+
                         interactButtons+
@@ -273,7 +323,8 @@
                             try {
 
                                 var materialDropdown = material[0],
-                                    listElements = WATO.qsa("li label", materialDropdown);
+                                    listElements = WATO.qsa("li label", materialDropdown),
+                                    allMaterialFilterPoints = WATO.qsa(".column", materialDropdown);
 
                                 filterform.classList.remove("kk_noMaterials");
 
@@ -283,6 +334,15 @@
                                 pFilter.insertAdjacentElement("afterend", materialDropdown);
 
                                 materialDropdown.insertAdjacentHTML("beforebegin", interactButtons);
+
+                                if(allMaterialFilterPoints.length > 0){
+                                    for (var m = 0; m < allMaterialFilterPoints.length; m++) {
+                                        var thisFilterPoint = allMaterialFilterPoints[m];
+                                        if(thisFilterPoint.textContent.indexOf(titleSeite) !== -1){
+                                            thisFilterPoint.parentNode.insertAdjacentElement("afterbegin", thisFilterPoint);
+                                        }
+                                    }
+                                }
 
                                 scrollBox(WATO.qs(".productFilterList", materialDropdown) , 0);
 
@@ -305,11 +365,24 @@
                         }
                     });
 
-                    var alleInputs = WATO.qsa("input.productFilterInput", alleFilterUl);
+                    var alleFilterpunkte = WATO.qsa(".column.h-pos-relative", alleFilterUl);
 
-                    for (var k = 0; k < alleInputs.length; k++) {
-                        alleInputs[k].addEventListener("click", clickInputFilter);
+                    // for (var k = 0; k < alleInputs.length; k++) {
+                    //     alleInputs[k].addEventListener("click", clickInputFilter);
+                    // }
+
+                    for (var n = 0; n < alleFilterpunkte.length; n++) {
+                        var thisFilter = alleFilterpunkte[n],
+                            thisAllInputs = WATO.qsa("input.productFilterInput", thisFilter);
+
+                        setFilterGreen(thisFilter);
+
+                        for (var k = 0; k < thisAllInputs.length; k++) {
+                            thisAllInputs[k].addEventListener("click", clickInputFilter);
+                        }
                     }
+                        
+
                 }
 
                 var countArticle = WATO.qs(".breadcrumbs strong:last-child"),
@@ -339,6 +412,7 @@
                             // Nur Vegan 
                             nurVeganInput.addEventListener("change", function(){
                                 try {
+                                    setLSFilterType("v");
                                     WATO.qs("#desktop__filter_FFvegan_Ja", alleFilterUl).click();
                                     WATO.qs("button[data-toggle=toggle_filter_FFvegan]", alleFilterUl).click();
                                 } catch (error) {
@@ -396,25 +470,52 @@
                 //     getMsgrow(messageBox, 5);
                 // }
 
-                switch (getLSFilterType()) {
-                    case "s":
-                    setMessageRow(0);
-                        break;
-                    case "c":
-                    setMessageRow(1);
-                        break;
-                    case "p":
-                    setMessageRow(2);
-                        break;
-                    case "m":
-                    setMessageRow(3);
-                        break;
-                    case "d":
-                    setMessageRow(4);
-                        break;
+                // Nachrichten werden speziell nach den zuletzverwendeten Filtern angezeigt
+                // außer man hat alle Filter zurückgesetzt
+                if(window.location.search !== "?viewMode=model" && window.location.search !== ""){
+                    switch (getLSFilterType()) {
+                        case "s":
+                        setMessageRow(0);
+                            break;
+                        case "c":
+                        setMessageRow(1);
+                            break;
+                        case "p":
+                        setMessageRow(2);
+                            break;
+                        case "m":
+                        setMessageRow(3);
+                            break;
+                        case "v":
+                        setMessageRow(4);
+                            break;
+                        case "d":
+                        setMessageRow(5);
+                            break;
+                    }
                 }
 
+                
+                
 
+                // Alle Filter werden eingeklappt wenn man irgendwo hinklickt auf der Seite außer auf die Filter selbst
+                WATO.qs("body").addEventListener("mouseup", function(e){
+                    try {
+                        var eventTarget = e.target,
+                            parentObjektIsDropdownpane = e.target.closest(".dropdown-pane");
+                        
+                        if((eventTarget.classList && !eventTarget.classList.contains("buttonTab")) // Reiter
+                            && 
+                            (parentObjektIsDropdownpane === null || (parentObjektIsDropdownpane && parentObjektIsDropdownpane.getAttribute("id") === "toggle_filter_FFmaterial"))){ // Ausklapp-Dropdowns
+                            
+                            closeAllFilters();
+                        }
+                        closeMaterialCTA();
+
+                    } catch (error) {
+                        console.log(error);
+                    }
+                });
                 
 
 

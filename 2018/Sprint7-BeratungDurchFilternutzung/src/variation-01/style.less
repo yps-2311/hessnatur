@@ -66,6 +66,7 @@
                 padding: 28px;
                 background-color: #fff;
                 // max-width: 88%;
+                -ms-flex: 0 0 90%;
                 flex: 0 0 90%;
                 max-width: 90%;
                 // min-height: 277px;
@@ -148,8 +149,8 @@
     }
     > ul {
         margin: 0;
-        width: 3000px;
-        max-width: 3000px;
+        width: 4000px;
+        max-width: 4000px;
         position: absolute;
         top: 0;
         left: 0;
@@ -201,6 +202,11 @@
 .kk_filter {
     height: 104px;
     position: relative;
+    .button.hollow {
+        background-color: #393939;
+        color: #fff;
+        font-weight: normal;
+    }
 }
 .kk_filterweiter,
 .kk_filterzurueck {
@@ -278,46 +284,54 @@
     &[for="desktop__filter_FFmaterial_Rindleder"] {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_leder.svg);
     }
-    &[for="desktop__filter_FFmaterial_Viskose"] {
+    &[for="desktop__filter_FFmaterial_Viskose"],
+    &[for="desktop__filter_FFmaterial_Bambus"] {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_neutral.svg);
         background-size: auto 26px;
     }
     &[for="desktop__filter_FFmaterial_Alpaka"] {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_alpaka.svg);
-        background-size: auto 26px;
     }
     &[for="desktop__filter_FFmaterial_Gummi"],
     &[for="desktop__filter_FFmaterial_Kautschuk"],
     &[for="desktop__filter_FFmaterial_Naturkautschuk"],
     &[for="desktop__filter_FFmaterial_Naturlatex"]  {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_kautschuk.svg);
-        background-size: auto 26px;
     }
-    &[for="desktop__filter_FFmaterial_Modal"] {
+    &[for="desktop__filter_FFmaterial_Modal"],
+    &[for="desktop__filter_FFmaterial_Holz"] {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_modal.svg);
-        background-size: auto 26px;
     }
     &[for="desktop__filter_FFmaterial_Seide"] {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_seide.svg);
-        background-size: auto 26px;
     }
     &[for="desktop__filter_FFmaterial_Leinen"] {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_leinen.svg);
-        background-size: auto 26px;
     }
     &[for="desktop__filter_FFmaterial_Mohair"] {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_mohair.svg);
-        background-size: auto 26px;
     }
     &[for="desktop__filter_FFmaterial_Daunen"],
     &[for="desktop__filter_FFmaterial_Federn"] {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_daunen.svg);
-        background-size: auto 26px;
     }
     &[for="desktop__filter_FFmaterial_Kokosnuß"] {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_kokosnuss.svg);
-        background-size: auto 26px;
     }
+    &[for="desktop__filter_FFmaterial_Hirse"],
+    &[for="desktop__filter_FFmaterial_Dinkelspelz"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_hirse-dinkel.svg);
+    }
+    &[for="desktop__filter_FFmaterial_Kapok"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_kapok.svg);
+    }
+    &[for="desktop__filter_FFmaterial_Kamelhaar"] {
+        background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_kamelhaar.svg);
+    }
+    
+    
+
+    
     
 }
 
@@ -338,13 +352,16 @@
         color: #fff;
         text-align: center;
         width: 100%;
-        line-height: 32px;
+        line-height: 34px;
         text-transform: uppercase;
         font-size: 12px;
+        height: 32px;
         cursor: pointer;
 
         &:hover {
-            background-color: #303030;
+            // background-color: #303030;
+            // opacity: .5;
+            background-color: #959493;
         }
     }
 }
@@ -385,7 +402,7 @@
     justify-content: space-between;
 
     > span {
-        margin-right: 8rem;
+        // margin-right: 18%;
         input {
             margin: 10px -3px 0 0;
         }
@@ -393,7 +410,36 @@
             line-height: 40px !important;
         }
     }
+    > .js-filter-form {
+        display: flex;
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%;
+        flex-direction: column;
+
+        .filterForm {
+            justify-content: right;
+        }
+        .productSortLabelWrapper {
+            -ms-flex: 0 0 32%;
+            flex: 0 0 32%;
+            max-width: 300px;
+            .text-right {
+                white-space: nowrap;
+            }
+        }
+        .h-pos-relative {
+            -ms-flex: 0 0 68%;
+            flex: 0 0 68%;
+            max-width: 300px;
+        }
+    }
 }
+#toggleModel {
+    -ms-flex: 0 0 108px;
+    flex: 0 0 108px;
+}
+
 
 #desktop__sort {
     min-width: 200px;
@@ -408,7 +454,7 @@
         // height: 200px;
         &::before,
         &::after {
-            background-size: auto auto;
+            background-size: 100% auto !important;
         }
         > .column:not(.shrink) {
             // min-height: 160px !important;
@@ -420,6 +466,9 @@
 
 .kk_vegan {
     visibility: hidden;
+    flex: 0 0 28%;
+    margin-right: 0;
+    white-space: nowrap;
     input {
         cursor: pointer;
     }
@@ -441,9 +490,22 @@
     width: 100%;
 }
 
+.kk_green {
+    > a {
+    // > .dropdown-pane {
+        background-color: #daeec6 !important;
+    }
+    // > a::before {
+    //     border-bottom: #daeec6 !important;
+    //     background-color: #daeec6 !important;
+    // }
+    
+}
+
 
 @media screen and (max-width: 1550px) {
     .js-filter-form > input + .filterRow + .filterRow > .column {
+        -ms-flex: 0 0 89%;
         flex: 0 0 89%;
         max-width: 89%;
     }
@@ -459,17 +521,28 @@
             right: auto !important;
         }
     }
-    
+    // .kk_inforow > span {
+    //     margin-right: 4%;
+    // }
 }
 @media screen and (max-width: 1350px) {
     .js-filter-form > input + .filterRow + .filterRow > .column {
+        -ms-flex: 0 0 88%;
         flex: 0 0 88%;
         max-width: 88%;
     }
+    .kk_inforow > .js-filter-form {
+        flex: 0 0 43%;
+    }
+    
 }
 @media screen and (max-width: 1050px) {
     .js-filter-form > input + .filterRow + .filterRow > .column {
+        -ms-flex: 0 0 87%;
         flex: 0 0 87%;
         max-width: 87%;
     }
 }
+
+
+
