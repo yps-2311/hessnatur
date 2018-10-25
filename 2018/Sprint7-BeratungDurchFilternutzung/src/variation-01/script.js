@@ -1,9 +1,9 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
- * @author Max Mustermann
+ * @author Denis Leno
  * @namespace V1
  * @name Variation 01
  * @description
@@ -37,16 +37,18 @@
         // die "Anwenden" Buttons die unter den Materialien eingeblendet werden können,
         // werden hiermit geschlossen
         var openLayer = WATO.qs(".kk_arrowbox[style*=block]");
-        console.log('openLayer: ', openLayer);
         if(openLayer){
             displayNone(openLayer);
         }
     }
     function closeAllFilters() {
         // Alle offenden Filter werden geschlossen
-        var openFilter = WATO.qs(".buttonTab.hover");
-        if(openFilter){
-            openFilter.click();
+        var openFilter = WATO.qsa(".buttonTab.hover");
+        if(openFilter.length > 0){
+            for (var o = 0; o < openFilter.length; o++) {
+                openFilter[o].click();
+            }
+            // openFilter.click();
         }
         closeMaterialCTA();
     }
@@ -60,11 +62,13 @@
     function setFilterGreen(thisFilterLi) {
         // Von allen aktiven Filter-Inputs werden die Dropdown-Heads grün gefärbt
         if(thisFilterLi){
-            console.log('thisFilterLi: ', thisFilterLi);
             thisFilterLi.classList.remove("kk_green");
 
             if(WATO.qs("input:checked", thisFilterLi) !== null){
                 thisFilterLi.classList.add("kk_green");
+
+                // Goal: Filter genutzt
+                // pushIridionGoal("useFilter");
             }
         }
     }
@@ -79,6 +83,7 @@
     function clickInputFilter(e) {
         var thisTarget = e.target;
         if(thisTarget){
+
             // Die geklickten Filter werden je nach Typ ins Localstorage geschrieben
             switch (thisTarget.getAttribute("data-facet-code")) {
                 case "FFfilterSize":
@@ -99,26 +104,41 @@
             }
 
             // Beim Klick auf eine Checkbox wird das jeweinige Dropdown-Head grün gefärbt
-            var thisFilterLi = thisTarget.closest(".h-pos-relative");
+            var thisFilterLi = thisTarget.parentNode.parentNode.parentNode.parentNode; //thisTarget.closest(".h-pos-relative");
+
+            if(thisFilterLi.classList.contains("dropdown-pane")){
+                thisFilterLi = thisFilterLi.parentNode;
+            }
 
             thisFilterLi.classList.remove("kk_green");
 
             if(WATO.qs("input:checked", thisFilterLi) !== null){
                 thisFilterLi.classList.add("kk_green");
             }
-            setFilterGreen(thisTarget.closest(".h-pos-relative"));
+            setFilterGreen(thisFilterLi);
         }
     }
     function getLeftpx(widthFilters, widthlistWrapper, inclMaterial) {
+
+        console.log('navigator.userAgent.indexOf("MSIE"): ', navigator.userAgent.indexOf("MSIE"));
+        if(navigator.userAgent.indexOf("MSIE") !== -1){
+            widthFilters = widthFilters-100;
+        }
+
         // Bei der Filter-Zeile "Material" müssen weitere 10px entfernt werden,
         // damit beim nach rechts scrollen der letzte Filter den richtigen Abstand zum Rand hat
         return ((widthFilters - widthlistWrapper - (inclMaterial ? 0 : 10)) - 10);
     }
     function buttonsFade(list, inclMaterial) {
         var listWrapper = list.parentNode;
+
+        // console.log('listWrapper: ', listWrapper);
+        // console.log('list.children.length: ', list.children.length);
+        // console.log('inclMaterial: ', inclMaterial);
         
-        if((158*(list.children.length - inclMaterial)) > (listWrapper.parentNode.offsetWidth - 165)) {
+        if((158*(list.children.length - inclMaterial)) > (listWrapper.parentNode.offsetWidth - (inclMaterial ? 204 : 65))) {
             displayBlock(listWrapper.previousSibling.previousSibling);
+            WATO.goalPush("showSlider");
         }else{
             displayNone(listWrapper.previousSibling.previousSibling);
         }
@@ -133,6 +153,7 @@
                 backButton = listWrapper.previousSibling, // Zurückbutton
                 widthFilters = (158*countFilters),  // Breite der Filter, eine Box ist 158px breit
                 widthBox = listWrapper.parentNode.offsetWidth; // Breite des Divs indem die Filter liegen
+                // AnwendenButtons = WATO.qsa("button.button", list);
                 
                 // console.log('widthFilters: ', widthFilters);
                 // console.log('widthBox: ', widthBox);
@@ -164,6 +185,8 @@
 
                 // Zurückbutton einblenden
                 displayBlock(backButton);
+
+                WATO.goalPush("klickScroll");
 
                 closeAllFilters();
             });
@@ -224,27 +247,17 @@
     }
     function clickMaterial(e) {
         try {
-            // console.log("click material");
-
             setLSFilterType("m");
 
             closeAllFilters();
-
-            // var openLayer = WATO.qs(".kk_arrowbox[style*=block]");
-            // if(openLayer){
-            //     displayNone(openLayer);
-            // }
-
-            //WATO.qs(".kk_arrowbox", e.target.closest(".column"))
 
             var thisTargetParent = e.target.parentNode;
             
             if(thisTargetParent.classList.contains("productFilterLabel")){
                 thisTargetParent = thisTargetParent.parentNode;
             }
-            WATO.qs(".kk_arrowbox", thisTargetParent)
 
-            displayBlock();
+            displayBlock(WATO.qs(".kk_arrowbox", thisTargetParent));
 
         } catch (error) {
             console.log(error);
@@ -257,14 +270,17 @@
             goFilter.click();
         }
     }
-    
-    WATO.elem('.gridviewProductFilterDesktopWrapper .js-filter-form', function(filterformX){
+
+    // WATO.elem('.gridviewProductFilterDesktopWrapper .js-filter-form', function(filterformX){
+    WATO.elem('.filterVariations', function(filterformX){
+        
+        console.log('filterformX: ', filterformX);
 
         if(filterformX){
             try {
 
-                var filterform = filterformX[0],
-                    alleFilterUl = WATO.qs(".filterVariations", filterform),
+                var alleFilterUl = filterformX[0], //WATO.qs(".filterVariations", filterform),
+                    filterform = WATO.qs(".gridviewProductFilterDesktopWrapper .js-filter-form"),
                     ausgewaehlterNaviPunkt = WATO.qsa(".sidebarNav--nav .h-text-bold"),
                     breadcrumbLastPoint = WATO.qs(".breadcrumbs.h-no-margin >li:last-child span strong:first-child"),
                     ogTitleMeta = WATO.qs('meta[property="og:title"]');
@@ -314,6 +330,13 @@
 
                         allScrollingToDefault();
                         closeAllFilters();
+
+                        // Punchout
+                        var current = window.innerWidth || document.body.clientWidth;
+                        if(current <= 1024){                            
+                            window.location.reload(true);
+                            window.location.href = window.location.href;
+                        }
                     };
                     
 
@@ -321,7 +344,6 @@
                     WATO.elem('#toggle_filter_FFmaterial', function(material){
                         if(material){
                             try {
-
                                 var materialDropdown = material[0],
                                     listElements = WATO.qsa("li label", materialDropdown),
                                     allMaterialFilterPoints = WATO.qsa(".column", materialDropdown);
@@ -337,10 +359,20 @@
 
                                 if(allMaterialFilterPoints.length > 0){
                                     for (var m = 0; m < allMaterialFilterPoints.length; m++) {
-                                        var thisFilterPoint = allMaterialFilterPoints[m];
+                                        var thisFilterPoint = allMaterialFilterPoints[m],
+                                            thisFilterInput = WATO.qs("input.productFilterInput:checked", thisFilterPoint);
+
                                         if(thisFilterPoint.textContent.indexOf(titleSeite) !== -1){
                                             thisFilterPoint.parentNode.insertAdjacentElement("afterbegin", thisFilterPoint);
                                         }
+                                        // Bereits angewante Filter sollen grün hinterlegt sein
+                                        if(thisFilterInput){
+                                            thisFilterPoint.style.backgroundColor = "#daeec6";
+
+                                            // Goal: Materialfilter genutzt
+                                            // pushIridionGoal("useMaterialFilter");
+                                        }
+                                        
                                     }
                                 }
 
@@ -351,8 +383,6 @@
 
                                     thisListLabel.insertAdjacentHTML("afterend", 
                                     '<div class="kk_arrowbox"><button>Anwenden</button></div>');
-
-                                    
 
                                     thisListLabel.addEventListener("click", clickMaterial);
 
@@ -395,44 +425,45 @@
                     '<div class="kk_inforow row">'+
                         (countArticle ? countArticle.textContent.replace("(", "").replace(")", "") : "")+
                         '<span class="kk_vegan"><input id="kk_nurvegan" type="checkbox" /><label for="kk_nurvegan">Nur vegane Produkte anzeigen</label></span>'+
-                        (sort ? sort.outerHTML : "")+
+                        // (sort ? sort.outerHTML : "")+
                     '</div>');
 
-                WATO.qs(".kk_inforow").insertAdjacentElement("beforeend", ansicht);
+                
+                if(ansicht){
+                    WATO.qs(".kk_inforow").insertAdjacentElement("beforeend", ansicht);
+                    ansicht.addEventListener("click", function(){
+                        // Goal: Ansicht genutzt
+                        WATO.goalPush("useProductView", true);
+                    });
+                }
+                
 
-                var nurVeganInput = WATO.qs("#kk_nurvegan", filterform);
+                var veganDiv = WATO.qs(".kk_vegan", filterform),
+                    nurVeganInput = WATO.qs("#kk_nurvegan", veganDiv);
                     // messageBox = WATO.qs(".kk_msg", filterform);
+
+                if(sort){
+                    veganDiv.insertAdjacentElement("afterend", sort);
+                }
 
                 // Zeile mit "nur Vegane Produkte anzeigen" wird nur einbeblendet wenn dieser Filter überhaupt vorhanden ist
                 WATO.elem('#toggle_filter_FFvegan', function(toggle_filter_FFvegan){
                     if(toggle_filter_FFvegan){
                         try {
-                            WATO.qs(".kk_vegan", filterform).style.visibility = "visible";
+                            veganDiv.style.visibility = "visible";
         
                             // Nur Vegan 
                             nurVeganInput.addEventListener("change", function(){
                                 try {
+                                    // Goal: Veganfilter genutzt
+                                    WATO.goalPush("useVeganFilter", true);
+
                                     setLSFilterType("v");
                                     WATO.qs("#desktop__filter_FFvegan_Ja", alleFilterUl).click();
                                     WATO.qs("button[data-toggle=toggle_filter_FFvegan]", alleFilterUl).click();
                                 } catch (error) {
                                     console.log(error);
                                 }
-                                // console.log("change");
-                                // if(nurVeganInput.checked){
-                                //     console.log("is checked");
-                                //     // WATO.qs("#desktop__filter_FFvegan_Ja", alleFilterUl).checked = true;
-                                //     WATO.qs("#desktop__filter_FFvegan_Ja", alleFilterUl).click();
-            
-                                //     console.log('WATO.qs("#desktop__filter_FFvegan_Ja", alleFilterUl): ', WATO.qs("#desktop__filter_FFvegan_Ja", alleFilterUl));
-                                // }else{
-                                //     console.log("is nicht checked");
-                                    
-                                //     WATO.qs("#desktop__filter_FFvegan_Ja", alleFilterUl).checked = false;
-                                //     console.log('WATO.qs("#desktop__filter_FFvegan_Ja", alleFilterUl): ', WATO.qs("#desktop__filter_FFvegan_Ja", alleFilterUl));
-                                // }
-            
-                                // console.log('WATO.qs("button[data-toggle=toggle_filter_FFvegan]", alleFilterUl): ', WATO.qs("button[data-toggle=toggle_filter_FFvegan]", alleFilterUl));
                             });
                         } catch (error) {
                             console.log(error);
@@ -449,26 +480,6 @@
                         nurVeganInput.checked = true;
                     }
                 }
-
-                // console.log("type: ", getLSFilterType());
-
-                // "Filter-genutzt" Messages
-                // if(urlSearch.indexOf("filterSize") !== -1){
-                //     // Filter "Größe" ist gewählt
-                //     getMsgrow(messageBox, 0); // , 1
-                // }else if(urlSearch.indexOf("colorgroup") !== -1){
-                //     // Filter "Farbe" ist gewählt
-                //     getMsgrow(messageBox, 2);
-                // }else if(urlSearch.indexOf("price") !== -1){
-                //     // Filter "Preis" ist gewählt
-                //     getMsgrow(messageBox, 3);
-                // }else if(urlSearch.indexOf("material") !== -1){
-                //     // Filter "Material" ist gewählt
-                //     getMsgrow(messageBox, 4);
-                // }else if(messageBox.textContent.length === 0 && urlSearch.indexOf("?q=") !== -1){
-                //     // ein anderer Filter wurde gewählt
-                //     getMsgrow(messageBox, 5);
-                // }
 
                 // Nachrichten werden speziell nach den zuletzverwendeten Filtern angezeigt
                 // außer man hat alle Filter zurückgesetzt
@@ -504,8 +515,7 @@
                         var eventTarget = e.target,
                             parentObjektIsDropdownpane = e.target.closest(".dropdown-pane");
                         
-                        if((eventTarget.classList && !eventTarget.classList.contains("buttonTab")) // Reiter
-                            && 
+                        if((eventTarget.classList && !eventTarget.classList.contains("buttonTab")) && // Reiter
                             (parentObjektIsDropdownpane === null || (parentObjektIsDropdownpane && parentObjektIsDropdownpane.getAttribute("id") === "toggle_filter_FFmaterial"))){ // Ausklapp-Dropdowns
                             
                             closeAllFilters();
@@ -516,72 +526,17 @@
                         console.log(error);
                     }
                 });
-                
+
+                filterform.parentNode.style.opacity = 1;
 
 
-                
             } catch (error) {
                 console.log(error);
             }
-
         }
-
-        // function pushGoal(key) {
-
-        //     if(goalsSend.indexOf(key) === -1){
-
-        //         goalsSend.push(key);
-
-        //         /**
-        //          * START QS
-        //          */
-        //         // WATO.qs('#wa-goals > li:last-child').insertAdjacentHTML('afterend', '<li style="list-style:none;">goal - ' + 's3_' + key + '</li>');
-        //         // console.log("pushGoal: " + key);
-        //         /**
-        //          * END QS
-        //          */
-    
-        //         window.iridion.push(['goal', 's3_' + key]);
-        //     }
-        // }
-
-        // function addListener(object, listener, callback) {
-
-        //     object.addEventListener(listener, callback);
-        // }
-
-        // function classContains(object, value) {
-
-        //     return object.classList.contains('wa-' + value);
-        // }
-
-        // function manageClass(object, value, remove) {
-
-        //     var _class = 'wa-' + value,
-        //         _classList = object.classList;
-
-        //     if(remove){
-
-        //         _classList.remove(_class);
-        //     } else {
-                
-        //         _classList.add(_class);
-        //     }
-        // }
-
-        // function hideLayer() {
-
-        //     pushGoal('uvps_closed');
-
-        //     manageClass($waLayerBG, 'show', true);
-        //     manageClass($waLayerBG, 'fade-out');
-        //     manageClass($waLayer, 'fade-in', true);
-        //     manageClass($waLayer, 'fade-out');
-        // }
-
-
-        
-
-
     });
+
+    WATO.goals();
+    
+    
 })(new window.WATO(), window);

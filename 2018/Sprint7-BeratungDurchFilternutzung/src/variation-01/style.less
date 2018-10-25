@@ -6,6 +6,17 @@
 
 /* DEFINE VARIATION CSS */
 
+
+.gridviewProductFilterDesktopWrapper {
+    opacity: 0;
+    margin: 0 30px;
+    transition: opacity 0.3s ease;
+
+    .dropdown-pane.is-open {
+        max-width: 450px;
+    }
+}
+
 #js-foundation-sticky-left-navigation-data-anchor {
     overflow: hidden;
 }
@@ -18,9 +29,7 @@
 .large-3.sticky-container {
     margin-top: .76919rem;
 }
-.gridviewProductFilterDesktopWrapper {
-    margin: 0 30px;
-}
+
 .js-filter-form {
     display: flex;
     flex-direction: column;
@@ -112,6 +121,7 @@
         padding: 0 10px 0 0;
         -ms-flex: 0 0 158px !important;
         flex: 0 0 158px !important;
+        max-width: 350px !important;
     }
     // &.kk_flowright {
     //     flex-direction: row;
@@ -181,7 +191,8 @@
         display: none;
         border-radius: 3px;
         &:checked + label {
-            background-color: #daeec6;
+            // background-color: #daeec6;
+            border-color: #daeec6;
         }
     }
     .productFilterLabel {
@@ -191,8 +202,11 @@
         display: block;
         z-index: 2;
         text-align: center;
-        padding-top: 31px;
+        padding-top: 29px;
         font-size: 12px;
+        border: solid 2px #f7f6f5;
+        border-radius: 4px;
+
         span {
             color: #393939;
         }
@@ -234,15 +248,6 @@
     display: none;
 }
 
-// TODO optimieren
-// .gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+4) .dropdown-pane,
-// .gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+5) .dropdown-pane,
-// .gridviewProductFilterDesktopWrapper .filterVariations .column:nth-of-type(5n+6) .dropdown-pane,
-// .gridviewProductFilterDesktopWrapper .filterVariations .column:nth-last-child(2) .dropdown-pane,
-// .gridviewProductFilterDesktopWrapper .filterVariations .column:nth-last-child(3) .dropdown-pane,
-// .gridviewProductFilterDesktopWrapper .filterVariations .column:last-child .dropdown-pane {
-//     right: .76923rem !important;
-// }
 .filterVariations .column {
     & > .dropdown-pane {
         right: .76923rem !important;
@@ -256,13 +261,9 @@
 }
 
 
-// 3 + ( n - 1 ) * 1
-
-
-
 .productFilterLabel {
     cursor: pointer;
-    background: transparent no-repeat center 4px;
+    background: transparent no-repeat center 3px;
     background-size: auto 30px;
 
     &[for="desktop__filter_FFmaterial_Baumwolle"] {
@@ -328,11 +329,6 @@
     &[for="desktop__filter_FFmaterial_Kamelhaar"] {
         background-image: url(https://imgs7.hessnatur.com/is/content/HessNatur/Materialicons/Materialicon_kamelhaar.svg);
     }
-    
-    
-
-    
-    
 }
 
 .kk_arrowbox {
@@ -410,7 +406,7 @@
             line-height: 40px !important;
         }
     }
-    > .js-filter-form {
+    > .js-filter-form { //js-filter-form
         display: flex;
         -ms-flex: 0 0 50%;
         flex: 0 0 50%;
@@ -418,7 +414,7 @@
         flex-direction: column;
 
         .filterForm {
-            justify-content: right;
+            justify-content: flex-end;
         }
         .productSortLabelWrapper {
             -ms-flex: 0 0 32%;
@@ -429,10 +425,13 @@
             }
         }
         .h-pos-relative {
+            max-width: 300px;
             -ms-flex: 0 0 68%;
             flex: 0 0 68%;
-            max-width: 300px;
         }
+    }
+    + .filterRow {
+        order: 2;
     }
 }
 #toggleModel {
@@ -442,7 +441,7 @@
 
 
 #desktop__sort {
-    min-width: 200px;
+    min-width: 170px;
 }
 
 .breadcrumb-productList .js-filter-form {
@@ -499,8 +498,9 @@
     //     border-bottom: #daeec6 !important;
     //     background-color: #daeec6 !important;
     // }
-    
 }
+
+
 
 
 @media screen and (max-width: 1550px) {
@@ -510,6 +510,7 @@
         max-width: 89%;
     }
     .kk_filter[data-step=start] .column {
+        &:nth-child(3) > .dropdown-pane,
         &:nth-child(4) > .dropdown-pane,
         &:nth-child(5) > .dropdown-pane {
             right: .76923rem !important;
@@ -521,9 +522,10 @@
             right: auto !important;
         }
     }
-    // .kk_inforow > span {
-    //     margin-right: 4%;
-    // }
+
+    .kk_inforow > .js-filter-form .h-pos-relative {
+        max-width: 200px;
+    }
 }
 @media screen and (max-width: 1350px) {
     .js-filter-form > input + .filterRow + .filterRow > .column {
@@ -534,9 +536,19 @@
     .kk_inforow > .js-filter-form {
         flex: 0 0 43%;
     }
+    // .kk_filter[data-step=start] .column {
+    //     &:nth-child(3) > .dropdown-pane {
+    //         right: .76923rem !important;
+    //     }
+    // }
+    .kk_filter[data-step=end] .column {
+        &:nth-last-child(4) > .dropdown-pane {
+            right: auto !important;
+        }
+    }
     
 }
-@media screen and (max-width: 1050px) {
+@media screen and (max-width: 1070px) {
     .js-filter-form > input + .filterRow + .filterRow > .column {
         -ms-flex: 0 0 87%;
         flex: 0 0 87%;
