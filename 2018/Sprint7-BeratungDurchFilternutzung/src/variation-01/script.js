@@ -119,15 +119,21 @@
         }
     }
     function getLeftpx(widthFilters, widthlistWrapper, inclMaterial) {
-
+        
         console.log('navigator.userAgent.indexOf("MSIE"): ', navigator.userAgent.indexOf("MSIE"));
         if(navigator.userAgent.indexOf("MSIE") !== -1){
             widthFilters = widthFilters-100;
         }
 
+        console.log('widthFilters: ', widthFilters);
+        console.log('widthlistWrapper: ', widthlistWrapper);
+        console.log('inclMaterial: ', inclMaterial);
+        console.log('(widthFilters - widthlistWrapper - (inclMaterial ? 0 : 10)) - 10: ', (widthFilters - widthlistWrapper - (inclMaterial ? 0 : 10)) - 10);
+
+
         // Bei der Filter-Zeile "Material" müssen weitere 10px entfernt werden,
         // damit beim nach rechts scrollen der letzte Filter den richtigen Abstand zum Rand hat
-        return ((widthFilters - widthlistWrapper - (inclMaterial ? 0 : 10)) - 10);
+        return ((widthFilters - widthlistWrapper - (inclMaterial ? 0 : 10)) ); //- 10
     }
     function buttonsFade(list, inclMaterial) {
         var listWrapper = list.parentNode;
@@ -154,8 +160,10 @@
                 widthFilters = (158*countFilters),  // Breite der Filter, eine Box ist 158px breit
                 widthBox = listWrapper.parentNode.offsetWidth; // Breite des Divs indem die Filter liegen
                 // AnwendenButtons = WATO.qsa("button.button", list);
-                
-                // console.log('widthFilters: ', widthFilters);
+
+
+                console.log('countFilters: ', countFilters);
+                console.log('widthFilters: ', widthFilters);
                 // console.log('widthBox: ', widthBox);
 
             // "data-step" wird true wenn es beim sliden mehr als ganz links und ganz rechts gibt
@@ -322,8 +330,8 @@
                             alleFilterUl.insertAdjacentElement("afterbegin", filterElement.parentNode);
                         }
                     }
-
-                    scrollBox(alleFilterUl, 1);
+                    
+                    scrollBox(alleFilterUl, WATO.qsa("#toggle_filter_FFmaterial").length);
 
                     window.onresize = function() {
                         // console.log("resize");
