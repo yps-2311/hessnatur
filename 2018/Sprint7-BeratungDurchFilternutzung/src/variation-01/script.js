@@ -121,6 +121,7 @@
     function getLeftpx(widthFilters, widthlistWrapper, inclMaterial) {
         
         console.log('navigator.userAgent.indexOf("MSIE"): ', navigator.userAgent.indexOf("MSIE"));
+
         if(navigator.userAgent.indexOf("MSIE") !== -1){
             widthFilters = widthFilters-100;
         }
@@ -152,6 +153,8 @@
     }
     function scrollBox(list, inclMaterial) {
 
+        // Init der Scroll-DIVs
+
         if(list){
             var listWrapper = list.parentNode,
                 countFilters = list.children.length - inclMaterial, // Anzahl der Filter
@@ -159,12 +162,7 @@
                 backButton = listWrapper.previousSibling, // Zurückbutton
                 widthFilters = (158*countFilters),  // Breite der Filter, eine Box ist 158px breit
                 widthBox = listWrapper.parentNode.offsetWidth; // Breite des Divs indem die Filter liegen
-                // AnwendenButtons = WATO.qsa("button.button", list);
-
-
-                console.log('countFilters: ', countFilters);
-                console.log('widthFilters: ', widthFilters);
-                // console.log('widthBox: ', widthBox);
+            
 
             // "data-step" wird true wenn es beim sliden mehr als ganz links und ganz rechts gibt
             // bedeutet: sollte der User sehr viele Filter und einen kleine Bildschirmbreite haben
@@ -175,17 +173,17 @@
 
             var sliderZwischenstop = widthFilters > ((widthBox - 250) *2);
 
-            // weiterbutton
+            // Weiterbutton
             continueButton.addEventListener("click", function(){
                 // var newLeft = ((widthFilters - listWrapper.offsetWidth - (inclMaterial ? 0 : 10)) - 10);
                 var newLeft = getLeftpx(widthFilters, listWrapper.offsetWidth, inclMaterial);
 
-                if(listWrapper.getAttribute("data-step") === "start" && sliderZwischenstop){ // false
+                if(listWrapper.getAttribute("data-step") === "start" && sliderZwischenstop){
                     newLeft = newLeft / 2;
-                    listWrapper.setAttribute("data-step", "mid"); //true
+                    listWrapper.setAttribute("data-step", "mid");
                 }else{
                     displayNone(continueButton);
-                    listWrapper.setAttribute("data-step", "end"); // false
+                    listWrapper.setAttribute("data-step", "end");
                 }
 
                 // Verschieben
@@ -199,16 +197,16 @@
                 closeAllFilters();
             });
 
-            // zurückbutton
+            // Zurückbutton
             backButton.addEventListener("click", function(){
                 var newLeft = 0;
 
-                if(listWrapper.getAttribute("data-step") === "end" && sliderZwischenstop){ // false
+                if(listWrapper.getAttribute("data-step") === "end" && sliderZwischenstop){
                     newLeft = getLeftpx(widthFilters, listWrapper.offsetWidth, inclMaterial) / 2;
-                    listWrapper.setAttribute("data-step", "mid"); // true
+                    listWrapper.setAttribute("data-step", "mid");
                 }else{
                     displayNone(backButton);
-                    listWrapper.setAttribute("data-step", "start"); // false
+                    listWrapper.setAttribute("data-step", "start");
                 }
 
                 // Verschieben
@@ -231,6 +229,9 @@
         }
     }
     function allScrollingToDefault() {
+        // Slider werden nach links (Defaultposition) zurückgesetzt,
+        // Buttons für "weiter" oder "zurück" werden dementsprechend ein oder ausgeblendet
+        // so werden Fehldarstellung nach dem Resizen vermieden
         WATO.elem('.kk_filter > ul, #toggle_filter_FFmaterial > ul', function(slider){
             if(slider){
                 try {
@@ -240,12 +241,10 @@
                     if(slider1){
                         slider1.style.left = "0";
                         buttonsFade(slider1, 1);
-                        // displayBlock(displayNone(slider1.parentNode.previousSibling).previousSibling);
                     }
                     if(slider2){
                         slider2.style.left = "0";
                         buttonsFade(slider2, 0);
-                        // displayBlock(displayNone(slider2.parentNode.previousSibling).previousSibling);
                     }
                 } catch (error) {
                     console.log(error);
@@ -254,26 +253,34 @@
         });
     }
     function clickMaterial(e) {
+        // Klick auf die Filterboxen bei Material
         try {
+            // Für die Meldung der Folgeseite wird gemerkt dass Material geklickt wurde
             setLSFilterType("m");
 
             closeAllFilters();
 
+            // Alle weiteren Bestätigen Buttons werden ausgeblendet
             var thisTargetParent = e.target.parentNode;
-            
             if(thisTargetParent.classList.contains("productFilterLabel")){
                 thisTargetParent = thisTargetParent.parentNode;
             }
-
-            displayBlock(WATO.qs(".kk_arrowbox", thisTargetParent));
+            var thisBestaetigenButton = WATO.qs(".kk_arrowbox", thisTargetParent);
+            if(thisBestaetigenButton){
+                displayBlock(thisBestaetigenButton);
+            }
 
         } catch (error) {
+            WATO.goalPush("wa_setup_monitoring");
             console.log(error);
         }
     }
 
     function filterAnwenden() {
+        WATO.goalPush("filter_material", true);
+
         var goFilter = WATO.qs("button[data-toggle=toggle_filter_FFmaterial]");
+
         if(goFilter){
             goFilter.click();
         }
@@ -398,6 +405,7 @@
                                 }
                                 
                             } catch (error) {
+                                WATO.goalPush("wa_setup_monitoring");
                                 console.log(error);
                             }
                         }
@@ -433,7 +441,6 @@
                     '<div class="kk_inforow row">'+
                         (countArticle ? countArticle.textContent.replace("(", "").replace(")", "") : "")+
                         '<span class="kk_vegan"><input id="kk_nurvegan" type="checkbox" /><label for="kk_nurvegan">Nur vegane Produkte anzeigen</label></span>'+
-                        // (sort ? sort.outerHTML : "")+
                     '</div>');
 
                 
@@ -467,13 +474,23 @@
                                     WATO.goalPush("useVeganFilter", true);
 
                                     setLSFilterType("v");
-                                    WATO.qs("#desktop__filter_FFvegan_Ja", alleFilterUl).click();
-                                    WATO.qs("button[data-toggle=toggle_filter_FFvegan]", alleFilterUl).click();
+
+                                    var veganFilterInput = WATO.qs("#desktop__filter_FFvegan_Ja", alleFilterUl),
+                                        veganFilterSubmitBtn = WATO.qs("button[data-toggle=toggle_filter_FFvegan]", alleFilterUl);
+
+                                    if(veganFilterInput && veganFilterSubmitBtn){
+                                        veganFilterInput.click();
+                                        veganFilterSubmitBtn.click();
+                                    }
+                                    // WATO.qs("#desktop__filter_FFvegan_Ja", alleFilterUl).click();
+                                    // WATO.qs("button[data-toggle=toggle_filter_FFvegan]", alleFilterUl).click();
                                 } catch (error) {
+                                    WATO.goalPush("wa_setup_monitoring");
                                     console.log(error);
                                 }
                             });
                         } catch (error) {
+                            WATO.goalPush("wa_setup_monitoring");
                             console.log(error);
                         }
                     }
@@ -514,9 +531,6 @@
                     }
                 }
 
-                
-                
-
                 // Alle Filter werden eingeklappt wenn man irgendwo hinklickt auf der Seite außer auf die Filter selbst
                 WATO.qs("body").addEventListener("mouseup", function(e){
                     try {
@@ -531,14 +545,17 @@
                         closeMaterialCTA();
 
                     } catch (error) {
+                        WATO.goalPush("wa_setup_monitoring");
                         console.log(error);
                     }
                 });
 
+                // alles einblenden nachdem die gröbsten Umbauten ausgefährt wurden damit es weniger Flickering gibt
                 filterform.parentNode.style.opacity = 1;
 
 
             } catch (error) {
+                WATO.goalPush("wa_setup_monitoring");
                 console.log(error);
             }
         }
