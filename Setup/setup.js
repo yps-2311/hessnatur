@@ -27,7 +27,7 @@
 
             XMLHttpRequest.prototype.open = function(method, uri, async, user, pass) {
 
-                this.addEventListener("load", function() {
+                this.addEventListener("loadend", function() {
 
                     if(this.readyState === 4 && uri.indexOf("https://www.hessnatur.com/de/cart/add") !== -1){
 
@@ -77,9 +77,9 @@
                 }
             },100);
 
-            setInterval(function(){
+            setTimeout(function(){
                 clearInterval(wa_loginButtonInterval);
-            },5000);
+            }, 5000);
 
         } else if (URL.indexOf("/merkzettel") !== -1) {
             // Merkzettel
