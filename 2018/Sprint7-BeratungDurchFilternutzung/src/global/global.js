@@ -96,7 +96,7 @@
 				}
 			} catch (error) {
 				_self.goalPush("wa_setup_monitoring");
-				console.log(error);
+				// console.log(error);
 			}
 		}
 	
@@ -118,7 +118,7 @@
 
 				} catch (error) {
 					_self.goalPush("wa_setup_monitoring");
-					console.log(error);
+					// console.log(error);
 				}
 
 			}
@@ -133,7 +133,7 @@
 					});
 				} catch (error) {
 					_self.goalPush("wa_setup_monitoring");
-					console.log(error);
+					// console.log(error);
 				}
 			}
 		});
@@ -147,7 +147,7 @@
 					}
 				} catch (error) {
 					_self.goalPush("wa_setup_monitoring");
-					console.log(error);
+					// console.log(error);
 				}
 			}
 		});

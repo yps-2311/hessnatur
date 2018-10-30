@@ -120,16 +120,16 @@
     }
     function getLeftpx(widthFilters, widthlistWrapper, inclMaterial) {
         
-        console.log('navigator.userAgent.indexOf("MSIE"): ', navigator.userAgent.indexOf("MSIE"));
+        // console.log('navigator.userAgent.indexOf("MSIE"): ', navigator.userAgent.indexOf("MSIE"));
 
         if(navigator.userAgent.indexOf("MSIE") !== -1){
             widthFilters = widthFilters-100;
         }
 
-        console.log('widthFilters: ', widthFilters);
-        console.log('widthlistWrapper: ', widthlistWrapper);
-        console.log('inclMaterial: ', inclMaterial);
-        console.log('(widthFilters - widthlistWrapper - (inclMaterial ? 0 : 10)) - 10: ', (widthFilters - widthlistWrapper - (inclMaterial ? 0 : 10)) - 10);
+        // console.log('widthFilters: ', widthFilters);
+        // console.log('widthlistWrapper: ', widthlistWrapper);
+        // console.log('inclMaterial: ', inclMaterial);
+        // console.log('(widthFilters - widthlistWrapper - (inclMaterial ? 0 : 10)) - 10: ', (widthFilters - widthlistWrapper - (inclMaterial ? 0 : 10)) - 10);
 
 
         // Bei der Filter-Zeile "Material" müssen weitere 10px entfernt werden,
@@ -247,7 +247,8 @@
                         buttonsFade(slider2, 0);
                     }
                 } catch (error) {
-                    console.log(error);
+                    WATO.goalPush("wa_setup_monitoring");
+                    // console.log(error);
                 }
             }
         });
@@ -272,11 +273,12 @@
 
         } catch (error) {
             WATO.goalPush("wa_setup_monitoring");
-            console.log(error);
+            // console.log(error);
         }
     }
 
     function filterAnwenden() {
+        // console.log("filterAnwenden");
         WATO.goalPush("filter_material", true);
 
         var goFilter = WATO.qs("button[data-toggle=toggle_filter_FFmaterial]");
@@ -289,7 +291,7 @@
     // WATO.elem('.gridviewProductFilterDesktopWrapper .js-filter-form', function(filterformX){
     WATO.elem('.filterVariations', function(filterformX){
         
-        console.log('filterformX: ', filterformX);
+        // console.log('filterformX: ', filterformX);
 
         if(filterformX){
             try {
@@ -300,9 +302,9 @@
                     breadcrumbLastPoint = WATO.qs(".breadcrumbs.h-no-margin >li:last-child span strong:first-child"),
                     ogTitleMeta = WATO.qs('meta[property="og:title"]');
                     
-                    console.log('alleFilterUl: ', alleFilterUl);
-                    console.log('ausgewaehlterNaviPunkt: ', ausgewaehlterNaviPunkt);
-                    console.log('breadcrumbLastPoint: ', breadcrumbLastPoint);
+                    // console.log('alleFilterUl: ', alleFilterUl);
+                    // console.log('ausgewaehlterNaviPunkt: ', ausgewaehlterNaviPunkt);
+                    // console.log('breadcrumbLastPoint: ', breadcrumbLastPoint);
 
                 filterform.classList.add("kk_noMaterials");
 
@@ -406,7 +408,7 @@
                                 
                             } catch (error) {
                                 WATO.goalPush("wa_setup_monitoring");
-                                console.log(error);
+                                // console.log(error);
                             }
                         }
                     });
@@ -486,12 +488,12 @@
                                     // WATO.qs("button[data-toggle=toggle_filter_FFvegan]", alleFilterUl).click();
                                 } catch (error) {
                                     WATO.goalPush("wa_setup_monitoring");
-                                    console.log(error);
+                                    // console.log(error);
                                 }
                             });
                         } catch (error) {
                             WATO.goalPush("wa_setup_monitoring");
-                            console.log(error);
+                            // console.log(error);
                         }
                     }
                 });
@@ -546,7 +548,7 @@
 
                     } catch (error) {
                         WATO.goalPush("wa_setup_monitoring");
-                        console.log(error);
+                        // console.log(error);
                     }
                 });
 
@@ -556,7 +558,7 @@
 
             } catch (error) {
                 WATO.goalPush("wa_setup_monitoring");
-                console.log(error);
+                // console.log(error);
             }
         }
     });
