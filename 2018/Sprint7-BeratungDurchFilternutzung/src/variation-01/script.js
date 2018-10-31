@@ -120,17 +120,10 @@
     }
     function getLeftpx(widthFilters, widthlistWrapper, inclMaterial) {
         
-        // console.log('navigator.userAgent.indexOf("MSIE"): ', navigator.userAgent.indexOf("MSIE"));
-
+        // IE Sonderfall
         if(navigator.userAgent.indexOf("MSIE") !== -1){
             widthFilters = widthFilters-100;
         }
-
-        // console.log('widthFilters: ', widthFilters);
-        // console.log('widthlistWrapper: ', widthlistWrapper);
-        // console.log('inclMaterial: ', inclMaterial);
-        // console.log('(widthFilters - widthlistWrapper - (inclMaterial ? 0 : 10)) - 10: ', (widthFilters - widthlistWrapper - (inclMaterial ? 0 : 10)) - 10);
-
 
         // Bei der Filter-Zeile "Material" müssen weitere 10px entfernt werden,
         // damit beim nach rechts scrollen der letzte Filter den richtigen Abstand zum Rand hat
@@ -524,14 +517,19 @@
                         case "m":
                         setMessageRow(3);
                             break;
-                        case "v":
-                        setMessageRow(4);
-                            break;
+                        // case "v":
+                        // setMessageRow(4);
+                        //     break;
                         case "d":
                         setMessageRow(5);
                             break;
                     }
                 }
+                // Wenn Vegan als Filter gewählt ist wird die Nachricht für "Vegan" angezeigt
+                if(window.location.search.indexOf("FFvegan%3AJa") !== -1){
+                    setMessageRow(4);
+                }
+                
 
                 // Alle Filter werden eingeklappt wenn man irgendwo hinklickt auf der Seite außer auf die Filter selbst
                 WATO.qs("body").addEventListener("mouseup", function(e){
