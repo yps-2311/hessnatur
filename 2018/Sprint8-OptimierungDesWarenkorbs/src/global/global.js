@@ -7,8 +7,17 @@
  */
 
 
-// (function(WATO){
-// 	"use strict";
+(function(WATO){
+	"use strict";
+
+	WATO.prototype.globalCode = function(){
+		// Punchout
+		this.exclude("1024", function(){
+			window.location.reload();
+			window.location.href = window.location.href;
+		});
+	};
+	
 
 // 	WATO.prototype.goalPush = function(key, sendOnNextPageView){
 
@@ -160,5 +169,5 @@
 
 
 	
-// })(window.WATO);
+})(window.WATO);
 

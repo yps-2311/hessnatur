@@ -346,31 +346,31 @@
      * @param {number} width -
      * @param {function} callback
      */
-	// window.WATO.prototype.exclude = function(width, callback){
+	window.WATO.prototype.exclude = function(width, callback){
 		
-	// 	function _checkWidth() {
+		function _checkWidth() {
 			
-    //         var current = window.innerWidth || document.body.clientWidth;
+            var current = window.innerWidth || document.body.clientWidth;
             
-	// 		if(current <= width && !exclude){
+			if(current <= width && !exclude){
 				
-	// 			exclude = true;
+				exclude = true;
 				
-	// 			callback();
-	// 		}
-	// 	}
+				callback();
+			}
+		}
 		
-	// 	var exclude = false;
+		var exclude = false;
 		
-	// 	_checkWidth();
+		_checkWidth();
 		
-	// 	if(typeof callback === "function"){
+		if(typeof callback === "function"){
 			
-	// 		window.onresize = function() {
-	// 			_checkWidth();
-	// 		};
-	// 	}
-	// };
+			window.onresize = function() {
+				_checkWidth();
+			};
+		}
+	};
 
     /**
      * @function storageAvailable
