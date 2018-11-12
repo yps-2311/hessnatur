@@ -85,9 +85,13 @@
                             if(discountPrice.length === i+1){
                                 // Rabattcode
                                 var redeemedVouchers = WATO.qsa(".shrink .price.discountPrice");
-                                for (var k = 0; k < redeemedVouchers.length; k++) {
-                                    // wurde einer order mehrere eingelöst werden diese dem Gesammtrabatt aufaddiert
-                                    WATO.totalDiscount = WATO.totalDiscount + getFloatNumber(redeemedVouchers[k]);
+                                if(redeemedVouchers.length > 0){
+                                    for (var k = 0; k < redeemedVouchers.length; k++) {
+                                        // wurde einer order mehrere eingelöst werden diese dem Gesammtrabatt aufaddiert
+                                        WATO.totalDiscount = WATO.totalDiscount + getFloatNumber(redeemedVouchers[k]);
+                                    }
+                                    // GOAL
+                                    WATO.goalPush("useVoucher");
                                 }
                                 
                                 // Rabattbestellung unten rechts
@@ -137,8 +141,8 @@
                         thisBtn.insertAdjacentHTML('afterend', 
                             '<div class="kk_nudgeCart">'+
                                 '<button class="align-right close-button js-actionbar-close" type="button" data-close=""><span>&times;</span></button>'+
-                                '<h4>In Ruhe Zuhause anprobieren & entscheiden:</h4>'+
-                                '<p>Sie haben 14 Tage Zeit um unseren <b>kostenlosen Retouren-Service</b> zu nutzen. Egal, wie Sie zahlen möchten.</p>'+
+                                '<h4>In Ruhe zu Hause anprobieren & entscheiden:</h4>'+
+                                '<p>Sie haben 14 Tage Zeit, um unseren <b>kostenlosen Retouren-Service</b> zu nutzen. Egal, wie Sie zahlen möchten.</p>'+
                             '</div>');
             
                         // schließen des Nudges
@@ -169,9 +173,9 @@
                         // Statische UVP Box links unten
                         applyVoucherWrapper.insertAdjacentHTML("afterbegin", '<div class="kk_trust row">'+
                                 '<b class="column small-12">Wir übernehmen Verantwortung</b>'+
-                                '<div class="kk_fst column small-4">Höchste Qualitätsstandards nach der hessnatur Richtlinie</div>'+
-                                '<div class="kk_sec column small-4">Reine Naturfasern aus biologischer Landwirtschaft</div>'+
-                                '<div class="kk_thr column small-4">Hoher Tragekomfort und Hautverträglichkeit</div>'+
+                                '<div class="kk_fst column small-4 h6">Höchste Qualitätsstandards nach der hessnatur Richtlinie</div>'+
+                                '<div class="kk_sec column small-4 h6">Reine Naturfasern aus biologischer Landwirtschaft</div>'+
+                                '<div class="kk_thr column small-4 h6">Hoher Tragekomfort und Hautverträglichkeit</div>'+
                             '</div>');
                     }
                 });
