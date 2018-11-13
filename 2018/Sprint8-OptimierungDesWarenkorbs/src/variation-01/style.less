@@ -118,7 +118,10 @@
     & + .row {
         display: none;
     }
-} 
+    // .column.shrink:nth-child(3){
+    //     padding-right: 2.9rem;
+    // }
+}
 .kk_trust {
     height: 178px;
     border: solid 5px #f7f6f5;
@@ -163,8 +166,13 @@
     min-height: 118px;
 }
 
-.js_backstopWrapper .text-right {
-    position: relative;
+.js_backstopWrapper{
+    > .h-xsmallOffset-bottom-outer {
+        min-height: 101px;
+    }
+    .text-right {
+        position: relative;
+    }
 }
 
 .kk_nudgeCart {

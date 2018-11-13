@@ -10,14 +10,6 @@
 (function(WATO){
 	"use strict";
 
-	WATO.prototype.globalCode = function(){
-		// Punchout
-		this.exclude("1024", function(){
-			window.location.reload();
-			window.location.href = window.location.href;
-		});
-	};
-
 	WATO.prototype.goalPush = function(key, sendOnNextPageView){
 		if(sendOnNextPageView){
 			window.iridion.push(['goal', key, '', true]);
@@ -27,19 +19,71 @@
 		console.log('goalPush: ', key);
 	};
 
+	WATO.prototype.globalCode = function(){
+		// Punchout
+		this.exclude("1024", function(){
+			window.location.reload();
+			window.location.href = window.location.href;
+		});
+
+		try {
+
+			var _self = this;
+			
+			_self.elem('.medium-order-1 .expanded-small-only', function(continueShopping){
+				if(continueShopping){
+					continueShopping[0].addEventListener('click', function(){
+						_self.goalPush("continueShopping", true);
+					});
+				}
+			});
+
+			_self.elem('.shrink .price.discountPrice', function(redeemedVouchers){
+				if(redeemedVouchers){
+					_self.goalPush("useVoucher");
+				}
+			});
+
+			_self.ajax(",/json", function(){
+				console.log("enterArticleNr");
+				_self.goalPush("enterArticleNr");
+			});
+
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	
 
-// 	WATO.prototype.goalPush = function(key, sendOnNextPageView){
+	// WATO.prototype.goals = function(){
+	// 	try {
 
-// 		if(sendOnNextPageView){
-// 			window.iridion.push(['goal', key, '', true]);
-// 		}else{
-// 			window.iridion.push(['goal', key]);
-// 		}
-// 		// console.log('goalPush: ', key);
-// 	};
+	// 		var _self = this;
+			
+	// 		_self.elem('.medium-order-1 .expanded-small-only', function(continueShopping){
+	// 			if(continueShopping){
+	// 				continueShopping[0].addEventListener('click', function(){
+	// 					_self.goalPush("continueShopping", true);
+	// 				});
+	// 			}
+	// 		});
 
+	// 		_self.elem('.shrink .price.discountPrice', function(redeemedVouchers){
+	// 			if(redeemedVouchers){
+	// 				_self.goalPush("useVoucher");
+	// 			}
+	// 		});
 
+	// 		_self.ajax(",/json", function(){
+	// 			console.log("enterArticleNr");
+	// 			_self.goalPush("enterArticleNr");
+	// 		});
+
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// };
 // 	WATO.prototype.goals = function(){
 
 // 		// console.log("global");
