@@ -195,19 +195,15 @@
                     '<div class="row kk_blue">'+
                         '<div class="column small-12 large-10 large-offset-1">Artikel im Warenkorb werden nicht zurückgelegt.</div>'+
                     '</div>');
-
-                    // Klick auf "Statischer Text in blau"
-                    var blueMsg = WATO.qs(".kk_blue", betweenSums.parentNode);
-                    blueMsg.addEventListener("click",function(){
-                        WATO.goalPush("kkQualibox");
-                    });
         
                     // Eingabefeld für Rabattcodes oder Gutscheine umplatziert
                     WATO.elem('.applyVoucherWrapper', function(applyVoucherWrapper){
                         if(applyVoucherWrapper){
                             applyVoucherWrapper = applyVoucherWrapper[0];
                             
+                            var blueMsg = WATO.qs(".kk_blue", betweenSums.parentNode);
                             blueMsg.insertAdjacentElement("afterbegin", applyVoucherWrapper.parentNode);
+
                             // Statische UVP Box links unten
                             applyVoucherWrapper.insertAdjacentHTML("afterbegin", '<div class="kk_trust row">'+
                                     '<b class="column small-12">Wir übernehmen Verantwortung</b>'+
@@ -216,7 +212,12 @@
                                     '<div class="kk_thr column small-4 h6">Hoher Tragekomfort und Hautverträglichkeit</div>'+
                                 '</div>');
 
-                            WATO.qs(".kk_trust", applyVoucherWrapper).addEventListener("click",function(){
+                            // Klick auf die UVP Box
+                            WATO.qs(".bgColor-super-light-gray ", blueMsg).addEventListener("click",function(){
+                                WATO.goalPush("kkQualibox");
+                            });
+                            // Klick auf "Statischer Text in blau"
+                            WATO.qs(".large-offset-1.large-10", blueMsg).addEventListener("click",function(){
                                 WATO.goalPush("kkInfoMsg");
                             });
                         }
