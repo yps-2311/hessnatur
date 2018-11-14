@@ -101,21 +101,22 @@
             	docReady(function(){
             		var zahlart = window.document.querySelectorAll('#checkoutContentPanel > div > .row > div .h-smallOffset-bottom-inner');
             		
-            		if(	zahlart.length !== 0 && 
-            			zahlart[0].textContent.trim().toLowerCase().indexOf('rechnung') !== -1){
-
-            			document.querySelector('button.success').addEventListener('click', function(){
-            				window.iridion.push(["segment", "32785"]);
-                		});
+            		if(	zahlart.length !== 0 && zahlart[0].textContent.trim().toLowerCase().indexOf('rechnung') !== -1){
+                        window.localStorage.setItem("kk_buytype","rechnung");
+            			// document.querySelector('button.success').addEventListener('click', function(){
+            			// 	window.iridion.push(["segment", "32785"]);
+                        // });
             		}
             	});
-            } catch(error){}
+            } catch(error){
+                goalPush('error_setup');
+            }
 
         }else if(URL.indexOf("/checkout/orderConfirmation") !== -1){
             // Danke
             goalPush('page_conv');
     
-            // // Revenue
+            // Revenue
             var wa_interval = setInterval(function(){
 
                 try {
@@ -149,6 +150,11 @@
             setTimeout(function(){
                 clearInterval(wa_interval);
             }, 3000);
+
+            if(window.localStorage.getItem("kk_buytype") === "rechnung"){
+                window.iridion.push(["segment", "32785"]);
+                window.localStorage.removeItem("kk_buytype");
+            }
         }
     } catch (error) {
         // console.log(error);
