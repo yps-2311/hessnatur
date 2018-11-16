@@ -51,15 +51,14 @@
 			_self.elem('#informationModal .h-smallOffset-bottom-inner', function(informationModal){
 				if(informationModal){
 					if(informationModal[0].textContent.indexOf("Der Artikel wurde zum Warenkorb hinzugefügt") !== -1){
-						_self.goalPush("enterArticleNr");
+						_self.goalPush("enterArticle");
 					}
 				}
 			});
 
-			window.iridion.push(["segment", "123"]);
-
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
+			_self.goalPush("catchMonitoring");
 		}
 	};	
 })(window.WATO);

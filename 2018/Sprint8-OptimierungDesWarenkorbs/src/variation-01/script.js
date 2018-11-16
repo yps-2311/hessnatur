@@ -34,7 +34,7 @@
                             
             WATO.goalPush("s6_close_nudge_cart");
 
-            console.log('e.target: ', e.target);
+            // console.log('e.target: ', e.target);
             var oNudge = WATO.qs(".kk_nudgeCart", e.target.parentNode.parentNode.parentNode);
             if(oNudge){
                 oNudge.classList.remove('wa-show-nudge');
@@ -43,8 +43,8 @@
                 }, 1100);
             }
         } catch (error) {
-            WATO.goalPush("wa_setup_monitoring");
-            console.log(error);
+            WATO.goalPush("catchMonitoring");
+            // console.log(error);
         }
     }
 
@@ -68,8 +68,8 @@
                         }
                     });
                 } catch (error) {
-                    WATO.goalPush("wa_setup_monitoring");
-                    console.log(error);
+                    WATO.goalPush("catchMonitoring");
+                    // console.log(error);
                 }
             }
         });
@@ -123,8 +123,8 @@
                         }
                     }
                 } catch (error) {
-                    WATO.goalPush("wa_setup_monitoring");
-                    console.log(error);
+                    WATO.goalPush("catchMonitoring");
+                    // console.log(error);
                 }
             }
         });
@@ -179,8 +179,8 @@
                         }
                     }
                 } catch (error) {
-                    WATO.goalPush("wa_setup_monitoring");
-                    console.log(error);
+                    WATO.goalPush("catchMonitoring");
+                    // console.log(error);
                 }
             }
         });
@@ -223,8 +223,8 @@
                         }
                     });
                 } catch (error) {
-                    WATO.goalPush("wa_setup_monitoring");
-                    console.log(error);
+                    WATO.goalPush("catchMonitoring");
+                    // console.log(error);
                 }
             }
         });
@@ -232,8 +232,8 @@
         WATO.globalCode();
         
     } catch (error) {
-        console.log(error);
-        WATO.goalPush("wa_setup_monitoring");
+        // console.log(error);
+        WATO.goalPush("catchMonitoring");
     }
 
 })(new window.WATO());
