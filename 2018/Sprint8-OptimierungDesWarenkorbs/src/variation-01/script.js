@@ -11,10 +11,15 @@
 (function(WATO) {
     "use strict";
 
-    WATO.totalDiscount = 0;
-
-    // Zeit bis Nudge eingeblendet wird
-    var nDelayCart = 5000;
+    var totalDiscount = 0,
+        nDelayCart = 5000, // Zeit bis Nudge eingeblendet wird
+        staticUVPBox = '<div class="kk_trust row">'+
+                        '<b class="column small-12">Wir übernehmen Verantwortung</b>'+
+                        '<div class="kk_fst column small-4 h6">Höchste Qualitätsstandards nach der hessnatur Richtlinie</div>'+
+                        '<div class="kk_sec column small-4 h6">Reine Naturfasern aus biologischer Landwirtschaft</div>'+
+                        '<div class="kk_thr column small-4 h6">Hoher Tragekomfort und Hautverträglichkeit</div>'+
+                    '</div>';
+    
 
     function getFloatNumber(price) {
         return parseFloat(price.textContent.replace("-","").replace("*","").replace("€","").replace(",","."));
@@ -99,7 +104,7 @@
                                         getGermanPrice(total)+
                                     '</div>');
         
-                                WATO.totalDiscount = WATO.totalDiscount + total;
+                                totalDiscount = totalDiscount + total;
                             }
                         }
 
@@ -109,7 +114,7 @@
                             if(redeemedVouchers.length > 0){
                                 for (var k = 0; k < redeemedVouchers.length; k++) {
                                     // wurde einer order mehrere eingelöst werden diese dem Gesammtrabatt aufaddiert
-                                    WATO.totalDiscount = WATO.totalDiscount + getFloatNumber(redeemedVouchers[k]);
+                                    totalDiscount = totalDiscount + getFloatNumber(redeemedVouchers[k]);
                                 }
                             }
                             
@@ -117,7 +122,7 @@
                             WATO.qs(".align-right > .h-xsmallOffset-bottom-outer").insertAdjacentHTML("beforebegin", 
                             '<div class="kk_green">'+
                                 'Sie sparen mit dieser Bestellung € '+
-                                getGermanPrice(WATO.totalDiscount)+
+                                getGermanPrice(totalDiscount)+
                             '</div>');
                             WATO.goalPush("showSaving");
                         }
@@ -205,12 +210,7 @@
                             blueMsg.insertAdjacentElement("afterbegin", applyVoucherWrapper.parentNode);
 
                             // Statische UVP Box links unten
-                            applyVoucherWrapper.insertAdjacentHTML("afterbegin", '<div class="kk_trust row">'+
-                                    '<b class="column small-12">Wir übernehmen Verantwortung</b>'+
-                                    '<div class="kk_fst column small-4 h6">Höchste Qualitätsstandards nach der hessnatur Richtlinie</div>'+
-                                    '<div class="kk_sec column small-4 h6">Reine Naturfasern aus biologischer Landwirtschaft</div>'+
-                                    '<div class="kk_thr column small-4 h6">Hoher Tragekomfort und Hautverträglichkeit</div>'+
-                                '</div>');
+                            applyVoucherWrapper.insertAdjacentHTML("afterbegin", staticUVPBox);
 
                             // Klick auf die UVP Box
                             WATO.qs(".bgColor-super-light-gray ", blueMsg).addEventListener("click",function(){
@@ -226,6 +226,13 @@
                     WATO.goalPush("catchMonitoring");
                     // console.log(error);
                 }
+            }
+        });
+
+        // Wenn kein Produkt im WK liegt
+        WATO.elem('.h-mediumOffset-bottom-inner .large-offset-1 p', function(noProductMsg){
+            if(noProductMsg && noProductMsg[0].textContent.indexOf("Es befinden sich noch keine Produkte in Ihrem Warenkorb") !== -1){
+                noProductMsg[0].insertAdjacentHTML("afterend", staticUVPBox);
             }
         });
     
