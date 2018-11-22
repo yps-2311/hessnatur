@@ -198,7 +198,7 @@
                     // Statischer Text in blau
                     betweenSums.insertAdjacentHTML("beforebegin",
                     '<div class="row kk_blue">'+
-                        '<div class="column small-12 large-10 large-offset-1">Artikel im Warenkorb werden nicht zurückgelegt.</div>'+
+                        '<div class="column small-12 large-10 large-offset-1">Artikel im Warenkorb werden nicht für Sie zurückgelegt.</div>'+
                     '</div>');
         
                     // Eingabefeld für Rabattcodes oder Gutscheine umplatziert
