@@ -15,33 +15,33 @@
     try {
         console.log("test");
 
-        if(!window.localStorage.getItem('kk_hideLayer')){
-            document.documentElement.classList.add('kk_hideLayer');
+        // if(!window.localStorage.getItem('kk_hideLayer')){
+        document.documentElement.classList.add('kk_hideLayer');
 
-            WATO.elem('.reveal-overlay', function(overlay){
-                if(overlay){
-    
-                    try {
-                        overlay = overlay[0];
-                        
-                        console.log('overlay: ', overlay);
-                        console.log('overlay.textContent.indexOf("NICHTS MEHR VERPASSEN!"): ', overlay.textContent.indexOf("NICHTS MEHR VERPASSEN!") !== -1);
-                        
-                        if(overlay.textContent.indexOf("NICHTS MEHR VERPASSEN!") !== -1){
-                            window.localStorage.setItem('kk_hideLayer', 'true');
+        WATO.elem('.reveal-overlay', function(overlay){
+            if(overlay){
 
-                            var closeButton = WATO.qs(".close-button", overlay);
-                            if(closeButton){
-                                console.log('WATO.qs(".close-button", overlay): ', closeButton);
-                                closeButton.click();
-                            }
+                try {
+                    overlay = overlay[0];
+                    
+                    console.log('overlay: ', overlay);
+                    console.log('overlay.textContent.indexOf("NICHTS MEHR VERPASSEN!"): ', overlay.textContent.indexOf("NICHTS MEHR VERPASSEN!") !== -1);
+                    
+                    if(overlay.textContent.indexOf("NICHTS MEHR VERPASSEN!") !== -1){
+                        // window.localStorage.setItem('kk_hideLayer', 'true');
+
+                        var closeButton = WATO.qs(".close-button", overlay);
+                        if(closeButton){
+                            console.log('WATO.qs(".close-button", overlay): ', closeButton);
+                            closeButton.click();
                         }
-                    } catch (error) {
-                        console.log(error);
                     }
+                } catch (error) {
+                    console.log(error);
                 }
-            });
-        }
+            }
+        });
+        // }
 
     } catch (error) {
         console.log(error);
