@@ -1,3 +1,16 @@
+
+/*
+********** WICHTIG **********
+* Folgendes Setup ist eine Weiterentwicklung
+* diese ist NICHT live. Es handels sich sozusagen
+* um eine Datei in der neue Funktionen für späteren
+* Gebrauch getestet werden.
+* 
+* Denis Leno
+*/
+
+
+
 (function(window){
 
     function goalPush(key, sendOnNextPageView){
