@@ -3,6 +3,22 @@
 - Gutscheine werden noch geliefert
 - WK Wert über den WK Layer beziehen
 
+## cartData
+```javascript
+var origOpenSearch = XMLHttpRequest.prototype.open;
+XMLHttpRequest.prototype.open = function(method, uri, async, user, pass) {
+    this.addEventListener("loadend", function() {
+        if(this.readyState === 4){                                
+            if(uri.indexOf('/cart') !== -1){
+				// current cart data
+				console.log(this.responseText);
+            }
+        }
+    }, false);
+    origOpenSearch.call(this, method, uri, async, user, pass);
+};
+```
+
 ## updateVoucher
 ```javascript
 var request = new XMLHttpRequest();
