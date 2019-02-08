@@ -13,7 +13,7 @@
 
 
     try {
-        console.log("test");
+        // console.log("test");
 
         // if(!window.localStorage.getItem('kk_hideLayer')){
         document.documentElement.classList.add('kk_hideLayer');
@@ -24,27 +24,27 @@
                 try {
                     overlay = overlay[0];
                     
-                    console.log('overlay: ', overlay);
-                    console.log('overlay.textContent.indexOf("NICHTS MEHR VERPASSEN!"): ', overlay.textContent.indexOf("NICHTS MEHR VERPASSEN!") !== -1);
+                    // console.log('overlay: ', overlay);
+                    // console.log('overlay.textContent.indexOf("NICHTS MEHR VERPASSEN!"): ', overlay.textContent.indexOf("NICHTS MEHR VERPASSEN!") !== -1);
                     
                     if(overlay.textContent.indexOf("NICHTS MEHR VERPASSEN!") !== -1){
                         // window.localStorage.setItem('kk_hideLayer', 'true');
 
                         var closeButton = WATO.qs(".close-button", overlay);
                         if(closeButton){
-                            console.log('WATO.qs(".close-button", overlay): ', closeButton);
+                            // console.log('WATO.qs(".close-button", overlay): ', closeButton);
                             closeButton.click();
                         }
                     }
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }
         });
         // }
 
     } catch (error) {
-        console.log(error);
+        // console.log(error);
     }
 
 })(new window.WATO());
