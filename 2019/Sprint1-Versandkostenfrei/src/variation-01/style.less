@@ -5,3 +5,107 @@
 @import "../global/global.less";
 
 /* DEFINE VARIATION CSS */
+
+
+.kk_shippingfree {
+    height: 38px;
+
+    .h-xsmallOffset-top-outer {
+        display: none;
+    }
+    strong:first-child {
+        position: relative;
+        padding-bottom: 30px;
+        &::after {
+            content: "Versand";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+        }
+    }
+    strong:last-child {
+        position: relative;
+        padding-bottom: 30px;
+        &::after {
+            content: "Gratis";
+            color: #60b60b;
+            font-size: 13px;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            // font-weight: normal;
+        }
+    }
+
+
+}
+
+// .yCmsContentSlot + .column {
+//     position: relative;
+// }
+
+.kk_wknurnoch {
+    background-color: #f5ffeb;
+    width: 235px;
+    height: 100px;
+    position: absolute;
+    left: -64px;
+    top: 0;
+    padding: 19px 15px 0 86px;
+
+    span {
+        font-family: "Archer A","Archer B","Archer",serif;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 18px;
+        margin-bottom: 7px;
+        display: block;
+        white-space: nowrap;
+    }
+    small {
+        font-size: 13px;
+        font-weight: 100;
+        display: block;
+    }
+    &::after {
+        content: "";
+        border-top: 50px solid transparent;
+        border-left: 40px solid #f5ffeb;
+        border-bottom: 50px solid transparent;
+        position: absolute;
+        top: 0;
+        right: -40px;
+    }
+}
+.kk_only {
+    position: relative;
+    height: 90px;
+}
+.kk_hide {
+    display: none;
+}
+.kk_green {
+    color: #60b60b;
+    font-size: 13px;
+}
+
+// TODO NUR auf Dankeseite
+.medium-offset-6.large-5 {
+    padding-bottom: 15px;
+}
+
+.kk_wklfree {
+    b {
+        font-family: "Archer A","Archer B","Archer",serif;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 18px;
+    }
+    span {
+        font-size: 13px;
+        font-weight: 100;
+        display: block;  
+    }
+}
+
+
