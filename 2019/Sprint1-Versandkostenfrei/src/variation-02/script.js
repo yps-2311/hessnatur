@@ -4,13 +4,13 @@
 /**
  * @function
  * @author Denis Leno
- * @namespace V1
- * @name Variation 01
+ * @namespace V2
+ * @name Variation 02
  * @description
  */
 (function(WATO) {
     "use strict";
 
-    WATO.sprint01(99, "ECOMWAPF99MB");
+    WATO.sprint01(149, "ECOMWAPF149MB");
 
 })(new window.WATO());
