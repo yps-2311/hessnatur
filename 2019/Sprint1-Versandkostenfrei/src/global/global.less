@@ -114,6 +114,9 @@
         font-weight: 100;
         display: block;  
     }
+    & + & {
+        display: none;
+    } 
 }
 #addToCartForm .kk_wklfree {
     font-size: 12px;
@@ -168,15 +171,24 @@
     }
     
 }
-
 @media (max-width: 1250px) and (min-width: 900px) {
     .kk_break {
         display: none !important;
     }
 }
-
-
-@media (max-width: 414px) and (min-width: 319px) {
+@media (max-width: 1200px) and (min-width: 319px) {
+    #addToCartForm .kk_wklfree {
+        margin: 20px auto 30px;
+        width: 223px;
+        float: none;
+    }
+}
+@media (max-width: 1160px) and (min-width: 1020px) {
+    .kk_wknurnoch {
+        left: -116px;
+    }
+}
+@media (max-width: 640px) and (min-width: 319px) {
     .kk_homewrapper {
         .kk_wknurnoch {
             max-width: 100%;
@@ -206,10 +218,6 @@
                 display: none;
             }
         }
-    }
-    #addToCartForm .kk_wklfree {
-        margin: 20px auto 30px;
-        width: 223px;
     }
 
     .off-canvas > .kk_wklfree {
