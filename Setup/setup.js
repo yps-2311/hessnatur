@@ -156,6 +156,14 @@
                 window.localStorage.removeItem("kk_buytype");
             }
         }
+
+        // TODO hochladen und testen
+        
+        // Wenn ein User über einen Newsletter kommt wird er mit diesem Cookie markiert
+        if(window.document.location.search.indexOf("layer=") !== -1){
+            window.document.cookie = "kk_newsletter=true; expires=Thu, 18 Dec 2022 12:00:00 UTC; path=/";
+        }
+
     } catch (error) {
         // console.log(error);
         goalPush('error_setup');
