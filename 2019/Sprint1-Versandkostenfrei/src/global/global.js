@@ -94,25 +94,85 @@
 
 			try {
 				var orginalShippingLink = 'zzgl. <a class="btn-simple-link js-reveal-ajax" href="/de/component/shippingInformations">Versandkosten</a>',
+					orginalShippingVersandkosten = _self.qs(".js-price-info > .h-nowrap:nth-child(3)"),
 					orginalShippingPosition = _self.qs(".js-price-info > .h-nowrap:nth-child(2)"),
 					comboPrice = productPrice+totalPrice,
 					isExistMessage = _self.qs("#addToCartForm > .kk_wklfree"),
-					versandkostenLink = _self.qs(".h-nowrap .js-reveal-ajax");
+					versandkostenLink = _self.qs(".h-nowrap .js-reveal-ajax"),
+					existsMobileNurNoch = _self.qs(".kk_wklfreeMobile"),
+
+					mobileNurNochXMessage = function(price) {
+						_self.elem('#offCanvasMiniCartWrapper', function(offCanvasMiniCartWrapper){
+							if(offCanvasMiniCartWrapper){
+								offCanvasMiniCartWrapper[0].insertAdjacentHTML('afterend', 
+									'<div class="kk_wklfreeMobile">'+
+										'<b>Nur noch '+ floatToPrice(price) +'€</b><small>und Ihre Bestellung ist versandkostenfrei!</span>'+
+									'</div>'
+								);
+							}
+						});
+			
+						if(orginalShippingPosition){
+							orginalShippingPosition.innerHTML = orginalShippingLink;
+						}
+						
+						openShippingLayer(versandkostenLink);
+					}
+
+				console.log('existsMobileNurNoch: ', existsMobileNurNoch);
+				if(existsMobileNurNoch){
+					existsMobileNurNoch.remove();
+				}
+				var freeTeaser = _self.qs("#offCanvasMiniCartWrapper + .kk_wklfree");
+				if(freeTeaser){
+					// freeTeaser.style.display = "none";
+					console.log("<<<<< remove");
+					freeTeaser.remove();
+				}
+
 
 				if(isExistMessage){
 					isExistMessage.remove();
 				}
+
+				if(orginalShippingPosition && orginalShippingVersandkosten && orginalShippingVersandkosten.textContent.indexOf("Versandkosten") !== -1){
+					orginalShippingPosition = orginalShippingVersandkosten;
+				}
+
+				
+
+				console.log('totalPrice >= voucherLimit: ', totalPrice >= voucherLimit);
+				console.log('productPrice >= voucherLimit: ', productPrice >= voucherLimit);
+				console.log('productPrice: ', productPrice);
+				console.log('totalPrice: ', totalPrice);
+				console.log('comboPrice >= voucherLimit: ', comboPrice >= voucherLimit);
 
 				if(totalPrice >= voucherLimit || productPrice >= voucherLimit){
 					// versandkostenfrei
 					console.log('>>> versandkostenfrei');
 					var greenHTML = '<span class="kk_green">versandkostenfrei</span>';
 
-					orginalShippingPosition.innerHTML = greenHTML;
+					if(orginalShippingPosition){
+						orginalShippingPosition.innerHTML = greenHTML;
+					}
+					
+					// console.log('_self.qs(".js-price-info > .h-nowrap:nth-child(3)"): ', _self.qs(".js-price-info > .h-nowrap:nth-child(3)"));
 
-					if(!isDesktop) {
+
+					if(isDesktop) {
+						// Desktop
+						_self.elem('#miniCartDropdown .h-xsmallOffset-bottom-outer', function(miniCart){
+							if(miniCart){
+								miniCart = miniCart[0];
+	
+								if(miniCart.textContent.indexOf("zzgl. Versandkosten") !== -1){
+									miniCart.innerHTML = 'inkl. MwSt., '+greenHTML;
+								}
+							}
+						});
+					}else{
 						// Mobile
-						WATO.elem('#offCanvasMiniCartWrapper > .row .h-xsmallOffset-bottom-outer', function(offCanvasMiniCartWrapper){
+						_self.elem('#offCanvasMiniCartWrapper > .row .h-xsmallOffset-bottom-outer', function(offCanvasMiniCartWrapper){
 							if(offCanvasMiniCartWrapper){
 								offCanvasMiniCartWrapper[0].innerHTML = greenHTML;
 							}
@@ -120,53 +180,31 @@
 					}
 
 				}else if(comboPrice >= voucherLimit){
+					
 					// Mit diesem Produkt zusammen wird die Bestellung versandkostenfrei
 					console.log(">>> Mit diesem Produkt zusammen wird die Bestellung Versandkostenfrei");
 
-					_self.qs("#addToCartButton").insertAdjacentHTML('afterend', freeText);
-					
-					if(!isDesktop) {
-						// Mobile
-						// _self.qs("#offCanvasMiniCartWrapper").insertAdjacentHTML('afterend', freeText);
-						WATO.elem('#offCanvasMiniCartWrapper', function(offCanvasMiniCartWrapper){
-							if(offCanvasMiniCartWrapper){
-								offCanvasMiniCartWrapper[0].insertAdjacentHTML('afterend', freeText);
-							}
-						});
-					}
+					_self.qs("#addToCartButton").insertAdjacentHTML('afterend', 
+						'<div class="kk_wklfree">'+
+							'Mit diesem Artikel wird<br>Bestellung <span class="kk_green">versandkostenfrei</span>'+
+						'</div>'
+					);
 
-					orginalShippingPosition.innerHTML = orginalShippingLink;
-					openShippingLayer(versandkostenLink);
+					// nur noch X€ und Ihre Bestellung ist versandkostenfrei
+					mobileNurNochXMessage(voucherLimit - totalPrice);
 
 				}else if(!isDesktop) {
-					// nur noch X€ und Ihre Bestellung ist versandkostenfrei
-					console.log(">>> nur noch X€ und Ihre Bestellung ist versandkostenfrei");
-
-					var existsMobileNurNoch = _self.qs(".kk_wklfreeMobile");
-					console.log('existsMobileNurNoch: ', existsMobileNurNoch);
-					if(existsMobileNurNoch){
-						existsMobileNurNoch.remove();
-					}
-					console.log(1);
-					
 					// Mobile
-					WATO.elem('#offCanvasMiniCartWrapper', function(offCanvasMiniCartWrapper){
-						if(offCanvasMiniCartWrapper){
-							offCanvasMiniCartWrapper[0].insertAdjacentHTML('afterend', 
-								'<div class="kk_wklfreeMobile">'+
-									'<b>Nur noch '+ floatToPrice(voucherLimit - comboPrice) +'€</b><small>und Ihre Bestellung ist versandkostenfrei!</span>'+
-								'</div>'
-							);
-						}
-					});
-					console.log(2);
 
-					orginalShippingPosition.innerHTML = orginalShippingLink;
-					openShippingLayer(versandkostenLink);
-					console.log(3);
+					// nur noch X€ und Ihre Bestellung ist versandkostenfrei
+					mobileNurNochXMessage(voucherLimit - totalPrice);
+					
 				}else{
-					orginalShippingPosition.innerHTML = orginalShippingLink;
-					openShippingLayer(versandkostenLink);
+					if(orginalShippingPosition){
+						orginalShippingPosition.innerHTML = orginalShippingLink;
+						openShippingLayer(versandkostenLink);
+					}
+					
 				}
 
 			} catch (error) {
@@ -174,22 +212,25 @@
 			}
 		}
 
-		
-
-		
-
 
 		// Global
 		_self.elem('.footerWrapper li:first-child', function(footerLi){
 			if(footerLi){
 				footerLi = footerLi[0];
-
 				footerLi.innerHTML = '<a class="js-reveal-ajax" href="/de/component/shippingInformations">Gratis Versand ab '+voucherLimit+' €</a>';
-
 				openShippingLayer(_self.qs(".js-reveal-ajax", footerLi));
 			}
 		});
-
+		_self.elem('#miniCartDropdown span.float-right, #miniCartDropdown .flyout-default-text', function(wkPrice){
+			if(wkPrice){
+				wkPrice = wkPrice[0];
+				var totalPrice = 0;
+				if(wkPrice.textContent.indexOf("noch keine Artikel") === -1){
+					totalPrice = priceToFloat(wkPrice);
+				}
+				pdpPriceShow(totalPrice, 0);
+			}
+		});
 
 		if(url.indexOf("/p/") !== -1){
 			// PDS
@@ -221,8 +262,27 @@
 							_self.qs("#desc__size").addEventListener('change', function(){
 								setTimeout(function(){
 									console.log("change");
+
 									var currentProductPrice = priceToFloat(_self.qs('span[itemprop="priceCurrency"]'));
 									console.log('currentProductPrice: ', currentProductPrice);
+
+									if(isDesktop){
+										var newWKPrice = _self.qs("#miniCartDropdown span.float-right");
+
+										// Neuen WK Total abfragen
+										if(newWKPrice){
+											totalPrice = priceToFloat(newWKPrice);
+										}
+									}else{
+										var newWKPrice = _self.qs("#offCanvasMiniCartWrapper strong .float-right");
+
+										// Neuen WK Total abfragen
+										if(newWKPrice){
+											totalPrice = priceToFloat(newWKPrice);
+										}
+									}
+									
+									console.log('totalPrice: ', totalPrice);
 
 									pdpPriceShow(totalPrice, currentProductPrice);
 								}, 200);
@@ -301,16 +361,25 @@
 
 									}else{
 										// Mobile
+										
+										console.log(1);
 
-										// Im WK-Layer:
-										// Wenn vorhandener Text wie "Nur noch X€ bis versandkostenfrei" oder 
-										// "Mit diesem Produkt zusammen wird die Bestellung versandkostenfrei" dann diesen durch 
-										// "versandkostenfrei" ersetzen
-										var freeTeaser = _self.qs("#offCanvasMiniCartWrapper + .kk_wklfree");
-										if(freeTeaser){
-											freeTeaser.style.display = "none";
+										var newWKPrice = _self.qs("#offCanvasMiniCartWrapper strong .float-right");
+
+										// Neuen WK Total abfragen
+										if(newWKPrice){
+											totalPrice = priceToFloat(newWKPrice);
 										}
-										_self.qs("#offCanvasMiniCartWrapper .h-xsmallOffset-bottom-outer").innerHTML = freeText;
+										pdpPriceShow(totalPrice, productPrice); //+productPrice
+
+										// if(totalPrice >= voucherLimit){
+											// Im WK-Layer:
+											// Wenn vorhandener Text wie "Nur noch X€ bis versandkostenfrei" oder 
+											// "Mit diesem Produkt zusammen wird die Bestellung versandkostenfrei" dann diesen durch 
+											// "versandkostenfrei" ersetzen
+											
+											// _self.qs("#offCanvasMiniCartWrapper .h-xsmallOffset-bottom-outer").innerHTML = freeText;
+										// }
 
 									}
 								} catch (error) {
