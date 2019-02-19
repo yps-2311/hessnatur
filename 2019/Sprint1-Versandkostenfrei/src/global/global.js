@@ -26,7 +26,7 @@
 			window.iridion.push(['goal', key]);
 		}
 		// console.log('goalPush: ', key);
-	};	
+	};
 
 	WATO.prototype.sprint01 = function(voucherLimit, voucherCode){
 		var _self = this,
@@ -57,7 +57,8 @@
 				request.send("voucherCode="+voucherCode+"&CSRFToken=" + token);
 	
 			} catch (error) {
-				console.log(error);
+				// console.log(error);
+				goalPush("catchMonitoring");
 			}
 		}
 		function getFreeShippingHTML(withBreak) {
@@ -81,10 +82,15 @@
 			if(elem){
 				elem.addEventListener('click', function(e){
 					e.preventDefault();
+
+					// window.iridion.push(['goal', "klick_versandkostenlayer"]);
+					goalPush("klick_versandkostenlayer");
+
 					try {
 						window.ACC.modals.loadAjaxModal("/de/component/shippingInformations");
 					} catch (error) {
-						console.log(error);
+						// console.log(error);
+						goalPush("catchMonitoring");
 					}
 				});
 			}
@@ -119,14 +125,14 @@
 						openShippingLayer(versandkostenLink);
 					}
 
-				console.log('existsMobileNurNoch: ', existsMobileNurNoch);
+				// console.log('existsMobileNurNoch: ', existsMobileNurNoch);
 				if(existsMobileNurNoch){
 					existsMobileNurNoch.remove();
 				}
 				var freeTeaser = _self.qs("#offCanvasMiniCartWrapper + .kk_wklfree");
 				if(freeTeaser){
 					// freeTeaser.style.display = "none";
-					console.log("<<<<< remove");
+					// console.log("<<<<< remove");
 					freeTeaser.remove();
 				}
 
@@ -141,15 +147,15 @@
 
 				
 
-				console.log('totalPrice >= voucherLimit: ', totalPrice >= voucherLimit);
-				console.log('productPrice >= voucherLimit: ', productPrice >= voucherLimit);
-				console.log('productPrice: ', productPrice);
-				console.log('totalPrice: ', totalPrice);
-				console.log('comboPrice >= voucherLimit: ', comboPrice >= voucherLimit);
+				// console.log('totalPrice >= voucherLimit: ', totalPrice >= voucherLimit);
+				// console.log('productPrice >= voucherLimit: ', productPrice >= voucherLimit);
+				// console.log('productPrice: ', productPrice);
+				// console.log('totalPrice: ', totalPrice);
+				// console.log('comboPrice >= voucherLimit: ', comboPrice >= voucherLimit);
 
 				if(totalPrice >= voucherLimit || productPrice >= voucherLimit){
 					// versandkostenfrei
-					console.log('>>> versandkostenfrei');
+					// console.log('>>> versandkostenfrei');
 					var greenHTML = '<span class="kk_green">versandkostenfrei</span>';
 
 					if(orginalShippingPosition){
@@ -182,11 +188,11 @@
 				}else if(comboPrice >= voucherLimit){
 					
 					// Mit diesem Produkt zusammen wird die Bestellung versandkostenfrei
-					console.log(">>> Mit diesem Produkt zusammen wird die Bestellung Versandkostenfrei");
+					// console.log(">>> Mit diesem Produkt zusammen wird die Bestellung Versandkostenfrei");
 
 					_self.qs("#addToCartButton").insertAdjacentHTML('afterend', 
 						'<div class="kk_wklfree">'+
-							'Mit diesem Artikel wird<br>Bestellung <span class="kk_green">versandkostenfrei</span>'+
+							'Mit diesem Artikel wird Ihre<br>Bestellung <span class="kk_green">versandkostenfrei</span>'+
 						'</div>'
 					);
 
@@ -208,7 +214,8 @@
 				}
 
 			} catch (error) {
-				console.log(error);
+				// console.log(error);
+				goalPush("catchMonitoring");
 			}
 		}
 
@@ -243,7 +250,7 @@
 			_self.elem('#miniCartDropdown span.float-right, #miniCartDropdown .flyout-default-text', function(wkPrice){
 				if(wkPrice){
 					wkPrice = wkPrice[0];
-					console.log('wkPrice: ', wkPrice);
+					// console.log('wkPrice: ', wkPrice);
 
 					// Gesamt WK Wert
 					var totalPrice = 0;
@@ -252,19 +259,19 @@
 						totalPrice = priceToFloat(wkPrice);
 					}
 
-					console.log('totalPrice: ', totalPrice);
+					// console.log('totalPrice: ', totalPrice);
 
 					// Preis des aktuellen Produktes
 					_self.elem('span[itemprop="priceCurrency"]', function(productPriceBox){
 						if(productPriceBox){
-							console.log('productPriceBox: ', productPriceBox);
+							// console.log('productPriceBox: ', productPriceBox);
 
 							_self.qs("#desc__size").addEventListener('change', function(){
 								setTimeout(function(){
-									console.log("change");
+									// console.log("change");
 
 									var currentProductPrice = priceToFloat(_self.qs('span[itemprop="priceCurrency"]'));
-									console.log('currentProductPrice: ', currentProductPrice);
+									// console.log('currentProductPrice: ', currentProductPrice);
 
 									if(isDesktop){
 										var newWKPrice = _self.qs("#miniCartDropdown span.float-right");
@@ -282,7 +289,7 @@
 										}
 									}
 									
-									console.log('totalPrice: ', totalPrice);
+									// console.log('totalPrice: ', totalPrice);
 
 									pdpPriceShow(totalPrice, currentProductPrice);
 								}, 200);
@@ -306,16 +313,16 @@
 
 							// Dieses Produkt wurde zum WK hinzugefügt
 							_self.ajax("cart/add", function(){
-								console.log("cart/add");
+								// console.log("cart/add");
 
-								console.log('comboPrice: ', comboPrice);
-								console.log('voucherLimit: ', voucherLimit);
-								console.log('comboPrice >= voucherLimit: ', comboPrice >= voucherLimit);
+								// console.log('comboPrice: ', comboPrice);
+								// console.log('voucherLimit: ', voucherLimit);
+								// console.log('comboPrice >= voucherLimit: ', comboPrice >= voucherLimit);
 
 								try {
 									if(comboPrice >= voucherLimit){
 										// der Vouchercode wird hinzugefügt
-										console.log('_self.qs(input[name="CSRFToken"]).value: ', _self.qs('input[name="CSRFToken"]').value);
+										// console.log('_self.qs(input[name="CSRFToken"]).value: ', _self.qs('input[name="CSRFToken"]').value);
 										addCodeOrRemove(voucherCode, true, _self.qs('input[name="CSRFToken"]').value);
 									}
 
@@ -323,13 +330,13 @@
 										// Desktop
 
 										// WK-Layer Footer
-										console.log("WK-Layer Footer");
+										// console.log("WK-Layer Footer");
 
 										setTimeout(function(){
 											_self.elem('.wa_footer .column:nth-child(2)', function(betweenButtonsInWKLayer){
 												if(betweenButtonsInWKLayer){
 													betweenButtonsInWKLayer = betweenButtonsInWKLayer[0];
-													console.log('betweenButtonsInWKLayer: ', betweenButtonsInWKLayer);
+													// console.log('betweenButtonsInWKLayer: ', betweenButtonsInWKLayer);
 
 													var newWKPrice = _self.qs("#miniCartDropdown span.float-right");
 
@@ -341,8 +348,8 @@
 													pdpPriceShow(totalPrice, productPrice);
 
 
-													console.log('totalPrice >= voucherLimit: ', totalPrice >= voucherLimit);
-													console.log('totalPrice: ', totalPrice);
+													// console.log('totalPrice >= voucherLimit: ', totalPrice >= voucherLimit);
+													// console.log('totalPrice: ', totalPrice);
 
 													if(totalPrice >= voucherLimit){
 														// Versandkostenfrei
@@ -362,7 +369,7 @@
 									}else{
 										// Mobile
 										
-										console.log(1);
+										// console.log(1);
 
 										var newWKPrice = _self.qs("#offCanvasMiniCartWrapper strong .float-right");
 
@@ -383,7 +390,8 @@
 
 									}
 								} catch (error) {
-									console.log(error);
+									// console.log(error);
+									goalPush("catchMonitoring");
 								}
 							});
 
@@ -451,7 +459,7 @@
 
 					if(totalSum >= voucherLimit){
 						// Versandkostenfrei
-						console.log("Versandkostenfrei");
+						// console.log("Versandkostenfrei");
 
 						zwischenSummeField.classList.add("kk_shippingfree");
 
@@ -462,7 +470,7 @@
 
 					}else{
 						// Nur noch X€ bis versandkostenfrei
-						console.log('Nur noch X€ bis versandkostenfrei: ', (voucherLimit - totalSum).toFixed(2));
+						// console.log('Nur noch X€ bis versandkostenfrei: ', (voucherLimit - totalSum).toFixed(2));
 
 						zwischenSummeField.classList.add("kk_only");
 						zwischenSummeField.insertAdjacentHTML( (isDesktop ? 'afterbegin' : 'beforeend'), 
@@ -475,7 +483,7 @@
 						if(isActiveVoucher){
 							// Wenn der Code noch gesetzt ist und der WK-Wert zu niedrig ist
 							// wird der Code wieder entfernt
-							console.log("Code wieder entfernt");
+							// console.log("Code wieder entfernt");
 
 							addCodeOrRemove(voucherCode, false, siteToken);
 						}
@@ -524,3 +532,18 @@
 	};
 
 })(window.WATO, window);
+
+
+/*try{
+var script = document.createElement("script");
+script.src = "https://dev.web-arts.de/hessnatur/2019/Sprint1-Versandkostenfrei/src/global/global.min.js";
+document.head.appendChild(script);
+setTimeout(function(){
+
+!function(n){"use strict";n.sprint01(99,"ECOMWAPF99MB")}(new window.WATO);
+
+}, 1000);
+
+} catch (error) {
+        console.log(error);
+}*/
