@@ -43,9 +43,13 @@
 		function floatToPrice(floatNumber) {
 			return String(floatNumber.toFixed(2)).replace(".",",");
 		}
-		function availableVoucher(element, voucherCode) {
-			return element && element.textContent.indexOf(voucherCode) !== -1;
-		}
+		// function availableVoucher(element, voucherCode) {
+		// 	if(element){
+		// 		return element.textContent.indexOf(voucherCode) !== -1;
+		// 	}else{
+		// 		return false;
+		// 	}
+		// }
 		function addCodeOrRemove(voucherCode, updateOrRemove, token) {
 			// updateOrRemove === true -> code wird hinzugefügt oder aktualisiert
 			// updateOrRemove === false -> code wird entfernt
@@ -58,7 +62,7 @@
 	
 			} catch (error) {
 				// console.log(error);
-				goalPush("catchMonitoring");
+				_self.goalPush("catchMonitoring");
 			}
 		}
 		function getFreeShippingHTML(withBreak) {
@@ -84,13 +88,13 @@
 					e.preventDefault();
 
 					// window.iridion.push(['goal', "klick_versandkostenlayer"]);
-					goalPush("klick_versandkostenlayer");
+					_self.goalPush("klick_versandkostenlayer");
 
 					try {
 						window.ACC.modals.loadAjaxModal("/de/component/shippingInformations");
 					} catch (error) {
 						// console.log(error);
-						goalPush("catchMonitoring");
+						_self.goalPush("catchMonitoring");
 					}
 				});
 			}
@@ -123,7 +127,7 @@
 						}
 						
 						openShippingLayer(versandkostenLink);
-					}
+					};
 
 				// console.log('existsMobileNurNoch: ', existsMobileNurNoch);
 				if(existsMobileNurNoch){
@@ -190,11 +194,21 @@
 					// Mit diesem Produkt zusammen wird die Bestellung versandkostenfrei
 					// console.log(">>> Mit diesem Produkt zusammen wird die Bestellung Versandkostenfrei");
 
-					_self.qs("#addToCartButton").insertAdjacentHTML('afterend', 
-						'<div class="kk_wklfree">'+
-							'Mit diesem Artikel wird Ihre<br>Bestellung <span class="kk_green">versandkostenfrei</span>'+
-						'</div>'
-					);
+					_self.elem('#addToCartButton', function(addToCartButton){
+						if(addToCartButton){
+							addToCartButton[0].insertAdjacentHTML('afterend', 
+								'<div class="kk_wklfree">'+
+									'Mit diesem Artikel wird Ihre<br>Bestellung <span class="kk_green">versandkostenfrei</span>'+
+								'</div>'
+							);
+						}
+					});
+
+					// _self.qs("#addToCartButton").insertAdjacentHTML('afterend', 
+					// 	'<div class="kk_wklfree">'+
+					// 		'Mit diesem Artikel wird Ihre<br>Bestellung <span class="kk_green">versandkostenfrei</span>'+
+					// 	'</div>'
+					// );
 
 					// nur noch X€ und Ihre Bestellung ist versandkostenfrei
 					mobileNurNochXMessage(voucherLimit - totalPrice);
@@ -214,8 +228,8 @@
 				}
 
 			} catch (error) {
-				// console.log(error);
-				goalPush("catchMonitoring");
+				// console.log("1 ",error);
+				_self.goalPush("catchMonitoring");
 			}
 		}
 
@@ -266,34 +280,40 @@
 						if(productPriceBox){
 							// console.log('productPriceBox: ', productPriceBox);
 
-							_self.qs("#desc__size").addEventListener('change', function(){
-								setTimeout(function(){
-									// console.log("change");
-
-									var currentProductPrice = priceToFloat(_self.qs('span[itemprop="priceCurrency"]'));
-									// console.log('currentProductPrice: ', currentProductPrice);
-
-									if(isDesktop){
-										var newWKPrice = _self.qs("#miniCartDropdown span.float-right");
-
-										// Neuen WK Total abfragen
-										if(newWKPrice){
-											totalPrice = priceToFloat(newWKPrice);
-										}
-									}else{
-										var newWKPrice = _self.qs("#offCanvasMiniCartWrapper strong .float-right");
-
-										// Neuen WK Total abfragen
-										if(newWKPrice){
-											totalPrice = priceToFloat(newWKPrice);
-										}
-									}
-									
-									// console.log('totalPrice: ', totalPrice);
-
-									pdpPriceShow(totalPrice, currentProductPrice);
-								}, 200);
+							_self.elem('#desc__size', function(element){
+								if(element){
+									element[0].addEventListener('change', function(){
+										setTimeout(function(){
+											// console.log("change");
+		
+											var currentProductPrice = priceToFloat(_self.qs('span[itemprop="priceCurrency"]'));
+											// console.log('currentProductPrice: ', currentProductPrice);
+		
+											if(isDesktop){
+												var newWKPriceDektop = _self.qs("#miniCartDropdown span.float-right");
+		
+												// Neuen WK Total abfragen
+												if(newWKPriceDektop){
+													totalPrice = priceToFloat(newWKPriceDektop);
+												}
+											}else{
+												var newWKPriceMobile = _self.qs("#offCanvasMiniCartWrapper strong .float-right");
+		
+												// Neuen WK Total abfragen
+												if(newWKPriceMobile){
+													totalPrice = priceToFloat(newWKPriceMobile);
+												}
+											}
+											
+											// console.log('totalPrice: ', totalPrice);
+		
+											pdpPriceShow(totalPrice, currentProductPrice);
+										}, 200);
+									});
+								}
 							});
+
+							// _self.qs("#desc__size")
 
 
 							var productPrice = priceToFloat(productPriceBox[0]), // Produktpreis
@@ -390,8 +410,8 @@
 
 									}
 								} catch (error) {
-									// console.log(error);
-									goalPush("catchMonitoring");
+									// console.log("2 ",error);
+									_self.goalPush("catchMonitoring");
 								}
 							});
 
@@ -443,56 +463,75 @@
 			// WK Seite
 			// console.log("WK Seite");
 
-			_self.elem('.h-xsmallOffset-bottom-outer strong.offset-price-left', function(sum){
+			_self.elem('.yCmsContentSlot + .column .offset-price-left', function(sum){
 				if(sum){
 
-					var totalSum = priceToFloat(sum[0]),
-						zwischenSummeField = _self.qs(".yCmsContentSlot + .column"),
-						voucherWrapper = _self.qs("section > #hessnaturVoucherForm"),
-						isActiveVoucher = availableVoucher(voucherWrapper, voucherCode),
-						siteToken = _self.qs('input[name="CSRFToken"]').value;
-						
-					// console.log('voucherWrapper: ', voucherWrapper);
-					// console.log('voucherLimit: ', voucherLimit);
-					// console.log('totalSum: ', totalSum);
-					// console.log('voucherLimit - totalSum: ', voucherLimit - totalSum);
+					try {
 
-					if(totalSum >= voucherLimit){
-						// Versandkostenfrei
-						// console.log("Versandkostenfrei");
+						var totalSum = priceToFloat(sum[0]),
+							zwischenSummeField = _self.qs(".yCmsContentSlot + .column"),
+							ganzeSection = _self.qs(".js_backstopWrapper"),
+							voucherWrapper = _self.qsa("section > #hessnaturVoucherForm"),
+							// isActiveVoucher = availableVoucher(ganzeSection, voucherCode),
+							isActiveVoucher = ganzeSection.textContent.indexOf(voucherCode) !== -1,
+							siteToken = _self.qs('input[name="CSRFToken"]').value,
+							einPortofreiGutscheinIstVorhanden = ganzeSection.textContent.indexOf("Portofrei") !== -1;
+							
+						// console.log('voucherWrapper: ', voucherWrapper);
+						// console.log('voucherLimit: ', voucherLimit);
+						// console.log('totalSum: ', totalSum);
+						// console.log('voucherLimit - totalSum: ', voucherLimit - totalSum);
 
-						zwischenSummeField.classList.add("kk_shippingfree");
+						if(totalSum >= voucherLimit || einPortofreiGutscheinIstVorhanden){
+							// Versandkostenfrei
+							console.log("Versandkostenfrei");
 
-						if(!isActiveVoucher){
-							// Wenn noch kein Code gesetzt ist wieder dieser hier nachträglich gesetzt
-							addCodeOrRemove(voucherCode, true, siteToken);
+							// console.log('zwischenSummeField: ', zwischenSummeField);
+							zwischenSummeField.classList.add("kk_shippingfree");
+
+							// console.log('ganzeSection: ', ganzeSection);
+							if(!isActiveVoucher && !einPortofreiGutscheinIstVorhanden){
+								console.log("added Vouchercode");
+								// Wenn noch kein Vouchercode bisher gesetzt ist, wird dieser hier nachträglich gesetzt
+								addCodeOrRemove(voucherCode, true, siteToken);
+							}
+
+						}else{
+							// Nur noch X€ bis versandkostenfrei
+							// console.log('Nur noch X€ bis versandkostenfrei: ', (voucherLimit - totalSum).toFixed(2));
+
+							zwischenSummeField.classList.add("kk_only");
+							zwischenSummeField.insertAdjacentHTML( (isDesktop ? 'afterbegin' : 'beforeend'), 
+								'<div class="kk_wknurnoch">'+
+									'<span>Nur noch '+ floatToPrice(voucherLimit - totalSum) + '€</span>'+
+									'<small>und Ihre Bestellung ist'+(isDesktop ? "<br>": " ")+'versandkostenfrei!</small>'+
+								'</div>'
+							);
+
+							if(isActiveVoucher){
+								// Wenn der Code noch gesetzt ist und der WK-Wert zu niedrig ist
+								// wird der Code wieder entfernt
+								// console.log("Code wieder entfernt");
+
+								addCodeOrRemove(voucherCode, false, siteToken);
+							}
 						}
-
-					}else{
-						// Nur noch X€ bis versandkostenfrei
-						// console.log('Nur noch X€ bis versandkostenfrei: ', (voucherLimit - totalSum).toFixed(2));
-
-						zwischenSummeField.classList.add("kk_only");
-						zwischenSummeField.insertAdjacentHTML( (isDesktop ? 'afterbegin' : 'beforeend'), 
-							'<div class="kk_wknurnoch">'+
-								'<span>Nur noch '+ floatToPrice(voucherLimit - totalSum) + '€</span>'+
-								'<small>und Ihre Bestellung ist'+(isDesktop ? "<br>": " ")+'versandkostenfrei!</small>'+
-							'</div>'
-						);
-
+					
 						if(isActiveVoucher){
-							// Wenn der Code noch gesetzt ist und der WK-Wert zu niedrig ist
-							// wird der Code wieder entfernt
-							// console.log("Code wieder entfernt");
-
-							addCodeOrRemove(voucherCode, false, siteToken);
+							// console.log('isActiveVoucher: ', isActiveVoucher);
+							for (var i = 0; i < voucherWrapper.length; i++) {
+								// console.log('voucherWrapper[i]: ', voucherWrapper[i]);
+								// console.log('voucherWrapper[i].textContent.indexOf(voucherCode): ', voucherWrapper[i].textContent.indexOf(voucherCode));
+								if(voucherWrapper[i].textContent.indexOf(voucherCode) !== -1){
+									voucherWrapper[i].style.display = "none";
+								}
+							}
 						}
-
+					} catch (error) {
+						// console.log("3 ",error);
+						_self.goalPush("catchMonitoring");
 					}
-
-					if(isActiveVoucher){
-						voucherWrapper.style.display = "none";
-					}
+					
 
 				}
 			});
