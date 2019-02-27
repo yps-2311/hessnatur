@@ -12,6 +12,9 @@
     padding: 0;
     position: relative;
     height: 545px;
+    width: 1006px;
+    margin: 0 auto 30px;
+
     &::before{
         content: "";
         background: url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2019/Sprint02/icon_hess.png") no-repeat 0 0;
@@ -27,11 +30,11 @@
 .kk_sliderborder {
     overflow: hidden;
     height: 535px;
-    border: 25px solid #fff;
+    border: 20px solid #fff;
     position: relative;
 }
 .kk_slider {
-    width: 10000px;
+    width: 13000px;
     background-color: #FFFFFF;
     overflow: hidden;
     position: absolute;
@@ -40,21 +43,22 @@
     transition: left 1s ease-in-out;
 
     > div {
-        height: 485px;
-        width: 850px; //956px;
+        height: 494px;
+        width: 956px; //956px;
         float: left;
         background-color: #F7F6F5;
         // margin-right: 30px;
         text-align: center;
         line-height: 20px;
         color: #393939;
-        padding: 0 80px;
+        padding: 0 130px;
 
         h3 {
             font-size: 36px;
             letter-spacing: -0.13px;
             text-align: center;
-            margin: 84px 0 15px;
+            margin: 74px 0 10px;
+            text-transform: uppercase;
         }
         i {
             // margin-bottom: 27px;
@@ -67,9 +71,10 @@
             font-size: 18px;
             text-align: center;
             line-height: 28px;
-            font-weight: 700;
+            font-weight: 500;
             display: block;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
+            max-height: 56px;
         }
         .button {
             font-size: 13px;
@@ -78,6 +83,14 @@
         }
         .kk_h3 + i {
             margin-top: 0;
+        }
+        &.kk_error {
+            .kk_radios > div {
+                color: #ed1c24;
+            }
+            .form-error {
+                display: block;
+            }
         }
     }
 }
@@ -98,17 +111,54 @@
     }
 }
 
-// .kk_radios {
-//     > div {
+.kk_radios {
+    width: 496px;
+    margin: 0 0 25px 100px;
+    > div {
+        text-align: left;
+        height: 28px;
+        margin-bottom: 8px;
+        line-height: 16px;
+        position: relative;
+        cursor: pointer;
+        padding-left: 40px;
+        display: flex;
+        align-items: center;
+        transition: all .5s ease-in-out;
 
-//     }
-// }
+        &::before {
+            content: "";
+            display: inline-block;
+            background-color: #fff;
+            border: 1px solid #CCCCCC;
+            width: 28px;
+            height: 28px;
+            border-radius: 14px;
+            // margin: 0 10px -9px 0;
+            position: absolute;
+            left: 0px;
+        }
+        &.kk_active::after {
+            content: "";
+            background-color: #4A90E2;
+            width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            left: 6px;
+            top: 6px;
+            position: absolute;
+        }
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
 .kk_progress {
     width: 600px;
     position: absolute;
     top: 65px;
     z-index: 100;
-    left: 155px;
+    left: 195px;
     opacity: 0;
     transition: opacity 1s ease-in-out;
 }
