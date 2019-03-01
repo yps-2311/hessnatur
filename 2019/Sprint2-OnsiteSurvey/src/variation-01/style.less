@@ -85,7 +85,7 @@
             margin-top: 0;
         }
         &.kk_error {
-            .kk_radios > div {
+            .kk_interactions > div {
                 color: #ed1c24;
             }
             .form-error {
@@ -111,7 +111,7 @@
     }
 }
 
-.kk_radios {
+.kk_interactions {
     width: 496px;
     margin: 0 0 25px 100px;
     > div {
@@ -153,6 +153,26 @@
         }
     }
 }
+
+.kk_checks {
+    > div {
+        &::before {
+            content: "";
+            display: inline-block;
+            border-radius: 3px;
+            width: 26px;
+            height: 26px;
+        }
+        &.kk_active::after {
+            content: "";
+            background: transparent url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2019/Sprint02/check.png") no-repeat 0 0;
+            width: 20px;
+            left: 4px;
+        }
+    }
+}
+
+
 .kk_progress {
     width: 600px;
     position: absolute;

@@ -16,6 +16,7 @@
         questions = {
             q1: {
                 c: 1,
+                t: "c", // Type: checkbox
                 q: "Für wen haben Sie heute bestellt?",
                 a1: ["1", "Bekleidung oder Accessoires für mein(e) Kind(er)"],
                 a2: ["2", "Bekleidung oder Accessoires für mich"],
@@ -25,19 +26,21 @@
             },
             q2: {
                 c: 2,
+                t: "r", // Type: radio
                 q: "Wie sind Sie ursprünglich auf Hessnatur aufmerksam geworden?",
                 a1: ["1", "Mir wurde Hessnatur von anderen empfohlen."],
                 a2: ["2", "Hessnatur kenne ich schon lange. So genau kann ich es nicht sagen, woher ich es kenne."],
                 a3: ["3", "Ich habe Werbung für Hessnatur im Internet oder in einer App gesehen."],
-                a4: ["4", "Hessnatur kenne ich über Social Media."],
+                a4: ["4", "Hessnatur kenne ich über Social Media."],
                 a5: ["5", "Ich kenne Hessnatur von einem Flyer, einem Plakat oder aus einer Zeitschrift."],
                 a6: ["6", "Ich habe Hessnatur durch eine Google-Anfrage gefunden."],
-                a7: ["7", "Ich bin über einen Katalog aufmerksam geworden."],
+                a7: ["7", "Ich bin über einen Katalog aufmerksam geworden."],
                 a8: ["8", "Ich war bereits in einem Hessnatur-Geschäft."],
                 a9: ["9", "Sonstiges:"]
             },
             q3: {
                 c: 3,
+                t: "c", // Type: checkbox
                 q: "Warum kaufen Sie bei Hessnatur?",
                 a1: ["1", "Die Bio-Qualität der Textilien ist mir wichtig und Teil meines bewussten Lebensstils."],
                 a2: ["2", "Ich möchte einen Beitrag zu einem fairen Umgang mit den Produzenten leisten."],
@@ -47,6 +50,7 @@
             },
             q4: {
                 c: 4,
+                t: "r", // Type: radio
                 q: "An Ihrem Beruf und Ihrem Arbeitsplatz ist Ihnen besonders wichtig…",
                 a1: ["d", "Verantwortung zu haben und Karriere zu machen"],
                 a2: ["s", "Spaß und Abwechslung zu haben und neue Erfahrungen zu sammeln"],
@@ -55,6 +59,7 @@
             },
             q5: {
                 c: 5,
+                t: "r", // Type: radio
                 q: "Stellen Sie sich vor, Sie haben im Lotto gewonnen und bauen ein neues Haus. Was wäre Ihnen dabei besonders wichtig?",
                 a1: ["s", "Es sollte sich durch eine innovative Architektur vom Standard abheben"],
                 a2: ["h", "Es sollte gemütlich und wohnlich sein"],
@@ -63,6 +68,7 @@
             },
             q6: {
                 c: 6,
+                t: "r", // Type: radio
                 q: "Im Folgenden sind verschiedene Begriffsgruppen genannt. Bitte wählen Sie diejenige Gruppe aus, die Ihnen ganz spontan am ehesten zusagt und Ihrem Leben am meisten entspricht.",
                 a1: ["h", "Harmonie, Geborgenheit, Fürsorge, Ruhe"],
                 a2: ["s", "Spaß, Spontaneität, Neugier, Abenteuer"],
@@ -71,6 +77,7 @@
             },
             q7: {
                 c: 7,
+                t: "r", // Type: radio
                 q: "Wichtige Entscheidungen treffen Sie meist…",
                 a1: ["s", "spontan."],
                 a2: ["h", "nach meinem Gefühl."],
@@ -79,6 +86,7 @@
             },
             q8: {
                 c: 8,
+                t: "r", // Type: radio
                 q: "Stellen Sie sich vor, Sie kommen mit verschiedenen unbekannten Menschen ins Gespräch. Welche Eigenschaft hat die Person, mit der Sie sich am besten verstehen und mit der Sie sich eine Freundschaft vorstellen könnten?",
                 a1: ["d", "Tatkraft und Durchhaltevermögen"],
                 a2: ["h", "Herzlichkeit und Wärme"],
@@ -87,6 +95,7 @@
             },
             q9: {
                 c: 9,
+                t: "r", // Type: radio
                 q: "In Ihrem Urlaubshotel werden verschiedene Freizeitveranstaltungen angeboten. Für welche entscheiden Sie sich?",
                 a1: ["h", "Wellness und Massage"],
                 a2: ["d", "Weinprobe mit exklusiven Weinen"],
@@ -95,6 +104,7 @@
             },
             q10: {
                 c: 10,
+                t: "r", // Type: radio
                 q: "Letzte Frage: Wie würden Sie Ihren bevorzugten Modestil beschreiben…",
                 a1: ["b", "lege keinen Wert auf Mode"],
                 a2: ["h", "bequem"],
@@ -116,7 +126,7 @@
                         )+
                         '<i>Wählen Sie bitte die Antwort, die am ehesten auf Sie zutrifft.</i>'+
                         '<b>Frage '+questionCount+': '+questJson.q+'</b>'+
-                        '<div class="kk_radios">'+
+                        '<div class="kk_interactions '+(questJson.t === "r" ? "kk_radios":"kk_checks")+'">'+
                             '<div data-type='+questJson.a1[0]+'>'+questJson.a1[1]+'</div>'+
                             '<div data-type='+questJson.a2[0]+'>'+questJson.a2[1]+'</div>'+
                             '<div data-type='+questJson.a3[0]+'>'+questJson.a3[1]+'</div>'+
@@ -193,7 +203,7 @@
 
             for (var i = 0; i < slides.length; i++) {
                 var thisSlide = slides[i],
-                    answers = WATO.qsa(".kk_radios > div", thisSlide);
+                    answers = WATO.qsa(".kk_interactions > div", thisSlide);
 
                 // Weiter
                 WATO.qs(".button", thisSlide).addEventListener('click', function(){
@@ -222,28 +232,42 @@
                     }else{
                         console.log("error");
                         clickedSlider.classList.add("kk_error");
-
                     }
-                    
                 });
 
                 // Anworten
                 for (var j = 0; j < answers.length; j++) {
+                    var thisAnswer = answers[j];
 
-                    answers[j].addEventListener('click', function(){
-                        var newActive = WATO.qs(".kk_active", this.parentNode);
-                        if(newActive){
-                            newActive.classList.remove("kk_active");
-                        }
-                        this.classList.add("kk_active");
-                    });
+                    if(thisAnswer.parentNode.classList.contains("kk_radios")){
+
+                        thisAnswer.addEventListener('click', function(){
+
+                            var newActive = WATO.qs(".kk_active", this.parentNode);
+                            if(newActive){
+                                newActive.classList.remove("kk_active");
+                            }
+                            this.classList.add("kk_active");
+                        });
+
+                    }else{
+
+                        thisAnswer.addEventListener('click', function(){
+
+                            console.log('this: ', this);
+                            if(this.classList.contains("kk_active")){
+                                this.classList.remove("kk_active");
+                            }else{
+                                this.classList.add("kk_active");
+                            }
+
+                        });
+
+                    }
                     
                 }
                 
-                
             }
-
-
 
         }
     });
