@@ -11,7 +11,7 @@
     border: 5px solid #CBF1A5;
     padding: 0;
     position: relative;
-    height: 545px;
+    min-height: 545px;
     width: 1006px;
     margin: 0 auto 30px;
 
@@ -30,8 +30,10 @@
 .kk_sliderborder {
     overflow: hidden;
     height: 535px;
+    min-height: 535px;
     border: 20px solid #fff;
     position: relative;
+    transition: height 1s ease;
 }
 .kk_slider {
     width: 13000px;
@@ -41,17 +43,23 @@
     top: 0;
     left: 0;
     transition: left 1s ease-in-out;
+    background-color: #F7F6F5;
 
     > div {
-        height: 494px;
+        min-height: 495px;
+        height: auto; /*494px;*/
         width: 956px; //956px;
         float: left;
-        background-color: #F7F6F5;
+        // background-color: #F7F6F5;
         // margin-right: 30px;
         text-align: center;
         line-height: 20px;
         color: #393939;
         padding: 0 130px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
         h3 {
             font-size: 36px;
@@ -80,6 +88,7 @@
             font-size: 13px;
             width: 284px;
             padding: 18px 0;
+            margin: 0 0 33px;
         }
         .kk_h3 + i {
             margin-top: 0;
@@ -90,6 +99,7 @@
             }
             .form-error {
                 display: block;
+                margin-top: -25px;
             }
         }
     }
@@ -112,8 +122,12 @@
 }
 
 .kk_interactions {
-    width: 496px;
-    margin: 0 0 25px 100px;
+    // width: 496px;
+    // margin: 0 0 25px 100px;
+    margin-bottom: 15px;
+    display: block;
+    max-width: 496px;
+
     > div {
         text-align: left;
         height: 28px;
@@ -200,5 +214,22 @@
         width: 0;
         border-radius: 3px;
         transition: width 1s ease-in-out;
+    }
+}
+
+.kk_lastslide {
+    background: #fff url(" 	https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2019/Sprint02/bg-danke.jpg") no-repeat 0 0;
+    background-size: auto 100%;
+
+    div {
+        background-color: #fff;
+        padding: 25px 25px 40px;
+        h3 {
+            margin-top: 15px;
+        }
+        p {
+            font-size: 16px;
+            line-height: 20px;
+        }
     }
 }

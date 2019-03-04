@@ -13,6 +13,7 @@
 
     var slideLeft = 0,
         stepNow = 1,
+        lastPersonaSegment = "",
         questions = {
             q1: {
                 c: 1,
@@ -23,6 +24,7 @@
                 a3: ["3", "Bekleidung oder Accessoires für meine(n) Frau/Mann"],
                 a4: ["4", "Für mein Zuhause (Artikel wie Decken, Pflegemittel, Badtextilien, Bettwäsche etc.)"],
                 a5: ["5", "Für andere (Geschenke & Gutschein)"],
+                h: 561
             },
             q2: {
                 c: 2,
@@ -36,7 +38,8 @@
                 a6: ["6", "Ich habe Hessnatur durch eine Google-Anfrage gefunden."],
                 a7: ["7", "Ich bin über einen Katalog aufmerksam geworden."],
                 a8: ["8", "Ich war bereits in einem Hessnatur-Geschäft."],
-                a9: ["9", "Sonstiges:"]
+                a9: ["9", "Sonstiges:"],
+                h: 706
             },
             q3: {
                 c: 3,
@@ -46,7 +49,8 @@
                 a2: ["2", "Ich möchte einen Beitrag zu einem fairen Umgang mit den Produzenten leisten."],
                 a3: ["3", "Die ökologische Herstellung ist für mich ausschlaggebend."],
                 a4: ["4", "Die Mode bei Hessnatur spricht mich an."],
-                a4: ["5", "Ich finde es gut, dass Hessnatur ein lokales Unternehmen ist."]
+                a5: ["5", "Ich finde es gut, dass Hessnatur ein lokales Unternehmen ist."],
+                h: 561
             },
             q4: {
                 c: 4,
@@ -111,14 +115,29 @@
                 a3: ["s", "unkonventionell und kreativ"],
                 a4: ["d", "klassisch modern"]
             }
-        };
+        },
+        personaAnswers = [];
+
+    function createAnswers(questJson){
+        var tempHTML = "";
+        for (var j = 1; j < 11; j++) {
+            var thisAnswer = questJson["a"+j];
+
+            if(typeof thisAnswer !== "undefined"){
+                tempHTML += '<div data-type='+thisAnswer[0]+'>'+thisAnswer[1]+'</div>'
+            } else {
+                break;
+            }
+        }
+        return tempHTML;
+    }
 
     function getQuestHTML(id){
         try {
             var questJson = questions[id],
-                questionCount = questJson.c;            
+                questionCount = questJson.c;       
             
-            return  '<div data-count="'+questionCount+'">'+
+            return  '<div data-count="'+questionCount+'" data-height="'+(questJson.h || 0)+'">'+
                         (
                             questionCount === 1 ?
                             '<h3 class="kk_h3">Wunderbar, danke!</h3>'
@@ -127,10 +146,7 @@
                         '<i>Wählen Sie bitte die Antwort, die am ehesten auf Sie zutrifft.</i>'+
                         '<b>Frage '+questionCount+': '+questJson.q+'</b>'+
                         '<div class="kk_interactions '+(questJson.t === "r" ? "kk_radios":"kk_checks")+'">'+
-                            '<div data-type='+questJson.a1[0]+'>'+questJson.a1[1]+'</div>'+
-                            '<div data-type='+questJson.a2[0]+'>'+questJson.a2[1]+'</div>'+
-                            '<div data-type='+questJson.a3[0]+'>'+questJson.a3[1]+'</div>'+
-                            '<div data-type='+questJson.a4[0]+'>'+questJson.a4[1]+'</div>'+
+                            createAnswers(questJson)+
                         '</div>'+
                         '<button class="button">Weiter</button>'+
                         '<span class="form-error">Bitte wählen Sie eine Antwort aus.</span>'+
@@ -139,6 +155,14 @@
         } catch (error) {
             console.log(error);
             return false;
+        }
+    }
+    function sortFunction(a, b) {
+        if (a[1] === b[1]) {
+            return 0;
+        }
+        else {
+            return (a[1] < b[1]) ? -1 : 1;
         }
     }
 
@@ -173,25 +197,12 @@
                                 getQuestHTML("q8")+
                                 getQuestHTML("q9")+
                                 getQuestHTML("q10")+
-
-                                // '<div>'+
-                                //     '<h3>Wunderbar, danke!</h3>'+
-                                //     '<i>Wählen Sie bitte die Antwort, die am ehesten auf Sie zutrifft.</i>'+
-                                //     '<b>Frage 1: An Ihrem Beruf und Ihrem Arbeitsplatz ist Ihnen besonders wichtig …</b>'+
-                                //     '<button class="button">Weiter</button>'+
-                                // '</div>'+
-                                // '<div>'+
-                                //     '<h3>Wunderbar, danke!</h3>'+
-                                //     '<i>Wählen Sie bitte die Antwort, die am ehesten auf Sie zutrifft.</i>'+
-                                //     '<b>Frage 2: An Ihrem Beruf und Ihrem Arbeitsplatz ist Ihnen besonders wichtig …</b>'+
-                                //     '<button class="button">Weiter</button>'+
-                                // '</div>'+
-                                // '<div>'+
-                                //     '<h3>Wunderbar, danke!</h3>'+
-                                //     '<i>Wählen Sie bitte die Antwort, die am ehesten auf Sie zutrifft.</i>'+
-                                //     '<b>Frage 3: An Ihrem Beruf und Ihrem Arbeitsplatz ist Ihnen besonders wichtig …</b>'+
-                                //     '<button class="button">Weiter</button>'+
-                                // '</div>'+
+                                '<div class="kk_lastslide">'+
+                                    '<div>'+
+                                        '<h3>Vielen Dank für Ihre Teilnahme!</h3>'+
+                                        '<p>Mit Ihren Angaben helfen Sie uns, uns stetig zu verbessern und weiter zu entwickeln.</p>'+
+                                    '</div>'+
+                                '</div>'+
                             '</div>'+
                         '</div>'+
                     '</div>'+
@@ -208,7 +219,8 @@
                 // Weiter
                 WATO.qs(".button", thisSlide).addEventListener('click', function(){
 
-                    var clickedSlider = this.parentNode;
+                    var clickedSlider = this.parentNode,
+                        thisSliderHeight = clickedSlider.nextElementSibling.getAttribute("data-height");
 
                     if(WATO.qs(".kk_active", clickedSlider) || clickedSlider.classList.contains("kk_firstslide")){
 
@@ -217,18 +229,109 @@
                         slideLeft = slideLeft + 956;
                         slideWrapper.style.left = "-"+slideLeft+"px";
     
-                        var progress = WATO.qs(".kk_progress");
+                        var progress = WATO.qs(".kk_progress"),
+                            allActiveAnswers = WATO.qsa(".kk_active", clickedSlider)
     
-                        if(stepNow > 1){
+                        // Die Progressbar einblenden,
+                        // bzw. ausblenden für Startscreen und Dankescreen
+                        console.log('stepNow: ', stepNow);
+                        if(stepNow > 1 && stepNow < 11){
                             progress.style.opacity = 1;
+
+                            // Progressfortschritt
+                            if(progress){
+                                WATO.qs(".kk_step span", progress).innerHTML = stepNow;
+                                WATO.qs(".kk_bar span", progress).style.width = (stepNow*10)+'%';
+                            }
+                        }else{
+                            progress.style.opacity = 0;
                         }
-    
-                        if(progress){
-                            WATO.qs(".kk_step span", progress).innerHTML = stepNow;
-                            WATO.qs(".kk_bar span", progress).style.width = (stepNow*10)+'%';
+
+                        if(thisSliderHeight && parseInt(thisSliderHeight) > 0){
+                            clickedSlider.parentNode.parentNode.style.height = thisSliderHeight+"px";
+                        }else{
+                            clickedSlider.parentNode.parentNode.style.height = "535px";
                         }
+
+
+                        var answersTypes = [];
+
+                        for (var l = 0; l < allActiveAnswers.length; l++) {
+                            var thisType = allActiveAnswers[l].getAttribute("data-type");
+                            if(parseInt(thisType) > 0){
+                                // Eine Allgemeine Frage
+                                answersTypes.push(thisType);
+                            }else{
+                                // Eine Persona Frage
+                                answersTypes = thisType;
+                                personaAnswers.push(thisType);
+                                
+                                break;
+                            }
+                        }
+                        
+                        if(answersTypes.length > 0){
+                            console.log("---------");
+                            console.log("Antwort: ", clickedSlider.getAttribute("data-count"));
+                            console.log('answersTypes: ', answersTypes);
+                            // console.log('personaAnswers: ', personaAnswers);
+                            
+                            var personaNow = [
+                                // NAME, MENGE, SEGMENT-ID
+                                ["stimulanz", 0, 32791],
+                                ["dominanz", 0, 32792],
+                                ["hedonist", 0, 32793],
+                                ["balance", 0, 32794]
+                            ];
+                            
+                            for (var m = 0; m < personaAnswers.length; m++) {
+                                switch (personaAnswers[m]) {
+                                    case "s":
+                                        personaNow[0][1]++;
+                                        break;
+                                    case "d":
+                                        personaNow[1][1]++;
+                                        break;
+                                    case "h":
+                                        personaNow[2][1]++;
+                                        break;
+                                    case "b":
+                                        personaNow[3][1]++;
+                                        break;
+                                }
+                            }
+                            // console.log('personaNow: ', personaNow);
+                            personaNow.sort(sortFunction);
+                            console.log('personaNow: ', personaNow);
+
+                            console.log('personaNow[3][1]: ', personaNow[3][1]);
+
+                            if(personaNow[3][1] > 0){
+                                var thisPersonaID = personaNow[3][2];
+                                console.log('Persona: ', personaNow[3][0]);
+
+                                // Wenn das Segment mit dem zuletzt gesetzten nicht übereinstimmt
+                                if(lastPersonaSegment !== thisPersonaID){
+
+                                    // wird das letzte Segment gelöscht
+                                    window.iridion.push(['segment', -lastPersonaSegment]);
     
+                                    // und ein Neues gesetzt
+                                    window.iridion.push(['segment', thisPersonaID]);
+
+                                    // Zum merken des zuletzt gesetzten wird es in die Variable gespeichert
+                                    lastPersonaSegment = thisPersonaID;
+                                }
+                            }
+                            console.log('lastPersonaSegment: ', lastPersonaSegment);
+
+                            window.iridion.push(['goal', 'question'+clickedSlider.getAttribute("data-count"), answersTypes]);
+
+                            console.log("---------");
+                        }
+
                         stepNow++;
+
                     }else{
                         console.log("error");
                         clickedSlider.classList.add("kk_error");
@@ -241,6 +344,8 @@
 
                     if(thisAnswer.parentNode.classList.contains("kk_radios")){
 
+                        // Radiobuttons
+
                         thisAnswer.addEventListener('click', function(){
 
                             var newActive = WATO.qs(".kk_active", this.parentNode);
@@ -252,15 +357,14 @@
 
                     }else{
 
-                        thisAnswer.addEventListener('click', function(){
+                        // Checkpoints
 
-                            console.log('this: ', this);
+                        thisAnswer.addEventListener('click', function(){
                             if(this.classList.contains("kk_active")){
                                 this.classList.remove("kk_active");
                             }else{
                                 this.classList.add("kk_active");
                             }
-
                         });
 
                     }
