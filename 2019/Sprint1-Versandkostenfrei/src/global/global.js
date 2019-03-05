@@ -29,6 +29,8 @@
 	};
 
 	WATO.prototype.sprint01 = function(voucherLimit, voucherCode){
+		console.log("sprint01");
+
 		var _self = this,
 			url = window.location.pathname,
 			isDesktop = window.innerWidth > 640; //414
@@ -61,7 +63,7 @@
 				request.send("voucherCode="+voucherCode+"&CSRFToken=" + token);
 	
 			} catch (error) {
-				// console.log(error);
+				console.log(error);
 				_self.goalPush("catchMonitoring");
 			}
 		}
@@ -93,7 +95,7 @@
 					try {
 						window.ACC.modals.loadAjaxModal("/de/component/shippingInformations");
 					} catch (error) {
-						// console.log(error);
+						console.log(error);
 						_self.goalPush("catchMonitoring");
 					}
 				});
@@ -136,7 +138,7 @@
 				var freeTeaser = _self.qs("#offCanvasMiniCartWrapper + .kk_wklfree");
 				if(freeTeaser){
 					// freeTeaser.style.display = "none";
-					// console.log("<<<<< remove");
+					console.log("<<<<< remove");
 					freeTeaser.remove();
 				}
 
@@ -159,7 +161,7 @@
 
 				if(totalPrice >= voucherLimit || productPrice >= voucherLimit){
 					// versandkostenfrei
-					// console.log('>>> versandkostenfrei');
+					console.log('>>> versandkostenfrei');
 					var greenHTML = '<span class="kk_green">versandkostenfrei</span>';
 
 					if(orginalShippingPosition){
@@ -192,7 +194,7 @@
 				}else if(comboPrice >= voucherLimit){
 					
 					// Mit diesem Produkt zusammen wird die Bestellung versandkostenfrei
-					// console.log(">>> Mit diesem Produkt zusammen wird die Bestellung Versandkostenfrei");
+					console.log(">>> Mit diesem Produkt zusammen wird die Bestellung Versandkostenfrei");
 
 					_self.elem('#addToCartButton', function(addToCartButton){
 						if(addToCartButton){
@@ -228,7 +230,7 @@
 				}
 
 			} catch (error) {
-				// console.log("1 ",error);
+				console.log("1 ",error);
 				_self.goalPush("catchMonitoring");
 			}
 		}
@@ -256,6 +258,8 @@
 		if(url.indexOf("/p/") !== -1){
 			// PDS
 
+			console.log(1);
+
 			var freeText =  '<div class="kk_wklfree">'+
 								'Mit diesem Artikel ist Ihre<br>Bestellung <span class="kk_green">versandkostenfrei</span>'+
 							'</div>';
@@ -264,7 +268,7 @@
 			_self.elem('#miniCartDropdown span.float-right, #miniCartDropdown .flyout-default-text', function(wkPrice){
 				if(wkPrice){
 					wkPrice = wkPrice[0];
-					// console.log('wkPrice: ', wkPrice);
+					console.log('wkPrice: ', wkPrice);
 
 					// Gesamt WK Wert
 					var totalPrice = 0;
@@ -273,18 +277,18 @@
 						totalPrice = priceToFloat(wkPrice);
 					}
 
-					// console.log('totalPrice: ', totalPrice);
+					console.log('totalPrice: ', totalPrice);
 
 					// Preis des aktuellen Produktes
 					_self.elem('span[itemprop="priceCurrency"]', function(productPriceBox){
 						if(productPriceBox){
-							// console.log('productPriceBox: ', productPriceBox);
+							console.log('productPriceBox: ', productPriceBox);
 
 							_self.elem('#desc__size', function(element){
 								if(element){
 									element[0].addEventListener('change', function(){
 										setTimeout(function(){
-											// console.log("change");
+											console.log("change");
 		
 											var currentProductPrice = priceToFloat(_self.qs('span[itemprop="priceCurrency"]'));
 											// console.log('currentProductPrice: ', currentProductPrice);
@@ -305,7 +309,7 @@
 												}
 											}
 											
-											// console.log('totalPrice: ', totalPrice);
+											console.log('totalPrice: ', totalPrice);
 		
 											pdpPriceShow(totalPrice, currentProductPrice);
 										}, 200);
@@ -333,7 +337,7 @@
 
 							// Dieses Produkt wurde zum WK hinzugefügt
 							_self.ajax("cart/add", function(){
-								// console.log("cart/add");
+								console.log("cart/add");
 
 								// console.log('comboPrice: ', comboPrice);
 								// console.log('voucherLimit: ', voucherLimit);
@@ -350,39 +354,48 @@
 										// Desktop
 
 										// WK-Layer Footer
-										// console.log("WK-Layer Footer");
+										console.log("WK-Layer Footer");
 
 										setTimeout(function(){
-											_self.elem('.wa_footer .column:nth-child(2)', function(betweenButtonsInWKLayer){
-												if(betweenButtonsInWKLayer){
-													betweenButtonsInWKLayer = betweenButtonsInWKLayer[0];
-													// console.log('betweenButtonsInWKLayer: ', betweenButtonsInWKLayer);
-
-													var newWKPrice = _self.qs("#miniCartDropdown span.float-right");
-
-													// Neuen WK Total abfragen
-													if(newWKPrice){
-														totalPrice = priceToFloat(newWKPrice);
+											_self.elem('.ds_footer > .column:nth-child(2)', function(betweenButtonsInWKLayer){
+												try {
+													
+													if(betweenButtonsInWKLayer){
+														betweenButtonsInWKLayer = betweenButtonsInWKLayer[0];
+														console.log('betweenButtonsInWKLayer: ', betweenButtonsInWKLayer);
+	
+														var newWKPrice = _self.qs("#miniCartDropdown span.float-right");
+														console.log('newWKPrice: ', newWKPrice);
+	
+														// Neuen WK Total abfragen
+														if(newWKPrice){
+															totalPrice = priceToFloat(newWKPrice);
+														}
+	
+														pdpPriceShow(totalPrice, productPrice);
+	
+	
+														// console.log('totalPrice >= voucherLimit: ', totalPrice >= voucherLimit);
+														console.log('totalPrice: ', totalPrice);
+	
+														if(totalPrice >= voucherLimit){
+															// Versandkostenfrei
+															console.log("Versandkostenfrei");
+																betweenButtonsInWKLayer.innerHTML = freeText;
+														}else{
+															// Nur noch X€ bis versandkostenfrei
+															betweenButtonsInWKLayer.innerHTML = 
+																'<div class="kk_wklfree">'+
+																	'<b>Es fehlen nur noch '+ floatToPrice(voucherLimit - totalPrice) +' €</b><small>und wir schenken Ihnen die Versandkosten!</span>'+
+																'</div>';
+														}
 													}
 
-													pdpPriceShow(totalPrice, productPrice);
 
-
-													// console.log('totalPrice >= voucherLimit: ', totalPrice >= voucherLimit);
-													// console.log('totalPrice: ', totalPrice);
-
-													if(totalPrice >= voucherLimit){
-														// Versandkostenfrei
-														// console.log("Versandkostenfrei");
-															betweenButtonsInWKLayer.innerHTML = freeText;
-													}else{
-														// Nur noch X€ bis versandkostenfrei
-														betweenButtonsInWKLayer.innerHTML = 
-															'<div class="kk_wklfree">'+
-																'<b>Es fehlen nur noch '+ floatToPrice(voucherLimit - totalPrice) +' €</b><small>und wir schenken Ihnen die Versandkosten!</span>'+
-															'</div>';
-													}
+												} catch (error) {
+													console.log(error);
 												}
+												
 											});
 										}, 200);
 
@@ -410,7 +423,7 @@
 
 									}
 								} catch (error) {
-									// console.log("2 ",error);
+									console.log("2 ",error);
 									_self.goalPush("catchMonitoring");
 								}
 							});
@@ -429,6 +442,7 @@
 				// Unter der Navi wird der Versandkostenfrei Text eingebaut
 				_self.elem('.sidebarNav--nav', function(navi){
 					if(navi){
+						console.log("a");
 						navi[0].insertAdjacentHTML('afterend', getFreeShippingHTML(true));
 					}
 				});
@@ -438,9 +452,7 @@
 				// Nach dem vierten Produkt wird der Versandkostenfrei Text eingebaut
 				_self.elem('.gridviewProductItemWrapper:nth-child(5)', function(fourthProduct){
 					if(fourthProduct){
-						fourthProduct[0].insertAdjacentHTML('afterend', 
-							getFreeShippingHTML(false)
-						);
+						fourthProduct[0].insertAdjacentHTML('afterend', getFreeShippingHTML(false));
 
 					}
 				});
@@ -461,7 +473,7 @@
 
 		}else if(url.indexOf("/cart") !== -1){
 			// WK Seite
-			// console.log("WK Seite");
+			console.log("WK Seite");
 
 			_self.elem('.yCmsContentSlot + .column .offset-price-left', function(sum){
 				if(sum){
@@ -471,25 +483,28 @@
 						var totalSum = priceToFloat(sum[0]),
 							zwischenSummeField = _self.qs(".yCmsContentSlot + .column"),
 							ganzeSection = _self.qs(".js_backstopWrapper"),
-							voucherWrapper = _self.qsa("section > #hessnaturVoucherForm"),
+							// voucherWrapper = _self.qsa("section > #hessnaturVoucherForm"),
 							// isActiveVoucher = availableVoucher(ganzeSection, voucherCode),
 							isActiveVoucher = ganzeSection.textContent.indexOf(voucherCode) !== -1,
 							siteToken = _self.qs('input[name="CSRFToken"]').value,
 							einPortofreiGutscheinIstVorhanden = ganzeSection.textContent.indexOf("Portofrei") !== -1;
 							
-						// console.log('voucherWrapper: ', voucherWrapper);
-						// console.log('voucherLimit: ', voucherLimit);
-						// console.log('totalSum: ', totalSum);
-						// console.log('voucherLimit - totalSum: ', voucherLimit - totalSum);
+							// console.log('voucherWrapper: ', voucherWrapper);
+						console.log('isActiveVoucher: ', isActiveVoucher);
+						console.log('voucherLimit: ', voucherLimit);
+						console.log('totalSum: ', totalSum);
+						console.log('voucherLimit - totalSum: ', voucherLimit - totalSum);
+						console.log('einPortofreiGutscheinIstVorhanden: ', einPortofreiGutscheinIstVorhanden);
+						console.log('totalSum >= voucherLimit: ', totalSum >= voucherLimit);
 
-						if(totalSum >= voucherLimit || einPortofreiGutscheinIstVorhanden){
+						if(totalSum >= voucherLimit || (einPortofreiGutscheinIstVorhanden && !isActiveVoucher)){
 							// Versandkostenfrei
 							console.log("Versandkostenfrei");
 
-							// console.log('zwischenSummeField: ', zwischenSummeField);
+							console.log('zwischenSummeField: ', zwischenSummeField);
 							zwischenSummeField.classList.add("kk_shippingfree");
 
-							// console.log('ganzeSection: ', ganzeSection);
+							console.log('ganzeSection: ', ganzeSection);
 							if(!isActiveVoucher && !einPortofreiGutscheinIstVorhanden){
 								console.log("added Vouchercode");
 								// Wenn noch kein Vouchercode bisher gesetzt ist, wird dieser hier nachträglich gesetzt
@@ -498,7 +513,7 @@
 
 						}else{
 							// Nur noch X€ bis versandkostenfrei
-							// console.log('Nur noch X€ bis versandkostenfrei: ', (voucherLimit - totalSum).toFixed(2));
+							console.log('Nur noch X€ bis versandkostenfrei: ', (voucherLimit - totalSum).toFixed(2));
 
 							zwischenSummeField.classList.add("kk_only");
 							zwischenSummeField.insertAdjacentHTML( (isDesktop ? 'afterbegin' : 'beforeend'), 
@@ -511,27 +526,30 @@
 							if(isActiveVoucher){
 								// Wenn der Code noch gesetzt ist und der WK-Wert zu niedrig ist
 								// wird der Code wieder entfernt
-								// console.log("Code wieder entfernt");
+								console.log("Code wieder entfernt");
 
 								addCodeOrRemove(voucherCode, false, siteToken);
 							}
 						}
 					
 						if(isActiveVoucher){
-							// console.log('isActiveVoucher: ', isActiveVoucher);
-							for (var i = 0; i < voucherWrapper.length; i++) {
-								// console.log('voucherWrapper[i]: ', voucherWrapper[i]);
-								// console.log('voucherWrapper[i].textContent.indexOf(voucherCode): ', voucherWrapper[i].textContent.indexOf(voucherCode));
-								if(voucherWrapper[i].textContent.indexOf(voucherCode) !== -1){
-									voucherWrapper[i].style.display = "none";
+							_self.elem('section > #hessnaturVoucherForm', function(voucherWrapper){
+								if(voucherWrapper){
+									console.log('isActiveVoucher: ', isActiveVoucher);
+									for (var i = 0; i < voucherWrapper.length; i++) {
+										console.log('voucherWrapper[i]: ', voucherWrapper[i]);
+										console.log('voucherWrapper[i].textContent.indexOf(voucherCode): ', voucherWrapper[i].textContent.indexOf(voucherCode));
+										if(voucherWrapper[i].textContent.indexOf(voucherCode) !== -1){
+											voucherWrapper[i].style.display = "none";
+										}
+									}
 								}
-							}
+							});
 						}
 					} catch (error) {
-						// console.log("3 ",error);
+						console.log("3 ",error);
 						_self.goalPush("catchMonitoring");
 					}
-					
 
 				}
 			});
@@ -543,25 +561,43 @@
 
 			_self.elem('.print-page-break-avoid.h-offset-bottom-inner .columns', function(totalSummary){
 				if(totalSummary){
-					totalSummary = totalSummary[0];
+					try {
+						totalSummary = totalSummary[0];
+						// console.log('totalSummary: ', totalSummary);
 
-					var rows = _self.qsa(".row", totalSummary),
-						totalPrice = _self.qs(".print-page-break-avoid > .row:last-child .totalPrice");
+						var rows = _self.qsa(".row", totalSummary),
+							totalPrice = _self.qs(".print-page-break-avoid > .row:last-child .totalPrice");
+						// console.log('totalPrice: ', totalPrice);
 
-					if(totalPrice && priceToFloat(totalPrice) >= voucherLimit){
-						// Alle Zeilen der Kosten prüfen ob diese das Word Versandkosten oder den Vouchercode beinhalten um
-						// diese auszublenden. Stattdessen wird dann Gratis in die Versandkosten-Zeile geschrieben
-						for (var i = 0; i < rows.length; i++) {
-							var thisRow = rows[i];
-							if(thisRow.textContent.indexOf(voucherCode) !== -1 || thisRow.textContent.indexOf("Versandkosten") !== -1){
-								thisRow.classList.add("kk_hide");
-							}else if(thisRow.textContent.indexOf("Portofrei") !== -1){
-								_self.qs(".totalPrice", thisRow).innerHTML = '<span class="kk_green">Gratis</span>';
+						// console.log('totalPrice && priceToFloat(totalPrice) >= voucherLimit: ', totalPrice && priceToFloat(totalPrice) >= voucherLimit);
+						// console.log('voucherLimit: ', voucherLimit);
+
+						if(totalPrice && priceToFloat(totalPrice) >= voucherLimit || totalSummary.textContent.indexOf("Portofrei") !== -1){
+							// Alle Zeilen der Kosten prüfen ob diese das Word Versandkosten oder den Vouchercode beinhalten um
+							// diese auszublenden. Stattdessen wird dann Gratis in die Versandkosten-Zeile geschrieben
+							// console.log('rows: ', rows);
+							for (var i = 0; i < rows.length; i++) {
+								var thisRow = rows[i];
+								// console.log('thisRow: ', thisRow);
+								if(thisRow.textContent.indexOf(voucherCode) !== -1 || thisRow.textContent.indexOf("Versandkosten") !== -1){
+									thisRow.classList.add("kk_hide");
+								}else if(thisRow.textContent.indexOf("Portofrei") !== -1){
+									var priceInfo = _self.qs(".totalPrice", thisRow);
+									if(priceInfo){
+										priceInfo.innerHTML = '<span class="kk_green">Gratis</span>';
+									}
+								}
+							}
+
+							var summary = _self.qs("#checkoutSummaryForm1");
+							if(summary){
+								summary.classList.add("kk_gratis");
 							}
 						}
-
-						_self.qs("#checkoutSummaryForm1").classList.add("kk_gratis");
+					} catch (error) {
+						console.log(error);
 					}
+					
 
 					
 				}
@@ -571,7 +607,6 @@
 	};
 
 })(window.WATO, window);
-
 
 /*try{
 var script = document.createElement("script");
