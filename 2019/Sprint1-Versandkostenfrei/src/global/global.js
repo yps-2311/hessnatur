@@ -277,16 +277,14 @@
 							'</div>';
 
 			// miniCartDropdown oben rechts
-			_self.elem('#miniCartDropdown span.float-right, #miniCartDropdown .flyout-default-text', function(wkPrice){
-				if(wkPrice){
-					wkPrice = wkPrice[0];
-					// console.log('wkPrice: ', wkPrice);
-
-					// Gesamt WK Wert
+			// _self.elem('#miniCartDropdown span.float-right, #miniCartDropdown .flyout-default-text', function(wkPrice){
+			_self.elem('#miniCartDropdown strong.float-right', function(wkPrices){
+				if(wkPrices){
 					var totalPrice = 0;
-
-					if(wkPrice.textContent.indexOf("noch keine Artikel") === -1){
-						totalPrice = priceToFloat(wkPrice);
+					for (var k = 0; k < wkPrices.length; k++) {
+						if(typeof wkPrices[k].textContent !== "undefined"){
+							totalPrice += priceToFloat(wkPrices[k]);
+						}
 					}
 
 					// console.log('totalPrice: ', totalPrice);
@@ -596,6 +594,7 @@
 								}else if(thisRow.textContent.indexOf("Portofrei") !== -1){
 									var priceInfo = _self.qs(".totalPrice", thisRow);
 									if(priceInfo){
+										alert(priceInfo.innerHTML);
 										priceInfo.innerHTML = '<span class="kk_green">Gratis</span>';
 									}
 								}
