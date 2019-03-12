@@ -102,7 +102,25 @@
 			}
 		}
 
+		function getTotalPrice(wkPrices) {
+
+			if(!wkPrices){
+				wkPrices = _self.qsa('#miniCartDropdown strong.float-right');
+			}
+
+			var totalPrice = 0;
+			for (var k = 0; k < wkPrices.length; k++) {
+				if(typeof wkPrices[k].textContent !== "undefined"){
+					totalPrice += priceToFloat(wkPrices[k]);
+				}
+			}
+			return totalPrice;
+		}
+		console.log('234');
+
 		function pdpPriceShow(totalPrice, productPrice) {
+
+			console.log('test');
 
 			try {
 				var orginalShippingLink = 'zzgl. <a class="btn-simple-link js-reveal-ajax" href="/de/component/shippingInformations">Versandkosten</a>',
@@ -153,11 +171,11 @@
 
 				
 
-				// console.log('totalPrice >= voucherLimit: ', totalPrice >= voucherLimit);
-				// console.log('productPrice >= voucherLimit: ', productPrice >= voucherLimit);
+				console.log('totalPrice >= voucherLimit: ', totalPrice >= voucherLimit);
+				console.log('productPrice >= voucherLimit: ', productPrice >= voucherLimit);
 				// console.log('productPrice: ', productPrice);
 				// console.log('totalPrice: ', totalPrice);
-				// console.log('comboPrice >= voucherLimit: ', comboPrice >= voucherLimit);
+				console.log('comboPrice >= voucherLimit: ', comboPrice >= voucherLimit);
 
 				if(totalPrice >= voucherLimit || productPrice >= voucherLimit){
 					// versandkostenfrei
@@ -256,12 +274,7 @@
 		// });
 		_self.elem('#miniCartDropdown strong.float-right', function(wkPrices){
 			if(wkPrices){
-				var totalPrice = 0;
-				for (var k = 0; k < wkPrices.length; k++) {
-					if(typeof wkPrices[k].textContent !== "undefined"){
-						totalPrice += priceToFloat(wkPrices[k]);
-					}
-				}
+				var totalPrice = getTotalPrice(wkPrices);
 				pdpPriceShow(totalPrice, 0);
 			}
 		});
@@ -278,14 +291,11 @@
 
 			// miniCartDropdown oben rechts
 			// _self.elem('#miniCartDropdown span.float-right, #miniCartDropdown .flyout-default-text', function(wkPrice){
-			_self.elem('#miniCartDropdown strong.float-right', function(wkPrices){
+			_self.elem('#miniCartDropdown strong.float-right, #miniCartDropdown .flyout-default-text', function(wkPrices){
 				if(wkPrices){
-					var totalPrice = 0;
-					for (var k = 0; k < wkPrices.length; k++) {
-						if(typeof wkPrices[k].textContent !== "undefined"){
-							totalPrice += priceToFloat(wkPrices[k]);
-						}
-					}
+					var totalPrice = getTotalPrice(wkPrices) || 0;
+
+					console.log(totalPrice);
 
 					// console.log('totalPrice: ', totalPrice);
 
@@ -304,18 +314,13 @@
 											// console.log('currentProductPrice: ', currentProductPrice);
 		
 											if(isDesktop){
-												var newWKPriceDektop = _self.qs("#miniCartDropdown span.float-right");
-		
-												// Neuen WK Total abfragen
-												if(newWKPriceDektop){
-													totalPrice = priceToFloat(newWKPriceDektop);
-												}
+												getTotalPrice(wkPrices);
 											}else{
-												var newWKPriceMobile = _self.qs("#offCanvasMiniCartWrapper strong .float-right");
+												var newWKPriceMobile = _self.qsa("#offCanvasMiniCartWrapper .flyout-content strong.float-right");
 		
 												// Neuen WK Total abfragen
 												if(newWKPriceMobile){
-													totalPrice = priceToFloat(newWKPriceMobile);
+													totalPrice = getTotalPrice(newWKPriceMobile);
 												}
 											}
 											
@@ -330,8 +335,8 @@
 							// _self.qs("#desc__size")
 
 
-							var productPrice = priceToFloat(productPriceBox[0]), // Produktpreis
-								comboPrice = productPrice+totalPrice; // Kombination aus Produktpreis und aktuellem WK-Wert
+							var productPrice = priceToFloat(productPriceBox[0]);//, // Produktpreis
+								//comboPrice = productPrice+totalPrice; // Kombination aus Produktpreis und aktuellem WK-Wert
 								// isShippingFree = comboPrice >= voucherLimit, // ist versandkostenfrei!
 								// euroToFree = floatToPrice(voucherLimit - comboPrice);
 							
@@ -343,103 +348,106 @@
 							// console.log('productPrice+totalPrice >= voucherLimit: ', productPrice+totalPrice >= voucherLimit);
 
 							pdpPriceShow(totalPrice, productPrice);
-							
-
-							// Dieses Produkt wurde zum WK hinzugefügt
-							_self.ajax("cart/add", function(){
-								// console.log("cart/add");
-
-								// console.log('comboPrice: ', comboPrice);
-								// console.log('voucherLimit: ', voucherLimit);
-								// console.log('comboPrice >= voucherLimit: ', comboPrice >= voucherLimit);
-
-								try {
-									if(comboPrice >= voucherLimit){
-										// der Vouchercode wird hinzugefügt
-										// console.log('_self.qs(input[name="CSRFToken"]).value: ', _self.qs('input[name="CSRFToken"]').value);
-										addCodeOrRemove(voucherCode, true, _self.qs('input[name="CSRFToken"]').value);
-									}
-
-									if(isDesktop){
-										// Desktop
-
-										// WK-Layer Footer
-										console.log("WK-Layer Footer");
-
-										setTimeout(function(){
-											_self.elem('.ds_footer > .column:nth-child(2)', function(betweenButtonsInWKLayer){
-												try {
-													
-													if(betweenButtonsInWKLayer){
-														betweenButtonsInWKLayer = betweenButtonsInWKLayer[0];
-														// console.log('betweenButtonsInWKLayer: ', betweenButtonsInWKLayer);
-	
-														var newWKPrice = _self.qs("#miniCartDropdown span.float-right");
-														// console.log('newWKPrice: ', newWKPrice);
-	
-														// Neuen WK Total abfragen
-														if(newWKPrice){
-															totalPrice = priceToFloat(newWKPrice);
-														}
-	
-														pdpPriceShow(totalPrice, productPrice);
-	
-	
-														// console.log('totalPrice >= voucherLimit: ', totalPrice >= voucherLimit);
-														// console.log('totalPrice: ', totalPrice);
-	
-														if(totalPrice >= voucherLimit){
-															// Versandkostenfrei
-															// console.log("Versandkostenfrei");
-																betweenButtonsInWKLayer.innerHTML = freeText;
-														}else{
-															// Nur noch X€ bis versandkostenfrei
-															betweenButtonsInWKLayer.innerHTML = 
-																'<div class="kk_wklfree">'+
-																	'<b>Es fehlen nur noch '+ floatToPrice(voucherLimit - totalPrice) +' €</b><small>und wir schenken Ihnen die Versandkosten!</span>'+
-																'</div>';
-														}
-													}
-
-
-												} catch (error) {
-													console.log(error);
-												}
-												
-											});
-										}, 200);
-
-									}else{
-										// Mobile
-										
-										// console.log(1);
-
-										var newWKPrice = _self.qs("#offCanvasMiniCartWrapper strong .float-right");
-
-										// Neuen WK Total abfragen
-										if(newWKPrice){
-											totalPrice = priceToFloat(newWKPrice);
-										}
-										pdpPriceShow(totalPrice, productPrice); //+productPrice
-
-										// if(totalPrice >= voucherLimit){
-											// Im WK-Layer:
-											// Wenn vorhandener Text wie "Nur noch X€ bis versandkostenfrei" oder 
-											// "Mit diesem Produkt zusammen wird die Bestellung versandkostenfrei" dann diesen durch 
-											// "versandkostenfrei" ersetzen
-											
-											// _self.qs("#offCanvasMiniCartWrapper .h-xsmallOffset-bottom-outer").innerHTML = freeText;
-										// }
-
-									}
-								} catch (error) {
-									console.log("2 ",error);
-									_self.goalPush("catchMonitoring");
-								}
-							});
-
 						}
 					});
+				}
+			});
+
+			// Dieses Produkt wurde zum WK hinzugefügt
+			_self.ajax("cart/add", function(){
+				// console.log("cart/add");
+
+				// console.log('comboPrice: ', comboPrice);
+				// console.log('voucherLimit: ', voucherLimit);
+				// console.log('comboPrice >= voucherLimit: ', comboPrice >= voucherLimit);
+
+				try {
+					var productPrice = priceToFloat(_self.qs('span[itemprop="priceCurrency"]')),
+					totalPrice = getTotalPrice();
+
+					var comboPrice = productPrice+totalPrice;
+
+					if(comboPrice >= voucherLimit){
+						// der Vouchercode wird hinzugefügt
+						// console.log('_self.qs(input[name="CSRFToken"]).value: ', _self.qs('input[name="CSRFToken"]').value);
+						addCodeOrRemove(voucherCode, true, _self.qs('input[name="CSRFToken"]').value);
+					}
+
+					if(isDesktop){
+						// Desktop
+
+						// WK-Layer Footer
+						console.log("WK-Layer Footer");
+
+						setTimeout(function(){
+							_self.elem('.ds_footer > .column:nth-child(2)', function(betweenButtonsInWKLayer){
+								try {
+									
+									if(betweenButtonsInWKLayer){
+										betweenButtonsInWKLayer = betweenButtonsInWKLayer[0];
+										// console.log('betweenButtonsInWKLayer: ', betweenButtonsInWKLayer);
+
+										// var newWKPrice = _self.qs("#miniCartDropdown span.float-right");
+										// console.log('newWKPrice: ', newWKPrice);
+
+										// Neuen WK Total abfragen
+										// if(newWKPrice){
+											totalPrice = getTotalPrice();
+										// }
+
+										pdpPriceShow(totalPrice, productPrice);
+
+
+										// console.log('totalPrice >= voucherLimit: ', totalPrice >= voucherLimit);
+										// console.log('totalPrice: ', totalPrice);
+
+										if(totalPrice >= voucherLimit){
+											// Versandkostenfrei
+											// console.log("Versandkostenfrei");
+												betweenButtonsInWKLayer.innerHTML = freeText;
+										}else{
+											// Nur noch X€ bis versandkostenfrei
+											betweenButtonsInWKLayer.innerHTML = 
+												'<div class="kk_wklfree">'+
+													'<b>Es fehlen nur noch '+ floatToPrice(voucherLimit - totalPrice) +' €</b><small>und wir schenken Ihnen die Versandkosten!</span>'+
+												'</div>';
+										}
+									}
+
+
+								} catch (error) {
+									console.log(error);
+								}
+								
+							});
+						}, 200);
+
+					}else{
+						// Mobile
+						
+						// console.log(1);
+
+						var newWKPriceMobile = _self.qsa("#offCanvasMiniCartWrapper .flyout-content strong.float-right");
+		
+						// Neuen WK Total abfragen
+						if(newWKPriceMobile){
+							totalPrice = getTotalPrice(newWKPriceMobile);
+						}
+						pdpPriceShow(totalPrice, productPrice); //+productPrice
+
+						// if(totalPrice >= voucherLimit){
+							// Im WK-Layer:
+							// Wenn vorhandener Text wie "Nur noch X€ bis versandkostenfrei" oder 
+							// "Mit diesem Produkt zusammen wird die Bestellung versandkostenfrei" dann diesen durch 
+							// "versandkostenfrei" ersetzen
+							
+							// _self.qs("#offCanvasMiniCartWrapper .h-xsmallOffset-bottom-outer").innerHTML = freeText;
+						// }
+
+					}
+				} catch (error) {
+					console.log("2 ",error);
+					_self.goalPush("catchMonitoring");
 				}
 			});
 
@@ -542,20 +550,31 @@
 							}
 						}
 					
-						if(isActiveVoucher){
+						// if(isActiveVoucher){
 							_self.elem('section > #hessnaturVoucherForm', function(voucherWrapper){
 								if(voucherWrapper){
 									console.log('isActiveVoucher: ', isActiveVoucher);
 									for (var i = 0; i < voucherWrapper.length; i++) {
 										console.log('voucherWrapper[i]: ', voucherWrapper[i]);
 										console.log('voucherWrapper[i].textContent.indexOf(voucherCode): ', voucherWrapper[i].textContent.indexOf(voucherCode));
-										if(voucherWrapper[i].textContent.indexOf(voucherCode) !== -1){
-											voucherWrapper[i].style.display = "none";
+
+										var voucherElem = voucherWrapper[i],
+										voucherTextContent = voucherElem.textContent;
+
+										if(voucherTextContent.indexOf(voucherCode) !== -1 || 
+											voucherTextContent.indexOf('ECOMWAPF99MB') !== -1 || 
+											voucherTextContent.indexOf('ECOMWAPF149MB') !== -1 ){
+												voucherElem.style.display = "none";
+
+												if(voucherCode === 'ECOMWAPF99MB' && voucherTextContent.indexOf('ECOMWAPF149MB') !== -1 ||
+												   voucherCode === 'ECOMWAPF149MB' && voucherTextContent.indexOf('ECOMWAPF99MB') !== -1) {
+													_self.goalPush('crossdevice_voucher_code');
+												}
 										}
 									}
 								}
 							});
-						}
+						// }
 					} catch (error) {
 						console.log("3 ",error);
 						_self.goalPush("catchMonitoring");
@@ -587,10 +606,20 @@
 							// diese auszublenden. Stattdessen wird dann Gratis in die Versandkosten-Zeile geschrieben
 							// console.log('rows: ', rows);
 							for (var i = 0; i < rows.length; i++) {
-								var thisRow = rows[i];
+								var thisRow = rows[i],
+								thisRowContent = thisRow.textContent;
 								// console.log('thisRow: ', thisRow);
-								if(thisRow.textContent.indexOf(voucherCode) !== -1 || thisRow.textContent.indexOf("Versandkosten") !== -1){
+								if(thisRowContent.indexOf(voucherCode) !== -1 || 
+									thisRowContent.indexOf("Versandkosten") !== -1 || 
+									thisRowContent.indexOf('ECOMWAPF99MB') !== -1 ||
+									thisRowContent.indexOf('ECOMWAPF149MB') !== -1
+								){
 									thisRow.classList.add("kk_hide");
+
+									if(voucherCode === 'ECOMWAPF99MB' && thisRowContent.indexOf('ECOMWAPF149MB') !== -1 ||
+										voucherCode === 'ECOMWAPF149MB' && thisRowContent.indexOf('ECOMWAPF99MB') !== -1) {
+										_self.goalPush('crossdevice_voucher_code');
+									}
 								}else if(thisRow.textContent.indexOf("Portofrei") !== -1){
 									var priceInfo = _self.qs(".totalPrice", thisRow);
 									if(priceInfo){
