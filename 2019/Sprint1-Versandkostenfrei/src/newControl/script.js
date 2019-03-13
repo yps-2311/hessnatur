@@ -48,6 +48,15 @@
                 }
             }
         });
+
+        WATO.elem('.reveal-overlay .alert callout', function(errorMsg){
+            if(errorMsg) {
+                errorMsg = errorMsg[0];
+                if(/.*Gutschein.*ECOMWAPF99MB.*Mindestbestellwert.*/.test(errorMsg) || /.*Gutschein.*ECOMWAPF149MB.*Mindestbestellwert.*/.test(errorMsg)) {
+                    WATO.goalPush('voucher_code_wk_error');
+                }
+            }
+        });
     }
     else if(url.indexOf("/summary") !== -1){
         WATO.elem('.print-page-break-avoid.h-offset-bottom-inner .columns', function(totalSummary){

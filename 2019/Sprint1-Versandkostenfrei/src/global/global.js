@@ -6,7 +6,7 @@
  * @ codekit-append "pds.js"; 
  */
 
-
+/*jshint loopfunc: true */
 (function(WATO, window){
 	"use strict";
 
@@ -52,7 +52,7 @@
 		// 		return false;
 		// 	}
 		// }
-		function addCodeOrRemove(voucherCode, updateOrRemove, token) {
+		function addCodeOrRemove(voucherCode, updateOrRemove, token, callback) {
 			// updateOrRemove === true -> code wird hinzugefügt oder aktualisiert
 			// updateOrRemove === false -> code wird entfernt
 			try {
@@ -60,10 +60,13 @@
 	
 				request.open('POST', 'https://www.hessnatur.com/de/cart/' + (updateOrRemove ? "update" : "remove" ) + 'Voucher');
 				request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+				if(typeof callback === "function") {
+					request.onload = callback;
+				}
 				request.send("voucherCode="+voucherCode+"&CSRFToken=" + token);
 	
 			} catch (error) {
-				console.log(error);
+				// console.log(error);
 				_self.goalPush("catchMonitoring");
 			}
 		}
@@ -95,7 +98,7 @@
 					try {
 						window.ACC.modals.loadAjaxModal("/de/component/shippingInformations");
 					} catch (error) {
-						console.log(error);
+						// console.log(error);
 						_self.goalPush("catchMonitoring");
 					}
 				});
@@ -116,11 +119,11 @@
 			}
 			return totalPrice;
 		}
-		console.log('234');
+		// console.log('234');
 
 		function pdpPriceShow(totalPrice, productPrice) {
 
-			console.log('test');
+			// console.log('test');
 
 			try {
 				var orginalShippingLink = 'zzgl. <a class="btn-simple-link js-reveal-ajax" href="/de/component/shippingInformations">Versandkosten</a>',
@@ -171,15 +174,15 @@
 
 				
 
-				console.log('totalPrice >= voucherLimit: ', totalPrice >= voucherLimit);
-				console.log('productPrice >= voucherLimit: ', productPrice >= voucherLimit);
+				// console.log('totalPrice >= voucherLimit: ', totalPrice >= voucherLimit);
+				// console.log('productPrice >= voucherLimit: ', productPrice >= voucherLimit);
 				// console.log('productPrice: ', productPrice);
 				// console.log('totalPrice: ', totalPrice);
-				console.log('comboPrice >= voucherLimit: ', comboPrice >= voucherLimit);
+				// console.log('comboPrice >= voucherLimit: ', comboPrice >= voucherLimit);
 
 				if(totalPrice >= voucherLimit || productPrice >= voucherLimit){
 					// versandkostenfrei
-					console.log('>>> versandkostenfrei');
+					// console.log('>>> versandkostenfrei');
 					var greenHTML = '<span class="kk_green">versandkostenfrei</span>';
 
 					if(orginalShippingPosition){
@@ -248,11 +251,15 @@
 				}
 
 			} catch (error) {
-				console.log("1 ",error);
+				// console.log("1 ",error);
 				_self.goalPush("catchMonitoring");
 			}
 		}
 		
+		function _reload(){
+			location.reload();
+			location.href = location.href.split('#')[0];
+		}
 
 		// Global
 		_self.elem('.footerWrapper li:first-child', function(footerLi){
@@ -295,7 +302,7 @@
 				if(wkPrices){
 					var totalPrice = getTotalPrice(wkPrices) || 0;
 
-					console.log(totalPrice);
+					// console.log(totalPrice);
 
 					// console.log('totalPrice: ', totalPrice);
 
@@ -377,7 +384,7 @@
 						// Desktop
 
 						// WK-Layer Footer
-						console.log("WK-Layer Footer");
+						// console.log("WK-Layer Footer");
 
 						setTimeout(function(){
 							_self.elem('.ds_footer > .column:nth-child(2)', function(betweenButtonsInWKLayer){
@@ -416,7 +423,7 @@
 
 
 								} catch (error) {
-									console.log(error);
+									// console.log(error);
 								}
 								
 							});
@@ -446,7 +453,7 @@
 
 					}
 				} catch (error) {
-					console.log("2 ",error);
+					// console.log("2 ",error);
 					_self.goalPush("catchMonitoring");
 				}
 			});
@@ -491,7 +498,7 @@
 
 		}else if(url.indexOf("/cart") !== -1){
 			// WK Seite
-			console.log("WK Seite");
+			// console.log("WK Seite");
 
 			_self.elem('.yCmsContentSlot + .column .offset-price-left', function(sum){
 				if(sum){
@@ -508,30 +515,30 @@
 							einPortofreiGutscheinIstVorhanden = ganzeSection.textContent.indexOf("Portofrei") !== -1;
 							
 							// console.log('voucherWrapper: ', voucherWrapper);
-						console.log('isActiveVoucher: ', isActiveVoucher);
-						console.log('voucherLimit: ', voucherLimit);
-						console.log('totalSum: ', totalSum);
-						console.log('voucherLimit - totalSum: ', voucherLimit - totalSum);
-						console.log('einPortofreiGutscheinIstVorhanden: ', einPortofreiGutscheinIstVorhanden);
-						console.log('totalSum >= voucherLimit: ', totalSum >= voucherLimit);
+						// console.log('isActiveVoucher: ', isActiveVoucher);
+						// console.log('voucherLimit: ', voucherLimit);
+						// console.log('totalSum: ', totalSum);
+						// console.log('voucherLimit - totalSum: ', voucherLimit - totalSum);
+						// console.log('einPortofreiGutscheinIstVorhanden: ', einPortofreiGutscheinIstVorhanden);
+						// console.log('totalSum >= voucherLimit: ', totalSum >= voucherLimit);
 
 						if(totalSum >= voucherLimit || (einPortofreiGutscheinIstVorhanden && !isActiveVoucher)){
 							// Versandkostenfrei
-							console.log("Versandkostenfrei");
+							// console.log("Versandkostenfrei");
 
-							console.log('zwischenSummeField: ', zwischenSummeField);
+							// console.log('zwischenSummeField: ', zwischenSummeField);
 							zwischenSummeField.classList.add("kk_shippingfree");
 
-							console.log('ganzeSection: ', ganzeSection);
+							// console.log('ganzeSection: ', ganzeSection);
 							if(!isActiveVoucher && !einPortofreiGutscheinIstVorhanden){
-								console.log("added Vouchercode");
+								// console.log("added Vouchercode");
 								// Wenn noch kein Vouchercode bisher gesetzt ist, wird dieser hier nachträglich gesetzt
 								addCodeOrRemove(voucherCode, true, siteToken);
 							}
 
 						}else{
 							// Nur noch X€ bis versandkostenfrei
-							console.log('Nur noch X€ bis versandkostenfrei: ', (voucherLimit - totalSum).toFixed(2));
+							// console.log('Nur noch X€ bis versandkostenfrei: ', (voucherLimit - totalSum).toFixed(2));
 
 							zwischenSummeField.classList.add("kk_only");
 							zwischenSummeField.insertAdjacentHTML( (isDesktop ? 'afterbegin' : 'beforeend'), 
@@ -544,7 +551,7 @@
 							if(isActiveVoucher){
 								// Wenn der Code noch gesetzt ist und der WK-Wert zu niedrig ist
 								// wird der Code wieder entfernt
-								console.log("Code wieder entfernt");
+								// console.log("Code wieder entfernt");
 
 								addCodeOrRemove(voucherCode, false, siteToken);
 							}
@@ -553,10 +560,10 @@
 						// if(isActiveVoucher){
 							_self.elem('section > #hessnaturVoucherForm', function(voucherWrapper){
 								if(voucherWrapper){
-									console.log('isActiveVoucher: ', isActiveVoucher);
+									// console.log('isActiveVoucher: ', isActiveVoucher);
 									for (var i = 0; i < voucherWrapper.length; i++) {
-										console.log('voucherWrapper[i]: ', voucherWrapper[i]);
-										console.log('voucherWrapper[i].textContent.indexOf(voucherCode): ', voucherWrapper[i].textContent.indexOf(voucherCode));
+										// console.log('voucherWrapper[i]: ', voucherWrapper[i]);
+										// console.log('voucherWrapper[i].textContent.indexOf(voucherCode): ', voucherWrapper[i].textContent.indexOf(voucherCode));
 
 										var voucherElem = voucherWrapper[i],
 										voucherTextContent = voucherElem.textContent;
@@ -566,8 +573,24 @@
 											voucherTextContent.indexOf('ECOMWAPF149MB') !== -1 ){
 												voucherElem.style.display = "none";
 
-												if(voucherCode === 'ECOMWAPF99MB' && voucherTextContent.indexOf('ECOMWAPF149MB') !== -1 ||
-												   voucherCode === 'ECOMWAPF149MB' && voucherTextContent.indexOf('ECOMWAPF99MB') !== -1) {
+												if(voucherCode === 'ECOMWAPF99MB' && voucherTextContent.indexOf('ECOMWAPF149MB') !== -1) {
+													// console.log('remove code');
+													addCodeOrRemove('ECOMWAPF149MB', false, siteToken, function(){
+														// console.log('add code');
+														addCodeOrRemove(voucherCode, true, siteToken, function(){
+															_reload();
+														});
+													});
+													_self.goalPush('crossdevice_voucher_code');
+												}
+												if(voucherCode === 'ECOMWAPF149MB' && voucherTextContent.indexOf('ECOMWAPF99MB') !== -1) {
+													// console.log('remove code');
+													addCodeOrRemove('ECOMWAPF99MB', false, siteToken, function(){
+														// console.log('add code');
+														addCodeOrRemove(voucherCode, true, siteToken, function(){
+															_reload();
+														});
+													});
 													_self.goalPush('crossdevice_voucher_code');
 												}
 										}
@@ -576,10 +599,19 @@
 							});
 						// }
 					} catch (error) {
-						console.log("3 ",error);
+						// console.log("3 ",error);
 						_self.goalPush("catchMonitoring");
 					}
 
+				}
+			});
+
+			_self.elem('.reveal-overlay .alert callout', function(errorMsg){
+				if(errorMsg) {
+					errorMsg = errorMsg[0];
+					if(/.*Gutschein.*ECOMWAPF99MB.*Mindestbestellwert.*/.test(errorMsg) || /.*Gutschein.*ECOMWAPF149MB.*Mindestbestellwert.*/.test(errorMsg)) {
+						_self.goalPush('voucher_code_wk_error');
+					}
 				}
 			});
 
@@ -623,7 +655,7 @@
 								}else if(thisRow.textContent.indexOf("Portofrei") !== -1){
 									var priceInfo = _self.qs(".totalPrice", thisRow);
 									if(priceInfo){
-										alert(priceInfo.innerHTML);
+										// alert(priceInfo.innerHTML);
 										priceInfo.innerHTML = '<span class="kk_green">Gratis</span>';
 									}
 								}
@@ -635,7 +667,7 @@
 							}
 						}
 					} catch (error) {
-						console.log(error);
+						// console.log(error);
 					}
 					
 
