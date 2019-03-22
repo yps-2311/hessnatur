@@ -30,6 +30,7 @@
 .kk_sliderborder {
     overflow: hidden;
     height: 535px;
+    max-width: 996px;
     min-height: 535px;
     border: 20px solid #fff;
     position: relative;
@@ -50,6 +51,7 @@
         height: auto; /*494px;*/
         width: 956px; //956px;
         float: left;
+        max-width: 956px;
         // background-color: #F7F6F5;
         // margin-right: 30px;
         text-align: center;
@@ -61,11 +63,16 @@
         flex-direction: column;
         align-items: center;
 
+        > p {
+            margin-bottom: 15px;
+            font-size: 16px;
+            line-height: 22px;
+        }
         h3 {
             font-size: 36px;
             letter-spacing: -0.13px;
             text-align: center;
-            margin: 74px 0 10px;
+            margin: 74px 0 10px !important;
             text-transform: uppercase;
         }
         i {
@@ -79,7 +86,7 @@
             font-size: 18px;
             text-align: center;
             line-height: 28px;
-            font-weight: 500;
+            font-weight: 700;
             display: block;
             margin-bottom: 35px;
             max-height: 56px;
@@ -89,6 +96,7 @@
             width: 284px;
             padding: 18px 0;
             margin: 0 0 33px;
+            max-width: 98%;
         }
         .kk_h3 + i {
             margin-top: 0;
@@ -102,22 +110,22 @@
                 margin-top: -25px;
             }
         }
-    }
-}
-.kk_firstslide {
-    h3 {
-        margin: 84px 0 73px;
-    }
-    // i {
-    //     margin-top: 0;
-    // }
-    p {
-        display: block;
-        font-size: 16px;
-        margin-bottom: 83px;
-    }
-    b {
-        margin-bottom: 11px;
+        &.kk_firstslide {
+            h3 {
+                margin: 84px 0 73px !important;
+            }
+            // i {
+            //     margin-top: 0;
+            // }
+            p {
+                display: block;
+                font-size: 16px;
+                margin-bottom: 83px;
+            }
+            b {
+                margin-bottom: 11px;
+            }
+        }
     }
 }
 
@@ -152,15 +160,17 @@
             position: absolute;
             left: 0px;
         }
-        &.kk_active::after {
-            content: "";
-            background-color: #4A90E2;
-            width: 16px;
-            height: 16px;
-            border-radius: 8px;
-            left: 6px;
-            top: 6px;
-            position: absolute;
+        &.kk_active::before {
+            background: #fff url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2019/Sprint02/radio.svg") no-repeat center center;
+            // content: "";
+            // background-color: #4A90E2;
+            // width: 16px;
+            // height: 16px;
+            // border-radius: 8px;
+            // left: 6px;
+            // top: 6px;
+            // top: 22%;
+            // position: absolute;
         }
         &:hover {
             text-decoration: underline;
@@ -177,11 +187,11 @@
             width: 26px;
             height: 26px;
         }
-        &.kk_active::after {
-            content: "";
-            background: transparent url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2019/Sprint02/check.png") no-repeat 0 0;
-            width: 20px;
-            left: 4px;
+        &.kk_active::before {
+            // content: "";
+            background: #fff url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2019/Sprint02/check.png") no-repeat center center;
+            // width: 20px;
+            // left: 4px;
         }
     }
 }
@@ -200,6 +210,7 @@
     font-size: 14px;
     margin-bottom: 9px;
     text-align: center;
+    font-weight: 700;
 }
 .kk_bar {
     width: 100%;
@@ -235,4 +246,76 @@
 }
 .kk_input {
     margin: 0 0 0 10px;
+}
+
+
+
+@media only screen and (max-width: 1000px) {
+
+    .kk_survey {
+        max-width: 100%;
+        border: none;
+        margin: 50px auto;
+
+        &::before{
+            top: -34px;
+            left: 20px;
+            background-image: url(https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2019/Sprint02/newlogo.png);
+            background-size: 100% auto;
+        }
+    }
+    .kk_slider {
+        > div {
+            // max-width: 325px;
+            padding: 0 20px;
+
+            h3 {
+                font-size: 2.4rem;
+                margin: 85px 0 30px;
+            }
+            b {
+                line-height: 24px;
+                max-height: 200px;
+                font-size: 16px;
+            }
+            &.kk_firstslide p {
+                margin-bottom: 45px;
+            }
+        }
+        .kk_lastslide {
+            background-size: auto 104%;
+            background-position: -748px 0;
+            min-height: 652px;
+            h3 {
+                margin: 29px 0 23px;
+            }
+            div {
+                padding: 25px;
+            }
+        }
+    }
+    .kk_sliderborder {
+        max-width: 100%;
+        min-height: 684px;
+        // height: 840px !important;
+    }
+    .kk_progress {
+        left: 13%;
+        max-width: 74%;
+    }
+    .kk_firstslide p {
+        margin-bottom: 55px;
+    }
+    .kk_interactions > div {
+        height: auto;
+        min-height: 28px;
+        margin-bottom: 15px;
+    }
+    .kk_input {
+        max-width: 71%;
+    }
+    
+
+
+
 }

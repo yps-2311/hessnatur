@@ -11,6 +11,8 @@
 (function(WATO) {
     "use strict";
 
+    console.log("hallo1");
+
     var slideLeft = 0,
         stepNow = 1,
         lastPersonaSegment = "",
@@ -22,7 +24,7 @@
                 q: "Für wen haben Sie heute bestellt?",
                 a1: [1, "Bekleidung oder Accessoires für mein(e) Kind(er)"],
                 a2: [2, "Bekleidung oder Accessoires für mich"],
-                a3: [3, "Bekleidung oder Accessoires für meine(n) Frau/Mann"],
+                a3: [3, "Bekleidung oder Accessoires für meine/n Frau/Mann"],
                 a4: [4, "Für mein Zuhause (Artikel wie Decken, Pflegemittel, Badtextilien, Bettwäsche etc.)"],
                 a5: [5, "Für andere (Geschenke & Gutschein)"],
                 h: 561
@@ -56,11 +58,13 @@
             q4: {
                 c: 4,
                 t: "r", // Type: radio
+                z: "Wir haben noch 7 weitere Fragen, um Sie besser kennen zu lernen. Die Fragen entspringen einem Fragebogen aus der Wissenschaft und können uns helfen, Ihre Interessen und Erwartungen besser zu verstehen. Damit helfen Sie uns, Ihr Kauferlebnis noch besser zu machen.",
                 q: "An Ihrem Beruf und Ihrem Arbeitsplatz ist Ihnen besonders wichtig…",
                 a1: ["d", "Verantwortung zu haben und Karriere zu machen"],
                 a2: ["s", "Spaß und Abwechslung zu haben und neue Erfahrungen zu sammeln"],
                 a3: ["h", "mit netten Kolleginnen und Kollegen zusammen zu arbeiten"],
-                a4: ["b", "einen sicheren Arbeitsplatz zu haben"]
+                a4: ["b", "einen sicheren Arbeitsplatz zu haben"],
+                h: 620
             },
             q5: {
                 c: 5,
@@ -160,7 +164,8 @@
     function getQuestHTML(id){
         try {
             var questJson = questions[id],
-                questionCount = questJson.c;       
+                questionCount = questJson.c,
+                questionAddon = questJson.z;
             
             return  '<div data-count="'+questionCount+'" data-height="'+(questJson.h || 0)+'">'+
                         (
@@ -169,6 +174,10 @@
                             :''
                         )+
                         '<i>Wählen Sie bitte die Antwort, die am ehesten auf Sie zutrifft.</i>'+
+                        (
+                            questionAddon ?
+                            '<p>'+questionAddon+'</p>' : ''
+                        )+  
                         '<b>Frage '+questionCount+': '+questJson.q+'</b>'+
                         '<div class="kk_interactions '+(questJson.t === "r" ? "kk_radios":"kk_checks")+'">'+
                             createAnswers(questJson, questionCount <= 3)+
@@ -179,7 +188,7 @@
 
         } catch (error) {
             console.log(error);
-            return false;
+            return '';
         }
     }
     function sortFunction(a, b) {
@@ -197,11 +206,16 @@
 
     function clickToActiveRadiobuttons(thisElement) {
         var thisTarget = thisElement.target,
-            newActive = WATO.qs(".kk_active", thisTarget.parentNode);
+            newActive = WATO.qs(".kk_active", thisTarget.parentNode.parentNode);
         if(newActive){
             newActive.classList.remove("kk_active");
         }
-        thisTarget.classList.add("kk_active");
+        if(!thisTarget.classList.contains("kk_input")){
+            thisTarget.classList.add("kk_active");
+        }else{
+            thisTarget.parentNode.classList.add("kk_active");
+        }
+        
     }
     function clickToActiveCheckpoints(thisElement) {
         var thisTarget = thisElement.target;
@@ -269,151 +283,164 @@
 
             var slides = WATO.qsa(".kk_slider > div", wrapper),
                 slideWrapper = slides[0].parentNode,
+                slidesWidthTemp = WATO.qs(".kk_sliderborder", wrapper).offsetWidth - 40,
+                slidesWidth = slidesWidthTemp > 956 ? 956 : slidesWidthTemp,
+                nowContinue = true,
                 thisBtn = function(){
 
-                    var clickedSlider = this.parentNode,
+                    if(nowContinue){
+
+                        var clickedSlider = this.parentNode,
                         thisSliderHeight = clickedSlider.nextElementSibling.getAttribute("data-height");
-
-                    if(WATO.qs(".kk_active", clickedSlider) || clickedSlider.classList.contains("kk_firstslide")){
-
-                        clickedSlider.classList.remove("kk_error");
-
-                        slideLeft = slideLeft + 956;
-                        slideWrapper.style.left = "-"+slideLeft+"px";
-    
-                        var progress = WATO.qs(".kk_progress", wrapper),
-                            allActiveAnswers = WATO.qsa(".kk_active", clickedSlider);
-    
-                        // Die Progressbar einblenden,
-                        // bzw. ausblenden für Startscreen und Dankescreen
-                        console.log('stepNow: ', stepNow);
-                        if(stepNow > 1 && stepNow < 11){
-                            progress.style.opacity = 1;
-
-                            // Progressfortschritt
-                            if(progress){
-                                WATO.qs(".kk_step span", progress).innerHTML = stepNow;
-                                WATO.qs(".kk_bar span", progress).style.width = (stepNow*10)+'%';
-                            }
-                        }else{
-                            progress.style.opacity = 0;
-                        }
-
-                        if(thisSliderHeight && parseInt(thisSliderHeight) > 0){
-                            clickedSlider.parentNode.parentNode.style.height = thisSliderHeight+"px";
-                        }else{
-                            clickedSlider.parentNode.parentNode.style.height = "535px";
-                        }
-
-
-                        var answersTypes = [];
-
-                        for (var l = 0; l < allActiveAnswers.length; l++) {
-                            var thisType = allActiveAnswers[l].getAttribute("data-type");
-                            if(parseInt(thisType) > 0){
-                                // Eine Allgemeine Frage
-                                answersTypes.push(thisType);
-                            }else{
-                                // Eine Persona Frage
-                                answersTypes = thisType;
-                                personaAnswers.push(thisType);
-                                
-                                break;
-                            }
-                        }
                         
-                        if(answersTypes.length > 0){
-                            console.log("---------");
-                            console.log("Antwort: ", clickedSlider.getAttribute("data-count"));
-                            console.log('answersTypes: ', answersTypes);
-                            // console.log('personaAnswers: ', personaAnswers);
+                        if(WATO.qs(".kk_active", clickedSlider) || clickedSlider.classList.contains("kk_firstslide")){
+
+                            clickedSlider.classList.remove("kk_error");
                             
-                            var personaNow = [
-                                // NAME, MENGE, SEGMENT-ID
-                                ["stimulanz", 0, 32791],
-                                ["dominanz", 0, 32792],
-                                ["hedonist", 0, 32793],
-                                ["balance", 0, 32794]
-                            ];
-                            
-                            for (var m = 0; m < personaAnswers.length; m++) {
-                                switch (personaAnswers[m]) {
-                                    case "s":
-                                        personaNow[0][1]++;
-                                        break;
-                                    case "d":
-                                        personaNow[1][1]++;
-                                        break;
-                                    case "h":
-                                        personaNow[2][1]++;
-                                        break;
-                                    case "b":
-                                        personaNow[3][1]++;
-                                        break;
+                            slideLeft = slideLeft + slidesWidth; // 956
+                            slideWrapper.style.left = "-" + slideLeft + "px";
+        
+                            var progress = WATO.qs(".kk_progress", wrapper),
+                                allActiveAnswers = WATO.qsa(".kk_active", clickedSlider);
+        
+                            // Die Progressbar einblenden,
+                            // bzw. ausblenden für Startscreen und Dankescreen
+                            if(stepNow > 1 && stepNow < 11){
+                                progress.style.opacity = 1;
+
+                                // Progressfortschritt
+                                if(progress){
+                                    WATO.qs(".kk_step span", progress).innerHTML = stepNow;
+                                    WATO.qs(".kk_bar span", progress).style.width = (stepNow*10)+'%';
+                                }
+                            }else{
+                                progress.style.opacity = 0;
+                            }
+
+                            if(thisSliderHeight && parseInt(thisSliderHeight) > 0){
+                                var thisHeight = parseInt(thisSliderHeight);
+
+                                clickedSlider.parentNode.parentNode.style.height = (thisHeight + (slidesWidth < 950 ? 150 : 0)) + "px";
+                            }else{
+                                clickedSlider.parentNode.parentNode.style.height = "535px";
+                            }
+
+
+                            var answersTypes = [];
+
+                            for (var l = 0; l < allActiveAnswers.length; l++) {
+                                var thisType = allActiveAnswers[l].getAttribute("data-type");
+                                if(parseInt(thisType) > 0){
+                                    // Eine Allgemeine Frage
+                                    answersTypes.push(thisType);
+                                }else{
+                                    // Eine Persona Frage
+                                    answersTypes = thisType;
+                                    personaAnswers.push(thisType);
+                                    
+                                    break;
                                 }
                             }
-                            // console.log('personaNow: ', personaNow);
-                            personaNow.sort(sortFunction);
-                            console.log('personaNow: ', personaNow);
+                            
+                            if(answersTypes.length > 0){
+                                console.log("---------");
+                                console.log("Antwort: ", clickedSlider.getAttribute("data-count"));
+                                console.log('answersTypes: ', answersTypes);
+                                // console.log('personaAnswers: ', personaAnswers);
+                                
+                                var personaNow = [
+                                    // NAME, MENGE, SEGMENT-ID
+                                    ["stimulanz", 0, 32791],
+                                    ["dominanz", 0, 32792],
+                                    ["hedonist", 0, 32793],
+                                    ["balance", 0, 32794]
+                                ];
+                                
+                                for (var m = 0; m < personaAnswers.length; m++) {
+                                    switch (personaAnswers[m]) {
+                                        case "s":
+                                            personaNow[0][1]++;
+                                            break;
+                                        case "d":
+                                            personaNow[1][1]++;
+                                            break;
+                                        case "h":
+                                            personaNow[2][1]++;
+                                            break;
+                                        case "b":
+                                            personaNow[3][1]++;
+                                            break;
+                                    }
+                                }
+                                // console.log('personaNow: ', personaNow);
+                                personaNow.sort(sortFunction);
+                                console.log('personaNow: ', personaNow);
 
-                            console.log('personaNow[3][1]: ', personaNow[3][1]);
+                                console.log('personaNow[3][1]: ', personaNow[3][1]);
 
-                            // Mindestens eine personaspezifische Frage wurde beantwortet
-                            if(personaNow[3][1] > 0){
+                                // Mindestens eine personaspezifische Frage wurde beantwortet
+                                if(personaNow[3][1] > 0){
 
-                                if(personaNow[2][1] !== personaNow[3][1]){
+                                    if(personaNow[2][1] !== personaNow[3][1]){
 
-                                    var thisPersonaID = personaNow[3][2];
-                                    console.log('Persona: ', personaNow[3][0]);
-    
-                                    // Wenn das Segment mit dem zuletzt gesetzten nicht übereinstimmt
-                                    console.log('lastPersonaSegment !== thisPersonaID: ', lastPersonaSegment !== thisPersonaID);
-                                    if(lastPersonaSegment !== thisPersonaID){
-    
-                                        // wird das letzte Segment gelöscht
+                                        var thisPersonaID = personaNow[3][2];
+                                        console.log('Persona: ', personaNow[3][0]);
+        
+                                        // Wenn das Segment mit dem zuletzt gesetzten nicht übereinstimmt
+                                        console.log('lastPersonaSegment !== thisPersonaID: ', lastPersonaSegment !== thisPersonaID);
+                                        if(lastPersonaSegment !== thisPersonaID){
+        
+                                            // wird das letzte Segment gelöscht
+                                            if(lastPersonaSegment !== ""){
+                                                window.iridion.push(['removeSegment', String(lastPersonaSegment)]);
+                                            }
+            
+                                            // und ein Neues gesetzt
+                                            window.iridion.push(['segment', String(thisPersonaID)]);
+        
+                                            // Zum merken des zuletzt gesetzten wird es in die Variable gespeichert
+                                            lastPersonaSegment = thisPersonaID;
+                                        }
+
+                                        goal("currentPersona", personaNow[3][0]);
+
+                                    }else{
+                                        // Wenn mehrere Personas gleich ausgeprägt sind wird indifferent geschickt
+
                                         if(lastPersonaSegment !== ""){
                                             window.iridion.push(['removeSegment', String(lastPersonaSegment)]);
                                         }
-        
-                                        // und ein Neues gesetzt
-                                        window.iridion.push(['segment', String(thisPersonaID)]);
-    
-                                        // Zum merken des zuletzt gesetzten wird es in die Variable gespeichert
-                                        lastPersonaSegment = thisPersonaID;
+
+                                        window.iridion.push(['segment', '32796']);
+
+                                        goal("currentPersona", 'indifferent');
                                     }
-
-                                    goal("currentPersona", personaNow[3][0]);
-
-                                }else{
-                                    // Wenn mehrere Personas gleich ausgeprägt sind wird indifferent geschickt
-
-                                    if(lastPersonaSegment !== ""){
-                                        window.iridion.push(['removeSegment', String(lastPersonaSegment)]);
-                                    }
-
-                                    window.iridion.push(['segment', '32796']);
-
-                                    goal("currentPersona", 'indifferent');
                                 }
-                            }
-                            console.log('lastPersonaSegment: ', lastPersonaSegment);
-                            
-                            if(answersTypes[0] === "9"){
-                                answersTypes[0] = '9 '+encodeURI(WATO.qs(".kk_input", wrapper).value);
-                                console.log('encodeURI(WATO.qs(".kk_input", wrapper).value): ', encodeURI(WATO.qs(".kk_input", wrapper).value));
-                            }
-                            
-                            // window.iridion.push(['goal', 'question'+clickedSlider.getAttribute("data-count"), answersTypes]);
-                            goal('question'+clickedSlider.getAttribute("data-count"), answersTypes);
+                                console.log('lastPersonaSegment: ', lastPersonaSegment);
+                                
+                                if(answersTypes[0] === "9"){
+                                    answersTypes[0] = '9 '+encodeURI(WATO.qs(".kk_input", wrapper).value);
+                                    console.log('encodeURI(WATO.qs(".kk_input", wrapper).value): ', encodeURI(WATO.qs(".kk_input", wrapper).value));
+                                }
+                                
+                                // window.iridion.push(['goal', 'question'+clickedSlider.getAttribute("data-count"), answersTypes]);
+                                goal('question'+clickedSlider.getAttribute("data-count"), answersTypes);
 
-                            console.log("---------");
+                                console.log("---------");
+                            }
+
+                            stepNow++;
+
+                        }else{
+                            console.log("error");
+                            clickedSlider.classList.add("kk_error");
                         }
 
-                        stepNow++;
-
+                        nowContinue = false;
                     }else{
-                        console.log("error");
-                        clickedSlider.classList.add("kk_error");
+                        setTimeout(function(){
+                            nowContinue = true;
+                        }, 1000);
                     }
                 };
 
@@ -422,13 +449,13 @@
                     answers = WATO.qsa(".kk_interactions > div", thisSlide),
                     continueBtn = WATO.qs(".button", thisSlide);
 
+                // Jede Antwort wird auf eine feste Breite angepasst
+                thisSlide.style.width = slidesWidth + "px";
+
                 // Weiter
                 if(continueBtn){
                     continueBtn.addEventListener('click', thisBtn);
                 }
-                
-
-                
 
                 // Anworten
                 for (var j = 0; j < answers.length; j++) {
@@ -436,36 +463,14 @@
 
                     if(thisAnswer.parentNode.classList.contains("kk_radios")){
                         // Radiobuttons
-                        // thisAnswer.addEventListener('click', function(){
-
-                        //     var newActive = WATO.qs(".kk_active", this.parentNode);
-                        //     if(newActive){
-                        //         newActive.classList.remove("kk_active");
-                        //     }
-                        //     this.classList.add("kk_active");
-                        // });
-
                         thisAnswer.addEventListener('click', clickToActiveRadiobuttons);
-
                     }else{
                         // Checkpoints
-
-                        // thisAnswer.addEventListener('click', function(){
-                        //     if(this.classList.contains("kk_active")){
-                        //         this.classList.remove("kk_active");
-                        //     }else{
-                        //         this.classList.add("kk_active");
-                        //     }
-                        // });
-
                         thisAnswer.addEventListener('click', clickToActiveCheckpoints);
 
                     }
-                    
                 }
-                
             }
-
         }
     });
 
