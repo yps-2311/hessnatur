@@ -1,5 +1,5 @@
 // load core and global js
-// @ codekit-prepend "../global/global.js";
+// @codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -8,11 +8,11 @@
  * @name Variation 01
  * @description
  */
-(function(WATO) {
+(function(WATO, window) {
     "use strict";
 
     console.log("hallo1");
-
+    
     var slideLeft = 0,
         stepNow = 1,
         lastPersonaSegment = "",
@@ -21,59 +21,60 @@
             q1: {
                 c: 1,
                 t: "c", // Type: checkbox
-                q: "Für wen haben Sie heute bestellt?",
+                q: "Für wen haben Sie heute bestellt? (Mehrfachantworten möglich)",
                 a1: [1, "Bekleidung oder Accessoires für mein(e) Kind(er)"],
                 a2: [2, "Bekleidung oder Accessoires für mich"],
                 a3: [3, "Bekleidung oder Accessoires für meine/n Frau/Mann"],
                 a4: [4, "Für mein Zuhause (Artikel wie Decken, Pflegemittel, Badtextilien, Bettwäsche etc.)"],
-                a5: [5, "Für andere (Geschenke & Gutschein)"],
-                h: 561
+                a5: [5, "Für andere (Geschenke & Gutschein)"]
+                // h: 561
             },
             q2: {
                 c: 2,
                 t: "r", // Type: radio
-                q: "Wie sind Sie ursprünglich auf Hessnatur aufmerksam geworden?",
-                a1: [1, "Mir wurde Hessnatur von anderen empfohlen."],
-                a2: [2, "Hessnatur kenne ich schon lange. So genau kann ich es nicht sagen, woher ich es kenne."],
-                a3: [3, "Ich habe Werbung für Hessnatur im Internet oder in einer App gesehen."],
-                a4: [4, "Hessnatur kenne ich über Social Media."],
-                a5: [5, "Ich kenne Hessnatur von einem Flyer, einem Plakat oder aus einer Zeitschrift."],
-                a6: [6, "Ich habe Hessnatur durch eine Google-Anfrage gefunden."],
+                q: "Wie sind Sie ursprünglich auf hessnatur aufmerksam geworden?",
+                a1: [1, "Mir wurde hessnatur von anderen empfohlen."],
+                a2: [2, "hessnatur kenne ich schon lange. So genau kann ich es nicht sagen, woher ich es kenne."],
+                a3: [3, "Ich habe Werbung für hessnatur im Internet oder in einer App gesehen."],
+                a4: [4, "hessnatur kenne ich über Social Media."],
+                a5: [5, "Ich kenne hessnatur von einem Flyer, einem Plakat oder aus einer Zeitschrift."],
+                a6: [6, "Ich habe hessnatur durch eine Google-Anfrage gefunden."],
                 a7: [7, "Ich bin über einen Katalog aufmerksam geworden."],
-                a8: [8, "Ich war bereits in einem Hessnatur-Geschäft."],
-                a9: [9, 'Sonstiges: <input class="kk_input" type="text" value="">'],
-                h: 696
+                a8: [8, "Ich war bereits in einem hessnatur-Geschäft."],
+                a9: [9, 'Sonstiges: <input class="kk_input" type="text" value="">']
+                // h: 696 //800
             },
             q3: {
                 c: 3,
                 t: "c", // Type: checkbox
-                q: "Warum kaufen Sie bei Hessnatur?",
+                q: "Warum kaufen Sie bei hessnatur? (Mehrfachantworten möglich)",
                 a1: [1, "Die Bio-Qualität der Textilien ist mir wichtig und Teil meines bewussten Lebensstils."],
                 a2: [2, "Ich möchte einen Beitrag zu einem fairen Umgang mit den Produzenten leisten."],
                 a3: [3, "Die ökologische Herstellung ist für mich ausschlaggebend."],
-                a4: [4, "Die Mode bei Hessnatur spricht mich an."],
-                a5: [5, "Ich finde es gut, dass Hessnatur ein lokales Unternehmen ist."],
-                h: 561
+                a4: [4, "Die Mode bei hessnatur spricht mich an."],
+                a5: [5, "Ich finde es gut, dass hessnatur ein lokales Unternehmen ist."]
+                // h: 570
             },
             q4: {
                 c: 4,
                 t: "r", // Type: radio
                 z: "Wir haben noch 7 weitere Fragen, um Sie besser kennen zu lernen. Die Fragen entspringen einem Fragebogen aus der Wissenschaft und können uns helfen, Ihre Interessen und Erwartungen besser zu verstehen. Damit helfen Sie uns, Ihr Kauferlebnis noch besser zu machen.",
                 q: "An Ihrem Beruf und Ihrem Arbeitsplatz ist Ihnen besonders wichtig…",
-                a1: ["d", "Verantwortung zu haben und Karriere zu machen"],
-                a2: ["s", "Spaß und Abwechslung zu haben und neue Erfahrungen zu sammeln"],
-                a3: ["h", "mit netten Kolleginnen und Kollegen zusammen zu arbeiten"],
-                a4: ["b", "einen sicheren Arbeitsplatz zu haben"],
-                h: 620
+                a1: ["d", "Verantwortung zu haben und Karriere zu machen."],
+                a2: ["s", "Spaß und Abwechslung zu haben und neue Erfahrungen zu sammeln."],
+                a3: ["h", "mit netten Kolleginnen und Kollegen zusammen zu arbeiten."],
+                a4: ["b", "einen sicheren Arbeitsplatz zu haben."]
+                // h: 650
             },
             q5: {
                 c: 5,
                 t: "r", // Type: radio
                 q: "Stellen Sie sich vor, Sie haben im Lotto gewonnen und bauen ein neues Haus. Was wäre Ihnen dabei besonders wichtig?",
-                a1: ["s", "Es sollte sich durch eine innovative Architektur vom Standard abheben"],
-                a2: ["h", "Es sollte gemütlich und wohnlich sein"],
-                a3: ["d", "Es sollte repräsentativ sein"],
-                a4: ["b", "Es sollte wertbeständig und vernünftig gebaut sein"]
+                a1: ["s", "Es sollte sich durch eine innovative Architektur vom Standard abheben."],
+                a2: ["h", "Es sollte gemütlich und wohnlich sein."],
+                a3: ["d", "Es sollte repräsentativ sein."],
+                a4: ["b", "Es sollte wertbeständig und vernünftig gebaut sein."]
+                // h: 550
             },
             q6: {
                 c: 6,
@@ -83,6 +84,7 @@
                 a2: ["s", "Spaß, Spontaneität, Neugier, Abenteuer"],
                 a3: ["b", "Fleiß, Sicherheit, Zuverlässigkeit, Ordnung"],
                 a4: ["d", "Leistung, Erfolg, Zielstrebigkeit, Effizienz "]
+                // h: 550
             },
             q7: {
                 c: 7,
@@ -92,15 +94,17 @@
                 a2: ["h", "nach meinem Gefühl."],
                 a3: ["d", "sofort nach einer Analyse der Situation."],
                 a4: ["b", "mit Vorsicht und längerem Abwägen."]
+                // h: 550
             },
             q8: {
                 c: 8,
                 t: "r", // Type: radio
-                q: "Stellen Sie sich vor, Sie kommen mit verschiedenen unbekannten Menschen ins Gespräch. Welche Eigenschaft hat die Person, mit der Sie sich am besten verstehen und mit der Sie sich eine Freundschaft vorstellen könnten?",
+                q: "Stellen Sie sich vor, Sie kommen mit verschiedenen unbekannten Menschen ins Gespräch. Welche Eigenschaften hat die Person, mit der Sie sich am besten verstehen und mit der Sie sich eine Freundschaft vorstellen könnten?",
                 a1: ["d", "Tatkraft und Durchhaltevermögen"],
                 a2: ["h", "Herzlichkeit und Wärme"],
                 a3: ["b", "Zuverlässigkeit und Beständigkeit"],
                 a4: ["s", "Gute Laune, Witz und Humor"]
+                // h: 550
             },
             q9: {
                 c: 9,
@@ -109,16 +113,18 @@
                 a1: ["h", "Wellness und Massage"],
                 a2: ["d", "Weinprobe mit exklusiven Weinen"],
                 a3: ["b", "Das Animationsprogramm des Hotels"],
-                a4: ["s", "Eine geführte Kletter-Tour"]
+                a4: ["s", "Eine geführte Klettertour"]
+                // h: 550
             },
             q10: {
                 c: 10,
                 t: "r", // Type: radio
-                q: "Letzte Frage: Wie würden Sie Ihren bevorzugten Modestil beschreiben…",
+                q: "Letzte Frage: Wie würden Sie Ihren bevorzugten Modestil beschreiben?",
                 a1: ["b", "lege keinen Wert auf Mode"],
                 a2: ["h", "bequem"],
                 a3: ["s", "unkonventionell und kreativ"],
                 a4: ["d", "klassisch modern"]
+                // h: 550
             }
         },
         personaAnswers = [];
@@ -131,6 +137,42 @@
             array[j] = temp;
         }
     }
+
+    Math.easeInOutQuad = function (t, b, c, d) {
+		t /= d/2;
+		if (t < 1){
+			return c/2*t*t + b;
+		}else{
+			t--;
+			return -c/2 * (t*(t-2) - 1) + b;
+		}
+	};
+	
+	function scrollTo(to, duration) {
+		try {
+			var start = document.documentElement.scrollTop + document.body.scrollTop,
+				change = to - start,
+				currentTime = 0,
+				increment = 20;
+			console.log('start: ', start);
+				
+			var animateScroll = function(){        
+				currentTime += increment;
+				var val = Math.easeInOutQuad(currentTime, start, change, duration);
+                document.documentElement.scrollTop = val;
+                document.body.scrollTop = val;
+
+				if(currentTime < duration) {
+					setTimeout(animateScroll, increment);
+				}
+			};
+			animateScroll();
+		} catch (error) {
+			console.log(error);
+		}
+    }
+    
+    
 
     function createAnswers(questJson, haveToShuffle){
         // var tempHTML = "";
@@ -167,7 +209,7 @@
                 questionCount = questJson.c,
                 questionAddon = questJson.z;
             
-            return  '<div data-count="'+questionCount+'" data-height="'+(questJson.h || 0)+'">'+
+            return  '<div data-count="'+questionCount+'">'+ //data-height="'+(questJson.h || 0)+'
                         (
                             questionCount === 1 ?
                             '<h3 class="kk_h3">Wunderbar, danke!</h3>'
@@ -203,6 +245,12 @@
     function goal(name, text) {
         window.iridion.push(['goal', name, text]);
     }
+    function setProfile(thisPersonaName) {
+        window.iridion.push(['profile', 'setValue', 'personaType', thisPersonaName]);
+    }
+    function setSegment(thisID) {
+        window.iridion.push(['segment', String(thisID)]);
+    }
 
     function clickToActiveRadiobuttons(thisElement) {
         var thisTarget = thisElement.target,
@@ -215,7 +263,7 @@
         }else{
             thisTarget.parentNode.classList.add("kk_active");
         }
-        
+        thisTarget.parentNode.parentNode.classList.remove("kk_error");
     }
     function clickToActiveCheckpoints(thisElement) {
         var thisTarget = thisElement.target;
@@ -224,6 +272,7 @@
         }else{
             thisTarget.classList.add("kk_active");
         }
+        thisTarget.parentNode.parentNode.classList.remove("kk_error");
     }
 
 
@@ -253,10 +302,10 @@
                                         '</div>'
                                     :
                                     '<div class="kk_firstslide">'+
-                                        '<h3>Haben Sie noch 3 Minuten Zeit?</h3>'+
-                                        '<b>Wir würden Sie gerne näher kennen lernen.</b>'+
-                                        '<p>Wenn Sie uns 10 schnelle Fragen beantworten, helfen Sie uns, besser zu werden.</p>'+
-                                        '<button class="button">Ok, zeigen Sie mir die Fragen</button>'+
+                                        '<h3>Schenken Sie uns noch 3 Minuten Ihrer Zeit?</h3>'+
+                                        '<b>Ihre Meinung ist uns wichtig.</b>'+
+                                        '<p>Bitte beantworten Sie uns 10 kurze Fragen, damit wir unseren Service für Sie weiter verbessern können.</p>'+
+                                        '<button class="button">Jetzt teilnehmen!</button>'+
                                     '</div>'+
                                     getQuestHTML("q1")+
                                     getQuestHTML("q2")+
@@ -283,22 +332,42 @@
 
             var slides = WATO.qsa(".kk_slider > div", wrapper),
                 slideWrapper = slides[0].parentNode,
-                slidesWidthTemp = WATO.qs(".kk_sliderborder", wrapper).offsetWidth - 40,
-                slidesWidth = slidesWidthTemp > 956 ? 956 : slidesWidthTemp,
-                nowContinue = true,
-                thisBtn = function(){
+                slidesWidthTemp = WATO.qs(".kk_sliderborder", wrapper).offsetWidth,
+                slidesWidth = slidesWidthTemp - 40,
+                nowContinue = true;
 
+            
+            if (slidesWidth > 956){
+                slidesWidth = 956;
+            }else if(slidesWidthTemp <= 330){
+                slidesWidth = slidesWidthTemp;
+            }
+
+            var thisBtn = function(){
+                    console.log("thisBtn");
+
+                    console.log('nowContinue: ', nowContinue);
                     if(nowContinue){
 
+                        // Seite verlassen wird abgefangen
+                        window.addEventListener('beforeunload', function (e) {
+                            e.preventDefault();
+                            // Chrome requires returnValue to be set
+                            e.returnValue = "Bist du sicher, dass du das Fenster verlassen willst. Deine Angaben gehen verloren.";
+                        });
+
                         var clickedSlider = this.parentNode,
-                        thisSliderHeight = clickedSlider.nextElementSibling.getAttribute("data-height");
+                            // thisSliderHeight = clickedSlider.nextElementSibling.getAttribute("data-height");
+                            thisSliderHeight = clickedSlider.nextElementSibling.offsetHeight;
                         
                         if(WATO.qs(".kk_active", clickedSlider) || clickedSlider.classList.contains("kk_firstslide")){
-
-                            clickedSlider.classList.remove("kk_error");
                             
                             slideLeft = slideLeft + slidesWidth; // 956
                             slideWrapper.style.left = "-" + slideLeft + "px";
+
+                            if (slidesWidth < 500){
+                                scrollTo(100, 1100);
+                            }
         
                             var progress = WATO.qs(".kk_progress", wrapper),
                                 allActiveAnswers = WATO.qsa(".kk_active", clickedSlider);
@@ -317,10 +386,13 @@
                                 progress.style.opacity = 0;
                             }
 
-                            if(thisSliderHeight && parseInt(thisSliderHeight) > 0){
-                                var thisHeight = parseInt(thisSliderHeight);
+                            
+                            console.log('clickedSlider.nextElementSibling.offsetHeight: ', clickedSlider.nextElementSibling.offsetHeight);
 
-                                clickedSlider.parentNode.parentNode.style.height = (thisHeight + (slidesWidth < 950 ? 150 : 0)) + "px";
+                            if(thisSliderHeight && thisSliderHeight > 0){
+                                // var thisHeight = parseInt(thisSliderHeight);
+
+                                clickedSlider.parentNode.parentNode.style.height = (thisSliderHeight + 35) + "px"; //170 + (slidesWidth < 950 ? 170 : 0)
                             }else{
                                 clickedSlider.parentNode.parentNode.style.height = "535px";
                             }
@@ -383,8 +455,9 @@
 
                                     if(personaNow[2][1] !== personaNow[3][1]){
 
-                                        var thisPersonaID = personaNow[3][2];
-                                        console.log('Persona: ', personaNow[3][0]);
+                                        var thisPersonaID = personaNow[3][2],
+                                            thisPersonaName = personaNow[3][0];
+                                        // console.log('Persona: ', personaNow[3][0]);
         
                                         // Wenn das Segment mit dem zuletzt gesetzten nicht übereinstimmt
                                         console.log('lastPersonaSegment !== thisPersonaID: ', lastPersonaSegment !== thisPersonaID);
@@ -396,13 +469,16 @@
                                             }
             
                                             // und ein Neues gesetzt
-                                            window.iridion.push(['segment', String(thisPersonaID)]);
+                                            // window.iridion.push(['segment', String(thisPersonaID)]);
+                                            setSegment(thisPersonaID);
         
                                             // Zum merken des zuletzt gesetzten wird es in die Variable gespeichert
                                             lastPersonaSegment = thisPersonaID;
                                         }
 
-                                        goal("currentPersona", personaNow[3][0]);
+                                        goal("currentPersona", thisPersonaName);
+
+                                        setProfile(thisPersonaName);
 
                                     }else{
                                         // Wenn mehrere Personas gleich ausgeprägt sind wird indifferent geschickt
@@ -411,9 +487,12 @@
                                             window.iridion.push(['removeSegment', String(lastPersonaSegment)]);
                                         }
 
-                                        window.iridion.push(['segment', '32796']);
+                                        // window.iridion.push(['segment', '32796']);
+                                        setSegment('32796');
 
                                         goal("currentPersona", 'indifferent');
+
+                                        setProfile('indifferent');
                                     }
                                 }
                                 console.log('lastPersonaSegment: ', lastPersonaSegment);
@@ -437,11 +516,11 @@
                         }
 
                         nowContinue = false;
-                    }else{
                         setTimeout(function(){
                             nowContinue = true;
                         }, 1000);
                     }
+                    
                 };
 
             for (var i = 0; i < slides.length; i++) {
@@ -474,4 +553,4 @@
         }
     });
 
-})(new window.WATO());
+})(new window.WATO(), window);

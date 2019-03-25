@@ -43,7 +43,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    transition: left 1s ease-in-out;
+    transition: left 0.8s ease;
     background-color: #F7F6F5;
 
     > div {
@@ -67,6 +67,8 @@
             margin-bottom: 15px;
             font-size: 16px;
             line-height: 22px;
+            max-width: 750px;
+            display: block;
         }
         h3 {
             font-size: 36px;
@@ -86,7 +88,7 @@
             font-size: 18px;
             text-align: center;
             line-height: 28px;
-            font-weight: 700;
+            font-weight: 500;
             display: block;
             margin-bottom: 35px;
             max-height: 56px;
@@ -107,12 +109,12 @@
             }
             .form-error {
                 display: block;
-                margin-top: -25px;
+                margin-top: -34px;
             }
         }
         &.kk_firstslide {
             h3 {
-                margin: 84px 0 73px !important;
+                margin: 84px 0 58px !important;
             }
             // i {
             //     margin-top: 0;
@@ -120,7 +122,7 @@
             p {
                 display: block;
                 font-size: 16px;
-                margin-bottom: 83px;
+                margin-bottom: 72px;
             }
             b {
                 margin-bottom: 11px;
@@ -138,15 +140,16 @@
 
     > div {
         text-align: left;
-        height: 28px;
+        min-height: 30px;
         margin-bottom: 8px;
-        line-height: 16px;
+        line-height: 20px;
         position: relative;
         cursor: pointer;
         padding-left: 40px;
         display: flex;
         align-items: center;
         transition: all .5s ease-in-out;
+        font-size: 15px;
 
         &::before {
             content: "";
@@ -189,7 +192,7 @@
         }
         &.kk_active::before {
             // content: "";
-            background: #fff url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2019/Sprint02/check.png") no-repeat center center;
+            background: #fff url("https://s3.eu-central-1.amazonaws.com/kk-ffm/hessnatur/2019/Sprint02/check.svg") no-repeat center center;
             // width: 20px;
             // left: 4px;
         }
@@ -236,7 +239,7 @@
         background-color: #fff;
         padding: 25px 25px 40px;
         h3 {
-            margin-top: 15px;
+            margin-top: 22px !important;
         }
         p {
             font-size: 16px;
@@ -296,12 +299,13 @@
     }
     .kk_sliderborder {
         max-width: 100%;
-        min-height: 684px;
+        min-height: 330px //684px;
         // height: 840px !important;
     }
     .kk_progress {
-        left: 13%;
+        left: 50%;
         max-width: 74%;
+        margin-left: -300px;
     }
     .kk_firstslide p {
         margin-bottom: 55px;
@@ -310,12 +314,28 @@
         height: auto;
         min-height: 28px;
         margin-bottom: 15px;
+        &:hover,
+        &:active{
+            text-decoration: none;
+        }
     }
     .kk_input {
         max-width: 71%;
     }
-    
 
-
-
+}
+@media only screen and (max-width: 700px) {
+    .kk_progress {
+        margin: 0;
+        left: 13%;
+    }
+}
+@media only screen and (max-width: 330px) {
+    .kk_sliderborder {
+        border-left: none;
+        border-right: none;
+    }
+    .kk_slider > div.kk_firstslide h3 {
+        margin: 76px 0 37px !important;
+    }
 }
