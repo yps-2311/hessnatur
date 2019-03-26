@@ -10,19 +10,17 @@
  */
 (function(WATO, window) {
     "use strict";
-
-    console.log("hallo1");
     
     var slideLeft = 0,
         stepNow = 1,
         lastPersonaSegment = "",
-        alreadyParticipatedSurvey = false,
+        alreadyParticipatedSurvey = window.localStorage.getItem('kk_surveyStarted') === 'true',
         questions = {
             q1: {
                 c: 1,
                 t: "c", // Type: checkbox
-                q: "Für wen haben Sie heute bestellt? (Mehrfachantworten möglich)",
-                a1: [1, "Bekleidung oder Accessoires für mein(e) Kind(er)"],
+                q: "Für wen haben Sie zuletzt bestellt? (Mehrfachantworten möglich)",
+                a1: [1, "Bekleidung oder Accessoires für mein/e Kind/er"],
                 a2: [2, "Bekleidung oder Accessoires für mich"],
                 a3: [3, "Bekleidung oder Accessoires für meine/n Frau/Mann"],
                 a4: [4, "Für mein Zuhause (Artikel wie Decken, Pflegemittel, Badtextilien, Bettwäsche etc.)"],
@@ -154,7 +152,6 @@
 				change = to - start,
 				currentTime = 0,
 				increment = 20;
-			console.log('start: ', start);
 				
 			var animateScroll = function(){        
 				currentTime += increment;
@@ -168,7 +165,7 @@
 			};
 			animateScroll();
 		} catch (error) {
-			console.log(error);
+			// console.log(error);
 		}
     }
     
@@ -229,7 +226,7 @@
                     '</div>';
 
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             return '';
         }
     }
@@ -297,7 +294,7 @@
                                         '<div class="kk_lastslide">'+
                                             '<div>'+
                                                 '<h3>Sie haben bereits an dieser Umfrage teilgenommen</h3>'+
-                                                '<p>Mit Ihren Angaben haben Sie uns geholfen, uns zu verbessern und weiter zu entwickeln.</p>'+
+                                                '<p>Mit Ihren Angaben haben Sie uns geholfen, uns zu verbessern und weiterzuentwickeln.</p>'+
                                             '</div>'+
                                         '</div>'
                                     :
@@ -320,7 +317,7 @@
                                     '<div class="kk_lastslide">'+
                                         '<div>'+
                                             '<h3>Vielen Dank für Ihre Teilnahme!</h3>'+
-                                            '<p>Mit Ihren Angaben helfen Sie uns, uns stetig zu verbessern und weiter zu entwickeln.</p>'+
+                                            '<p>Mit Ihren Angaben helfen Sie uns, uns stetig zu verbessern und weiterzuentwickeln.</p>'+
                                         '</div>'+
                                     '</div>'
                                 )+
@@ -334,7 +331,8 @@
                 slideWrapper = slides[0].parentNode,
                 slidesWidthTemp = WATO.qs(".kk_sliderborder", wrapper).offsetWidth,
                 slidesWidth = slidesWidthTemp - 40,
-                nowContinue = true;
+                nowContinue = true,
+                leaveEarly = true;
 
             
             if (slidesWidth > 956){
@@ -344,16 +342,21 @@
             }
 
             var thisBtn = function(){
-                    console.log("thisBtn");
+                    // console.log("thisBtn");
 
-                    console.log('nowContinue: ', nowContinue);
+                    // console.log('nowContinue: ', nowContinue);
                     if(nowContinue){
+
+                        // Einmal gestartet wird ein LS gesetzt damit man nicht erneut in die Umfrage kommt
+                        window.localStorage.setItem('kk_surveyStarted', 'true');
 
                         // Seite verlassen wird abgefangen
                         window.addEventListener('beforeunload', function (e) {
-                            e.preventDefault();
-                            // Chrome requires returnValue to be set
-                            e.returnValue = "Bist du sicher, dass du das Fenster verlassen willst. Deine Angaben gehen verloren.";
+                            if(leaveEarly){
+                                e.preventDefault();
+                                // Chrome requires returnValue to be set
+                                e.returnValue = "Bist du sicher, dass du das Fenster verlassen willst. Deine Angaben gehen verloren.";
+                            }
                         });
 
                         var clickedSlider = this.parentNode,
@@ -415,16 +418,16 @@
                             }
                             
                             if(answersTypes.length > 0){
-                                console.log("---------");
-                                console.log("Antwort: ", clickedSlider.getAttribute("data-count"));
-                                console.log('answersTypes: ', answersTypes);
+                                // console.log("---------");
+                                // console.log("Antwort: ", clickedSlider.getAttribute("data-count"));
+                                // console.log('answersTypes: ', answersTypes);
                                 // console.log('personaAnswers: ', personaAnswers);
                                 
                                 var personaNow = [
                                     // NAME, MENGE, SEGMENT-ID
                                     ["stimulanz", 0, 32791],
                                     ["dominanz", 0, 32792],
-                                    ["hedonist", 0, 32793],
+                                    ["harmonizer", 0, 32793],
                                     ["balance", 0, 32794]
                                 ];
                                 
@@ -446,9 +449,9 @@
                                 }
                                 // console.log('personaNow: ', personaNow);
                                 personaNow.sort(sortFunction);
-                                console.log('personaNow: ', personaNow);
+                                // console.log('personaNow: ', personaNow);
 
-                                console.log('personaNow[3][1]: ', personaNow[3][1]);
+                                // console.log('personaNow[3][1]: ', personaNow[3][1]);
 
                                 // Mindestens eine personaspezifische Frage wurde beantwortet
                                 if(personaNow[3][1] > 0){
@@ -460,7 +463,7 @@
                                         // console.log('Persona: ', personaNow[3][0]);
         
                                         // Wenn das Segment mit dem zuletzt gesetzten nicht übereinstimmt
-                                        console.log('lastPersonaSegment !== thisPersonaID: ', lastPersonaSegment !== thisPersonaID);
+                                        // console.log('lastPersonaSegment !== thisPersonaID: ', lastPersonaSegment !== thisPersonaID);
                                         if(lastPersonaSegment !== thisPersonaID){
         
                                             // wird das letzte Segment gelöscht
@@ -480,6 +483,8 @@
 
                                         setProfile(thisPersonaName);
 
+                                        // console.log("FINALES PERSONA: "+thisPersonaName);
+
                                     }else{
                                         // Wenn mehrere Personas gleich ausgeprägt sind wird indifferent geschickt
 
@@ -493,25 +498,28 @@
                                         goal("currentPersona", 'indifferent');
 
                                         setProfile('indifferent');
+                                        // console.log("FINALES PERSONA: indifferent");
                                     }
                                 }
-                                console.log('lastPersonaSegment: ', lastPersonaSegment);
+                                // console.log('lastPersonaSegment: ', lastPersonaSegment);
+
+                                leaveEarly = false;
                                 
                                 if(answersTypes[0] === "9"){
                                     answersTypes[0] = '9 '+encodeURI(WATO.qs(".kk_input", wrapper).value);
-                                    console.log('encodeURI(WATO.qs(".kk_input", wrapper).value): ', encodeURI(WATO.qs(".kk_input", wrapper).value));
+                                    // console.log('encodeURI(WATO.qs(".kk_input", wrapper).value): ', encodeURI(WATO.qs(".kk_input", wrapper).value));
                                 }
                                 
                                 // window.iridion.push(['goal', 'question'+clickedSlider.getAttribute("data-count"), answersTypes]);
                                 goal('question'+clickedSlider.getAttribute("data-count"), answersTypes);
 
-                                console.log("---------");
+                                // console.log("---------");
                             }
 
                             stepNow++;
 
                         }else{
-                            console.log("error");
+                            // console.log("error");
                             clickedSlider.classList.add("kk_error");
                         }
 

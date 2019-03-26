@@ -92,6 +92,7 @@
             display: block;
             margin-bottom: 35px;
             max-height: 56px;
+            max-width: 100%;
         }
         .button {
             font-size: 13px;
@@ -280,14 +281,20 @@
                 line-height: 24px;
                 max-height: 200px;
                 font-size: 16px;
+                font-weight: 700;
             }
-            &.kk_firstslide p {
-                margin-bottom: 45px;
-            }
+            &.kk_firstslide {
+                p {
+                    margin-bottom: 45px;
+                }
+                b {
+                    font-weight: 700;
+                }
+            } 
         }
         .kk_lastslide {
-            background-size: auto 104%;
-            background-position: -748px 0;
+            // background-size: auto 104%;
+            // background-position: -748px 0;
             min-height: 652px;
             h3 {
                 margin: 29px 0 23px;
@@ -328,6 +335,10 @@
     .kk_progress {
         margin: 0;
         left: 13%;
+    }
+    .kk_slider .kk_lastslide {
+        background-size: auto 104%;
+        background-position: -748px 0;
     }
 }
 @media only screen and (max-width: 330px) {
