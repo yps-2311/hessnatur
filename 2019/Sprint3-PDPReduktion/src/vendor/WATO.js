@@ -44,7 +44,7 @@
      * @return {object} NodeList object - Returns all elements in the document that matches a specified CSS selector(s), as a static NodeList object.
      */
     window.WATO.prototype.elem = function(waitFor, callback, timeout, self, time) {
-
+        // console.log("elem: ",waitFor);
         var _self = this || self,
             _time = time || Date.now(),
             _status = false,
