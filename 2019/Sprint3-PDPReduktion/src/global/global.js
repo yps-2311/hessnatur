@@ -15,7 +15,7 @@
         }else{
             window.iridion.push(['goal', key]);
         }
-        console.log('goalPush: ', key);
+        // console.log('goalPush: ', key);
     };
 
 	WATO.prototype.goalsPdpRed = function(){

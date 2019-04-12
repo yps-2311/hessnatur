@@ -21,52 +21,43 @@
     }
 
     function buildHeader(colorID) {
-        console.log('clicked: ', colorID);
         
         // Gallerie und Buybox
         WATO.elem('.pds__imageAndCockpitWrapper', function(mainWrapper){
             if(mainWrapper){
-                console.log('mainWrapper: ', mainWrapper);
                 try {
                     mainWrapper = mainWrapper[0];
 
                     WATO.elem(function() {
                         if(colorID){
-                            // console.log('WATO.qs(.show-for-medium-only .thumbnailContainer.js_thumbnailContainer, mainWrapper): ', WATO.qs('.show-for-medium-only .thumbnailContainer.js_thumbnailContainer', mainWrapper));
-                            // return WATO.qs('.show-for-medium-only .thumbnailContainer.js_thumbnailContainer', mainWrapper).getAttribute("data-color") === colorID;
                             return typeof window.ACC !== "undefined" && typeof window.ACC.productDetail !== "undefined" && typeof window.ACC.productDetail.galleryImages !== "undefined";
                         }else{
                             return true;
                         }
                     }, function(avalibeColorImages){
-                        console.log('----------- avalibeColorImages: ', avalibeColorImages);
                         if(avalibeColorImages){
 
                             var existingSlider = WATO.qs(".kk_slider", mainWrapper);
 
                             if(existingSlider){
-                                console.log('existingSlider: ', existingSlider);
                                 existingSlider.parentNode.removeChild(existingSlider);
                             }
 
-
                             var thumbnails = WATO.qsa(".show-for-medium-only .thumbnailContainer.js_thumbnailContainer", mainWrapper),
                                 markupHTML = "";
-                                // lessProducts = thumbnails.length <= 2;
-
 
                             if(colorID){
+                                // Wird aus window.ACC.productDetail.galleryImages gebaut
                                 colorID = parseInt(colorID);
 
                                 var galleryImgs = window.ACC.productDetail.galleryImages;
 
                                 for (var j = 0; j < galleryImgs.length; j++) {
                                     var thisProduct = galleryImgs[j];
-                                    console.log('thisProduct: ', thisProduct);
                                     if(parseInt(thisProduct.product.color) === colorID){
-                                        // markupHTML += '<div class="carousel-cell"><img src="'+thisProduct.url.replace("_main/","_reco/")+'"></div>';
+
                                         var picURL = thisProduct.zoom.url;
-                                        console.log('picURL: ', picURL);
+
                                         markupHTML += 
                                         '<div class="carousel-cell">'+
                                             '<a href="'+picURL+'" data-options="zoomPosition: right" class="MagicZoom">'+
@@ -76,10 +67,12 @@
                                     }
                                 }
                             }else{
+                                // wird aus Original-Slider gebaut
+
                                 // Neue Gallerie Markup wird gebaut
                                 for (var i = 0; i < thumbnails.length; i++) {
                                     var productPicURL = thumbnails[i].getAttribute("data-image");
-                                    // markupHTML += '<div class="carousel-cell"><img src="'+thumbnails[i].getAttribute("data-image").replace("_main/","_reco/")+'"></div>';
+
                                     markupHTML += 
                                     '<div class="carousel-cell">'+
                                         '<a href="'+productPicURL.replace("_main/","_zoom/")+'" data-options="zoomPosition: right;" class="MagicZoom">'+ //zoomWidth:600px; zoomHeight:1000px; 
@@ -88,58 +81,33 @@
                                     '</div>';
                                 }
                             }
-
         
                             // Markup und Statische Felder für "Complete the Look" und "Titel" werden eingebaut
                             mainWrapper.insertAdjacentHTML('afterbegin', 
                                 '<div class="kk_slider small-8 main-carousel" style="height: '+sliderHeight()+'px">'+ // style="min-height: '+(window.innerWidth * 0.4149)+'px"
-                                    // '<div class="static-banner kk_title"></div>'+
                                     '<div class="static-banner kk_complete"><span>Complete the Look &rsaquo;</span></div>'+
                                     markupHTML+
                                 '</div>'
                             );
-                            // window.MagicZoom.refresh();
-
-                            // Produkttitel für Fullscreenanzeige einbauen
-                            // WATO.elem('.pds-cockpit__productName', function(title){
-                            //     if(title){
-                            //         WATO.qs(".kk_title", mainWrapper).innerHTML = title[0].textContent;
-                            //     }
-                            // });
-
-                            // var colorText = WATO.qs(".js-color-name", mainWrapper);
-                            // console.log('colorText: ', colorText);
-                            // if(colorText){
-                            //     colorText.innerHTML = colorText.textContent.split("(")[0];
-                            // }
         
                             // Auf jQuery und Gallerie Funktion warten
                             WATO.elem(function(){
                                 return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
                             }, function(){
                                 try {
-        
-                                    // Fullscreen Funktion nachträglich eingebaut
-                                    // flickityFullscreen();
-        
-                                    // MagicZoom.refresh();
-        
+
                                     // Slider Options
                                     var sliderOptions = {
                                         cellAlign: 'left',
                                         cellSelector: '.carousel-cell',
-                                        // imagesLoaded: true,
                                         draggable: false,
-                                        // lazyLoad: 2,
                                         wrapAround: true,
-                                        // fullscreen: true
                                     },
                                     thumbPics = thumbnails.length;
         
                                     if(thumbPics <= 2){
                                         // Bei einem oder zwei Produktbilder die
                                         // Interaktion mit der Gallerie deaktivieren
-                                        // sliderOptions.draggable = false;
                                         sliderOptions.prevNextButtons = false;
                                         sliderOptions.pageDots = false;
         
@@ -149,19 +117,6 @@
                                     }
                                     // Init Slider
                                     jQuery('.kk_slider').flickity(sliderOptions);
-
-
-                                    // WATO.elem(function(){
-                                    //     return typeof window.MagicZoom !== "undefined" && typeof window.MagicZoom.start !== "undefined";
-                                    // }, function(){
-                                    //     try {
-                                    //         window.MagicZoom.start();
-                                    //         console.log('window.MagicZoom: ', window.MagicZoom.start);
-                                    //     } catch (error) {
-                                    //         console.log(error);
-                                    //     }
-                                    // });
-
 
                                     // Complete the Look
                                     // Funktion ist original von der Seite übernommen
@@ -180,17 +135,17 @@
                                     });
         
                                 } catch (error) {
-                                    console.log(error);
+                                    // console.log(error);
+                                    WATO.goalPush("wa_setup_monitoring");
                                 }
                             });
-
-
 
                         }
                     });
 
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
+                    WATO.goalPush("wa_setup_monitoring");
                 }
             }
         });
@@ -207,25 +162,10 @@
     window.addEventListener('resize', function(){
         var mySlider = WATO.qs(".kk_slider");
         if(mySlider){
-            console.log('sliderWidht()+"px": ', sliderHeight()+"px");
+            // console.log('sliderWidht()+"px": ', sliderHeight()+"px");
             mySlider.style.height = sliderHeight()+"px";
         }
     });
-
-
-
-
-
-    // WATO.qs("head").insertAdjacentHTML('beforeend', 
-    //         '<style>'+
-    //             '.kk_slider{'+
-    //                 'max-height: '+ (window.innerWidth * 0.444) + 'px;' +
-    //             '}'+
-    //             '.kk_slider .flickity-viewport{'+
-    //                 'min-height: '+ (window.innerWidth * 0.4149) + 'px;' +
-    //             '}'+
-    //         '</style>'
-    //     );
 
     buildHeader(false);
 
@@ -302,7 +242,8 @@
                             prodTextParent.insertAdjacentElement('beforebegin', articleNr);
                         }
                     } catch (error) {
-                        console.log(error);
+                        // console.log(error);
+                        WATO.goalPush("wa_setup_monitoring");
                     }
                 }
             });
@@ -330,13 +271,6 @@
     });
 
     WATO.goalsPdpRed();
-
-
-
-    // WATO.elem(function(){
-    //     return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
-    // }, function(){
-    // });
 
 })(new window.WATO(), window);
 
