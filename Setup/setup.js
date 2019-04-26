@@ -10,8 +10,32 @@
     	} else {
     		document.addEventListener('DOMContentLoaded', callback);
     	}
-	}
+    }
+    
+    function getCookie(name) {
+		
+		var cookies = document.cookie.split(";");
+		
+		for(var i = 0; i < cookies.length; i++){
+			
+			if(cookies[i].substr(0, cookies[i].indexOf("=")).replace(/^\s+|\s+$/g,"") === name){
+				
+				return decodeURIComponent(cookies[i].substr(cookies[i].indexOf("=") + 1));
+			}
+		}
+    }
 
+    // check for crazy user and disable iridion
+    try {
+
+        var userCookie = getCookie('iridion_user');
+
+        if(userCookie && userCookie.indexOf('1521023056101454') !== -1) {
+
+            window.document.cookie = "iridion_exclude=true; expires=Thu, 18 Dec 2022 12:00:00 UTC; domain=.hessnatur.com; path=/";
+        }
+    } catch(e){}
+    
     try {
 
         var URL = document.URL;
