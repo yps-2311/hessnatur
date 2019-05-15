@@ -19,8 +19,6 @@
     //     }
     // });
 
-
-
     // ACC.productDetail.selectColor = function(e) {
     //     console.log("productDetailselectColor");
     //     var t,
@@ -54,7 +52,7 @@
                     e.preventDefault();
                     setTimeout(function(){
                         ACC.global.scrollToElement(jQuery(".accordion.productInfoAccordion"));
-                    }, 500);
+                    }, 700);
                 });
             }
 
