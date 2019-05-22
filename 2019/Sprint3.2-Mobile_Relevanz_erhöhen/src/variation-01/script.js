@@ -11,83 +11,201 @@
 (function(WATO, window) {
     "use strict";
 
-    // WATO.elem('.off-canvas-content', function(element){
-    //     if(element){
-    //         element[0].insertAdjacentHTML('afterbegin', 
-    //             '<img style="position:absolute; top:0; left:0; z-index:2000; opacity:0.5;" src="https://dev.web-arts.de/hessnatur/2019/Sprint3.2-Mobile_Relevanz_erho%cc%88hen/img/01_eingeklappt.jpg">'
-    //         );
-    //     }
-    // });
+    // Element entfernen
+    function removeObject(el) {
+        if(el){
+            el.parentNode.removeChild(el);
+        }
+    }
 
-    // ACC.productDetail.selectColor = function(e) {
-    //     console.log("productDetailselectColor");
-    //     var t,
-    //     i = e.data('variant-data'),
-    //     n = e.find('select[name="item__color"]').val();
-    //     $.each(i.colors, function (e, i) {
-    //       if (i.colorCode === n) 
-    //         return t = i,
-    //       !1
-    //     }),
-    //     this.populateSizeData(e, t.sizes)
-    // }
-    //   ACC.productDetail.selectColor("66")
+    // Galerie erstellen
+    function buildGallery(bigPicture, markup, farbID) {
 
+        WATO.elem('.pds-cockpit__wrapper', function(mainContent){
+            if(mainContent){
+                mainContent = mainContent[0];
+
+                var mainContentWrapper = mainContent.parentNode;
+                
+                // falls die Galerie mit einer anderen Farbe schon vorhanden ist wird diese entfernt
+                removeObject(WATO.qs(".kk_slider", mainContentWrapper));
+
+                // Alle anderen Galerien der Seite werden ebenfalls entfernt da es sonst nach dem initalisieren zu fehlern kommt
+                removeObject(WATO.qs(".show-for-medium-only.column.small-12.medium-6", mainContentWrapper));
+                removeObject(WATO.qs(".pds-productImage__mzThumbsWrapper.js_magicZoomThumbWrapper", mainContentWrapper));
+                removeObject(WATO.qs(".js_magicZoomKeyVisualWrapper", mainContentWrapper));
+                removeObject(WATO.qs(".column.small-12.hide-for-medium.h-smallmediumOffset-bottom-outer.h-no-padding", mainContentWrapper));
+
+                // Markup der neuen Galerie
+                mainContent.insertAdjacentHTML('beforebegin', 
+                        '<div id="kk_slider'+farbID+'" class="h-largeOffset-bottom-outer kk_slider">'+
+                                bigPicture+
+                            '<div class="kk_sliderThumbs">'+
+                                markup+
+                            '</div>'+
+                        '</div>'
+                    );
+
+                // Außer beim initialen laden, muss die Magiczoom funktion die neue Galerie initalisieren
+                if(farbID !== 0){
+                    WATO.elem(function(){
+                        // Falls noch nicht geladen
+                        return typeof window.MagicZoom !== "undefined";
+                    }, function(){
+                        // init MagicZoom
+                        window.MagicZoom.start();
+                    });
+                }
+            }
+        });
+    }
+
+    // Informationen zur Galerie werden zusammengestellt
+    function buildGalleryWrapper(colorID) {
+
+        WATO.elem(function() {
+            if(colorID){
+                // Wenn auf der Seite die Informationen aller Produktfarben verfügbar sind
+                // können diese genutzt werden um selbst die neue Galerie zu erstellen
+                // liegen alle in indow.ACC.productDetail.galleryImages
+                return typeof window.ACC !== "undefined" && typeof window.ACC.productDetail !== "undefined" && typeof window.ACC.productDetail.galleryImages !== "undefined";
+            }else{
+                return true;
+            }
+        }, function(avalibeColorImages){
+            if(avalibeColorImages){
+
+                if(colorID){
+                    // Galerie nach Farbwechsel
+
+                    // Wird aus window.ACC.productDetail.galleryImages gebaut
+                    colorID = parseInt(colorID);
+
+                    var galleryImgs = window.ACC.productDetail.galleryImages,
+                        mainPicColor = "",
+                        markupHTMLColor = "";
+
+                    // Galerie wird mit den BilderURLs erstellt
+                    for (var j = 0; j < galleryImgs.length; j++) {
+                        var thisProduct = galleryImgs[j];
+                        if(parseInt(thisProduct.product.color) === colorID){
+
+                            var picURL = thisProduct.zoom.url,
+                                altText = thisProduct.zoom.altText,
+                                picReco = picURL.replace("_zoom/","_reco/"),
+                                picThumb = picURL.replace("_zoom/","_thumb/");
+
+                                markupHTMLColor +=   '<a data-zoom-id="zoomMedium" class="thumbnailContainer js_thumbnailContainer mz-thumb" href="'+picURL+'" data-color="'+colorID+'" data-image="'+picReco+'">'+
+                                                '<img src="'+picThumb+'" alt="'+altText+'" data-color="'+colorID+'">'+
+                                            '</a>';
+
+                            if(mainPicColor === ""){
+                                mainPicColor =   '<a class="MagicZoom" data-options="hint: always; zoomPosition: inner" id="zoomMedium" href="'+picURL+'">'+
+                                                '<img src="'+picReco+'" alt="'+altText+'">'+
+                                            '</a>';
+                            }
+                        }
+                    }
+
+                    buildGallery(mainPicColor, markupHTMLColor, colorID);
+
+                }else{
+                    // Galerie initialer Seitenaufruf
+
+                    var mainPicInitial = "",
+                        markupHTMLInitial = "";
+
+                    WATO.elem('meta[property="og:image"]', function(initPic){
+                        if(initPic){
+                
+                            // Die Galeriebilder liegen in Metadaten im Head
+                            for (var i = 0; i < initPic.length; i++) {
+
+                                var picURL = initPic[i].getAttribute("content"),
+                                    altText = WATO.qs('meta[property="twitter:title"]').getAttribute("content"),
+                                    picReco = picURL.replace("_zoom/","_reco/"),
+                                    picThumb = picURL.replace("_zoom/","_thumb/");
+
+                                    markupHTMLInitial +=   '<a data-zoom-id="zoomMedium" class="thumbnailContainer js_thumbnailContainer mz-thumb" href="'+picURL+'" data-color="" data-image="'+picReco+'">'+
+                                                    '<img src="'+picThumb+'" alt="'+altText+'" data-color="">'+
+                                                '</a>';
+
+                                if(mainPicInitial === ""){
+                                    mainPicInitial = '<a class="MagicZoom" data-options="hint: always; zoomPosition: inner" id="zoomMedium" href="'+picURL+'">'+
+                                        '<img src="'+picReco+'" alt="'+altText+'">'+
+                                    '</a>';
+                                }
+                            }
+                        }
+                    });
+                    
+                    buildGallery(mainPicInitial, markupHTMLInitial, 0);
+                }
+            }
+        });
+    }
+
+    // Farbe gewächselt
+    function changeColor(e) {
+        var thisTarget = e.target.parentNode.getAttribute("data-color");
+
+        if(!thisTarget){
+            thisTarget = e.target.parentNode.parentNode.getAttribute("data-color");
+        }
+        
+        // Ausgewählte Farbe an Galerie übergeben
+        buildGalleryWrapper(parseInt(thisTarget));
+    }
+
+    // Produkt UVPs
     WATO.elem('.h-largeOffset-bottom-outer.show-for-large', function(uvps){
         if(uvps){
             uvps = uvps[0];
 
+            // Umplatzieren
             WATO.qs(".align-justify.h-xsmallOffset-bottom-inner", uvps.parentNode).insertAdjacentElement('beforebegin', uvps);
 
+            // Jedem UVP wird der Punkt entfernt
             Array.prototype.forEach.call(WATO.qsa(".pds-cockpit__shortDescription li", uvps),function(elem){
                 elem.innerHTML = elem.innerHTML.replace("·", "").trim();
-
             });    
             
             var moreDetails = WATO.qs(".js-pds-more-details", uvps);
-
+            // Mehr details Link
             if(moreDetails){
                 moreDetails.innerHTML = "mehr Produktdetails";
+                // Scrollto animation repariert
                 moreDetails.addEventListener('click', function(e){
                     e.preventDefault();
                     setTimeout(function(){
-                        ACC.global.scrollToElement(jQuery(".accordion.productInfoAccordion"));
+                        window.ACC.global.scrollToElement(jQuery(".accordion.productInfoAccordion"));
                     }, 700);
                 });
             }
-
-            
-            
-            
         }
     });
     
+    // Merken Button über die CTA geschoben
     WATO.elem('#addToWishlistForm', function(addToWishlistForm){
         if(addToWishlistForm){
             WATO.qs("#avail_container").insertAdjacentElement('beforebegin', addToWishlistForm[0]);
         }
     });
 
+    // Zurück-Button umgetextet
     WATO.elem('.breadcrumb--back a', function(breadcrumb){
         if(breadcrumb){
             breadcrumb[0].innerHTML = "zurück zu <b>„Kategorie“</b>";
         }
     });
     
+    // Produktinfos in Akordions 
     WATO.elem('.accordion-item:first-child .accordion-title', function(productInfo){
         if(productInfo){
             productInfo = productInfo[0];
-            productInfo.insertAdjacentElement('afterend', WATO.qs(".pds-cockpit__articleNumber"));
 
-            // WATO.elem('a[href="/de/groessenberatung"]', function(masstabelleLink){
-            //     if(masstabelleLink){
-            //         var passformInfos = masstabelleLink[0].parentNode.parentNode;
-                    
-            //         passformInfos.parentNode.parentNode.parentNode.style.display = "none";
-                    
-            //         productInfo.parentNode.insertAdjacentElement('beforeend', passformInfos);
-            //     }
-            // });
+            // Reihenfolge ändern
+            productInfo.insertAdjacentElement('afterend', WATO.qs(".pds-cockpit__articleNumber"));
 
             var otherTabs = WATO.qsa(".accordion-item > a"),
                 passform = false,
@@ -95,6 +213,7 @@
                 pflege = false,
                 ausgezeichneteQuali = false;
 
+            // Verschiedenste Akordions ermitteln
             for (var i = 0; i < otherTabs.length; i++) {
                 var thisTab = otherTabs[i],
                     tabText = thisTab.textContent;
@@ -109,29 +228,36 @@
                 }
             }
 
+            // Wenn Passform vorhanden ist: Diese in Produktinfos verschieben
             if(passform){
                 productInfo.parentNode.insertAdjacentElement('beforeend', WATO.qs(".shrink + div", passform));
+                // Original Akordion ausblenden
                 passform.style.display = "none";
             }
 
-            if(ausgezeichneteQuali){
-                ausgezeichneteQuali.insertAdjacentElement('beforebegin', material);
-            }
-
             if(material){
+
+                // Material in ausgezeichnete Qualität verschieben
+                if(ausgezeichneteQuali){
+                    ausgezeichneteQuali.insertAdjacentElement('beforebegin', material);
+                }
+
                 var materialList = WATO.qs(".row > ul.no-bullet:last-child", material);
             
+                // Pflege in Materialliste verschieben
                 if(pflege){
                     materialList.insertAdjacentElement('afterend', WATO.qs("ul.no-bullet", pflege));
                     pflege.style.display = "none";
                 }
     
+                // Neue Pflege HL erstellen
                 materialList.insertAdjacentHTML('afterend', '<strong class="column small-12 h-text-uppercase kk_subline">Pflege</strong>');
     
-                
+                // Akordion Link umbenennen
                 WATO.qs("a", material).innerHTML = "Material & Pflege";
             }
 
+            // socialmedia und FAQs verschoben
             WATO.elem('.footerBenefitWrapper', function(footerUVPs){
                 if(footerUVPs && ausgezeichneteQuali){
                     var afterTheList = ausgezeichneteQuali.parentNode;
@@ -145,12 +271,19 @@
                     afterTheList.insertAdjacentElement('afterend', footerUVPs[0]);
                 }
             });
-
-            
         }
     });
     
+    // Listener auf Farben
+    WATO.elem('.pds-cockpit__colorSwitch li a', function(colorSwitch){
+        if(colorSwitch){
+            for (var j = 0; j < colorSwitch.length; j++) {
+                colorSwitch[j].addEventListener('click', changeColor);
+            }
+        }
+    });
 
-
+    // Initaile Galerie erstellen
+    buildGalleryWrapper();
 
 })(new window.WATO(), window);
