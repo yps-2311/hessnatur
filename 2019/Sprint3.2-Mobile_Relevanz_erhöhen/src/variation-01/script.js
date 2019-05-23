@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -19,7 +19,7 @@
     }
 
     // Galerie erstellen
-    function buildGallery(bigPicture, markup, farbID) {
+    function buildGallery(bigPicture, markup, farbID, imgValue) {
 
         WATO.elem('.pds-cockpit__wrapper', function(mainContent){
             if(mainContent){
@@ -45,7 +45,10 @@
                             '</div>'+
                         '</div>'
                     );
-
+                
+                if(imgValue === 1){
+                    mainContent.parentNode.classList.add("kk_onlyone");
+                }
                 // Außer beim initialen laden, muss die Magiczoom funktion die neue Galerie initalisieren
                 if(farbID !== 0){
                     WATO.elem(function(){
@@ -74,6 +77,8 @@
             }
         }, function(avalibeColorImages){
             if(avalibeColorImages){
+
+                var onlyOneImage = 0;
 
                 if(colorID){
                     // Galerie nach Farbwechsel
@@ -104,10 +109,11 @@
                                                 '<img src="'+picReco+'" alt="'+altText+'">'+
                                             '</a>';
                             }
+                            onlyOneImage++;
                         }
                     }
 
-                    buildGallery(mainPicColor, markupHTMLColor, colorID);
+                    buildGallery(mainPicColor, markupHTMLColor, colorID, onlyOneImage);
 
                 }else{
                     // Galerie initialer Seitenaufruf
@@ -136,10 +142,12 @@
                                     '</a>';
                                 }
                             }
+
+                            onlyOneImage = initPic.length;
                         }
                     });
                     
-                    buildGallery(mainPicInitial, markupHTMLInitial, 0);
+                    buildGallery(mainPicInitial, markupHTMLInitial, 0, onlyOneImage);
                 }
             }
         });
@@ -177,6 +185,9 @@
                 // Scrollto animation repariert
                 moreDetails.addEventListener('click', function(e){
                     e.preventDefault();
+
+                    WATO.goalPush("klick_produktdetails");
+
                     setTimeout(function(){
                         window.ACC.global.scrollToElement(jQuery(".accordion.productInfoAccordion"));
                     }, 700);
@@ -192,10 +203,35 @@
         }
     });
 
-    // Zurück-Button umgetextet
+    // Zurück-Button
     WATO.elem('.breadcrumb--back a', function(breadcrumb){
         if(breadcrumb){
-            breadcrumb[0].innerHTML = "zurück zu <b>„Kategorie“</b>";
+            // breadcrumb = breadcrumb[0];
+            // breadcrumb.innerHTML = 'zurück zu <b>„'+breadcrumb+'“</b>';
+            breadcrumb[0].addEventListener('click', function(){
+                WATO.goalPush("kategorie_back", true);
+            });
+        }
+    });
+
+    // Merken Button - Wishlist
+    WATO.elem('#addToWishlistButton', function(addToWishlistButton){
+        if(addToWishlistButton){
+            addToWishlistButton = addToWishlistButton[0];
+            try {
+                var siteURL = window.location.pathname.split("/p/")[1];
+
+                addToWishlistButton.addEventListener('click', function(){
+                    window.localStorage.setItem("kk_"+siteURL, true);
+                });
+
+                if(window.localStorage.getItem("kk_"+siteURL)){
+                    addToWishlistButton.classList.add("kk_gemerkt");
+                    WATO.qs(".pds-cockpit__addToWishlistButtonIconWrapper", addToWishlistButton).innerHTML = "Gemerkt";
+                }
+            } catch (error) {
+                // console.log(error);
+            }
         }
     });
     
@@ -233,13 +269,21 @@
                 productInfo.parentNode.insertAdjacentElement('beforeend', WATO.qs(".shrink + div", passform));
                 // Original Akordion ausblenden
                 passform.style.display = "none";
+
+                WATO.qs('a[href="/de/groessenberatung"]', passform).addEventListener('click', function(){
+                    WATO.goalPush("material_pflege");
+                });
             }
+
 
             if(material){
 
                 // Material in ausgezeichnete Qualität verschieben
                 if(ausgezeichneteQuali){
                     ausgezeichneteQuali.insertAdjacentElement('beforebegin', material);
+                    ausgezeichneteQuali.addEventListener('click', function(){
+                        WATO.goalPush("masstabelle");
+                    });
                 }
 
                 var materialList = WATO.qs(".row > ul.no-bullet:last-child", material);
@@ -254,7 +298,11 @@
                 materialList.insertAdjacentHTML('afterend', '<strong class="column small-12 h-text-uppercase kk_subline">Pflege</strong>');
     
                 // Akordion Link umbenennen
-                WATO.qs("a", material).innerHTML = "Material & Pflege";
+                var materialPflege = WATO.qs("a", material);
+                materialPflege.innerHTML = "Material & Pflege";
+                materialPflege.addEventListener('click', function(){
+                    WATO.goalPush("material_pflege");
+                });
             }
 
             // socialmedia und FAQs verschoben
