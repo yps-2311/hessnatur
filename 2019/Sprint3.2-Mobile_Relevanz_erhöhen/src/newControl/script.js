@@ -13,7 +13,7 @@
 
     WATO.elem('.js-pds-more-details', function(moreDetails){
         if(moreDetails){
-            moreDetails.addEventListener('click', function(){
+            moreDetails[0].addEventListener('click', function(){
                 WATO.goalPush("klick_produktdetails");
             });
         }
@@ -52,7 +52,7 @@
 
             if(passform){
                 WATO.qs('a[href="/de/groessenberatung"]', passform).addEventListener('click', function(){
-                    WATO.goalPush("material_pflege");
+                    WATO.goalPush("masstabelle");
                 });
             }
 
