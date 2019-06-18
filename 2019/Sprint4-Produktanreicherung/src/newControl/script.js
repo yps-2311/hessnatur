@@ -11,5 +11,6 @@
 (function(WATO) {
     "use strict";
 
+    WATO.goalRemoveItem();
 
 })(new window.WATO());
