@@ -7,9 +7,26 @@
 /* DEFINE VARIATION CSS */
 
 .item__form {
-    padding-bottom: 33px;
-    margin-bottom: 33px;
-    border-bottom: 1px solid #ccc;
+    padding-top: 33px;
+    margin-top: 33px;
+    // border-top: 1px solid #ccc;
+    position: relative;
+    &::before{
+        content: "";
+        width: 95%;
+        height: 1px;
+        display: block;
+        border-top: 1px solid #ccc;
+        position: absolute;
+        top: 0;
+        left: 2.5%;
+    }
+}
+.h-mediumOffset-bottom-outer.h-text-muted {
+    margin-bottom: -17px;
+    .small-12 {
+        display: none;
+    }
 }
 
 
@@ -118,10 +135,14 @@
     font-weight: normal;
     line-height: 16px;
 }
-// .kk_ctlProduct {
+.kk_ctlProduct {
+    margin-top: 0;
+    &::before {
+        display: none;
+    }
 //     border: solid 1px #ccc;
 //     // margin-left: 40px;
-// }
+}
 .kk_isInWK {
     position: relative;
     // img {
@@ -138,6 +159,7 @@
 }
 
 .kk_buttonCTL {
+    background-color: #fff;
     font-family: "Archer A","Archer B","Archer",serif;
     font-weight: 400;
     height: 50px;
