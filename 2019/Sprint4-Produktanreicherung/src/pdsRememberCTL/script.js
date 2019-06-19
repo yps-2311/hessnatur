@@ -1,5 +1,4 @@
-// (function() {
-
+(function() {
     var request = XMLHttpRequest.prototype.open;
 
     XMLHttpRequest.prototype.open = function(method, uri, async, user, pass) {
@@ -12,29 +11,37 @@
 
                 if (uri.indexOf("https://www.hessnatur.com/de/cart/add") !== -1 && respText) {
                     try {
-                        var newDiv = document.createElement("div");
+                        var newDiv = document.createElement("div"),
+                            existsLS = window.localStorage.getItem("kk_ctl");
 
                         newDiv.innerHTML = JSON.parse(respText).recommendationLayer;
 
                         var recoProducts = newDiv.querySelectorAll(".carousel-cell"),
-                            productID = document.querySelector('span[itemprop="productID"]').innerHTML,
-                            recoArray = [productID],
+                            productID = parseInt(document.querySelector('span[itemprop="productID"]').innerHTML),
+                            recoArray = [],
+                            reco = {},
                             maxLoops = recoProducts.length > 3 ? 3 : recoProducts.length;
 
                         for (var i = 0; i < maxLoops; i++) {
-                            recoArray.push(recoProducts[i].getAttribute("data-prid"));
+                            recoArray.push(parseInt(recoProducts[i].getAttribute("data-prid")));
                         }
 
-                        window.localStorage.setItem("kk_ctl_"+productID, recoArray);
+                        if(existsLS){
+                            reco = JSON.parse(existsLS);
+                        }
+                        
+                        reco[productID] = recoArray;
+
+                        window.localStorage.setItem("kk_ctl", JSON.stringify(reco));
                         
                     } catch (error) {
-                        console.log(error);
+                        // console.log(error);
                     }
                 }
             }
+
         }, false);
 
         request.call(this, method, uri, async, user, pass);
     };
-// });
-
+})();

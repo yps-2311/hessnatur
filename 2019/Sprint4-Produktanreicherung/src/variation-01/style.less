@@ -1,10 +1,11 @@
 /* IMPORT VAR LESS FILE */
-@import "../global/vars.less";
+/* @import "../global/vars.less"; */
 
 /* IMPORT GLOBAL LESS FILES */
 // @import "../global/global.less";
 
 /* DEFINE VARIATION CSS */
+
 
 .item__form {
     padding-top: 33px;
@@ -48,8 +49,6 @@ body.is-reveal-open {
     overflow: visible;
 }
 
-
-
 .kk_shopTheLook {
     background-color: #F9F8F5;
     padding: 23px 11px 23px 25px;
@@ -59,6 +58,7 @@ body.is-reveal-open {
     width: 474px;
     margin: 5px 0 15px 30px;
     position: relative;
+    min-height: 361px;
 
     &::before {
         content: "";
@@ -68,6 +68,16 @@ body.is-reveal-open {
         position: absolute;
         z-index: 100;
         top: -61px;
+    }
+    &.kk_intoBasket::after {
+        content: "";
+        background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2019/Sprint04/loading.gif") rgba(255, 255, 255, 0.6) center center no-repeat;
+        width: 474px;
+        height: 100%;
+        position: absolute;
+        z-index: 100;
+        top: 0;
+        left: 0;
     }
 
     > h3 {
