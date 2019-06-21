@@ -32,7 +32,14 @@
     }
     /* jshint ignore:end */
 
+    function addClass(thisElement, className) {
+        if(thisElement){
+            thisElement.classList.add(className);
+        }
+    }
+
     var storageCtlProducts = JSON.parse(window.localStorage.getItem("kk_ctl"));
+    console.log('storageCtlProducts: ', storageCtlProducts);
 
     // Sendet ein Request. In unserem Fall um ein Produkt in den WK zu legen
     function requestXML(URL, data, callback){
@@ -75,7 +82,8 @@
 
     // "Complete The Look"-Box
     function buildCompleteTheLook(thisProduct, allTrackedCTLProducts, appProductsFromCTLinCard) {
-        console.log('allTrackedCTLProducts: ', allTrackedCTLProducts);
+        // console.log('allTrackedCTLProducts: ', allTrackedCTLProducts);
+        // console.log('appProductsFromCTLinCard: ', appProductsFromCTLinCard);
         var thisCTL = thisProduct.nextElementSibling.nextElementSibling;
 
         // Hierbei handelt es sich um die im Localstorage gespeicherten daten welche Produkte zum CTL gehören.
@@ -104,7 +112,7 @@
 
             // Produkt ID
             var thisProductCode = allTrackedCTLProducts[j];
-            console.log('thisProductCode: ', thisProductCode);
+            // console.log('thisProductCode: ', thisProductCode);
             
             // JSON Anfrage für Produktinfos und die Position wird mit übergeben
             ajax_get("https://www.hessnatur.com/de/p/"+thisProductCode+"/json?position="+(j+1), function(data, callURL){
@@ -122,10 +130,12 @@
                         // Alle Farben des Produkts
                         for (var k = 0; k < data.colors.length; k++) {
                             var colors = data.colors[k];
+                            // console.log('colors: ', colors);
 
                             // Dropdown für Farbauswahl, inclusive Vorselectierung der richtigen Farbe
                             dropDownColor += '<option value="'+colors.colorCode+'" data-img="'+colors.articleImageUrl.replace("_list_main", "_detail_thumb")+'"'+
-                                    ' data-code="'+colors.code+'" '+(callURL.indexOf(colors.code) !== -1 ? 'selected="selected"' : "")+'>'+
+                                    ' data-code="'+colors.code+'" data-price="'+colors.formattedPrice+'" '+
+                                    (callURL.indexOf(colors.code) !== -1 ? 'selected="selected"' : "")+'>'+ // Hier wird die Vorselektierung gesetzt
                                     colors.color+' ('+colors.colorCode+')</option>';
                         }
 
@@ -170,17 +180,25 @@
 
                         // Hier kommt das grüne Häckchen wenn das Produkt schon im WK liegt
                         for (var p = 0; p < appProductsFromCTLinCard.length; p++) {
+                            // console.log('appProductsFromCTLinCard[p]: ', appProductsFromCTLinCard[p]);
+                            // console.log('data.code: ', data.code);
                             if(String(appProductsFromCTLinCard[p]).indexOf(data.code) !== -1){
-                                thisCTLProd.classList.add("kk_isInWK");
+                                // thisCTLProd.classList.add("kk_isInWK");
+                                addClass(thisCTLProd, "kk_isInWK");
                             }
                         }
 
                         // Farbe ändern
                         WATO.qs(".item__color", thisCTLProd).addEventListener('change', function(e){
-                            var thisExplicitTarget = e.target;
+                            var thisExplicitTarget = e.target,
+                                productToChangeAttr = WATO.qs('option[value="'+thisExplicitTarget.value+'"]', thisExplicitTarget);
+                            // Produktbild ändern
                             WATO.qs("img", thisExplicitTarget.parentNode.parentNode).setAttribute("src", 
-                                WATO.qs('option[value="'+thisExplicitTarget.value+'"]', thisExplicitTarget).getAttribute("data-img")
+                                productToChangeAttr.getAttribute("data-img")
                             );
+                            // Produktpreis ändern
+                            WATO.qs(".price", thisExplicitTarget.parentNode.parentNode).innerHTML = 
+                                productToChangeAttr.getAttribute("data-price");
                         });
 
                         // CTL-Infos ein- und ausklappen (unter dem Produktnamen)
@@ -193,7 +211,7 @@
                                 isOpenProduct.classList.remove("kk_show");
                             }
                             
-                            WATO.qs(".kk_moreInfos", e.target.closest(".carousel-cell")).classList.add("kk_show");
+                            addClass(WATO.qs(".kk_moreInfos", e.target.closest(".carousel-cell")), "kk_show");
 
                             WATO.goalPush("klickProductCTL");
                         });
@@ -229,7 +247,7 @@
                                 // Loading animation
                                 var shopTheLookWrapper = WATO.qs(".kk_shopTheLook:not(.kk_hide)");
                                 if(shopTheLookWrapper){
-                                    shopTheLookWrapper.classList.add("kk_intoBasket");
+                                    addClass(shopTheLookWrapper, "kk_intoBasket");
                                 }
                                 
                             });
@@ -258,106 +276,121 @@
 
     WATO.goalRemoveItem();
 
+    // console.log(1);
+
     // Alle Produkte im WK
-    WATO.elem('.js-update-entry-form', function(allProducts){
-        if(allProducts){
+    WATO.elem('.offset-price-left', function(lastRow){
+        if(lastRow){
+            var allProducts = WATO.qsa(".js-update-entry-form");
+            console.log('allProducts.length: ', allProducts.length);
+            // console.log(2);
+            try {
+                // console.log(3);
+                for (var i = 0; i < allProducts.length; i++) {
+                    var thisProduct = allProducts[i],
+                        prodID = parseInt(thisProduct.getAttribute("data-product-json-url").replace("/de/p/", "").substr(0, 5)),
+                        allTrackedCTLProducts = storageCtlProducts[prodID];
 
-            for (var i = 0; i < allProducts.length; i++) {
-                var thisProduct = allProducts[i];
+                    console.log(4);
+                    // Dieses Produkt ist das in den WK gelegte Produkt zudem die CTL Produkte angezeigt werden sollen
+                    // if(thisProduct.getAttribute("data-product-json-url").indexOf(allTrackedCTLProducts[0]) !== -1 && !thisProduct.classList.contains("kk_hasCTL")){
+                    // console.log('allTrackedCTLProducts: ', allTrackedCTLProducts);
+                    // console.log('prodID: ', prodID);
 
-                // Alle im Localstorage gemerkten CTL-Produkte
-                // for (var thisLS in window.localStorage) {
-                //     if(thisLS.indexOf("kk_ctl_") !== -1){
+                    // console.log('!thisProduct.classList.contains("kk_hasCTL"): ', !thisProduct.classList.contains("kk_hasCTL"));
+                    if(allTrackedCTLProducts && !thisProduct.classList.contains("kk_hasCTL")){
+                        // Das Produkt ist ein CTL-Haupt-Produkt (also das Ausgangsprodukt eines Sets)
+                        thisProduct.classList.add("kk_hasCTL");
+                        // console.log(5);
 
-                        // var allTrackedCTLProducts = window.localStorage.getItem(thisLS).split(",");
+                        var appProductsFromCTLinCard = [];
 
-                        
-                        var prodID = parseInt(thisProduct.getAttribute("data-product-json-url").replace("/de/p/", "").substr(0, 5)),
-                            allTrackedCTLProducts = storageCtlProducts[prodID];
+                        for (var m = 0; m < allProducts.length; m++) {
+                            for (var n = 0; n < allTrackedCTLProducts.length; n++) {
+                                
+                                // console.log('allProducts[m].getAttribute("data-product-json-url"): ', allProducts[m].getAttribute("data-product-json-url"));
+                                if(allProducts[m].getAttribute("data-product-json-url").indexOf(String(allTrackedCTLProducts[n]).substr(0,5)) !== -1){
+                                    // console.log('allProducts[m]: ', allProducts[m]);
 
-                        // Dieses Produkt ist das in den WK gelegte Produkt zudem die CTL Produkte angezeigt werden sollen
-                        // if(thisProduct.getAttribute("data-product-json-url").indexOf(allTrackedCTLProducts[0]) !== -1 && !thisProduct.classList.contains("kk_hasCTL")){
-                        if(allTrackedCTLProducts && !thisProduct.classList.contains("kk_hasCTL")){
-                            // Das Produkt ist ein CTL-Haupt-Produkt (also das Ausgangsprodukt eines Sets)
-                            thisProduct.classList.add("kk_hasCTL");
+                                    // Alle Produkte werden neu sortiert, so dass sie in den CTL Gruppen zusammen liegen
+                                    thisProduct.parentNode.insertAdjacentElement('afterend', allProducts[m].parentNode);
 
-                            var appProductsFromCTLinCard = [];
+                                    // Ein Teil eines Sets
+                                    allProducts[m].parentNode.classList.add("kk_ctlProduct");
 
-                            for (var m = 0; m < allProducts.length; m++) {
-                                for (var n = 0; n < allTrackedCTLProducts.length; n++) {
-                                    
-                                    if(allProducts[m].getAttribute("data-product-json-url").indexOf(allTrackedCTLProducts[n]) !== -1){
-                                        // console.log('allProducts[m]: ', allProducts[m]);
-
-                                        // Alle Produkte werden neu sortiert, so dass sie in den CTL Gruppen zusammen liegen
-                                        thisProduct.parentNode.insertAdjacentElement('afterend', allProducts[m].parentNode);
-
-                                        // Ein Teil eines Sets
-                                        allProducts[m].parentNode.classList.add("kk_ctlProduct");
-
-                                        // Nur die ersten 5 Nummern sind für ein Produkt relevant
-                                        appProductsFromCTLinCard.push(allTrackedCTLProducts[n]);
-                                    }
+                                    // Nur die ersten 5 Nummern sind für ein Produkt relevant
+                                    appProductsFromCTLinCard.push(allTrackedCTLProducts[n]);
                                 }
                             }
+                        }
+                        // console.log('appProductsFromCTLinCard: ', appProductsFromCTLinCard);
 
-                            // Nur Produkte mit "CTL"-Badge anzeigen die nicht selbst ein CTL Produkt sind (z.B. mit der hier neuen CTL-Funktion inzugefügt wurden)
-                            if(!thisProduct.classList.contains("kk_ctlProduct")){
-                                thisProduct.insertAdjacentHTML('afterend', 
-                                    '<div class="kk_buttonCTL" data-ctl="'+appProductsFromCTLinCard+'">Complete<br>the look</div>'+
-                                    '<div class="kk_shopTheLook kk_hide">'+
-                                        '<h3>Complete the look <span>'+(appProductsFromCTLinCard.length + 1)+'/'+allTrackedCTLProducts.length+'</span></h3>'+
-                                        '<div class="kk_pos1 kk_pos"></div>'+
-                                        '<div class="kk_pos2 kk_pos"></div>'+
-                                        '<div class="kk_pos3 kk_pos"></div>'+
-                                    '</div>'
-                                );
+                        // Nur Produkte mit "CTL"-Badge anzeigen die nicht selbst ein CTL Produkt sind (z.B. mit der hier neuen CTL-Funktion inzugefügt wurden)
+                        if(!thisProduct.classList.contains("kk_ctlProduct")){
+                            thisProduct.insertAdjacentHTML('afterend', 
+                                '<div class="kk_buttonCTL" data-ctl="'+appProductsFromCTLinCard+'">Complete<br>the look</div>'+
+                                '<div class="kk_shopTheLook kk_hide">'+
+                                    '<h3>Complete the look <span>'+(appProductsFromCTLinCard.length + 1)+'/'+(allTrackedCTLProducts.length + 1)+'</span></h3>'+
+                                    '<div class="kk_pos1 kk_pos"></div>'+
+                                    '<div class="kk_pos2 kk_pos"></div>'+
+                                    '<div class="kk_pos3 kk_pos"></div>'+
+                                '</div>'
+                            );
 
-                                if(!isOneCTLshowen){
-                                    // Das erste CTL Produkt dieses wird direkt geladen und angezeigt
+                            if(!isOneCTLshowen){
+                                // Das erste CTL Produkt dieses wird direkt geladen und angezeigt
 
-                                    isOneCTLshowen = true;
+                                isOneCTLshowen = true;
 
-                                    buildCompleteTheLook(thisProduct, allTrackedCTLProducts, appProductsFromCTLinCard);
+                                buildCompleteTheLook(thisProduct, allTrackedCTLProducts, appProductsFromCTLinCard);
 
-                                    // Eingeblendet
-                                    thisProduct.nextElementSibling.classList.add("kk_hide");
-                                    thisProduct.nextElementSibling.nextElementSibling.classList.remove("kk_hide");
-                
-                                }else{
-                                    // Ein Produkt mit einem Badge das aber nicht ausgeklappt ist
-                                    // erst beim klick auf das Badge werden die Produkte geladen
+                                // Eingeblendet
+                                thisProduct.nextElementSibling.classList.add("kk_hide");
+                                thisProduct.nextElementSibling.nextElementSibling.classList.remove("kk_hide");
+            
+                            }else{
+                                // Ein Produkt mit einem Badge das aber nicht ausgeklappt ist
+                                // erst beim klick auf das Badge werden die Produkte geladen
 
-                                    WATO.qs(".kk_buttonCTL", thisProduct.parentNode).addEventListener('click', function(e){
-                                        // Nur die CTL Produkte anfragen wenn diese hier noch nicht eingebaut sind
-                                        if(!WATO.qs(".carousel-cell", e.target.nextElementSibling)){
-                                            buildCompleteTheLook(e.target.previousElementSibling);
-                                        }
-
-                                        WATO.goalPush("klickButtonCTL");
-                                    });
-                                }
-
-                            }
-
-                            // CTL ein und ausklappen
-                            WATO.qs(".kk_buttonCTL", thisProduct.parentNode).addEventListener('click', function(e){
-                                var selectedTarget = e.target,
-                                    openCTL = WATO.qs(".kk_buttonCTL.kk_hide");
-
-                                    if(openCTL){
-                                        openCTL.classList.remove("kk_hide");
-                                        openCTL.nextElementSibling.classList.add("kk_hide");
+                                WATO.qs(".kk_buttonCTL", thisProduct.parentNode).addEventListener('click', function(e){
+                                    // Nur die CTL Produkte anfragen wenn diese hier noch nicht eingebaut sind
+                                    if(!WATO.qs(".carousel-cell", e.target.nextElementSibling)){
+                                        buildCompleteTheLook(e.target.previousElementSibling);
                                     }
 
-                                    selectedTarget.nextElementSibling.classList.remove("kk_hide");
-                                    selectedTarget.classList.add("kk_hide");
-                            });
+                                    WATO.goalPush("klickButtonCTL");
+                                });
+                            }
+
                         }
 
+                        // CTL ausklappen
+                        WATO.qs(".kk_buttonCTL", thisProduct.parentNode).addEventListener('click', function(e){
+                            var selectedTarget = e.target,
+                                openCTL = WATO.qs(".kk_buttonCTL.kk_hide");
+
+                            if(openCTL){
+                                openCTL.classList.remove("kk_hide");
+                                openCTL.nextElementSibling.classList.add("kk_hide");
+                            }
+
+                            selectedTarget.nextElementSibling.classList.remove("kk_hide");
+                            selectedTarget.classList.add("kk_hide");
+                        });
+
+                        // CTL einklappen
+                        WATO.qs(".kk_shopTheLook h3", thisProduct.parentNode).addEventListener('click', function(e){
+                            var thisTarget = e.target.parentNode;
+                            thisTarget.classList.add("kk_hide");
+                            thisTarget.previousElementSibling.classList.remove("kk_hide");
+                        });
                     }
-            //     }
-            // }
+
+                }
+                
+            } catch (error) {
+                console.log(error);
+            }
         }
     });
     
