@@ -12,27 +12,45 @@
                 if (uri.indexOf("https://www.hessnatur.com/de/cart/add") !== -1 && respText) {
                     try {
                         var newDiv = document.createElement("div"),
-                            existsLS = window.localStorage.getItem("kk_ctl");
+                            existsLS = window.localStorage.getItem("kk_ctl"),
+                            headlineCTL = document.querySelector('.ds_wrapper .ds_headline.h2').innerHTML.indexOf("Zum kompletten Outfit") !== -1;
 
-                        newDiv.innerHTML = JSON.parse(respText).recommendationLayer;
+                        if(headlineCTL){
+                            newDiv.innerHTML = JSON.parse(respText).recommendationLayer;
 
-                        var recoProducts = newDiv.querySelectorAll(".carousel-cell"),
-                            productID = parseInt(document.querySelector('span[itemprop="productID"]').innerHTML),
-                            recoArray = [],
-                            reco = {},
-                            maxLoops = recoProducts.length > 3 ? 3 : recoProducts.length;
+                            var recoProducts = newDiv.querySelectorAll(".carousel-cell"),
+                                productID = document.querySelector('span[itemprop="productID"]').innerHTML,
+                                recoArray = [],
+                                reco = {},
+                                maxLoops = recoProducts.length > 3 ? 3 : recoProducts.length,
+                                check = true;
+    
+                            for (var i = 0; i < maxLoops; i++) {
+                                recoArray.push(parseInt(recoProducts[i].getAttribute("data-prid")));
+                            }
+    
+                            // Nur wenn es das LS schon gibt
+                            if(existsLS){
+                                reco = JSON.parse(existsLS);
 
-                        for (var i = 0; i < maxLoops; i++) {
-                            recoArray.push(parseInt(recoProducts[i].getAttribute("data-prid")));
+                                // Prüfung ob dieses Produkt bereits Teil eines Sets ist, wenn ja dann wird es nicht hinzugefügt
+                                for (var key in reco) {
+                                    var thisReco = reco[key];
+                                    for (var j = 0; j < thisReco.length; j++) {
+                                        if(String(thisReco[j]).indexOf(productID.substr(0,5)) !== -1){
+                                            check = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if(check){
+                                reco[parseInt(productID)] = recoArray;
+    
+                                window.localStorage.setItem("kk_ctl", JSON.stringify(reco));
+                            }
                         }
-
-                        if(existsLS){
-                            reco = JSON.parse(existsLS);
-                        }
-                        
-                        reco[productID] = recoArray;
-
-                        window.localStorage.setItem("kk_ctl", JSON.stringify(reco));
                         
                     } catch (error) {
                         // console.log(error);

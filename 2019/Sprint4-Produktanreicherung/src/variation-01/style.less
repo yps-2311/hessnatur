@@ -22,6 +22,10 @@
         top: 0;
         left: 2.5%;
     }
+
+    form > .row:first-child {
+        max-height: 208px;
+    }
 }
 .h-mediumOffset-bottom-outer.h-text-muted {
     margin-bottom: -17px;
@@ -56,7 +60,8 @@ body.is-reveal-open {
     flex-direction: row;
     flex-wrap: wrap;
     width: 474px;
-    margin: 60px 0 15px 30px;
+    // margin: 60px 0 15px 30px;
+    margin: 70px 0 15px 10px;
     position: relative;
     min-height: 361px;
 
@@ -193,18 +198,21 @@ body.is-reveal-open {
 .kk_buttonCTL {
     background-color: #fff;
     font-family: "Archer A","Archer B","Archer",serif;
-    font-weight: 400;
+    font-weight: 600;
     height: 50px;
     border: 1px solid #B1B1B1;
     border-radius: 3px;
     font-size: 14px;
     text-align: center;
     line-height: 17px;
-    margin: -18px 0 0 38px;
-    width: 100px;
+    // margin: -18px 0 0 38px;
+    // width: 100px;
+    margin: 10px;
+    width: auto;
     padding: 6px 3px;
     text-transform: uppercase;
     cursor: pointer;
+    max-width: 142px;
 }
 
 .kk_hide {
@@ -216,18 +224,21 @@ body.is-reveal-open {
 //         margin-top: 30px;
 //     }
 // }
-@media (max-width: 1420px) and (min-width: 1060px){
-    .kk_shopTheLook {
-        margin-top: 30px;
-    }
-    .kk_buttonCTL {
-        margin: -28px 0 0 25px;
-        width: 12%;
-    }
-}
-@media (max-width: 1060px) {
-    .kk_buttonCTL {
-        margin-left: 23px;
-        width: 12%;
-    }
-}
+
+
+
+// @media (max-width: 1420px) and (min-width: 1060px){
+//     .kk_shopTheLook {
+//         margin-top: 30px;
+//     }
+//     .kk_buttonCTL {
+//         margin: -28px 0 0 25px;
+//         width: 12%;
+//     }
+// }
+// @media (max-width: 1060px) {
+//     .kk_buttonCTL {
+//         margin-left: 23px;
+//         width: 12%;
+//     }
+// }

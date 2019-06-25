@@ -273,8 +273,3 @@
     WATO.goalsPdpRed();
 
 })(new window.WATO(), window);
-
-
-
-
-
