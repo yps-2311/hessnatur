@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -306,8 +306,15 @@
                         var appProductsFromCTLinCard = [];
 
                         for (var m = 0; m < allProducts.length; m++) {
+
+                            // Die Produkte gleicher ID, also z.B. mit anderer Farbe, werden nacheinander angezeigt
+                            if(allProducts[m].getAttribute("data-product-json-url").indexOf(prodID) !== -1){
+                                // console.log('prodID: ', prodID);
+                                // console.log('allProducts[m].getAttribute("data-product-json-url"): ', allProducts[m].getAttribute("data-product-json-url"));
+                                thisProduct.parentNode.insertAdjacentElement('afterend', allProducts[m].parentNode);
+                            }
+
                             for (var n = 0; n < allTrackedCTLProducts.length; n++) {
-                                
                                 // console.log('allProducts[m].getAttribute("data-product-json-url"): ', allProducts[m].getAttribute("data-product-json-url"));
                                 // console.log('String(allTrackedCTLProducts[n]).substr(0,5): ', String(allTrackedCTLProducts[n]).substr(0,5));
                                 if(allProducts[m].getAttribute("data-product-json-url").indexOf(String(allTrackedCTLProducts[n]).substr(0,5)) !== -1){
@@ -334,10 +341,17 @@
                         // Nur Produkte mit "CTL"-Badge anzeigen die nicht selbst ein CTL Produkt sind (z.B. mit der hier neuen CTL-Funktion inzugefügt wurden)
                         if(!thisProduct.classList.contains("kk_ctlProduct")){
 
+                            var howMuchIsAvalible = appProductsFromCTLinCard.length + 1,
+                                availableFrom = allTrackedCTLProducts.length + 1;
+
+                            if(howMuchIsAvalible > availableFrom){
+                                howMuchIsAvalible = availableFrom;
+                            }
+
                             imageWrapper.insertAdjacentHTML('beforeend', 
                                 '<div class="kk_buttonCTL" data-ctl="'+appProductsFromCTLinCard+'">Complete<br>the look</div>'+
                                 '<div class="kk_shopTheLook kk_hide">'+
-                                    '<h3>Complete the look <span>'+(appProductsFromCTLinCard.length + 1)+'/'+(allTrackedCTLProducts.length + 1)+'</span></h3>'+
+                                    '<h3>Complete the look <span>'+(howMuchIsAvalible)+'/'+(availableFrom)+'</span></h3>'+
                                     '<div class="kk_pos1 kk_pos"></div>'+
                                     '<div class="kk_pos2 kk_pos"></div>'+
                                     '<div class="kk_pos3 kk_pos"></div>'+
@@ -369,8 +383,6 @@
                                     if(!WATO.qs(".carousel-cell", e.target.nextElementSibling)){
                                         buildCompleteTheLook(e.target.parentNode.nextElementSibling);
                                     }
-
-                                    WATO.goalPush("klickButtonCTL");
                                 });
                             }
 
@@ -389,6 +401,8 @@
     
                                 selectedTarget.nextElementSibling.classList.remove("kk_hide");
                                 selectedTarget.classList.add("kk_hide");
+
+                                WATO.goalPush("klickButtonCTL");
                             });
                         }
                         // CTL einklappen
