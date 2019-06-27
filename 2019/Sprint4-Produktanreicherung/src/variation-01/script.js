@@ -39,7 +39,7 @@
     }
 
     var storageCtlProducts = JSON.parse(window.localStorage.getItem("kk_ctl"));
-    console.log('storageCtlProducts: ', storageCtlProducts);
+    // console.log('storageCtlProducts: ', storageCtlProducts);
 
     // Sendet ein Request. In unserem Fall um ein Produkt in den WK zu legen
     function requestXML(URL, data, callback){
@@ -261,11 +261,14 @@
                         });
                         
                     } catch (error) {
-                        console.log(error);
+                        // console.log(error);
+
+                        WATO.goalPush("catchMonitoring");
                     } 
                 }else{
                     // Send Error goal
 
+                    WATO.goalPush("catchMonitoring");
                 }
             });
         }
@@ -416,7 +419,8 @@
                 }
                 
             } catch (error) {
-                console.log(error);
+                // console.log(error);
+                WATO.goalPush("catchMonitoring");
             }
         }
     });
