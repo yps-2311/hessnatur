@@ -279,6 +279,17 @@
 
     // Umbau auf JSON in einem LS
 
+    if(window.location.href.indexOf("hessnatur.com/de/cart") !== -1){
+        // Is Warenkorb seite
+        WATO.elem('.off-canvas-content', function(element){
+            if(element){
+                console.log('element: ', element);
+                addClass(element[0], "kk_warenkorbseite");
+            }
+        });
+        
+    }
+
     WATO.exclude(1023, function () {
         location.href=location.href.split('#')[0];
         location.reload();
