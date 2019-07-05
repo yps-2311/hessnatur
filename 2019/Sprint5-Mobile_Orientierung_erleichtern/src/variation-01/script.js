@@ -41,7 +41,7 @@
             var originalBreadcrumb = breadcrumbs[0],
                 allBreadcrumbLi = WATO.qsa("li", originalBreadcrumb);
 
-            // Der erste Menüpunkt wird entfernt
+            // Der erste Menüpunkt wird entfernt (in dem Fall Startseite)
             if(allBreadcrumbLi.length >= 3) {
                 removeObject(allBreadcrumbLi[0]);
             }
@@ -95,6 +95,8 @@
                             // console.log('newFilterbar: ', newFilterbar);
     
                             if(submenu && newFilterbar){
+                                /*jshint loopfunc: true */
+
                                 // Die geklonten Untermenüpunkte werden in den Slider eingebaut
                                 for (var i = 0; i < submenu.length; i++) {
                                     newFilterbar.insertAdjacentElement('beforeend', submenu[i].cloneNode(true));
@@ -112,8 +114,10 @@
                                             WATO.qs('#offCanvasNavPrgRedirectionForm [value="'+WATO.qs("input", e.target.parentNode).value+'"]').click();
                                         });
                                     }
-                                    
                                 }
+                            }else{
+                                // ErrorGoal
+                                
                             }
                         }
                     });
