@@ -57,7 +57,11 @@
     WATO.elem('#tabFilter-label strong', function(filter){
         if(filter){
             filter = filter[0];
-            filter.innerHTML = filter.innerHTML.replace("(","<span>").replace(")","</span>");
+
+            var filterInnerHTML = filter.innerHTML,
+            filterCount0 = filter.innerHTML.indexOf('(0)') !== -1;
+
+            filter.innerHTML = filterInnerHTML.replace("(","<span "+((filterCount0) ? 'style="display:none;"' : '' )+">").replace(")","</span>");
         }
     });
 
@@ -123,6 +127,12 @@
                     });
                 }
             });
+        }
+    });
+
+    WATO.elem('a[data-toggle="drop_pane_FFassortment"]', function(sortimentFilter){
+        if(sortimentFilter) {
+            sortimentFilter[0].parentNode.style.display = 'none';
         }
     });
 
