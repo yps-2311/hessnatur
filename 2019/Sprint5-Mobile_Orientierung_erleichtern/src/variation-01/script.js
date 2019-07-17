@@ -107,6 +107,9 @@
                                 }
             
                                 var allNewFilters = WATO.qsa("label", newFilterbar);
+
+                                console.log(allNewFilters);
+
                                 for (var j = 0; j < allNewFilters.length; j++) {
                                     var thisLabel = allNewFilters[j];
     
