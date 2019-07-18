@@ -49,7 +49,9 @@
             // Der Link der aktiven Kategorie soll nicht klickbar sein (zweite Zeile in fett)
             WATO.qs("a", allBreadcrumbLi[allBreadcrumbLi.length-1]).removeAttribute("href");
 
-            WATO.qs(".gridviewProductFilterMobileWrapper .breadcrumb--back").insertAdjacentHTML('afterend', originalBreadcrumb.innerHTML);
+            WATO.elem(".gridviewProductFilterMobileWrapper .breadcrumb--back", function(el){
+                el[0].insertAdjacentHTML('afterend', originalBreadcrumb.innerHTML);
+            });
         }
     });
 
@@ -83,9 +85,6 @@
                     // var submenuQuery = ".is-submenu-item:not(.h-text-decoration-none-hover):not(.h-text-uppercase):not(.is-drilldown-submenu-parent)";
 
                     WATO.elem(function(){
-
-                        // return WATO.qsa(submenuQuery, activeMenue[activeMenue.length-1]).length > 0;
-
                         // Warten bis untermenüpunkte vorhanden sind
                         return getLastChildrens(activeMenue).length > 0;
                     }, function(element){
@@ -103,33 +102,65 @@
 
                                 // Die geklonten Untermenüpunkte werden in den Slider eingebaut
                                 for (var i = 0; i < submenu.length; i++) {
-                                    newFilterbar.insertAdjacentElement('beforeend', submenu[i].cloneNode(true));
+                                    var sub = submenu[i],
+                                    sub_new = sub.cloneNode(true);
+
+                                    sub.setAttribute('data-kkindex', i);
+                                    sub_new.setAttribute('data-kkindex', i);
+                                    sub_new.classList.add('kkindex');
+
+                                    newFilterbar.insertAdjacentElement('beforeend', sub_new);
                                 }
             
-                                var allNewFilters = WATO.qsa("label", newFilterbar);
+                                // var allNewFilters = WATO.qsa("label", newFilterbar),
+                                // allNewFiltersCount = allNewFilters.length;
 
-                                console.log(allNewFilters);
+                                // console.log(allNewFilters);
 
-                                for (var j = 0; j < allNewFilters.length; j++) {
-                                    var thisLabel = allNewFilters[j];
-    
-                                    // Wenn man in der untersten Herachie des Menüs angelangt ist wird die aktuelle Kategorie nicht verlinkt
-                                    // removeObject(WATO.qs("span.h-text-bold", allNewFilters[j]).parentNode.parentNode);
-                                    if(!WATO.qs("span.h-text-bold", thisLabel)){
-                                        // Die Untermenüpunkte werden verlinkt, hierbei wird auf den Originallink im Menü geklickt
-                                        thisLabel.addEventListener('click', function(e){
-                                            WATO.qs('#offCanvasNavPrgRedirectionForm [value="'+WATO.qs("input", e.target.parentNode).value+'"]').click();
-                                        });
-                                    }
+                                // if(allNewFiltersCount > 0) {
+                                //     for (var j = 0; j < allNewFiltersCount; j++) {
+                                //         var thisLabel = allNewFilters[j];
+        
+                                //         // Wenn man in der untersten Herachie des Menüs angelangt ist wird die aktuelle Kategorie nicht verlinkt
+                                //         // removeObject(WATO.qs("span.h-text-bold", allNewFilters[j]).parentNode.parentNode);
+                                //         if(!WATO.qs("span.h-text-bold", thisLabel)){
+                                //             // Die Untermenüpunkte werden verlinkt, hierbei wird auf den Originallink im Menü geklickt
+                                //             thisLabel.addEventListener('click', function(e){
+                                //                 WATO.qs('#offCanvasNavPrgRedirectionForm [value="'+WATO.qs("input", e.target.parentNode).value+'"]').click();
+                                //             });
+                                //         }
+                                //     }
+                                // }
+                                // else {
+                                var allkkindex = WATO.qsa(".kkindex", newFilterbar),
+                                allkkindexCount = allkkindex.length;
+
+                                for (var kki = 0; kki < allkkindexCount; kki++) {
+                                    allkkindex[kki].addEventListener('click', function(){
+                                        var kkindex = this.getAttribute('data-kkindex');
+
+                                        WATO.qs('li:not(.kkindex)[data-kkindex="'+kkindex+'"] label').click();
+                                    });
                                 }
+                                // }
+
                             }else{
                                 // ErrorGoal
-                                
+                                alert('polling timeout 4');
                             }
+                        }
+                        else {
+                            alert('polling timeout 3');
                         }
                     });
                 }
+                else {
+                    alert('polling timeout 2');
+                }
             });
+        }
+        else {
+            alert('polling timeout');
         }
     });
 
