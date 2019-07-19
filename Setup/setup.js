@@ -1,3 +1,4 @@
+/*jshint loopfunc: true */
 (function(window){
 
     function goalPush(key){
@@ -74,6 +75,18 @@
 
             // Kategorie
             goalPush('page_cat');
+
+            docReady(function(){
+                try {
+                    if(document.querySelector('#tabFilter-label strong').innerHTML.indexOf('(0)') === -1) {
+                        goalPush('filter_genutzt');
+                    }
+                }
+                catch(e) {
+                    goalPush('error_setup');
+                }
+            });
+
         }else if(URL.indexOf("/de/cart") !== -1){
 
             // Warenkorb
@@ -188,6 +201,25 @@
             window.document.cookie = "kk_newsletter=true; expires=Thu, 18 Dec 2022 12:00:00 UTC; path=/";
         }
 
+        docReady(function(){
+            try {
+                var breadcrumbs = document.querySelectorAll('.breadcrumbs *'),
+                breadcrumbsCount = breadcrumbs.length;
+
+                for(var b=0; b < breadcrumbsCount; b++) {
+                    breadcrumbs[b].addEventListener('click', function(){
+                        goalPush('s5_setup');
+                    });
+                }
+
+                document.querySelector('a[data-toggle="offCanvasLeft"]').addEventListener('click', function(){
+                    goalPush('burgermenu');
+                });
+            }
+            catch(e) {
+                goalPush('error_setup');
+            }
+        });
     } catch (error) {
         // console.log(error);
         goalPush('error_setup');

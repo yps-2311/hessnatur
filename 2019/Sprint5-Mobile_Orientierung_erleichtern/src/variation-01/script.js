@@ -11,6 +11,10 @@
 (function(WATO) {
     "use strict";
 
+    function pushGoal(key) {
+        window.iridion.push(['goal', 's5_' + key]);
+    }
+
     // Element entfernen
     function removeObject(el) {
         if(el){
@@ -109,57 +113,43 @@
                                     sub_new.setAttribute('data-kkindex', i);
                                     sub_new.classList.add('kkindex');
 
-                                    newFilterbar.insertAdjacentElement('beforeend', sub_new);
-                                }
-            
-                                // var allNewFilters = WATO.qsa("label", newFilterbar),
-                                // allNewFiltersCount = allNewFilters.length;
+                                    sub_new.onclick = function(){};
 
-                                // console.log(allNewFilters);
+                                    sub_new.addEventListener('click', function(){
+                                        pushGoal('s5_subentry');
 
-                                // if(allNewFiltersCount > 0) {
-                                //     for (var j = 0; j < allNewFiltersCount; j++) {
-                                //         var thisLabel = allNewFilters[j];
-        
-                                //         // Wenn man in der untersten Herachie des Menüs angelangt ist wird die aktuelle Kategorie nicht verlinkt
-                                //         // removeObject(WATO.qs("span.h-text-bold", allNewFilters[j]).parentNode.parentNode);
-                                //         if(!WATO.qs("span.h-text-bold", thisLabel)){
-                                //             // Die Untermenüpunkte werden verlinkt, hierbei wird auf den Originallink im Menü geklickt
-                                //             thisLabel.addEventListener('click', function(e){
-                                //                 WATO.qs('#offCanvasNavPrgRedirectionForm [value="'+WATO.qs("input", e.target.parentNode).value+'"]').click();
-                                //             });
-                                //         }
-                                //     }
-                                // }
-                                // else {
-                                var allkkindex = WATO.qsa(".kkindex", newFilterbar),
-                                allkkindexCount = allkkindex.length;
-
-                                for (var kki = 0; kki < allkkindexCount; kki++) {
-                                    allkkindex[kki].addEventListener('click', function(){
                                         var kkindex = this.getAttribute('data-kkindex');
+
+                                        console.log(this);
+                                        console.log(this.getAttribute('data-kkindex'));
+                                        console.log('li:not(.kkindex)[data-kkindex="'+kkindex+'"] label');
+                                        console.log(WATO.qs('li:not(.kkindex)[data-kkindex="'+kkindex+'"] label'));
 
                                         WATO.qs('li:not(.kkindex)[data-kkindex="'+kkindex+'"] label').click();
                                     });
-                                }
-                                // }
 
+                                    newFilterbar.insertAdjacentElement('beforeend', sub_new);
+                                }
                             }else{
                                 // ErrorGoal
+                                pushGoal('s5_setup');
                                 alert('polling timeout 4');
                             }
                         }
                         else {
+                            pushGoal('s5_setup');
                             alert('polling timeout 3');
                         }
                     });
                 }
                 else {
+                    pushGoal('s5_setup');
                     alert('polling timeout 2');
                 }
             });
         }
         else {
+            pushGoal('s5_setup');
             alert('polling timeout');
         }
     });
