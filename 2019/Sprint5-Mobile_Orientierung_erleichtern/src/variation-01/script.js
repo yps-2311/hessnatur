@@ -120,10 +120,10 @@
 
                                         var kkindex = this.getAttribute('data-kkindex');
 
-                                        console.log(this);
-                                        console.log(this.getAttribute('data-kkindex'));
-                                        console.log('li:not(.kkindex)[data-kkindex="'+kkindex+'"] label');
-                                        console.log(WATO.qs('li:not(.kkindex)[data-kkindex="'+kkindex+'"] label'));
+                                        // console.log(this);
+                                        // console.log(this.getAttribute('data-kkindex'));
+                                        // console.log('li:not(.kkindex)[data-kkindex="'+kkindex+'"] label');
+                                        // console.log(WATO.qs('li:not(.kkindex)[data-kkindex="'+kkindex+'"] label'));
 
                                         WATO.qs('li:not(.kkindex)[data-kkindex="'+kkindex+'"] label').click();
                                     });
@@ -133,24 +133,24 @@
                             }else{
                                 // ErrorGoal
                                 pushGoal('s5_setup');
-                                alert('polling timeout 4');
+                                // alert('polling timeout 4');
                             }
                         }
                         else {
                             pushGoal('s5_setup');
-                            alert('polling timeout 3');
+                            // alert('polling timeout 3');
                         }
                     });
                 }
                 else {
                     pushGoal('s5_setup');
-                    alert('polling timeout 2');
+                    // alert('polling timeout 2');
                 }
             });
         }
         else {
             pushGoal('s5_setup');
-            alert('polling timeout');
+            // alert('polling timeout');
         }
     });
 

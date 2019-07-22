@@ -78,9 +78,19 @@
 
             docReady(function(){
                 try {
-                    if(document.querySelector('#tabFilter-label strong').innerHTML.indexOf('(0)') === -1) {
+                    var _filterLabel = document.querySelector('#tabFilter-label strong').innerHTML;
+                    if(_filterLabel.indexOf('(0)') === -1 && _filterLabel.indexOf('>0<') === -1) {
                         goalPush('filter_genutzt');
                     }
+                }
+                catch(e) {
+                    goalPush('error_setup');
+                }
+
+                try {
+                    document.querySelector('#tabSort-label').addEventListener('click', function(){
+                        goalPush('cat_click_sort');
+                    });
                 }
                 catch(e) {
                     goalPush('error_setup');
@@ -208,7 +218,7 @@
 
                 for(var b=0; b < breadcrumbsCount; b++) {
                     breadcrumbs[b].addEventListener('click', function(){
-                        goalPush('s5_setup');
+                        goalPush('breadcrumb');
                     });
                 }
 
