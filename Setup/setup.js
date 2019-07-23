@@ -78,10 +78,14 @@
 
             docReady(function(){
                 try {
-                    var _filterLabel = document.querySelector('#tabFilter-label strong').innerHTML;
+                    var _filterTab = document.querySelector('#tabFilter-label'),
+                    _filterLabel = _filterTab.querySelector('strong').innerHTML;
                     if(_filterLabel.indexOf('(0)') === -1 && _filterLabel.indexOf('>0<') === -1) {
                         goalPush('filter_genutzt');
                     }
+                    _filterTab.addEventListener('click', function(){
+                        goalPush('filter_click');
+                    });
                 }
                 catch(e) {
                     goalPush('error_setup');

@@ -116,7 +116,7 @@
                                     sub_new.onclick = function(){};
 
                                     sub_new.addEventListener('click', function(){
-                                        pushGoal('s5_subentry');
+                                        pushGoal('subentry');
 
                                         var kkindex = this.getAttribute('data-kkindex');
 
@@ -132,24 +132,24 @@
                                 }
                             }else{
                                 // ErrorGoal
-                                pushGoal('s5_setup');
+                                pushGoal('setup');
                                 // alert('polling timeout 4');
                             }
                         }
                         else {
-                            pushGoal('s5_setup');
+                            pushGoal('setup');
                             // alert('polling timeout 3');
                         }
                     });
                 }
                 else {
-                    pushGoal('s5_setup');
+                    pushGoal('setup');
                     // alert('polling timeout 2');
                 }
             });
         }
         else {
-            pushGoal('s5_setup');
+            pushGoal('setup');
             // alert('polling timeout');
         }
     });
