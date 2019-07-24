@@ -226,9 +226,12 @@
                     });
                 }
 
-                document.querySelector('a[data-toggle="offCanvasLeft"]').addEventListener('click', function(){
-                    goalPush('burgermenu');
-                });
+                var burgerMenuToggle = document.querySelector('a[data-toggle="offCanvasLeft"]');
+                if(burgerMenuToggle) {
+                    document.querySelector('a[data-toggle="offCanvasLeft"]').addEventListener('click', function(){
+                        goalPush('burgermenu');
+                    });
+                }
             }
             catch(e) {
                 goalPush('error_setup');
