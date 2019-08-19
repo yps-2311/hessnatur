@@ -7,105 +7,122 @@
 /* DEFINE VARIATION CSS */
 
 #kk_searchToggle {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    position: absolute;
-    top: 60px;
-    left: 20px;
-}
-
-.meta-navigation .badge--hollow {
     display: none;
-    background: #bbb;
-    border-radius: 20px;
-    font-size: 9px;
-    line-height: normal;
-    padding: 1px 4px;
-    position: absolute;
-    left: 9px;
-    bottom: 0px;
-    color: #fff;
-    border: 2px solid #fff;
 }
 
+@media (min-width: 1024px) {
 
-.headerWrapper {
-    margin-top: 35px;
-    margin-bottom: 60px;
-}
+    #kk_searchToggle {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        position: absolute;
+        top: 60px;
+        left: 20px;
+        display: block;
+    }
 
-#header {
-    margin-top: 0;
+    .meta-navigation .badge--hollow {
+        display: none;
+        background: #bbb;
+        border-radius: 20px;
+        font-size: 10px;
+        line-height: 11px;
+        padding: 1px 4px;
+        position: absolute;
+        left: 9px;
+        bottom: 0px;
+        color: #fff;
+        border: 2px solid #fff;
+    }
 
-    &:before {
-        content: "FAIR FASHION seit 1976";
+
+    .headerWrapper {
+        margin-top: 35px;
+        margin-bottom: 60px;
+    }
+
+    #header {
+        margin-top: 0;
+
+        &:before {
+            content: "FAIR FASHION seit 1976";
+            position: absolute;
+            top: -35px;
+            height: 34px;
+            font-family: Archer A,Archer B,Archer,serif;
+            font-size: 1.23077rem;
+            background-color: #f7f6f5;
+            border: none;
+            box-shadow: 0 0 0 .07692rem rgba(0,0,0,.07);
+            width: 100%;
+            padding-left: 2.30769rem;
+            padding-top: 8px;
+        }
+    }
+
+    .marketingBarWrapper {
         position: absolute;
         top: -35px;
-        height: 34px;
-        font-family: Archer A,Archer B,Archer,serif;
-        font-size: 1.23077rem;
-        background-color: #f7f6f5;
-        border: none;
-        box-shadow: 0 0 0 .07692rem rgba(0,0,0,.07);
-        width: 100%;
-        padding-left: 2.30769rem;
-        padding-top: 8px;
+
+        .marketingBar {
+            height: 34px;
+        }
     }
-}
 
-.marketingBarWrapper {
-    position: absolute;
-    top: -35px;
-
-    .marketingBar {
-        height: 34px;
-    }
-}
-
-#mainNavPrgRedirectionForm {
-    height: 60px;
-    position: absolute;
-    bottom: -60px;
-    left: 0;
-    width: 100%;
-    display: flex;
-    border-top: 2px solid #f7f6f5;
-    border-bottom: 2px solid #f7f6f5;
-
-    ul {
-        justify-content: center;
-    }
-}
-
-#search_form {
-    position: absolute;
-    left: -800px;
-    top: 54px;
-    transition: left 0.5s;
-}
-
-#suggest_layer {
-    left: 30px;
-    top: 88px;
-}
-
-ul.meta-navigation.show-for-large {
-    > li:nth-child(1),
-    > li:nth-child(2),
-    > li:nth-child(3) {
+    #mainNavPrgRedirectionForm {
+        height: 60px;
         position: absolute;
-        top: -31px;
-        z-index: 100;
-        right: 32px;
-        margin: 0;
+        bottom: -60px;
+        left: 0;
+        width: 100%;
+        display: flex;
+        border-top: 2px solid #f7f6f5;
+        border-bottom: 2px solid #f7f6f5;
+
+        ul {
+            justify-content: center;
+        }
     }
 
-    > li:nth-child(1) {
-        right: 120px;
+    #search_form {
+        position: absolute;
+        left: -800px;
+        top: 54px;
+        transition: left 0.5s;
+        min-width: 240px;
+
+        > .row {
+            margin-left: 0;
+        }
     }
 
-    > li:nth-child(2) {
-        right: 216px;
+    #suggest_layer {
+        left: 30px;
+        top: 88px;
+    }
+
+    ul.meta-navigation.show-for-large {
+        > li:nth-child(1),
+        > li:nth-child(2),
+        > li:nth-child(3) {
+            position: absolute;
+            top: -31px;
+            z-index: 100;
+            right: 32px;
+            margin: 0;
+        }
+
+        > li:nth-child(1) {
+            right: 216px;
+        }
+
+        > li:nth-child(2) {
+            right: 120px;
+        }
+    }
+
+    li .thirdLevelWrapper {
+        margin-top: 15px;
     }
 }

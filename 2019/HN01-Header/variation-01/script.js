@@ -19,7 +19,7 @@
         for(var b = 0; b < _badgeCount; b++) {
             var thisBadge = _badges[b],
             _displayTxt = 'block';
-
+            
             if(thisBadge.textContent === '0') {
                 _displayTxt = 'none';
             }
@@ -29,17 +29,15 @@
 
     // set navi in fullsize under logo
     WATO.elem('#header', function(header){
-        console.log('header');
         if(header) {
             WATO.elem('#search_form', function(_search) {
-                console.log('search');
                 if(_search) {
                     _search = _search[0];
                     _search.insertAdjacentHTML('afterend', '<div id="kk_searchToggle" class="search"></div>');
         
                     WATO.qs('#kk_searchToggle').addEventListener('click', function(){
                         this.style.display = 'none';
-                        _search.style.left='60px';
+                        _search.style.left='30px';
                     });
                 }
             });
@@ -51,6 +49,12 @@
         }
     });
 
-    WATO.ready(checkIcons);
+    var badgeChecker = setInterval(function(){
+        checkIcons();
+    }, 42);
+
+    setTimeout(function(){
+        clearInterval(badgeChecker);
+    }, 10000);
 
 })(new window.WATO());
