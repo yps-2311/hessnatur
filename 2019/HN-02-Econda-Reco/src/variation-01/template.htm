@@ -1,0 +1,18 @@
+<% columns = 5; i = 0; ip = 0; attributes = {'brand': '', 'arcticleno': 'Art.No.:'}; %>
+Recommendations
+<% for (ip = 0; ip < products.length; ip++) { if (i == 0) { %>
+
+    <% } %>
+    <%= products[ip].name %>
+    <%= products[ip].name %>
+    <% if(products[ip].oldprice) { %>
+    <%= products[ip].price %>
+    <%= products[ip].oldprice %>
+    <% } else { %>
+    <%= products[ip].price %>
+    <% } %> <% for (attr in attributes) { if (products[ip][attr]) { %>
+    <%= attributes[attr] %> <%= products[ip][attr] %>
+    <% }} %>
+    <% i++; if (i == columns) {i= 0 %> 
+
+<% }} %>
