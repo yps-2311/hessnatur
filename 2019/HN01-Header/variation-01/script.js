@@ -57,4 +57,13 @@
         clearInterval(badgeChecker);
     }, 10000);
 
+    WATO.elem('#mainNavPrgRedirectionForm li[aria-label="Outdoor"]', function(outdoorDesktop){
+        if(outdoorDesktop) {
+            outdoorDesktop[0].addEventListener('click', function(){
+                // console.log('outdoor!');
+                window.iridion.push(['goal', 'mainNavi_outdoor', '', true]);
+            });
+        }
+    });
+
 })(new window.WATO());
