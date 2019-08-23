@@ -252,7 +252,7 @@
      * @param {function} callback -
      */
     
-    window.WATO.prototype.ajax = function(url, callback) {
+    window.WATO.prototype.ajaxCallback = function(url, callback) {
 
         var request = XMLHttpRequest.prototype.open;
 
@@ -260,10 +260,13 @@
 
             this.addEventListener("loadend", function() {
 
+                // console.log('this: ', this);
+
                 if (this.readyState === 4) {
 
                     if (uri.indexOf(url) !== -1) {
                         
+                        // console.log('this.responseText: ', this.responseText);
                         callback(this.responseText);
                     }
                 }

@@ -22,7 +22,10 @@
         }
     }
 
-    console.log("Reco");
+    WATO.exclude(1023, function(){
+        window.location.reload();
+        window.location.href=location.href.split('#')[0];
+    });
 
     var pageID = 90,
         pageURL = document.location.pathname,
@@ -44,31 +47,44 @@
             '</div>';
 
     function createNewReco() {
+
         var thisReco = WATO.qs(".kk_reco");
 
-            WATO.ajax("https://widgets.crosssell.info/eps/crosssell/recommendations/", function(responseContent) {
-                // console.log('responseContent: ', responseContent);
-                try {
+        WATO.ajaxCallback("https://widgets.crosssell.info/eps/crosssell/recommendations/", function(responseContent) {
+
+            try {
+                if(responseContent && responseContent.length > 0){
+
                     var recoJSON = JSON.parse(responseContent);
+                    console.log('recoJSON: ', recoJSON);
 
                     if(recoJSON.widgetdetails.tracking.emcs1.indexOf(pageID) !== -1){
 
                         var recoProducts = recoJSON.items,
                             htmlMarkup = "";
-    
+
                         for (var i = 0; i < recoProducts.length; i++) {
-                            var thisProduct = recoProducts[i];
-    
+                            var thisProduct = recoProducts[i],
+                                streichPreis = thisProduct.oldprice;
+
                             htmlMarkup += 
                                 '<div class="productitem text-center small-8 medium-5 large-3 columns">'+
                                     '<a href="'+thisProduct.deeplink+'" class="item__image">'+
                                         '<img src="'+thisProduct.iconurl.replace("_large/","_medium/")+'">'+
                                         '<div class="item__desc h-smallOffset-top-outer">'+
                                             '<h4 class="desc-name">'+thisProduct.name+'</h4>'+
+
                                             '<div class="desc-price">'+
-                                                '<span class="price full hide">undefined</span>&nbsp;&nbsp;<span class="price special hide">'+thisProduct.price+'</span>'+
-                                                '<span class="price show">'+thisProduct.price+'</span>'+
+                                                '<span class="price full '+(!streichPreis ? "hide":"show")+'">'+streichPreis+'</span>&nbsp;&nbsp;<span class="price special '+(!streichPreis ? "hide":"show")+'">'+thisProduct.price+'</span>'+
+                                                '<span class="price '+(streichPreis ? "hide":"show")+'">'+thisProduct.price+'</span>'+
                                             '</div>'+
+
+                                            // Streichpreis Markup
+                                            // '<div class="desc-price">'+
+                                            //     '<span class="price full show">24,95 €</span>&nbsp;&nbsp;<span class="price special show">11,95 €</span>'+
+                                            //     '<span class="price hide">11,95 €</span>'+
+                                            // '</div>'+
+
                                         '</div>'+
                                     '</a>'+
                                 '</div>';
@@ -90,9 +106,9 @@
                                     draggable: true,
                                     wrapAround: true,
                                     pageDots: false,
-                                    groupCells: true,
+                                    // groupCells: true,
                                     groupCells: 4
-                                }
+                                };
 
                                 // Init Slider
                                 var theSlider = jQuery('.kk_reco');
@@ -116,20 +132,22 @@
                         });
                     }
 
-                } catch (error) {
-                    console.log('Error: ', error);
                 }
-            });
 
-            var widget = new econda.recengine.Widget({
-                element: thisReco,
-                accountId: '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1',
-                id: pageID,
-                context: {
-                    products: [{ id: 'prodId1' }, { id: 'prodId2' }]
-                }
-            });
-            widget.render();
+            } catch (error) {
+                console.log('Error: ', error);
+            }
+        });
+
+        var widget = new window.econda.recengine.Widget({
+            // element: thisReco,
+            accountId: '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1',
+            id: pageID,
+            context: {
+                products: [{ id: 'prodId1' }, { id: 'prodId2' }]
+            }
+        });
+        widget.render();
     }
 
     if(pageURL.indexOf("/p/") !== -1){
