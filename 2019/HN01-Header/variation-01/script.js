@@ -66,4 +66,28 @@
         }
     });
 
+    if(location.pathname === '/de/outdoor') {
+        WATO.elem('#mainNavPrgRedirectionForm li[aria-label="Damen"] > .h-text-bold', function(damen){
+            if(damen) {
+                damen[0].classList.remove('h-text-bold');
+            }
+        });
+        WATO.elem('#mainNavPrgRedirectionForm li[aria-label="Damen"] .secondLevel .h-text-bold', function(secondLevel){
+            if(secondLevel) {
+                secondLevel[0].classList.remove('h-text-bold');
+            }
+        });
+        WATO.elem('#mainNavPrgRedirectionForm li[aria-label="Damen"] .thirdLevel .h-text-bold', function(thirdLevel){
+            if(thirdLevel) {
+                thirdLevel[0].classList.remove('h-text-bold');
+            }
+        });
+
+        WATO.elem('#mainNavPrgRedirectionForm [aria-label="Outdoor"] > a', function(outdoor){
+            if(outdoor) {
+                outdoor[0].classList.add('h-text-bold');
+            }
+        });
+    }
+
 })(new window.WATO());
