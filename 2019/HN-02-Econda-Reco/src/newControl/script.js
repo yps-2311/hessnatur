@@ -36,4 +36,16 @@
         });
     }
 
+    WATO.elem(function(){
+        return typeof jQuery !== "undefined";
+    }, function(element){
+        if(element){
+            jQuery('.kk_reco a').click(function(){
+                console.log("klick_recoProduct");
+                window.iridion.push(['goal', 'klick_recoProduct', '', true]);
+            });
+        }
+    });
+    
+
 })(new window.WATO());

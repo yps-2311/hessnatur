@@ -119,6 +119,12 @@
                                         console.log("interval");
                                         clearInterval(interval);
                                         theSlider.flickity('resize');
+
+                                        jQuery('.kk_reco a').click(function(){
+                                            console.log("klick_recoProduct");
+                                            // klick_recoProduct
+                                            window.iridion.push(['goal', 'klick_recoProduct', '', true]);
+                                        });
                                     }
                                 }, 100);
                                 setTimeout(function(){
