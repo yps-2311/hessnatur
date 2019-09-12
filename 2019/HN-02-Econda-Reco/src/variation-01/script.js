@@ -115,10 +115,11 @@
                                 theSlider.flickity(sliderOptions);
 
                                 var interval = setInterval(function(){
-                                    if(jQuery('.kk_reco .productitem:first-child').height() > 70){
+                                    console.log("height", jQuery('.kk_reco .productitem:first-child').height());
+                                    theSlider.flickity('resize');
+                                    if(jQuery('.kk_reco .productitem:first-child').height() > 80){
                                         console.log("interval");
                                         clearInterval(interval);
-                                        theSlider.flickity('resize');
 
                                         jQuery('.kk_reco a').click(function(){
                                             console.log("klick_recoProduct");
