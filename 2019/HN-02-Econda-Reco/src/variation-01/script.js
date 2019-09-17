@@ -115,15 +115,11 @@
                                 theSlider.flickity(sliderOptions);
 
                                 var interval = setInterval(function(){
-                                    console.log("height", jQuery('.kk_reco .productitem:first-child').height());
                                     theSlider.flickity('resize');
                                     if(jQuery('.kk_reco .productitem:first-child').height() > 80){
-                                        console.log("interval");
                                         clearInterval(interval);
 
                                         jQuery('.kk_reco a').click(function(){
-                                            console.log("klick_recoProduct");
-                                            // klick_recoProduct
                                             window.iridion.push(['goal', 'klick_recoProduct', '', true]);
                                         });
                                     }
@@ -133,7 +129,7 @@
                                 }, 5000);
 
                             } catch (error) {
-                                console.log(error);
+                                // console.log(error);
                                 // WATO.goalPush("wa_setup_monitoring");
                             }
                         });
@@ -142,7 +138,7 @@
                 }
 
             } catch (error) {
-                console.log('Error: ', error);
+                // console.log('Error: ', error);
             }
         });
 
