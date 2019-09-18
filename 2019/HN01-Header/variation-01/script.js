@@ -8,6 +8,10 @@
  * @name Variation 01
  * @description New Header + OUTDOOR
  */
+
+window.iridion.econda.push(["HN01", "V1"]);
+
+
 (function(WATO) {
     "use strict";
 

@@ -15,6 +15,8 @@
     //     window.iridion.push(['goal', 's5_' + key]);
     // }
 
+    // window.iridion.econda.push(["HN01", "V1"]);
+
     // Element entfernen
     function removeObject(el) {
         if(el){
