@@ -12,10 +12,6 @@
 (function(WATO) {
     "use strict";
 
-    // function pushGoal(key) {
-    //     window.iridion.push(['goal', 's5_' + key]);
-    // }
-
     window.iridion.econda.push(["HN02", "V1"]);
 
     // Element entfernen
@@ -133,7 +129,7 @@
 
                             } catch (error) {
                                 // console.log(error);
-                                // WATO.goalPush("wa_setup_monitoring");
+                                WATO.goalPush("wa_setup_monitoring");
                             }
                         });
                     }
@@ -142,6 +138,7 @@
 
             } catch (error) {
                 // console.log('Error: ', error);
+                WATO.goalPush("wa_setup_monitoring");
             }
         });
 
