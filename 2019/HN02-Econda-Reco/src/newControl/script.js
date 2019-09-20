@@ -1,5 +1,6 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
+
 
 /**
  * @function
@@ -12,6 +13,9 @@
     "use strict";
 
     // WATO.goalsFromCat();
+
+    window.iridion.econda.push(["HN02", "V0"]);
+
 
     if(document.location.pathname === "/de/"){
         // Startseite
@@ -29,12 +33,12 @@
 
                         mainTeaser.insertAdjacentElement('afterend', oldReco);
                         mainTeaser.insertAdjacentElement('afterend', recoHeadline);
-                        console.log('oldReco: ', oldReco);
+                        // console.log('oldReco: ', oldReco);
 
                         WATO.elem(".rteContainer > .js-product-reference a", function(allLinksInReco){
                             if(allLinksInReco){
                                 // var allLinksInReco = WATO.qsa("a", oldReco);
-                                console.log('allLinksInReco: ', allLinksInReco);
+                                // console.log('allLinksInReco: ', allLinksInReco);
                                 
                                 for (var i = 0; i < allLinksInReco.length; i++) {
                                     allLinksInReco[i].addEventListener('click', function(){

@@ -1,5 +1,6 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
+
 
 /**
  * @function
@@ -15,7 +16,7 @@
     //     window.iridion.push(['goal', 's5_' + key]);
     // }
 
-    // window.iridion.econda.push(["HN01", "V1"]);
+    window.iridion.econda.push(["HN02", "V1"]);
 
     // Element entfernen
     function removeObject(el) {
@@ -58,7 +59,7 @@
                 if(responseContent && responseContent.length > 0){
 
                     var recoJSON = JSON.parse(responseContent);
-                    console.log('recoJSON: ', recoJSON);
+                    // console.log('recoJSON: ', recoJSON);
 
                     if(recoJSON.widgetdetails.tracking.emcs1.indexOf(pageID) !== -1){
 
@@ -99,7 +100,7 @@
                             return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
                         }, function(){
                             try {
-                                console.log("slider");
+                                // console.log("slider");
 
                                 // Slider Options
                                 var sliderOptions = {
@@ -239,7 +240,7 @@
         });
     }
     
-    console.log('pageID: ', pageID);
+    // console.log('pageID: ', pageID);
 
 
 
