@@ -45,7 +45,11 @@
                 '</div>'+
             '</div>';
 
-    function createNewReco() {
+    function createNewReco(prodId) {
+
+        if(!prodId) {
+            prodId = 'prodId1';
+        }
 
         var thisReco = WATO.qs(".kk_reco");
 
@@ -64,11 +68,15 @@
 
                         for (var i = 0; i < recoProducts.length; i++) {
                             var thisProduct = recoProducts[i],
-                                streichPreis = thisProduct.oldprice;
+                                streichPreis = thisProduct.oldprice,
+                                link = thisProduct.deeplink;
+
+// https://www.hessnatur.com/de/minikleid-aus-schurwolle-mit-kaschmir/p/407451634?utm_source=Email&utm_medium=hessnatur&utm_campaign=Reco&et_uk=fdb86430931c4a6581f6be5566d31566
+// https://www.hessnatur.com/de/langarm-shirt-aus-reiner-bio-baumwolle/p/433424034?utm_source=Email&utm_medium=hessnatur&utm_campaign=Reco&emcs0=79_Topseller_DOB_WTR&emcs1=71_Startseite&emcs2=null&emcs3=43342&et_uk=fdb86430931c4a6581f6be5566d31566
 
                             htmlMarkup += 
                                 '<div class="productitem text-center small-8 medium-5 large-3 columns">'+
-                                    '<a href="'+thisProduct.deeplink+'" class="item__image">'+
+                                    '<a href="'+link+((link.indexOf('?') === -1) ? '?' : '&' )+'emcs1=null&emcs2=79_Startseite&emcs3='+thisProduct.id+'" class="item__image">'+
                                         '<img src="'+thisProduct.iconurl.replace("_large/","_medium/")+'">'+
                                         '<div class="item__desc h-smallOffset-top-outer">'+
                                             '<h4 class="desc-name">'+thisProduct.name+'</h4>'+
@@ -147,7 +155,8 @@
             accountId: '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1',
             id: pageID,
             context: {
-                products: [{ id: 'prodId1' }, { id: 'prodId2' }]
+                // products: [{ id: 'prodId1' }, { id: 'prodId2' }]
+                products: [{ id: prodId }]
             }
         });
         widget.render();
@@ -177,9 +186,13 @@
                         '</div>'+
                     '</div>'
                 );
-                createNewReco();
 
-                removeObject(oldReco);
+                WATO.elem('input[name="ff_id"]', function(ff_id){
+                    if(ff_id) {
+                        createNewReco(ff_id[0].value);
+                        removeObject(oldReco);
+                    }
+                });
             }
         });
 

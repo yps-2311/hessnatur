@@ -6,17 +6,17 @@
  * @ codekit-append "pds.js"; 
  */
 
-// (function(WATO){
-//     "use strict";
+(function(WATO){
+    "use strict";
     
-    // WATO.prototype.goalPush = function(key, sendOnNextPageView){
-    //     if(sendOnNextPageView){
-    //         window.iridion.push(['goal', key, '', true]);
-    //     }else{
-    //         window.iridion.push(['goal', key]);
-    //     }
-    //     // console.log('goalPush: ', key);
-    // };
+    WATO.prototype.goalPush = function(key, sendOnNextPageView){
+        if(sendOnNextPageView){
+            window.iridion.push(['goal', key, '', true]);
+        }else{
+            window.iridion.push(['goal', key]);
+        }
+        // console.log('goalPush: ', key);
+    };
 
 	// WATO.prototype.goalsFromCat = function(){
     //     var _self = this;
@@ -42,4 +42,4 @@
     // };
     
 	
-// })(window.WATO);
+})(window.WATO);
