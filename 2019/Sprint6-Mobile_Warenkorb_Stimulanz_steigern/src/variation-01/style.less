@@ -21,25 +21,43 @@
     }
 }
 
+.h1.text-center {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.h-mediumOffset-top-inner {
+    padding-top: 10px;
+}
+
+.js_backstopWrapper hr {
+    border-color: #E5E4E3;
+}
+
 .listing__table--item {
+    form {
+        position: relative;
+    }
     .small-4 {
-        flex: 0 0 44%;
-        max-width: 44%;
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding-bottom: 69px;
         a {
             position: relative;
             display: block;
         }
     }
     .small-8 {
-        flex: 0 0 56%;
-        max-width: 56%;
+        flex: 0 0 50%;
+        max-width: 50%;
         & > .row > .column {
             padding-left: 0;
+            padding-right: 20px;
         }
         .align-self-bottom.small-12.h-smallOffset-top-inner {
             position: absolute;
             right: 10px;
-            bottom: -10px;
+            bottom: -4px;
         }
         & > .medium-5 {
             position: relative;
@@ -80,6 +98,9 @@
         padding: 0 10px;
         position: absolute;
         white-space: nowrap;
+        z-index: 1000;
+        bottom: 0;
+        left: 0;
     }
     .h4 {
         font-size: 1.23rem;
@@ -113,6 +134,29 @@
         font-weight: 400;
         font-size: 1.23rem;
     }
+    .mz-hint {
+        display: none;
+    }
+    .item__color,
+    .item__size {
+        display: block !important;
+    }
+    .value--color,
+    .value--size {
+        display: none;
+    }
+}
+.kk_error {
+    border: solid 1px red;
+}
+.kk_lupe {
+    background: transparent url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2019/Sprint06/lupe.svg") no-repeat 0 0;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1002;
 }
 .h-xLargeOffset-bottom-outer {
     margin-bottom: 10px !important;
@@ -125,6 +169,11 @@
 }
 
 .kk_removeAndQuantity {
+    position: absolute;
+    bottom: 0;
+    width: 89%;
+    left: -94%;
+    z-index: 1001;
     .shrink {
         flex: 0 0 30%;
         max-width: 30%;
@@ -148,6 +197,7 @@
         width: 100%;
         img {
             width: 88%;
+            max-width: 20px;
         }
     }
 }
@@ -199,7 +249,7 @@
     }
     .h-text-muted.h-xsmallOffset-top-outer {
         font-size: 0;
-        margin-top: 6px;
+        margin-top: 3px;
         a {
             font-weight: 400;
             font-size: 0.84rem;
@@ -232,7 +282,7 @@
 .kk_actionCode {
     margin: 20px 0;
     .kk_opener {
-        font-size: 12px;
+        font-size: 0.9rem;
         color: #5F5F5F;
         text-align: center;
         height: 57px;
@@ -273,16 +323,42 @@
     border: #CBF1A5 solid 5px;
     padding: 20px;
     margin-bottom: 30px;
+    text-align: center;
     > div {
         background-color: #F7F6F5;
+        padding-bottom: 6px;
+    }
+    img {
+        margin: -17px 13px 0;
+        max-width: 92%;
     }
     h4 {
+        font-family: "Roboto",Helvetica,Arial,sans-serif;
         font-weight: 100;
-        font-size: 10px;
+        text-transform: uppercase;
+        font-size: 0.84rem;
         color: #393939;
         letter-spacing: 1.2px;
         line-height: 15px;
         text-align: center;
+        margin: 6px 0 18px;
+    }
+    ul {
+        margin: 0;
+        list-style: none;
+    }
+    li {
+        background: transparent url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2019/Sprint06/check.svg") no-repeat 0 2px;
+        font-weight: 100;
+        font-size: 0.9rem;
+        line-height: 15px;
+        text-align: left;
+        margin: 0 23px 16px;
+        padding-left: 23px;
+        b {
+            font-weight: 400;
+            line-height: 18px;
+        }
     }
 }
 
