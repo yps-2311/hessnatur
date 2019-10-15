@@ -76,7 +76,7 @@
 
                             htmlMarkup += 
                                 '<div class="productitem text-center small-8 medium-5 large-3 columns">'+
-                                    '<a href="'+link+((link.indexOf('?') === -1) ? '?' : '&' )+'emcs1=null&emcs2=79_Startseite&emcs3='+thisProduct.id+'" class="item__image">'+
+                                    '<a href="'+link+((link.indexOf('?') === -1) ? '?' : '&' )+'emcs0=79_Startseite&emcs1=79_Startseite&emcs2=null&emcs3='+thisProduct.id+'" class="item__image">'+
                                         '<img src="'+thisProduct.iconurl.replace("_large/","_medium/")+'">'+
                                         '<div class="item__desc h-smallOffset-top-outer">'+
                                             '<h4 class="desc-name">'+thisProduct.name+'</h4>'+
