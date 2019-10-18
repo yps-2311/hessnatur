@@ -8,39 +8,280 @@
  * @name Variation 01
  * @description
  */
-(function(WATO) {
+(function(WATO, window, documentElement) {
     "use strict";
 
-    // function pushGoal(key) {
-    //     window.iridion.push(['goal', 's5_' + key]);
-    // }
+    function pushGoal(key, sendOnNextPageView){    
+        if(sendOnNextPageView){
+            window.iridion.push(['goal', key, '', true]);
+        }else{
+            window.iridion.push(['goal', key]);
+        }
+    }
     // WATO.goalsFromCat();
-
-    // if (!Element.prototype.matches) {
-    //     Element.prototype.matches = Element.prototype.msMatchesSelector || 
-    //                                 Element.prototype.webkitMatchesSelector;
-    // }
-    // if (!Element.prototype.closest) {
-    //     Element.prototype.closest = function(s) {
-    //         var el = this;
-        
-    //         do {
-    //         if (el.matches(s)) return el;
-    //         el = el.parentElement || el.parentNode;
-    //         } while (el !== null && el.nodeType === 1);
-    //         return null;
-    //     };
-    // }
 
     function removeStarFromString(el) {
         if(el){
             el.innerHTML = el.innerHTML.replace("*","");
         }
     }
+    function priceReplace(className, responseAsElement) {
+        WATO.qs(className, documentElement).innerHTML = WATO.qs(className, responseAsElement).innerHTML.replace("*","");
+    }
 
     var imgPath = "https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2019/Sprint06/",
         allProductsInfos = {};
 
+    function getSizeOptions(allSizes, prodID) {
+
+        var dropDownSize = '';
+        // Alle Größen des Produkts
+        for (var l = 0; l < allSizes.length; l++) {
+            var currentProductSize = allSizes[l],
+                isAvailable = currentProductSize.available,
+                isSelected = currentProductSize.sizeCode === prodID.substring(7,10);
+            
+            dropDownSize += '<option '+
+                ((!isAvailable) && isSelected ? 'class="kk_red"' : '')+
+                ' value="'+currentProductSize.sizeCode+'" '+
+                (isAvailable ? '' : 'disabled=""')+
+                (isSelected ? 'selected="selected"' : "")+
+                ' data-code="'+currentProductSize.code+'">'+currentProductSize.size+'</option>';
+        }
+        return dropDownSize;
+    }
+
+    function addClass(element,className){
+        if(element){
+            element.classList.add(className);
+        }
+    }
+    function removeClass(element,className){
+        if(element){
+            element.classList.remove(className);
+        }
+    }
+
+    function submitForm(thisForm) {
+        WATO.elem(function() {
+            return typeof jQuery !== "undefined";
+        }, function(element){
+            if(element){
+                jQuery.ajax({
+                    url : '/de/cart/update',
+                    type: 'post',
+                    data : jQuery(thisForm).serialize()
+                });
+            }
+        });
+    }
+
+    function removeItem(el) {
+        if(el){
+            el.parentNode.removeChild(el);
+        }
+    }
+
+    function overallDiscountBuild(savingSum) {
+        var sumWrapper = WATO.qs(".price.offset-price-left").parentNode.parentNode.parentNode;
+
+        removeItem(WATO.qs(".kk_lightgreen", sumWrapper));
+
+        if(savingSum > 0){
+            sumWrapper.insertAdjacentHTML('beforeend', 
+                '<div class="kk_lightgreen">Sie sparen mit dieser Bestellung <b>€ '+String((savingSum).toFixed(2)).replace(".",",")+'</b></div>'
+            );
+        }
+    }
+
+    function updateAllInfosForThisProduct(parentForm, productID){
+
+        pushGoal("nutzeEinstellungen");
+
+        var allColors = allProductsInfos[productID.substring(0,5)],
+            colorSelector = WATO.qs('.item__color', parentForm);
+
+        for (var j = 0; j < allColors.colors.length; j++) {
+            var thisColor = allColors.colors[j],
+                finalCombination = "",
+                warningTheSizeHasBeenChanged = false;
+
+            console.log('thisColor: ', thisColor);
+            console.log('j === allColors.colors.length: ', j === allColors.colors.length-1);
+
+            // Der Sonderfall "00" ist nur für Matratzen denn dort wird nicht nach Farbe sondern nach Material unterschieden
+            if(thisColor.colorCode === "00" || thisColor.colorCode === colorSelector.value){
+
+                console.log('thisColor.sizes: ', thisColor.sizes);
+                for (var k = 0; k < thisColor.sizes.length; k++) {
+                    console.log('thisColor.sizes[k].sizeCode: ', thisColor.sizes[k].sizeCode);
+                    console.log('productID: ', productID);
+
+                    var thisSizeColorCombination = thisColor.sizes[k],
+                        isKorrektCombination = thisSizeColorCombination.sizeCode === productID.substring(7,10);
+
+                    if(k === thisColor.sizes.length-1 && (!isKorrektCombination)){
+                        thisSizeColorCombination = thisColor.sizes[0];
+                        isKorrektCombination = true;
+                        warningTheSizeHasBeenChanged = true;
+                    }
+
+                    if(isKorrektCombination){
+
+                        finalCombination = thisSizeColorCombination.code;
+
+                        var statusBar = WATO.qs(".js-availability-status", parentForm.previousElementSibling),
+                            statusText = thisSizeColorCombination.availabilityText,
+                            tempClasses = "label js-availability-status ";
+
+                        console.log('thisSizeColorCombination: ', thisSizeColorCombination);
+
+                        statusBar.innerHTML = statusText;
+                        
+                        // Klassen des Versandstatus aktualisieren
+                        if(statusText.indexOf("Sofort lieferbar") !== -1){
+                            statusBar.className = tempClasses+"success";
+                        }else if(statusText.indexOf("Ausverkauft") !== -1){
+                            statusBar.className = tempClasses+"alert";
+                        }else{
+                            statusBar.className = tempClasses+"warning";
+                        }
+
+                        // Wenn dieses Produkt ein Streichpreis hat
+                        var isStrikePrice = thisSizeColorCombination.strikePrice,
+                            markup = '<div class="row align-right-for-medium">';
+
+                        if(isStrikePrice){
+                            // mit Preichpreis - Preisanzeige
+                            var rabatt = isStrikePrice - thisSizeColorCombination.price;
+                            markup +=   '<div class="column shrink price discountPrice h-xsmallOffset-bottom-inner">'+thisSizeColorCombination.formattedPrice+'</div>'+
+                                        '<div class="column shrink price strikeValue h-no-padding-left h-xsmallOffset-bottom-inner h-smallOffset-left-outer">'+thisSizeColorCombination.formattedStrikePrice+'</div>'+
+                                    '</div>'+
+                                    '<div class="kk_lightgreen" data-discount="'+rabatt+'">€ '+String((rabatt).toFixed(2)).replace(".",",")+' Ersparnis</div>';
+                        }else{
+                            // ohne Preichpreis - Preisanzeige
+                            markup += '<div class="column shrink price h-xsmallOffset-bottom-inner">'+thisSizeColorCombination.formattedPrice+'</div>'+
+                                    '</div>';
+                        }
+                        WATO.qs(".column.small-12.h-smallOffset-bottom-inner", parentForm).innerHTML = markup+'<p class="h-text-muted">inkl. 19% Mwst.</p>';
+
+                        // Alle Rabatte zusammenrechnen und aktualisieren
+                        var allDiscounts = WATO.qsa(".listing__table--item .kk_lightgreen"),
+                            discountSum = 0;
+
+                        for (var l = 0; l < allDiscounts.length; l++) {
+                            discountSum += parseFloat(allDiscounts[l].getAttribute("data-discount"));
+                        }
+                        // Den Rabatt aller Produkte unter der Gesammtsumme anzeigen
+                        overallDiscountBuild(discountSum);
+
+                        break;
+                    }
+                }
+                
+                console.log('finalCombination: ', finalCombination);
+
+                WATO.qs('input[name="variantCode"]', parentForm).value = finalCombination;
+
+                
+                var siteDropdown = WATO.qs('.item__size', parentForm);
+                
+                if(warningTheSizeHasBeenChanged){
+                    addClass(siteDropdown.parentNode, "kk_warning");
+                }else{
+                    removeClass(siteDropdown.parentNode, "kk_warning");
+                }
+
+                // Das Dropdown für Größen wird hier neu gebaut
+                siteDropdown.innerHTML = getSizeOptions(thisColor.sizes, finalCombination);
+
+                break;
+            }
+        }
+    }
+
+    function changeSize(e) {
+        // Ändern der Produktgröße
+        var parentForm = e.target.closest("form"),
+            variantID = WATO.qs('input[name="variantCode"]', parentForm),
+            sizeSelect = WATO.qs('.item__size', parentForm),
+            newVariantID = variantID.value.substring(0,7) + sizeSelect.value;
+        
+        variantID.value = newVariantID;
+
+        removeClass(sizeSelect.parentNode, "kk_warning");
+
+        // Die angezeigten Produktinfos werden aktualisiert
+        updateAllInfosForThisProduct(parentForm, newVariantID);
+
+        // Die Größenänderung wird per Formsubmit abgeschickt
+        submitForm(parentForm);
+    }
+    
+    function changeColor(e) {
+        // Änderung der Produktfarbe
+        var parentForm = e.target.closest("form"),
+            variantCode = WATO.qs('input[name="variantCode"]', parentForm),
+            selectedOption = WATO.qs('.item__color', parentForm),
+            inputSize = WATO.qs('.item__size', parentForm),
+            productMainID = variantCode.value.substring(0,5),
+            productSelectedSize = variantCode.value.substring(7,9);
+
+        // Produkt-VariantCode ist die ProduktID:
+        // Beispiel: 111112233
+        // 1 = MainID, 2 = ProduktfarbenID, 3 = Produktgröße
+        variantCode.value = productMainID + selectedOption.value + productSelectedSize;
+
+        // Der Magiczoom der auf den Bildern liegt wird aktualisiert
+        if(window.MagicZoom){
+            window.MagicZoom.update(WATO.qs(".MagicZoom", parentForm.previousElementSibling).getAttribute("id"), selectedOption.options[selectedOption.selectedIndex].getAttribute("data-img"), selectedOption.options[selectedOption.selectedIndex].getAttribute("data-img"));
+        }
+
+        updateAllInfosForThisProduct(parentForm, variantCode.value);
+
+        if(WATO.qs(".kk_red", parentForm)){
+            // Fehlermeldung anzeigen wenn das Ausgewählte gleichzeitig nicht verfügbar ist
+
+            addClass(inputSize, 'kk_error');
+            addClass(documentElement, 'kk_deactive');
+        }else{
+            // Fehlermeldungen entfernen und Farbänderung abschicken
+            removeClass(inputSize, 'kk_error');
+            removeClass(documentElement, 'kk_deactive');
+            
+            submitForm(parentForm);
+        }
+    }
+
+    function checkContinueButtonClick(thisClass) {
+        // Der "Jetzt sicher einkaufen"-Button geht nur wenn kein Fehler auf der Seite vorliegt
+        
+        WATO.elem(thisClass, function(successButton){
+            if(successButton){
+                successButton[0].addEventListener('click', function(e){
+                    if(documentElement.className.indexOf("kk_deactive") !== -1){
+                        e.preventDefault();
+                        addClass(e.target, 'kk_errorMsg');
+                    }
+                });
+            }
+        });
+    }
+
+    function httpGetAsync(theUrl, callback) {
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = function() { 
+            if (xmlHttp.readyState === 4 && xmlHttp.status === 200){
+                try {
+                    callback(theUrl, JSON.parse(xmlHttp.responseText));
+                } catch (error) {
+                    console.log('Error: ', error);
+                }
+            }
+        };
+        xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+        xmlHttp.send(null);
+    }
 
     // Weitere Artikel hinzufügen Box nach unten verschoben
     WATO.elem('.js_backstopWrapper > .bgColor-super-light-gray', function(addOtherArticle){
@@ -64,113 +305,39 @@
         }
     });
 
-    // function httpGetAsync(theUrl, callback) {
-    //     var xmlHttp = new XMLHttpRequest();
-    //     xmlHttp.onreadystatechange = function() { 
-    //         if (xmlHttp.readyState === 4 && xmlHttp.status === 200){
-    //             callback(xmlHttp.responseText);
-    //         }
-    //     };
-    //     xmlHttp.open("GET", theUrl, true); // true for asynchronous 
-    //     xmlHttp.send(null);
-    // }
-    function ajax_get(url, callback) {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-                var data = false;
-                try {
-                    data = JSON.parse(xmlhttp.responseText);
-                } catch(err) {
-                }
-                callback(data, url);
-            }
-        };
-        xmlhttp.open("GET", url, true);
-        xmlhttp.send();
-    }
+    WATO.ajax("/de/cart/update", function(url, responseText) {
+        // console.log('responseText: ', responseText);
+        if(responseText.indexOf("Der Artikel wurde aktualisiert.") !== -1){
+            removeClass(WATO.qs(".kk_error"), 'kk_error');
+            removeClass(WATO.qs(".kk_red"), 'kk_red');
+            removeClass(documentElement, 'kk_deactive');
 
-    function getSizeOptions(thisSizes, prodID) {
-        var dropDownSize = '';
-        // Alle Größen des Produkts
-        for (var l = 0; l < thisSizes.length; l++) {
-            var thisSize = thisSizes[l],
-                isAvailable = thisSize.available,
-                isSelected = thisSize.size === prodID.substring(7,9);
-            dropDownSize += '<option '+((!isAvailable) && isSelected ? 'class="kk_red"' : '')+' value="'+thisSize.size+'" '+(isAvailable ? '' : 'disabled=""')+(isSelected ? 'selected="selected"' : "")+' data-code="'+thisSize.code+'">'+thisSize.size+'</option>';
-        }
-        return dropDownSize;
-    }
+            try {
 
-    function changeSize(e) {
-        var parentForm = e.target.closest("form"),
-            variantCode = WATO.qs('input[name="variantCode"]', parentForm);
-            // selectedOption = WATO.qs('.item__size', parentForm);
-        
-        // WATO.qs('input[name="variantCode"]', parentForm).value = selectedOption.options[selectedOption.selectedIndex].getAttribute("data-code");
-        variantCode.value = variantCode.value.substring(0,7) + WATO.qs('.item__size', parentForm).value;
+                var responseAsElement = document.createElement("div");
+                responseAsElement.innerHTML = responseText;
 
-        $.ajax({
-            url : '/de/cart/update',
-            type: 'post',
-            data : $(parentForm).serialize()
-        });
-    }
+                priceReplace(".h-xLargeOffset-bottom-outer .price", responseAsElement);
+                priceReplace(".h-xsmallOffset-bottom-outer .price", responseAsElement);
+                priceReplace(".h-text-muted .offset-price-left", responseAsElement);
 
-    function changeColor(e) {
-        var parentForm = e.target.closest("form"),
-            variantCode = WATO.qs('input[name="variantCode"]', parentForm),
-            selectedOption = WATO.qs('.item__color', parentForm),
-            inputSize = WATO.qs('.item__size', parentForm),
-            productMainID = variantCode.value.substring(0,5),
-            productSelectedSize = variantCode.value.substring(7,9);
-
-        variantCode.value = productMainID + selectedOption.value + productSelectedSize;
-
-        if(window.MagicZoom){
-            window.MagicZoom.update(WATO.qs(".MagicZoom", parentForm.previousElementSibling).getAttribute("id"), selectedOption.options[selectedOption.selectedIndex].getAttribute("data-img"), selectedOption.options[selectedOption.selectedIndex].getAttribute("data-img"));
-        }
-        
-        // console.log('allProductsInfos: ', allProductsInfos);
-
-        // allProductsInfos[productMainID]
-        console.log('allProductsInfos[productMainID]: ', allProductsInfos[productMainID]);
-
-        // selectedOption.value
-
-        var allColors = allProductsInfos[productMainID].colors;
-
-        for (var j = 0; j < allColors.length; j++) {
-            if(allColors[j].colorCode === selectedOption.value){
-                inputSize.innerHTML = getSizeOptions(allColors[j].sizes, variantCode.value);
-                break;
+            } catch (error) {
+                console.log('Error: ', error);
             }
         }
+    });
 
-        console.log('WATO.qs(".kk_red", parentForm): ', WATO.qs(".kk_red", parentForm));
-        if(WATO.qs(".kk_red", parentForm)){
-            // Fehler
-            console.log("fehler");
-            inputSize.classList.add('kk_error');
-        }else{
-            $.ajax({
-                url : '/de/cart/update',
-                type: 'post',
-                data : $(parentForm).serialize()
-            });
-        }
-        
-    }
-
+    checkContinueButtonClick('.yCmsContentSlot + .row .button.success');
+    checkContinueButtonClick('.h-mediumOffset-bottom-inner .button.success');
 
     // Alle Produkte
-    WATO.elem('.listing__table--item .item__amount', function(allItems){
-        if(allItems){
+    WATO.elem('.listing__table--item .item__amount', function(allItemsRemoveButton){
+        if(allItemsRemoveButton){
             // Summe aller Rabatte
-            var overAllMoneySavings = 0
+            var overAllMoneySavings = 0;
 
-            for (var i = 0; i < allItems.length; i++) {
-                var thisItem = allItems[i].closest(".listing__table--item"),
+            for (var i = 0; i < allItemsRemoveButton.length; i++) {
+                var thisItem = allItemsRemoveButton[i].closest(".listing__table--item"),
                     shippingAvailability = WATO.qs(".js-availability-status", thisItem),
                     itemImg = WATO.qs(".small-4 img", thisItem),
                     itemImgSrc = itemImg.getAttribute("src"),
@@ -178,65 +345,127 @@
                     normalPrice = WATO.qs(".price", thisItem),
                     strikeValue = WATO.qs(".strikeValue", thisItem);
 
-                ajax_get("https://www.hessnatur.com"+WATO.qs("form", thisItem).getAttribute("data-product-json-url"), function(data){
-                    console.log('data: ', data);
+                // console.log('thisItem: ', thisItem);
+
+                httpGetAsync("https://www.hessnatur.com"+WATO.qs("form", thisItem).getAttribute("data-product-json-url"), function(uri, data){
+                    console.log("-------------------");
+                    console.log('uri: ', uri);
+                    // console.log('data: ', data);
 
                     allProductsInfos[String(data.code)] = data;
 
                     try {
                         if(data){
 
-                            var dropDownColor = '', //'<select name="item__color" class="custom__select item__color">',
-                                 //'<select name="item__size" class="custom__select item__size">',
-                                thisProd = WATO.qs('form[data-product-json-url^="'+data.shortUrl+'"]'),
+                            // console.log('data.shortUrl: ', data.shortUrl);
+                            var dropDownColor = '',
+                                thisProd = WATO.qs('form[data-product-json-url="'+uri.replace("https://www.hessnatur.com","")+'"]'),
                                 prodID = WATO.qs('input[name="variantCode"]', thisProd).value,
                                 sizeDropdown = WATO.qs(".item__size", thisProd),
-                                colorDropdown = WATO.qs(".item__color", thisProd),
-                                preselectedSizeKey = 0;
-    
+                                colorDropdown = WATO.qs(".item__color", thisProd);
+
+                            console.log('thisProd: ', thisProd);
+                            console.log('sizeDropdown: ', sizeDropdown);
+                            console.log('colorDropdown: ', colorDropdown);
+
                             // Alle Farben des Produkts
                             for (var k = 0; k < data.colors.length; k++) {
                                 var colors = data.colors[k],
-                                    isSelected = colors.code.substring(5,7) === prodID.substring(5,7);
+                                    isSelected = colors.sizes[0].code.substring(5,7) === prodID.substring(5,7);
     
                                 // Dropdown für Farbauswahl, inclusive Vorselectierung der richtigen Farbe
-                                dropDownColor += '<option value="'+colors.colorCode+'" data-img="'+colors.modelImageUrl+'"'+
-                                        ' data-code="'+colors.code+'" data-price="'+colors.formattedPrice+'" '+
-
-                                        (isSelected ? 'selected="selected"' : "")+'>'+ // Hier wird die Vorselektierung gesetzt
-                                        colors.color+' ('+colors.colorCode+')</option>';
+                                if(colorDropdown){
+                                    dropDownColor += '<option value="'+colors.colorCode+'" data-img="'+colors.modelImageUrl+'"'+
+                                            ' data-code="'+colors.code+'" data-price="'+colors.formattedPrice+'" '+
+                                            (isSelected ? 'selected="selected"' : "")+'>'+ // Hier wird die Vorselektierung gesetzt
+                                            colors.color+' ('+colors.colorCode+')</option>';
+                                }
 
                                 if(isSelected){
-                                    // preselectedSizeKey = k;
-                                    console.log('prodID: ', prodID);
-                                    sizeDropdown.innerHTML = getSizeOptions(data.colors[k].sizes, prodID);
+                                    sizeDropdown.innerHTML = getSizeOptions(colors.sizes, prodID);
                                 }
                             }
-    
-                            colorDropdown.innerHTML = dropDownColor;
                             
+                            if(colorDropdown){
+                                colorDropdown.innerHTML = dropDownColor;
+                                colorDropdown.addEventListener('change', changeColor);
+                            }
 
+                            // Interaktion mit dem Größenänderungsbutton
                             sizeDropdown.addEventListener('change', changeSize);
-
-                            colorDropdown.addEventListener('change', changeColor);
-
                         }
                     } catch (error) {
                         console.log('Error: ', error);
                     }
-                });
+                })
 
+                // window.fetch("https://www.hessnatur.com"+WATO.qs("form", thisItem).getAttribute("data-product-json-url")).then(
+                //     function(response) {
+                //         // if (response.status !== 200) {
+                //         //     console.log('Looks like there was a problem. Status Code: ' +
+                //         //     response.status);
+                //         //     return;
+                //         // }
+                //         response.json().then(function(data) {
+                //             console.log("-------------------");
+                //             console.log(data);
+
+                //             allProductsInfos[String(data.code)] = data;
+
+                //             try {
+                //                 if(data){
+        
+                //                     console.log('data.shortUrl: ', data.shortUrl);
+                //                     var dropDownColor = '',
+                //                         thisProd = WATO.qs('form[data-product-json-url^="'+data.shortUrl+'"]'),
+                //                         prodID = WATO.qs('input[name="variantCode"]', thisProd).value,
+                //                         sizeDropdown = WATO.qs(".item__size", thisProd),
+                //                         colorDropdown = WATO.qs(".item__color", thisProd);
+
+                //                     console.log('thisProd: ', thisProd);
+                //                     console.log('sizeDropdown: ', sizeDropdown);
+                //                     console.log('colorDropdown: ', colorDropdown);
+
+                //                     // Alle Farben des Produkts
+                //                     for (var k = 0; k < data.colors.length; k++) {
+                //                         var colors = data.colors[k],
+                //                             isSelected = colors.sizes[0].code.substring(5,7) === prodID.substring(5,7);
+            
+                //                         // Dropdown für Farbauswahl, inclusive Vorselectierung der richtigen Farbe
+                //                         if(colorDropdown){
+                //                             dropDownColor += '<option value="'+colors.colorCode+'" data-img="'+colors.modelImageUrl+'"'+
+                //                                     ' data-code="'+colors.code+'" data-price="'+colors.formattedPrice+'" '+
+                //                                     (isSelected ? 'selected="selected"' : "")+'>'+ // Hier wird die Vorselektierung gesetzt
+                //                                     colors.color+' ('+colors.colorCode+')</option>';
+                //                         }
+        
+                //                         if(isSelected){
+                //                             sizeDropdown.innerHTML = getSizeOptions(colors.sizes, prodID);
+                //                         }
+                //                     }
+                                    
+                //                     if(colorDropdown){
+                //                         colorDropdown.innerHTML = dropDownColor;
+                //                         colorDropdown.addEventListener('change', changeColor);
+                //                     }
+        
+                //                     // Interaktion mit dem Größenänderungsbutton
+                //                     sizeDropdown.addEventListener('change', changeSize);
+                //                 }
+                //             } catch (error) {
+                //                 console.log('Error: ', error);
+                //             }
+                //         });
+                //     }
+                // ).catch(function(err) {
+                //     console.log('Fetch Error: ', err);
+                // });
 
 
                 // Verfügbarkeit vor das Bild verschoben
                 if(shippingAvailability) {
                     itemImg.insertAdjacentElement('afterend', shippingAvailability);
                 }
-                
-                // Lupe-Symbol
-                itemImg.insertAdjacentHTML('beforebegin', 
-                    '<div class="kk_lupe"></div>'
-                );
 
                 // Bild in größerer Auflösung laden
                 itemImg.setAttribute("src", itemImgSrc.replace("hyb_redes_cart_overview", "generalfeed_small"));
@@ -246,13 +475,26 @@
                     '<div class="kk_removeAndQuantity row column small-12"></div>'
                 );
 
+                var headline = WATO.qs(".h4", thisItem);
+                if(headline){
+                    headline.addEventListener('click', function(){
+                        pushGoal("HLCart", true);
+                    });
+                }
+
                 // MagicZoom
-                itemImg.parentNode.classList.add('MagicZoom');
+                addClass(itemImg.parentNode, 'MagicZoom');
+                itemImg.parentNode.addEventListener('click', function(){
+                    pushGoal("clickProduktbild");
+                });
+                // itemImg.parentNode.setAttribute("data-options", "onZoomIn: function() {console.log('onZoomIn', arguments[0]);}");
                 itemImg.parentNode.setAttribute("href", itemImgSrc.replace("hyb_redes_cart_overview", "generalfeed_medium"));
 
                 var removeAndQuantity = WATO.qs(".kk_removeAndQuantity", thisItem);
 
-                removeAndQuantity.insertAdjacentElement('afterbegin', allItems[i].parentNode);
+                // ProduktMenge verschieben
+                removeAndQuantity.insertAdjacentElement('afterbegin', allItemsRemoveButton[i].parentNode);
+                // LöschenButton verschieben
                 removeAndQuantity.insertAdjacentElement('afterbegin', WATO.qs(".js-entry-remove", thisItem).parentNode);
 
                 // Sternchen hinter den Preisen entfernt
@@ -269,7 +511,7 @@
                     
                     // Ersparnis darunter in einer grünen Box anzeigen
                     strikeValue.parentNode.insertAdjacentHTML('afterend', 
-                        '<div class="kk_lightgreen">€ '+String((moneySavings).toFixed(2)).replace(".",",")+' Ersparnis</div>'
+                        '<div class="kk_lightgreen" data-discount="'+moneySavings+'">€ '+String((moneySavings).toFixed(2)).replace(".",",")+' Ersparnis</div>'
                     );
 
                     overAllMoneySavings += moneySavings;
@@ -281,7 +523,7 @@
                 if(window.MagicZoom){
                     window.MagicZoom.refresh();
                 }
-            }, 2000);
+            }, 1500);
 
             // Zwischensumme
             WATO.elem('.price.offset-price-left', function(zwischenSumme){
@@ -292,9 +534,10 @@
 
                     // Wenn es Rabatte gibt werden diese hier summiert angezeigt
                     if(overAllMoneySavings){
-                        zwischenSumme.parentNode.parentNode.parentNode.insertAdjacentHTML('beforeend', 
-                            '<div class="kk_lightgreen">Sie sparen mit dieser Bestellung <b>€ '+String((overAllMoneySavings).toFixed(2)).replace(".",",")+'</b></div>'
-                        );
+                        overallDiscountBuild(overAllMoneySavings);
+                        // zwischenSumme.parentNode.parentNode.parentNode.insertAdjacentHTML('beforeend', 
+                        //     '<div class="kk_lightgreen">Sie sparen mit dieser Bestellung <b>€ '+String((overAllMoneySavings).toFixed(2)).replace(".",",")+'</b></div>'
+                        // );
                     }
 
                     // Versandlinkt-Text angepasst
@@ -317,7 +560,7 @@
             actionCode = actionCode[0];
 
             // Aktionscodebox
-            actionCode.classList.add('kk_actionCode');
+            addClass(actionCode, 'kk_actionCode');
 
             actionCode.insertAdjacentHTML('afterbegin', 
                 '<div class="kk_opener"><img src="'+imgPath+'gutschein.svg">Ich habe einen Gutschein- oder Aktionscode</div>'
@@ -325,7 +568,8 @@
 
             // Ausklapp-mechanik
             WATO.qs(".kk_opener", actionCode).addEventListener('click', function(e){
-                e.target.parentNode.classList.add('kk_open');
+                addClass(e.target.parentNode, 'kk_open');
+                pushGoal("aktionscode");
             });
 
             // Reihenfolge mit Freunde werben Freunde getauscht
@@ -355,4 +599,4 @@
 
 
 
-})(new window.WATO());
+})(new window.WATO(), window, window.document.documentElement);

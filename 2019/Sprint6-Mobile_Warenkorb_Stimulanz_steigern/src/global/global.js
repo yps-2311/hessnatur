@@ -6,8 +6,8 @@
  * @ codekit-append "pds.js"; 
  */
 
-(function(WATO){
-    "use strict";
+// (function(WATO){
+//     "use strict";
     
     
     // WATO.prototype.goalPush = function(key, sendOnNextPageView){
@@ -42,4 +42,4 @@
 
 	// };
 	
-})(window.WATO);
+// })(window.WATO);

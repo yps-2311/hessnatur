@@ -52,7 +52,7 @@
         max-width: 50%;
         & > .row > .column {
             padding-left: 0;
-            padding-right: 20px;
+            padding-right: 10px;
         }
         .align-self-bottom.small-12.h-smallOffset-top-inner {
             position: absolute;
@@ -88,6 +88,7 @@
         }
     }
     .js-availability-status {
+        text-align: center;
         display: block;
         width: 100%;
         background: rgba(255,255,255,0.9);
@@ -134,9 +135,6 @@
         font-weight: 400;
         font-size: 1.23rem;
     }
-    .mz-hint {
-        display: none;
-    }
     .item__color,
     .item__size {
         display: block !important;
@@ -145,19 +143,81 @@
     .value--size {
         display: none;
     }
+    .js-entry-edit-save,
+    .js-entry-edit-cancel,
+    .js-entry-edit {
+        display: none !important;
+    }
+    .mz-figure.mz-hover-zoom.mz-ready::before {
+        content: "";
+        background: transparent url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2019/Sprint06/lupe.svg") no-repeat 0 0;
+        width: 18px;
+        height: 18px;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1002;
+        display: block !important;
+    }
+}
+.kk_warning {
+    select {
+        border: solid 1px orange;
+        margin-bottom: 0;
+    }
+    &::after {
+        content: "Die Größe wurde automatisch geändert";
+        display: block;
+        background-color: orange;
+        padding: 10px;
+        font-size: .84rem;
+        font-weight: bold;
+        line-height: 13px;
+        border-radius: 2px;
+    }
+}
+.mz-hint {
+    display: none !important;
 }
 .kk_error {
-    border: solid 1px red;
+    border: solid 1px #ce002c;
 }
-.kk_lupe {
-    background: transparent url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2019/Sprint06/lupe.svg") no-repeat 0 0;
-    width: 18px;
-    height: 18px;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 1002;
+.rteContainer {
+    ul {
+        margin-left: 0 !important;
+    }
 }
+.kk_deactive {
+    .button.success {
+        background-color: #5F5F5F;
+        color: #8a8a8a;
+    }
+    .kk_errorMsg {
+        position: relative;
+        &::before {
+            content: "Ein Produkt ist leider in dieser Konfiguration nicht verfügbar";
+            display: block;
+            background-color: #ce002c;
+            color: #fff;
+            padding: 10px;
+            position: absolute;
+            top: -45px;
+            width: 100%;
+            left: 0;
+            font-size: 12px;
+        }
+    }
+}
+
+// .kk_lupe {
+    // background: transparent url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2019/Sprint06/lupe.svg") no-repeat 0 0;
+    // width: 18px;
+    // height: 18px;
+    // position: absolute;
+    // top: 10px;
+    // right: 10px;
+    // z-index: 1002;
+// }
 .h-xLargeOffset-bottom-outer {
     margin-bottom: 10px !important;
 }
@@ -329,7 +389,7 @@
         padding-bottom: 6px;
     }
     img {
-        margin: -17px 13px 0;
+        margin: -22px 13px 0;
         max-width: 92%;
     }
     h4 {
@@ -356,10 +416,19 @@
         margin: 0 23px 16px;
         padding-left: 23px;
         b {
-            font-weight: 400;
+            font-weight: 700;
             line-height: 18px;
         }
     }
 }
 
-
+@media only screen and (max-width: 386px)  {
+    .kk_uvps img {
+        margin-top: -20px;
+    }
+}
+@media only screen and (max-width: 330px)  {
+    .kk_uvps img {
+        margin-top: -16px;
+    }
+}

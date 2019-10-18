@@ -11,6 +11,42 @@
 (function(WATO) {
     "use strict";
 
-    WATO.goalsFromCat();
+    function pushGoal(key, sendOnNextPageView){    
+        if(sendOnNextPageView){
+            window.iridion.push(['goal', key, '', true]);
+        }else{
+            window.iridion.push(['goal', key]);
+        }
+    }
+
+    WATO.elem('.listing__table--item .item__amount', function(allItemsRemoveButton){
+        if(allItemsRemoveButton){
+            for (var i = 0; i < allItemsRemoveButton.length; i++) {
+                var thisItem = allItemsRemoveButton[i].closest(".listing__table--item");
+
+                WATO.qs(".small-4 a", thisItem).addEventListener('click', function(){
+                    pushGoal("clickProduktbild", true);
+                });
+
+                WATO.qs(".h4", thisItem).addEventListener('click', function(){
+                    pushGoal("HLCart", true);
+                });
+
+                WATO.qs(".js-entry-edit-save", nutzeEinstellungen).addEventListener('click', function(){
+                    pushGoal("nutzeEinstellungen", true);
+                });
+            }
+        }
+    });
+
+    WATO.elem('#hessnaturVoucherForm .quickadd__button', function(quickadd__button){
+        if(quickadd__button){
+            quickadd__button[0].addEventListener('click', function(){
+                pushGoal("aktionscode", true);
+            });
+        }
+    });
+
+    
 
 })(new window.WATO());
