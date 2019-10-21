@@ -39,7 +39,12 @@
         for (var l = 0; l < allSizes.length; l++) {
             var currentProductSize = allSizes[l],
                 isAvailable = currentProductSize.available,
-                isSelected = currentProductSize.sizeCode === prodID.substring(7,10);
+                isSelected = currentProductSize.sizeCode === prodID.substring(7,11);
+                
+                // console.log('isSelected: ', isSelected);
+                // console.log('prodID: ', prodID);
+                // console.log('prodID.substring(7,10): ', prodID.substring(7,11));
+                // console.log('currentProductSize.sizeCode: ', currentProductSize.sizeCode);
             
             dropDownSize += '<option '+
                 ((!isAvailable) && isSelected ? 'class="kk_red"' : '')+
@@ -106,19 +111,20 @@
                 finalCombination = "",
                 warningTheSizeHasBeenChanged = false;
 
-            console.log('thisColor: ', thisColor);
-            console.log('j === allColors.colors.length: ', j === allColors.colors.length-1);
+            // console.log('thisColor: ', thisColor);
+            // console.log('j === allColors.colors.length: ', j === allColors.colors.length-1);
 
             // Der Sonderfall "00" ist nur für Matratzen denn dort wird nicht nach Farbe sondern nach Material unterschieden
             if(thisColor.colorCode === "00" || thisColor.colorCode === colorSelector.value){
 
-                console.log('thisColor.sizes: ', thisColor.sizes);
+                // console.log('thisColor.sizes: ', thisColor.sizes);
                 for (var k = 0; k < thisColor.sizes.length; k++) {
-                    console.log('thisColor.sizes[k].sizeCode: ', thisColor.sizes[k].sizeCode);
-                    console.log('productID: ', productID);
+
+                    // console.log('thisColor.sizes[k].sizeCode: ', thisColor.sizes[k].sizeCode);
+                    // console.log('productID: ', productID);
 
                     var thisSizeColorCombination = thisColor.sizes[k],
-                        isKorrektCombination = thisSizeColorCombination.sizeCode === productID.substring(7,10);
+                        isKorrektCombination = thisSizeColorCombination.sizeCode === productID.substring(7,11);
 
                     if(k === thisColor.sizes.length-1 && (!isKorrektCombination)){
                         thisSizeColorCombination = thisColor.sizes[0];
@@ -134,7 +140,7 @@
                             statusText = thisSizeColorCombination.availabilityText,
                             tempClasses = "label js-availability-status ";
 
-                        console.log('thisSizeColorCombination: ', thisSizeColorCombination);
+                        // console.log('thisSizeColorCombination: ', thisSizeColorCombination);
 
                         statusBar.innerHTML = statusText;
                         
@@ -179,21 +185,21 @@
                     }
                 }
                 
-                console.log('finalCombination: ', finalCombination);
+                // console.log('finalCombination: ', finalCombination);
 
                 WATO.qs('input[name="variantCode"]', parentForm).value = finalCombination;
 
                 
                 var siteDropdown = WATO.qs('.item__size', parentForm);
-                
-                if(warningTheSizeHasBeenChanged){
+
+                // Das Dropdown für Größen wird hier neu gebaut
+                siteDropdown.innerHTML = getSizeOptions(thisColor.sizes, finalCombination);
+
+                if(warningTheSizeHasBeenChanged && !WATO.qs(".kk_red", parentForm)){
                     addClass(siteDropdown.parentNode, "kk_warning");
                 }else{
                     removeClass(siteDropdown.parentNode, "kk_warning");
                 }
-
-                // Das Dropdown für Größen wird hier neu gebaut
-                siteDropdown.innerHTML = getSizeOptions(thisColor.sizes, finalCombination);
 
                 break;
             }
@@ -201,15 +207,23 @@
     }
 
     function changeSize(e) {
+        // console.log("changeSize");
         // Ändern der Produktgröße
         var parentForm = e.target.closest("form"),
             variantID = WATO.qs('input[name="variantCode"]', parentForm),
             sizeSelect = WATO.qs('.item__size', parentForm),
             newVariantID = variantID.value.substring(0,7) + sizeSelect.value;
+            
+        // console.log('newVariantID: ', newVariantID);
+        // console.log('sizeSelect: ', sizeSelect);
+        // console.log('sizeSelect.value: ', sizeSelect.value);
+        // console.log('variantID.value.substring(0,7): ', variantID.value.substring(0,7));
         
         variantID.value = newVariantID;
 
+        // console.log('sizeSelect.parentNode: ', sizeSelect.parentNode);
         removeClass(sizeSelect.parentNode, "kk_warning");
+        // console.log('sizeSelect.parentNode: ', sizeSelect.parentNode.classList);
 
         // Die angezeigten Produktinfos werden aktualisiert
         updateAllInfosForThisProduct(parentForm, newVariantID);
@@ -284,11 +298,11 @@
     }
 
     // Weitere Artikel hinzufügen Box nach unten verschoben
-    WATO.elem('.js_backstopWrapper > .bgColor-super-light-gray', function(addOtherArticle){
+    WATO.elem('#hessnaturQuickAddForm', function(addOtherArticle){
         if(addOtherArticle){
             WATO.elem('.js_backstopWrapper > .h-mediumOffset-bottom-inner:not(.yCmsContentSlot)', function(bottomButtons){
                 if(bottomButtons){
-                    bottomButtons[0].insertAdjacentElement('afterend', addOtherArticle[0]);
+                    bottomButtons[0].insertAdjacentElement('afterend', addOtherArticle[0].parentNode);
                 }
             });
         }
@@ -353,8 +367,8 @@
                         // console.log('thisItem: ', thisItem);
 
                         httpGetAsync("https://www.hessnatur.com"+WATO.qs("form", thisItem).getAttribute("data-product-json-url"), function(uri, data){
-                            console.log("-------------------");
-                            console.log('uri: ', uri);
+                            // console.log("-------------------");
+                            // console.log('uri: ', uri);
                             // console.log('data: ', data);
 
                             allProductsInfos[String(data.code)] = data;
@@ -369,9 +383,9 @@
                                         sizeDropdown = WATO.qs(".item__size", thisProd),
                                         colorDropdown = WATO.qs(".item__color", thisProd);
 
-                                    console.log('thisProd: ', thisProd);
-                                    console.log('sizeDropdown: ', sizeDropdown);
-                                    console.log('colorDropdown: ', colorDropdown);
+                                    // console.log('thisProd: ', thisProd);
+                                    // console.log('sizeDropdown: ', sizeDropdown);
+                                    // console.log('colorDropdown: ', colorDropdown);
 
                                     // Alle Farben des Produkts
                                     for (var k = 0; k < data.colors.length; k++) {
@@ -555,9 +569,9 @@
     });
 
     // Gutschein und Aktionscode
-    WATO.elem('.row + .row + .bgColor-super-light-gray', function(actionCode){
+    WATO.elem('#hessnaturVoucherForm', function(actionCode){
         if(actionCode){
-            actionCode = actionCode[0];
+            actionCode = actionCode[0].parentNode.parentNode;
 
             // Aktionscodebox
             addClass(actionCode, 'kk_actionCode');
@@ -587,7 +601,7 @@
                         '<img src="'+imgPath+'headerlabel.png">'+
                         '<h4>Zeitloses Design seit 1976</h4>'+
                         '<ul>'+
-                            '<li><b>Natürliche Materialen zum Wohlfühlen</b><br>Unsere Artikel haben einen besonders hohen Tragekomfort</li>'+
+                            '<li><b>Natürliche Materialien zum Wohlfühlen</b><br>Unsere Artikel haben einen besonders hohen Tragekomfort</li>'+
                             '<li><b>Qualitativ hochwertig verarbeitet</b><br>Alle unsere Artikel sind absolut frei von Schadstoffen</li>'+
                             '<li><b>Wir übernehmen Verantwortung</b><br>Faire und zertifizierte ökologische Standards in der Produktion</li>'+
                         '</ul>'+
