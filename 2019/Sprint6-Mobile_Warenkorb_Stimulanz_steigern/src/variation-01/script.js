@@ -8,6 +8,23 @@
  * @name Variation 01
  * @description
  */
+
+// window.mzOptions = {
+//     onZoomReady: function() {
+//         console.log('onReady', arguments[0]);
+//     },
+//     onUpdate: function() {
+//         console.log('onUpdated', arguments[0], arguments[1], arguments[2]);
+//     },
+//     onZoomIn: function() {
+//         console.log('onZoomIn', arguments[0]);
+//     },
+//     onZoomOut: function() {
+//         console.log('onZoomOut', arguments[0]);
+//     }
+// };
+
+
 (function(WATO, window, documentElement) {
     "use strict";
 
@@ -319,6 +336,18 @@
         }
     });
 
+    // document.documentElement.addEventListener('click', function(e){
+    //     try {
+    //         var clickClasses = e.target.classList;
+    //         console.log('clickClasses: ', clickClasses);
+    //         if(clickClasses.contains("mz-image-stage") || clickClasses.contains("mz-button-close")){
+    //             pushGoal("clickProduktbild");
+    //         }
+    //     } catch (error) {
+    //         console.log('Error: ', error);
+    //     }
+    // });
+
     WATO.ajax("/de/cart/update", function(url, responseText) {
         // console.log('responseText: ', responseText);
         if(responseText.indexOf("Der Artikel wurde aktualisiert.") !== -1){
@@ -416,69 +445,7 @@
                             } catch (error) {
                                 console.log('Error: ', error);
                             }
-                        })
-
-                        // window.fetch("https://www.hessnatur.com"+WATO.qs("form", thisItem).getAttribute("data-product-json-url")).then(
-                        //     function(response) {
-                        //         // if (response.status !== 200) {
-                        //         //     console.log('Looks like there was a problem. Status Code: ' +
-                        //         //     response.status);
-                        //         //     return;
-                        //         // }
-                        //         response.json().then(function(data) {
-                        //             console.log("-------------------");
-                        //             console.log(data);
-
-                        //             allProductsInfos[String(data.code)] = data;
-
-                        //             try {
-                        //                 if(data){
-                
-                        //                     console.log('data.shortUrl: ', data.shortUrl);
-                        //                     var dropDownColor = '',
-                        //                         thisProd = WATO.qs('form[data-product-json-url^="'+data.shortUrl+'"]'),
-                        //                         prodID = WATO.qs('input[name="variantCode"]', thisProd).value,
-                        //                         sizeDropdown = WATO.qs(".item__size", thisProd),
-                        //                         colorDropdown = WATO.qs(".item__color", thisProd);
-
-                        //                     console.log('thisProd: ', thisProd);
-                        //                     console.log('sizeDropdown: ', sizeDropdown);
-                        //                     console.log('colorDropdown: ', colorDropdown);
-
-                        //                     // Alle Farben des Produkts
-                        //                     for (var k = 0; k < data.colors.length; k++) {
-                        //                         var colors = data.colors[k],
-                        //                             isSelected = colors.sizes[0].code.substring(5,7) === prodID.substring(5,7);
-                    
-                        //                         // Dropdown für Farbauswahl, inclusive Vorselectierung der richtigen Farbe
-                        //                         if(colorDropdown){
-                        //                             dropDownColor += '<option value="'+colors.colorCode+'" data-img="'+colors.modelImageUrl+'"'+
-                        //                                     ' data-code="'+colors.code+'" data-price="'+colors.formattedPrice+'" '+
-                        //                                     (isSelected ? 'selected="selected"' : "")+'>'+ // Hier wird die Vorselektierung gesetzt
-                        //                                     colors.color+' ('+colors.colorCode+')</option>';
-                        //                         }
-                
-                        //                         if(isSelected){
-                        //                             sizeDropdown.innerHTML = getSizeOptions(colors.sizes, prodID);
-                        //                         }
-                        //                     }
-                                            
-                        //                     if(colorDropdown){
-                        //                         colorDropdown.innerHTML = dropDownColor;
-                        //                         colorDropdown.addEventListener('change', changeColor);
-                        //                     }
-                
-                        //                     // Interaktion mit dem Größenänderungsbutton
-                        //                     sizeDropdown.addEventListener('change', changeSize);
-                        //                 }
-                        //             } catch (error) {
-                        //                 console.log('Error: ', error);
-                        //             }
-                        //         });
-                        //     }
-                        // ).catch(function(err) {
-                        //     console.log('Fetch Error: ', err);
-                        // });
+                        });
 
 
                         // Verfügbarkeit vor das Bild verschoben
@@ -502,12 +469,16 @@
                         }
 
                         // MagicZoom
-                        addClass(itemImg.parentNode, 'MagicZoom');
-                        itemImg.parentNode.addEventListener('click', function(){
+                        var imgParent = itemImg.parentNode;
+                        addClass(imgParent, 'MagicZoom');
+                        imgParent.setAttribute("data-options","zoomOn: click;");
+                        
+                        imgParent.addEventListener('touchstart', function(){
                             pushGoal("clickProduktbild");
                         });
-                        // itemImg.parentNode.setAttribute("data-options", "onZoomIn: function() {console.log('onZoomIn', arguments[0]);}");
-                        itemImg.parentNode.setAttribute("href", itemImgSrc.replace("hyb_redes_cart_overview", "generalfeed_medium"));
+
+                        // imgParent.setAttribute("data-options", "onZoomIn: function() {console.log('onZoomIn', arguments[0]);}");
+                        imgParent.setAttribute("href", itemImgSrc.replace("hyb_redes_cart_overview", "generalfeed_medium"));
 
                         var removeAndQuantity = WATO.qs(".kk_removeAndQuantity", thisItem);
 
@@ -539,6 +510,7 @@
 
                     // Fallback falls MagicZoom die Zoom Funktion der Bilder nicht direkt initialisiert hat
                     setTimeout(function(){
+
                         if(window.MagicZoom){
                             window.MagicZoom.refresh();
                         }
