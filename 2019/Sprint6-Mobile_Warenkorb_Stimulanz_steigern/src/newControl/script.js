@@ -32,7 +32,7 @@
                     pushGoal("HLCart", true);
                 });
 
-                WATO.qs(".js-entry-edit-save", nutzeEinstellungen).addEventListener('click', function(){
+                WATO.qs(".js-entry-edit-save", thisItem).addEventListener('click', function(){
                     pushGoal("nutzeEinstellungen", true);
                 });
             }

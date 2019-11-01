@@ -426,7 +426,7 @@
                                             dropDownColor += '<option value="'+colors.colorCode+'" data-img="'+colors.modelImageUrl+'"'+
                                                     ' data-code="'+colors.code+'" data-price="'+colors.formattedPrice+'" '+
                                                     (isSelected ? 'selected="selected"' : "")+'>'+ // Hier wird die Vorselektierung gesetzt
-                                                    colors.color+' ('+colors.colorCode+')</option>';
+                                                    colors.color+'</option>'; //('+colors.colorCode+')
                                         }
 
                                         if(isSelected){
