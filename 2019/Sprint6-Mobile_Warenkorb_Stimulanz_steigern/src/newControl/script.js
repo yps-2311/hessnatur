@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -10,6 +10,8 @@
  */
 (function(WATO) {
     "use strict";
+
+    window.iridion.econda.push(["Sprint06", "V0"]);
 
     function pushGoal(key, sendOnNextPageView){    
         if(sendOnNextPageView){

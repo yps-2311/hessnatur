@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -27,6 +27,8 @@
 
 (function(WATO, window, documentElement) {
     "use strict";
+
+    window.iridion.econda.push(["Sprint06", "V1"]);
 
     function pushGoal(key, sendOnNextPageView){    
         if(sendOnNextPageView){
@@ -306,7 +308,7 @@
                 try {
                     callback(theUrl, JSON.parse(xmlHttp.responseText));
                 } catch (error) {
-                    console.log('Error: ', error);
+                    // console.log('Error: ', error);
                 }
             }
         };
