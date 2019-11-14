@@ -11,6 +11,8 @@
 (function(WATO, window) {
     "use strict";
 
+    console.log(123);
+
     // Element entfernen
     function removeObject(el) {
         if(el){
