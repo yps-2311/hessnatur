@@ -4,7 +4,6 @@
 // window.iridion.tracking = window.controllerName || window.document.location.pathname;
 
 
-console.log("kk_ec_Test");
 
 /**
  * econdaX
@@ -21,38 +20,41 @@ window.iridion.econdaX = (function(window){
         window.iridion.push(['goal', 'error_econda']);
     }
 
-    function sendEcondaTracking() {
-
+    function sendEcondaTracking(tracking) {
         try {
-            for(var i = 0; i < data.length; i++){
-                window.emos3.send(data[i]);
+            console.log('window.emospro: ', window.emospro);
+            console.log('window.emospro.siteid: ', window.emospro.siteid);
+            console.log('window.emospro.content: ', window.emospro.content);
+
+            data.push({
+                siteID: window.emospro.siteid,
+                content: window.emospro.content,
+                abtest: [tracking]
+            });
+
+            console.log('emos3Status: ', emos3Status);
+            if(emos3Status){
+                for(var i = 0; i < data.length; i++){
+                    window.emos3.send(data[i]);
+                }
+                data = [];
             }
-            data = [];
         } catch(e) {
+            console.log("error1: ", e);
             pushErrorGoal();
         }
     }
 
     function checkStatus() {
-        if(typeof window.emos3 !== "undefined" && typeof window.emos3.send === "function" && typeof window.emospro !== "undefined"){
+        if(typeof window.emos3 !== "undefined" && typeof window.emos3.send === "function" && 
+            typeof window.emospro !== "undefined" && typeof window.emospro.siteid !== "undefined" && typeof window.emospro.content !== "undefined"){
             emos3Status = true;
             return true;
         }
         return false;
     }
 
-    if(checkStatus()){
-        sendEcondaTracking();
-    } else {
-
-        var econdaInterval  = window.setInterval(function(){
-            if(checkStatus()){
-                clearInterval(econdaInterval);
-                sendEcondaTracking();
-            }
-        }, 20);
-    }
-
+    
     return {
         push: function(tracking){
             try {
@@ -62,17 +64,21 @@ window.iridion.econdaX = (function(window){
                 //     content: (siteTitle ? "HTML-Title/" + siteTitle: "content"),
                 //     abtest:  [tracking]
                 // });
-                data.push({
-                    siteID: window.emospro.siteid,
-                    content: window.emospro.content,
-                    abtest: [tracking]
-                });
 
-                if(emos3Status){
-                
-                    sendEcondaTracking();
+                if(checkStatus()){
+                    sendEcondaTracking(tracking);
+                } else {
+                    var econdaInterval  = window.setInterval(function(){
+                        console.log("econdaInterval");
+                        if(checkStatus()){
+                            clearInterval(econdaInterval);
+                            sendEcondaTracking(tracking);
+                        }
+                    }, 20);
                 }
+
             } catch(e) {
+                console.log("error2: ", e);
                 pushErrorGoal();
             }
         }
