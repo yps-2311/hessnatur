@@ -1,0 +1,68 @@
+/* IMPORT VAR LESS FILE */
+/* DEFINE VARS */
+/* IMPORT GLOBAL LESS FILES */
+/* IMPORT VAR LESS FILE */
+/* DEFINE VARIATION CSS */
+/** STEP IHRE DATEN **/
+.kk-register #registerForm > .row > .columns:nth-child(2),
+.kk-guest #registerForm > .row > .columns:nth-child(2),
+.kk-register #registerForm > .row > .columns:nth-child(5),
+.kk-guest #registerForm > .row > .columns:nth-child(5),
+.kk-register #registerForm > .row > .columns:nth-child(6),
+.kk-guest #registerForm > .row > .columns:nth-child(6) {
+  display: none;
+}
+.kk-guest #registerForm > .row > .columns:nth-child(12),
+.kk-guest #registerForm > .row > .columns:nth-child(13),
+.kk-guest #registerForm > .row > .columns:nth-child(14),
+.kk-guest #registerForm > .row > .columns:nth-child(15) {
+  display: none;
+}
+/** LOADER **/
+#kk-loader {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  background: #fff;
+}
+#kk-loader .lds-ring {
+  position: absolute;
+  margin-left: -40px;
+  top: 10%;
+  left: 50%;
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+#kk-loader .lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #393939 transparent transparent transparent;
+}
+#kk-loader .lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+#kk-loader .lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+#kk-loader .lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
