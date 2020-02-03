@@ -51,7 +51,7 @@
 
     
     /**
-     * INIT
+     * ROUTING
      */
     // PAGE: LOGIN
     if(PATH === "/de/login/checkout"){
@@ -85,7 +85,7 @@
 
     // PAGE: Adressen
     }else if(checkPATH("addresses/add-delivery-address")){
-        
+
         console.log("PAGE: Adressen");
         
         // skip page
@@ -126,67 +126,14 @@
 
     // PAGE: Zahlungsart
     } else if(checkPATH("payment/add-payment-method")){
+
         console.log("PAGE: Zahlungsart");
         
 
     // PAGE: Zusammenfassung
     } else if(checkPATH("summary")){
+        
         console.log("PAGE: Zusammenfassung");
 
     }
-
-
-
-    /**
-     * CSS Prefix 
-     *
-    document.documentElement.classList.add('specific-experiment-class');
-    */
-
-
-    /**
-     * EXAMPLE - POLLING
-     *
-    WATO.elem(".btn-default", function(btnDefault) {
-
-        if(btnDefault) {
-
-        }
-    });
-
-    // POLLING MIT FUNKTION
-    WATO.elem(function(){return window.numTest === 123;}, function(funcCallback) {
-
-        if(funcCallback){
-
-        }
-    });
-    */
-
-
-    /**
-     * EXAMPLE - MUTATION OBSERVER
-     * 
-     * MUSS ERST IN WATO AKTIVIERT WERDEN
-     *
-    // INIT MUTATION OBSERVER
-    WATO.initObserver(function(error){
-
-        console.log(error);
-    });
-
-    // FIND ELEMENT
-    WATO.observer('.col-md-4', function(cols){
-
-    });
-    */
-
-
-    /**
-     * DOM READY
-     *
-    WATO.ready(function() {
-
-    });
-    */
 })(new window.WATO());
