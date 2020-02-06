@@ -550,7 +550,7 @@
      * @author Lukas Dziambor
      */
     
-	window.WATO.prototype.xhr_post = function(url, payload, scopedData, callback) {
+	window.WATO.prototype.xhr_post = function(url, payload, callback, scopedData) {
         var request = new XMLHttpRequest();
         request.open('POST', url, true);
         
