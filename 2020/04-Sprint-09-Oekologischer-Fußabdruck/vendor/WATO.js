@@ -13,8 +13,13 @@
  * WATO.exclude 		 ==> Punchout-Funktion
  * WATO.storageAvailable ==> Überprüft ob der LocalStorage verfügbar ist
  * WATO.reload           ==> Führt einen Reload aus (löscht dabei den #hash, als Workaround für manche Browser)
+ * WATO.offsetY          ==> Gibt die Y-Position eines Elements zurück
+ * WATO.scrollTo         ==> Scrollt bis zum Übergebenen Pixel (von oben)
+ * WATO.event            ==> EventListener setzen
+ * WATO.xhr_get          ==> Ajax GET Request
+ * WATO.xhr_post          ==> Ajax POST Request
  */
-(function(window, document) {
+(function (window, document) {
     "use strict";
 
     if (window.WATO === undefined) {
@@ -26,7 +31,7 @@
          * @author Max Vith
          * @see {@link http://usejsdoc.org/tags-param.html|JSDoc}, {@link http://www.w3schools.com/js/js_strict.asp|JavaScript Use Strict}
          */
-        window.WATO = function() {};
+        window.WATO = function () { };
     }
 
     /**
@@ -44,7 +49,7 @@
      *
      * @return {object} NodeList object - Returns all elements in the document that matches a specified CSS selector(s), as a static NodeList object.
      */
-    window.WATO.prototype.elem = function(waitFor, callback, timeout, self, time) {
+    window.WATO.prototype.elem = function (waitFor, callback, timeout, self, time) {
 
         var _self = this || self,
             _time = time || Date.now(),
@@ -81,19 +86,19 @@
      * @param {func} callback - Callback function if the node was found
      * @param {error} callback - Error callback funciton if no node was found
      */
-    window.WATO.prototype.qs = function(selector, parent, callback, error) {
+    window.WATO.prototype.qs = function (selector, parent, callback, error) {
 
         var elem = (parent ? parent : document).querySelector(selector);
-        
-        if(elem){
 
-            if(typeof callback === "function"){
+        if (elem) {
+
+            if (typeof callback === "function") {
 
                 callback(elem);
             }
         } else {
 
-            if(typeof error === "function"){
+            if (typeof error === "function") {
 
                 error();
             }
@@ -113,19 +118,19 @@
      * @param {func} callback - Callback function if the node was found
      * @param {error} callback - Error callback funciton if no node was found
      */
-    window.WATO.prototype.qsa = function(selector, parent, callback, error) {
+    window.WATO.prototype.qsa = function (selector, parent, callback, error) {
 
         var elem = (parent ? parent : document).querySelectorAll(selector);
-        
-        if(elem){
 
-            if(typeof callback === "function"){
+        if (elem) {
+
+            if (typeof callback === "function") {
 
                 callback(elem);
             }
         } else {
 
-            if(typeof error === "function"){
+            if (typeof error === "function") {
 
                 error();
             }
@@ -142,10 +147,10 @@
      *
      * @param {function} callback
      */
-	window.WATO.prototype.ready = function(callback) {
+    window.WATO.prototype.ready = function (callback) {
 
         // http://youmightnotneedjquery.com/ IE9+
-        if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
+        if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
 
             callback();
         } else {
@@ -433,7 +438,7 @@
 	    }
 	};
     */
-    
+
     /**
      * @function reload
      * @memberOf WATO
@@ -446,7 +451,7 @@
         location.href=location.href.split('#')[0];
 	};
     */
-    
+
     /**
      * @function offsetY
      * @memberOf WATO
@@ -471,7 +476,7 @@
         return curtop;
 	};
     */
-    
+
     /**
      * @function scrollTo
      * @memberOf WATO
@@ -508,5 +513,106 @@
         };
         animateScroll();
 	};
-	*/
+    */
+
+    /**
+     * @function event
+     * @memberOf WATO
+     *
+     * @param {node} element - DOM Node die den Listener erhalten soll
+     * @param {string} - Eventtype z.B. click
+     * @param {function} callback - Auszuführende Funktion bei Trigger.
+     * 
+     * @author Lukas Dziambor
+     */
+    /*
+	window.WATO.prototype.event = function(element, type, callback){
+        element.addEventListener(type, callback);
+	};
+    */
+
+    /**
+     * @function xhr_get
+     * @memberOf WATO
+     *
+     * @param {string} url - URL die angefragt werden soll
+     * @param {function} callback - Auszuführende Funktion nachdem der Request erfolgreich beendet wurde.
+     * @param {object} scopedData - Daten die im Scope des Callbacks verfügbar sein sollen
+     * 
+     * @author Lukas Dziambor
+     */
+
+    window.WATO.prototype.xhr_get = function (url, callback, scopedData) {
+        var request = new XMLHttpRequest();
+        request.open('GET', url, true);
+
+        request.onload = function () {
+            if (this.status >= 200 && this.status < 400) {
+                try {
+                    var data = JSON.parse(this.response);
+                    callback(data, scopedData);
+                }
+                catch (e) {
+                    callback(false);
+                }
+            } else {
+                // We reached our target server, but it returned an error
+                callback(false);
+            }
+        };
+
+        request.onerror = function () {
+            // There was a connection error of some sort
+            callback(false);
+        };
+        // request.withCredentials = true;
+        request.send();
+    };
+
+
+    /**
+     * @function xhr_post
+     * @memberOf WATO
+     *
+     * @param {string} url - URL die angefragt werden soll
+     * @param {string} payload - POST parameter als key=value pair mit & verknüpft
+     * @param {function} callback - Auszuführende Funktion nachdem der Request erfolgreich beendet wurde.
+     * @param {string} contentType - RequestHeader Content-Type -> default 'application/x-www-form-urlencoded'
+     * @param {object} scopedData - Daten die im Scope des Callbacks verfügbar sein sollen
+     * 
+     * @author Lukas Dziambor
+     */
+    /*
+	window.WATO.prototype.xhr_post = function(url, payload, callback, contentType, scopedData) {
+        var request = new XMLHttpRequest();
+
+        contentType = contentType || 'application/x-www-form-urlencoded';
+
+        request.open('POST', url, true);
+        
+        request.onload = function() {
+          if (this.status >= 200 && this.status < 400) {
+            try {
+                var data = JSON.parse(this.response);
+                callback(data, scopedData);
+            }
+            catch(e) {
+                callback(false);    
+            }
+          } else {
+                // We reached our target server, but it returned an error
+                callback(false);
+          }
+        };
+        
+        request.onerror = function() {
+            // There was a connection error of some sort
+            callback(false);
+        };
+        request.withCredentials = true;
+        request.setRequestHeader('Content-Type', contentType);
+        request.send(payload);
+    };
+    */
+
 })(window, document);
