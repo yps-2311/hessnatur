@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -15,24 +15,81 @@
 
     if(document.URL.indexOf('/p/') !== -1) {
         // Productpage
+
+        var kk_pi_cat = false,
+        getCat = function(so_id){
+            var ret = '';
+            switch(so_id) {
+                case "SO-001":
+                case "SO-015":
+                case "SO-018":
+                case "SO-020":
+                case "SO-021":
+                case "SO-030":
+                case "SO-040":
+                        ret = 'damen';
+                    break;
+
+                case "SO-002":
+                case "SO-008":
+                case "SO-016":
+                case "SO-031":
+                case "SO-041":
+                        ret = 'herren';
+                    break;
+
+                case "SO-004":
+                case "SO-032":
+                case "SO-042":
+                        ret = 'kids';
+                    break;
+
+                case "SO-005":
+                        ret = 'baby';
+                    break;
+
+                case "SO-007":
+                        ret = 'home';
+                    break;
+            }
+            return ret;
+        };
+
+
+
+        WATO.elem(function(){
+            try {
+                kk_pi_cat = window.pi.category_id;
+                return !!kk_pi_cat;
+            }
+            catch(e) {}
+            return false;
+        }, function(pi_found){
+            if(pi_found) {
+                console.log('kk_pi_cat: '+kk_pi_cat);
+            }
+        });
+
         WATO.ajax('cart/add', function(){
             try {
                 var _ls = JSON.parse(localStorage.getItem('kk_cats') || '{}'),
-                _group = window.emosSelectVariantEventPrototype.group.split('/')[0],
+                // _group = window.emosSelectVariantEventPrototype.group.split('/')[0],
+                _group = getCat(kk_pi_cat),
                 _thisGroup = _ls[_group];
-    
+                
                 console.log(_group);
-    
-                if(!_thisGroup) {
-                    _thisGroup = 1;
+                if(_group !== '') {
+                    if(!_thisGroup) {
+                        _thisGroup = 1;
+                    }
+                    else {
+                        _thisGroup++;
+                    }
+        
+                    _ls[_group] = _thisGroup;
+        
+                    localStorage.setItem('kk_cats', JSON.stringify(_ls));
                 }
-                else {
-                    _thisGroup++;
-                }
-    
-                _ls[_group] = _thisGroup;
-    
-                localStorage.setItem('kk_cats', JSON.stringify(_ls));
             }
             catch(e) {}
         });

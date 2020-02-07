@@ -35,10 +35,17 @@
 		console.log(variant);
 
 		function price2Float(str) {
-			return parseFloat(str.replace('€ ', '').replace('.', ',').replace(',', '.'));
+			return parseFloat(str.replace('€ ', '').replace('.', '').replace(',', '.'));
 		}
 		function float2Price(num) {
-			return num.toFixed(2).replace('.', ',');
+			var _temp = num.toFixed(2).replace('.', ','),
+			_pos = _temp.length - 6;
+
+			if(_pos > 0) {
+				_temp = _temp.substring(0, _pos)+'.'+_temp.substring(_pos);
+			}
+
+			return _temp;
 		}
 	
 		// add blue alert at top
