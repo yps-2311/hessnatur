@@ -29,16 +29,19 @@
                             '<div class="h3">Wir haben dieses Produkt nachhaltig für Sie <br/>produziert. Sparen Sie mit Ihrem Kauf:</div>' +
                             '<div class="row">' +
                             '<div class="column large-4 kk09_eco__point">' +
+                            '<div class="kk09_eco__icon water"></div>' +
                             '<div class="kk09_eco__amount">' + ecoData.water_savings_in_liter + ' l</div>' +
                             '<strong>Wasser*</strong>' +
                             '<span>Wir setzen durchweg auf wassersparende und -schonende Verfahren.</span>' +
                             '</div>' +
                             '<div class="column large-4 kk09_eco__point">' +
+                            '<div class="kk09_eco__icon co2"></div>' +
                             '<div class="kk09_eco__amount">' + ecoData.carbon_dioxide_savings_in_gram + ' kg</div>' +
                             '<strong>CO2*</strong>' +
                             '<span>Wir nutzen so wenig Strom wie möglich und nur aus nachhaltigen Energiequellen.</span>' +
                             '</div>' +
                             '<div class="column large-4 kk09_eco__point">' +
+                            '<div class="kk09_eco__icon earth"></div>' +
                             '<div class="kk09_eco__amount">' + ecoData.clean_earth_in_square_meter + ' m<sup>2</sup></div>' +
                             '<strong>Boden/Erde*</strong>' +
                             '<span>Wir verwenden ausschließlich Rohstoffe aus ökologischer Landwirtschaft.</span>' +
