@@ -31,8 +31,15 @@
 
 	WATO.prototype.s8 = function(variant){
 		var _self = this;
+		variant = variant || 0;
 
 		console.log(variant);
+
+		_self.exclude(1023, _self.reload);
+
+		if(variant === 0) {
+			return false;
+		}
 
 		function price2Float(str) {
 			return parseFloat(str.replace('€ ', '').replace('.', '').replace(',', '.'));
@@ -86,7 +93,7 @@
 	
 						_oldPriceWrapper.classList.add('kk_price');
 						
-						_oldPriceWrapper.nextElementSibling.insertAdjacentHTML('afterend', ''+
+						_oldPriceWrapper.parentElement.insertAdjacentHTML('beforeend', ''+
 							'<div class="kk_save">€ '+float2Price(_save)+' Ersparnis</div>'
 						);
 	
@@ -207,9 +214,6 @@
 
 								for(var s = 0; s < _sizeCount; s++) {
 									var thisSize = _sizes[s];
-
-									console.log(sizesHTML === '');
-									console.log(upsellPreselect[promo] === thisSize.code);
 
 									_sizesHTML += '<option value="'+thisSize.code+'" '+((sizesHTML === '' && upsellPreselect[promo] === thisSize.code) ? 'selected="selected"' : '' )+'>'+thisSize.size+'</option>';
 								}

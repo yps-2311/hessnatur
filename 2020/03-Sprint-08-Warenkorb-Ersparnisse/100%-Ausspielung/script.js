@@ -16,6 +16,8 @@
     if(document.URL.indexOf('/p/') !== -1) {
         // Productpage
 
+        console.log('PDS');
+
         var kk_pi_cat = false,
         getCat = function(so_id){
             var ret = '';
@@ -59,7 +61,10 @@
 
         WATO.elem(function(){
             try {
-                kk_pi_cat = window.pi.category_id;
+                kk_pi_cat = window.pi.category_id || window.basketTrackingObject.category_id;
+
+                console.log(kk_pi_cat);
+
                 return !!kk_pi_cat;
             }
             catch(e) {}
