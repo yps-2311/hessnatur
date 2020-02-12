@@ -225,7 +225,7 @@
 							for(var p = 0; p < prod_variation_count; p++) {
 								var thisProd = prod_variations[p];
 
-								// if(thisProd.availabilityText === 'Sofort lieferbar') {
+								if(thisProd.availabilityIndex !== 100) {
 								if(init_img_url === '') {
 									init_img_url = thisProd.modelImageUrl || thisProd.articleImageUrl;
 									init_color_text = thisProd.color;
@@ -243,7 +243,7 @@
 										'<img itemprop="image" src="'+thisProd.colorUrl+'" alt="2312754" class="h-shape-circle">'+
 									'</a>'+
 								'</li>';
-								// }
+								}
 							}
 
 							kk_sum.parentElement.parentElement.parentElement.parentElement.insertAdjacentHTML('afterend', ''+
@@ -253,7 +253,7 @@
 											'<div class="medium-5" style="padding-right:67px;display:flex">'+
 												'<div id="kk_upsell_left">'+
 													'<p style="font-size:26px;line-height: normal;text-transform: uppercase; margin-bottom:23px">Glückwunsch, <br/>Sie sparen €&nbsp'+float2Price(_youSaved)+'!</p>'+
-													'<p style="font-size:15px; line-height: normal">Warum nicht einfach die Ersparnis nutzen und <br/>ein '+name+' für nur <b id="kk_price_left">€&nbsp;'+float2Price(init_price)+'</b> hinzufügen?</p>'+
+													'<p style="font-size:15px; line-height: normal">Warum nicht einfach die Ersparnis nutzen und <br/>ein '+((promo === '4266889') ? 'Paar '+name.replace('Socke', 'Socken') : name )+' für nur <b id="kk_price_left">€&nbsp;'+float2Price(init_price)+'</b> hinzufügen?</p>'+
 												'</div>'+
 											'</div>'+
 											'<div id="kk_upsell_right" class="medium-7">'+
