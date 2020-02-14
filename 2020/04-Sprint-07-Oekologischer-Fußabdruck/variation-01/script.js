@@ -14,6 +14,9 @@
     console.log('ÖKO!');
 
 
+    var windowHeight = (window.innerHeight || document.documentElement.clientHeight),
+        windowWidth = (window.innerWidth || document.documentElement.clientWidth);
+
     function formatNumber(num) {
         num = Math.round(num * 100) / 100;
         var num_parts = num.toString().split(".");
@@ -21,6 +24,20 @@
         return num_parts.join(",");
     }
 
+
+    // Check if user scrolled to Product Description
+    function checkScrollDepth() {
+        var ecoWrapper = WATO.qs('#kk07_ecological').getBoundingClientRect(),
+            vertInView = (ecoWrapper.top <= windowHeight) && ((ecoWrapper.top + ecoWrapper.height) >= 0),
+            horInView = (ecoWrapper.left <= windowWidth) && ((ecoWrapper.left + ecoWrapper.width) >= 0);
+        console.log('checkScrollDepth', vertInView && horInView);
+        if (vertInView && horInView) {
+
+            window.iridion.push(['goal', 'kk07_eco_seen']);
+
+            window.removeEventListener('scroll', checkScrollDepth);
+        }
+    }
 
     WATO.elem('.js-product-info .large-10', function (productInfo) {
         if (productInfo && window.kk07_ecoData) {
@@ -51,6 +68,9 @@
                 // '<a href="#">Mehr erfahren</a> ' +
                 '<small>*im Vergleich zur konventionellen Produktion</small></div>' +
                 '</div>');
+
+            window.addEventListener('scroll', checkScrollDepth);
+
         }
     });
 

@@ -10,8 +10,15 @@
 // label < #registerForm #register\.title {
 //     display: none;
 // }
+.kk-hide {
+    display: none !important;
+}
 
 .kk-login {
+    .js_backstopWrapper .h-mediumOffset-bottom-outer {
+        display: none;
+    }
+
     form {
         padding-top: 1.6rem !important;
         padding-bottom: .7rem !important;
@@ -61,7 +68,73 @@
             display: none;
         }
     }
+}
 
+.progressTracker {
+    .progressTracker__Item__content * {
+        font-size: 14px;
+        line-height: 18px;
+        font-weight: 400;
+    }
+
+    .item--done {
+        .progressTracker__Item__content {
+            background: #5FB609;
+            color: #fff;
+
+            strong {
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 18px;
+            }
+
+            &:after {
+                border-left-color: #5FB609;
+            }
+        }
+    }
+
+    .item--current {
+        .progressTracker__Item__content {
+            background: #f6f6f5;
+
+            strong {
+                font-weight: 700;
+                color: #393939;
+                font-size: 14px;
+                line-height: 18px;
+            }
+
+            &:after {
+                border-left-color: #f6f6f5;
+            }
+        }
+    }
+
+    .progressTracker__Item__content {
+        >:before {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        >* {
+            width: auto;
+            height: auto;
+        }
+    }
+
+}
+
+#kk07_address_option--wrapper {
+    strong {
+        display: block;
+        margin-bottom: .76923rem;
+    }
+
+    .h-largeOffset-bottom-inner {
+        margin-bottom: 0.5rem;
+    }
 }
 
 #loginForm {
@@ -97,17 +170,14 @@
     }
 }
 
-.kk-register #registerForm>.row>.columns,
-.kk-guest #registerForm>.row>.columns {
+// .kk-register #registerForm>.row>.columns,
+.kk-data #registerForm>.row>.columns {
 
     &:nth-child(2),
     &:nth-child(5),
     &:nth-child(6) {
         display: none;
     }
-}
-
-.kk-guest #registerForm>.row>.columns {
 
     &:nth-child(12),
     &:nth-child(13),
@@ -115,6 +185,122 @@
     &:nth-child(15) {
         display: none;
     }
+}
+
+.kk-address .progressTracker .collapse li:first-child,
+.kk-data .item--current {
+
+    .progressTracker__Item__content {
+        background: #5FB609;
+        color: #fff;
+
+        strong {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 18px;
+            color: #fff;
+        }
+
+        &:after {
+            border-left-color: #5FB609;
+        }
+    }
+}
+
+.kk-data {
+    .item--current {
+
+        +.progressTracker__Item {
+            .progressTracker__Item__content {
+                background: #f6f6f5;
+
+                span {
+                    font-weight: 700;
+                    font-size: 14px;
+                    line-height: 18px;
+                }
+
+                &:after {
+                    border-left-color: #f6f6f5;
+                }
+            }
+        }
+    }
+
+
+}
+
+.kk-address-modified {
+    #additional--address {
+        display: flex !important;
+    }
+
+    #addressForm {
+        >.medium-10 {
+            display: flex;
+            flex-wrap: wrap;
+
+            >div {
+                &:first-child {
+                    order: 2;
+                    margin-bottom: 0.5rem;
+
+                    .h4 {
+                        margin-top: 1.5rem;
+                    }
+
+                    .invisible {
+                        display: none;
+                    }
+                }
+
+                &:nth-child(2) {
+                    order: 0;
+
+                    fieldset {
+                        display: none;
+                    }
+
+                    .h4 {
+                        margin-bottom: 0;
+                    }
+                }
+
+                &:nth-child(3) {
+                    order: 1;
+                }
+
+                &:last-child {
+                    order: 3;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+#addressForm {
+
+    >.medium-10>div:first-child .columns {
+
+        &:nth-child(4),
+        &:nth-child(7),
+        &:nth-child(8) {
+            display: none;
+        }
+
+        &:nth-child(9) {
+            order: 1;
+        }
+
+        &:nth-child(13) {
+            order: 2;
+        }
+    }
+}
+
+.kk-address-hide body>*:not('#kk-loader') {
+    opacity: 0;
 }
 
 
@@ -172,6 +358,307 @@
 
         100% {
             transform: rotate(360deg);
+        }
+    }
+}
+
+#paymentDetailsForm {
+    ul {
+
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 0 2rem;
+
+        ~div {
+            padding: 0 1.5rem;
+        }
+
+        li {
+            width: 48%;
+            margin-bottom: 15px;
+
+            input {
+                display: none;
+
+                &:checked+label {
+                    background: #FFFFFF;
+                    border: 1px solid #5FB609;
+                    box-shadow: none;
+                }
+            }
+
+            label {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                width: 100%;
+                margin: 0;
+                font-weight: 700;
+                text-align: center;
+                background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.50) 0%, #EAE8E8 100%);
+                border: 1px solid #E3E3E3;
+                box-shadow: 0 2px 10px 0 rgba(51, 51, 51, 0.20);
+                border-radius: 3px;
+                height: 85px;
+                transition: all .3s ease;
+
+                &:before {
+                    content: '';
+                    display: block;
+                    background-position: center center;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    height: 45px;
+                }
+            }
+        }
+    }
+
+    .button.hollow {
+        border: 0;
+        display: inline-block;
+        width: auto;
+        padding: 0;
+        text-transform: none;
+        text-decoration: underline;
+        font-size: .9rem;
+        margin-top: 0.9rem;
+        margin-left: .25rem;
+
+        &:before {
+            content: 'Zurück ';
+        }
+    }
+}
+
+.kk-payment-option {
+    padding: 0 .76923rem;
+    margin-top: -2.5rem;
+
+    &:before {
+        content: '';
+        display: inline-block;
+        background-position: center center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        height: 45px;
+        margin-right: 15px;
+        position: relative;
+        top: 17px;
+    }
+}
+
+#invoice+label,
+.kk-invoice {
+    padding-bottom: 5px;
+
+    &:before {
+        background-image: url('@{s3}invoice-icon.png');
+        width: 24px;
+    }
+}
+
+#invoice+label:before {
+    height: 50px !important;
+}
+
+#paypal+label:before,
+.kk-paypal:before {
+    background-image: url('@{s3}paypal-icon.png');
+    width: 85px;
+}
+
+#creditcard+label:before,
+.kk-creditcard:before {
+    background-image: url('@{s3}visa-icon.png');
+    width: 107px;
+}
+
+#debitentry+label:before,
+.kk-debitentry:before {
+    background-image: url('@{s3}bank-icon.png');
+    width: 37px;
+}
+
+#checkoutContentPanel {
+    +.column {
+        display: none;
+
+        +.column .h4 {
+            margin-bottom: 1.5rem;
+
+            &:before {
+                content: 'Ihr ';
+            }
+        }
+    }
+
+    .align-top {
+        position: relative;
+        margin-bottom: 0;
+
+        .h4 {
+            margin-bottom: 2.4rem;
+        }
+
+        .align-self-bottom {
+            position: absolute;
+            right: 0;
+            top: 5px;
+
+            .button {
+                border: 0;
+                padding: 0;
+                margin: 0;
+                text-decoration: underline;
+                text-transform: capitalize;
+            }
+        }
+    }
+}
+
+.kk-summary {
+    .cart__productname {
+        font-family: Roboto;
+        font-size: 1.35rem;
+        line-height: 1.8rem;
+
+        +div {
+            margin-top: 0.35rem;
+            font-size: 11px;
+        }
+    }
+
+    img+div .js-availability-status {
+        width: 100%;
+        height: 38px;
+        padding: 1rem;
+        background: rgba(255, 255, 255, .8);
+        position: relative;
+        top: -38px;
+    }
+
+    img~.button {
+        position: relative;
+        top: -50px;
+        margin-left: 10px;
+    }
+
+}
+
+#checkoutSummaryForm1 {
+    .button.success {
+        &:before {
+            content: 'Jetzt ';
+        }
+    }
+}
+
+.kk-product-wrapper {
+    >div {
+        padding-bottom: 0;
+    }
+
+    .small-4 {
+
+        flex: 0 0 41.66667%;
+        max-width: 41.66667%;
+    }
+
+    .small-8 {
+        flex: 0 0 58.33333%;
+        max-width: 58.33333%;
+    }
+
+    .medium-4.small-text-left {
+        margin-bottom: 0;
+
+        .h-text-muted {
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 600;
+            color: #393939;
+
+            &:after {
+                content: ' ';
+                display: inline-block;
+                width: 5px;
+                height: 10px;
+                background: #fff;
+                position: relative;
+                left: -3px;
+                top: 0px;
+            }
+        }
+    }
+}
+
+.kk-price {
+    justify-content: flex-end;
+
+    +p {
+        text-align: right;
+    }
+
+    &.kk-sale-price {
+
+        justify-content: space-between;
+
+        +p {
+            text-align: left;
+        }
+    }
+}
+
+.kk-sums {
+    +div hr {
+        display: none;
+    }
+}
+
+.kk-delivery-cost {
+    margin-top: -3px;
+
+    .medium-8 {
+        visibility: hidden;
+    }
+
+    .totalPrice {
+        font-size: 12px;
+        font-weight: 400;
+
+        &:before {
+            content: '+ ';
+        }
+    }
+
+    .textLink {
+        font-size: 12px;
+        font-weight: 400;
+        text-transform: none;
+        padding: 0;
+        margin: 0;
+        margin-left: 3px;
+    }
+}
+
+.kk-total-sum {
+    +.row {
+        margin-top: -3px;
+
+        .medium-8 {
+            visibility: hidden;
+        }
+
+        .medium-4 {
+            font-size: 12px;
+            color: #A5A4A3;
+
+            &:before {
+                content: 'enthaltene MwSt. ';
+            }
         }
     }
 }
