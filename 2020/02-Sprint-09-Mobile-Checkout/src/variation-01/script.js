@@ -338,6 +338,9 @@
         WATO.elem('.cart__productname', function (productNames) {
             if (productNames) {
                 console.log('productname', productNames);
+
+                var savings = 0;
+
                 for (var i = 0; i < productNames.length; i++) {
                     var productWrapper = productNames[i].closest('.large-10'),
                         availability = productNames[i].nextElementSibling.nextElementSibling,
@@ -370,31 +373,36 @@
                     addClass(prices[0].parentElement, 'price');
                     if (prices.length > 1) {
                         addClass(prices[0].parentElement, 'sale-price');
+                        savings += parseFloat(prices[1].textContent.replace(',', '.').replace('€ ', '').replace('*', '')) - parseFloat(prices[0].textContent.replace(',', '.').replace('€ ', '').replace('*', ''));
                     }
+
                 }
+                WATO.elem('.totalPrice', function (totalPrices) {
+                    if (totalPrices) {
+                        console.log(totalPrices);
+
+                        addClass(totalPrices[0].closest('.print-page-break-avoid'), 'sums');
+
+                        // 0 -> Zwischensumme
+                        // 1 -> Versandkosten
+                        var deliveryCostWrapper = totalPrices[1].closest('.row'),
+                            deliveryLink = WATO.qs('.textLink', deliveryCostWrapper.nextElementSibling);
+                        addClass(deliveryCostWrapper, 'delivery-cost');
+                        deliveryLink.innerHTML = 'Versand';
+                        totalPrices[1].insertAdjacentElement('beforeend', deliveryLink);
+
+                        if (savings) {
+                            totalPrices[1].parentElement.insertAdjacentHTML('afterend', '<div class="row" id="kk07_sum__savings"><div class="column small-8 small-offset-4"><span>Sie sparen mit dieser Bestellung <b>&euro;&nbsp;' + savings.toFixed(2).replace('.', ',') + '</b></span></div></div>');
+                        }
+                        // 2 -> Gesamtsumme
+                        addClass(totalPrices[2].closest('.row'), 'total-sum');
+
+
+                    }
+                });
             }
         });
 
-        WATO.elem('.totalPrice', function (totalPrices) {
-            if (totalPrices) {
-                console.log(totalPrices);
-
-                addClass(totalPrices[0].closest('.print-page-break-avoid'), 'sums');
-
-                // 0 -> Zwischensumme
-                // 1 -> Versandkosten
-                var deliveryCostWrapper = totalPrices[1].closest('.row'),
-                    deliveryLink = WATO.qs('.textLink', deliveryCostWrapper.nextElementSibling);
-                addClass(deliveryCostWrapper, 'delivery-cost');
-                deliveryLink.innerHTML = 'Versand';
-                totalPrices[1].insertAdjacentElement('beforeend', deliveryLink);
-
-                // 2 -> Gesamtsumme
-                addClass(totalPrices[2].closest('.row'), 'total-sum');
-
-
-            }
-        });
 
 
     }

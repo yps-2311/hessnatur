@@ -39,9 +39,12 @@
         }
     }
 
-    WATO.elem('.js-product-info .large-10', function (productInfo) {
-        if (productInfo && window.kk07_ecoData) {
-            productInfo[0].insertAdjacentHTML('afterend',
+    WATO.elem(function () {
+        return WATO.qs('.js-product-info .large-10') && !!window.kk07_ecoData;
+    }, function (run) {
+        if (run) {
+
+            WATO.qs('.js-product-info .large-10').insertAdjacentHTML('afterend',
                 '<div class="column small-12" id="kk07_ecological">' +
                 '<div class="h3">Wir haben dieses Produkt nachhaltig für Sie <br/>produziert. Sparen Sie mit Ihrem Kauf:</div>' +
                 '<div class="row">' +
