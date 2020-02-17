@@ -1,6 +1,24 @@
 /*jshint loopfunc: true */
 (function(window){
 
+    if (!Element.prototype.matches) {
+        Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+    }
+      
+    if (!Element.prototype.closest) {
+        Element.prototype.closest = function(s) {
+            var el = this;
+      
+            do {
+                if (el.matches(s)) {
+                    return el;
+                }
+                el = el.parentElement || el.parentNode;
+            } while (el !== null && el.nodeType === 1);
+            return null;
+        };
+    }
+
     function goalPush(key){
         window.iridion.push(['goal', key]);
     }
@@ -110,9 +128,21 @@
             });
 
         }else if(URL.indexOf("/de/cart") !== -1){
-
             // Warenkorb
             goalPush('page_cart');
+
+            document.addEventListener('click', function(e){
+                var _target = e.target;
+
+                if(_target.closest('#hessnaturVoucherForm .quickadd__button')) {
+                    // send on next pageview
+                    window.iridion.push(['goal', 'aktionscode', '', true]);
+                }
+                else if(_target.closest('.js-entry-edit-save')) {
+                    goalPush("nutzeEinstellungen", true);
+                }
+            });
+
         }else if(URL.indexOf("/register/guest-update") !== -1){
             
             // Gast Regestrierung
