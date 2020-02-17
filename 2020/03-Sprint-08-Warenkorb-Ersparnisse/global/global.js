@@ -29,6 +29,10 @@
 		};
 	}
 
+	function goalPush(key){
+        window.iridion.push(['goal', key]);
+    }
+
 	WATO.prototype.s8 = function(variant){
 		var _self = this;
 		variant = variant || 0;
@@ -388,6 +392,8 @@
 									CSRFToken: window.ACC.config.CSRFToken
 								};
 
+								goalPush('kk_s8_a2c');
+
 								if(_prodId !== '') {
 									_self.xhr_post('https://www.hessnatur.com/de/cart/add', 
 										Object.keys(params).map(function(k){ 
@@ -402,6 +408,8 @@
 							});
 
 							_self.qs('#kk_hide_upsell', kk_upsell_wrapper).addEventListener('click', function(){
+								goalPush('kk_s8_del');
+
 								localStorage.setItem('kk_upsell_hide', 1);
 								kk_upsell_wrapper.outerHTML = '';
 							});
