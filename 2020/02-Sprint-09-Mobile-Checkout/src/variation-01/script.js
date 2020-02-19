@@ -57,14 +57,12 @@
                 steps[0].children[0].innerHTML = 'Anmelden';
                 steps[0].href = '#'
                 steps[1].children[0].innerHTML = 'Ihre Daten';
-                steps[1].href = getStorage('KK09PATH');
                 steps[2].children[0].innerHTML = 'Zahlungsart';
                 steps[3].children[0].innerHTML = 'Bestätigung';
 
             }
         });
     }
-
 
     function changeButtonText(ctaText) {
         WATO.elem('#registerForm .button.success', function (btn) {
@@ -73,6 +71,59 @@
             }
         });
     }
+
+    function resetValueOnFocus(input) {
+        input.addEventListener('click', function () {
+            if (!this.classList.contains('kk-filled')) {
+                addClass(this, 'filled');
+                this.value = '';
+            }
+        });
+    }
+
+    function prefillInput(elemToFill, filledElemSelector) {
+        WATO.elem(elemToFill, function (elem) {
+            if (elem) {
+                console.log(elem[0], elem[0].value);
+                if (elem[0].value === '') {
+                    elem[0].value = WATO.qs(filledElemSelector).value;
+                    resetValueOnFocus(elem[0]);
+                }
+            }
+        });
+    }
+
+    function editAddressPage() {
+        // add css prefix
+        addClass(document.documentElement, "address-modified");
+        adjustProgressBar();
+
+        WATO.elem('.h1', function (headline) {
+            if (headline) {
+                headline[0].innerHTML = 'Abweichende Lieferadresse';
+            }
+        });
+        WATO.elem('label[for="additional_address_trigger"]', function (checkboxDeliveryAddress) {
+            if (checkboxDeliveryAddress) {
+                checkboxDeliveryAddress[0].click();
+            }
+        });
+
+        prefillInput('#zipAlternative', '#zip');
+        prefillInput('#cityAlternative', '#city');
+        prefillInput('[name="line1Alternative"]', '[name="line1"]');
+        WATO.elem('[name="firstNameAlternative"]', function (firstNameAlternative) {
+            if (firstNameAlternative) {
+                resetValueOnFocus(firstNameAlternative[0]);
+            }
+        });
+        WATO.elem('[name="lastNameAlternative"]', function (lastNameAlternative) {
+            if (lastNameAlternative) {
+                resetValueOnFocus(lastNameAlternative[0]);
+            }
+        });
+    }
+
 
     /**
      * ROUTING
@@ -125,8 +176,8 @@
             if (newCustomerBullets) {
                 newCustomerBullets[0].innerHTML =
                     '<li>Bestellübersicht inkl. Sendungsverfolgung</li>' +
-                    '<li>Exklusive Aktionen & Angebote</li>' +
-                    '<li>Verwaltung der persönlichen Daten</li>';
+                    '<li>Verwaltung der persönlichen Daten</li>' +
+                    '<li>Exklusive Aktionen & Angebote</li>';
             }
         });
 
@@ -164,7 +215,6 @@
         addClass(document.documentElement, "data");
         // skip next page
         setStorage(STORAGE, true);
-        setStorage('KK09PATH', PATH);
         adjustProgressBar();
 
         WATO.elem('#registerForm fieldset', function (newsletterBox) {
@@ -222,7 +272,7 @@
         addClass(document.documentElement, "address");
         // skip page
         if (getStorage(STORAGE) === "true") {
-
+            setStorage(STORAGE, false);
             addClass(document.documentElement, "address-hide");
             console.log("SHOW LOADER");
 
@@ -256,23 +306,11 @@
                 window.setTimeout(function () {
                     WATO.qs('#kk-loader').remove();
                     removeClass(document.documentElement, "address-hide");
+                    editAddressPage();
                 }, 4000);
             }, 250);
         } else {
-            // add css prefix
-            addClass(document.documentElement, "address-modified");
-            adjustProgressBar();
-
-            WATO.elem('.h1', function (headline) {
-                if (headline) {
-                    headline[0].innerHTML = 'Abweichende Lieferadresse';
-                }
-            });
-            WATO.elem('label[for="additional_address_trigger"]', function (checkboxDeliveryAddress) {
-                if (checkboxDeliveryAddress) {
-                    checkboxDeliveryAddress[0].click();
-                }
-            });
+            editAddressPage();
         }
 
 
