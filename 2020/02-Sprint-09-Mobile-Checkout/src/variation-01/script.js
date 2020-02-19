@@ -33,6 +33,10 @@
 
         return window.sessionStorage.getItem(key);
     }
+    function removeStorage(key) {
+
+        return window.sessionStorage.removeItem(key);
+    }
 
     function checkPATH(value) {
 
@@ -53,12 +57,36 @@
             if (progressBar) {
                 progressBar = progressBar[0];
 
-                var steps = WATO.qsa('.progressTracker__Item a', progressBar);
-                steps[0].children[0].innerHTML = 'Anmelden';
-                steps[0].href = '#'
-                steps[1].children[0].innerHTML = 'Ihre Daten';
-                steps[2].children[0].innerHTML = 'Zahlungsart';
-                steps[3].children[0].innerHTML = 'Bestätigung';
+                var steps = WATO.qsa('.progressTracker__Item a', progressBar),
+                    stepsAmount = steps.length,
+                    savedPath = getStorage('KK09PATH') || '',
+                    progressSteps = ['Anmelden', 'Ihre Daten', 'Zahlungsart', 'Bestätigung'],
+                    forStart = 0;
+
+                if (stepsAmount < 4) {
+                    steps[0].parentNode.insertAdjacentHTML('beforebegin',
+                        '<li class="column row progressTracker__Item item--done">' +
+                        '<a href="#" class="column progressTracker__Item__content h-text-decoration-none">' +
+                        '<strong>Anmelden</strong>' +
+                        '</a>' +
+                        '</li>');
+                    progressSteps.shift();
+                } else {
+                    steps[0].href = '#';
+                }
+
+                if (savedPath.indexOf('guest') !== -1) {
+                    if (savedPath === PATH) {
+                        steps[1].parentNode.classList.add('item--current');
+                    }
+                    steps[0].parentNode.remove();
+                    forStart = 1;
+                }
+
+                for (var i = forStart; i < stepsAmount; i++) {
+                    steps[i].children[0].innerHTML = progressSteps[i];
+
+                }
 
             }
         });
@@ -84,7 +112,6 @@
     function prefillInput(elemToFill, filledElemSelector) {
         WATO.elem(elemToFill, function (elem) {
             if (elem) {
-                console.log(elem[0], elem[0].value);
                 if (elem[0].value === '') {
                     elem[0].value = WATO.qs(filledElemSelector).value;
                     resetValueOnFocus(elem[0]);
@@ -103,10 +130,9 @@
                 headline[0].innerHTML = 'Abweichende Lieferadresse';
             }
         });
-        WATO.elem('label[for="additional_address_trigger"]', function (checkboxDeliveryAddress) {
-            if (checkboxDeliveryAddress) {
-                checkboxDeliveryAddress[0].click();
-            }
+
+        WATO.ready(function () {
+            WATO.qs('label[for="additional_address_trigger"]').click();
         });
 
         prefillInput('#zipAlternative', '#zip');
@@ -172,12 +198,14 @@
         });
 
         // Add new uvps for registration
-        WATO.elem('#guestRegisterForm .h-offset-bottom-inner', function (newCustomerBullets) {
-            if (newCustomerBullets) {
-                newCustomerBullets[0].innerHTML =
+        WATO.elem('#guestRegisterForm', function (registerForm) {
+            if (registerForm) {
+                WATO.qs('.h-offset-bottom-inner', registerForm[0]).innerHTML =
                     '<li>Bestellübersicht inkl. Sendungsverfolgung</li>' +
                     '<li>Verwaltung der persönlichen Daten</li>' +
                     '<li>Exklusive Aktionen & Angebote</li>';
+
+                WATO.qs('.button', registerForm[0]).innerHTML = 'Neues Kundenkonto anlegen';
             }
         });
 
@@ -206,6 +234,8 @@
             }
         });
 
+        removeStorage('KK09PATH');
+
         // PAGE: IHRE DATEN (GAST)
     } else if (checkPATH("register/guest-update") || checkPATH("register")) {
 
@@ -215,6 +245,7 @@
         addClass(document.documentElement, "data");
         // skip next page
         setStorage(STORAGE, true);
+        setStorage('KK09PATH', PATH);
         adjustProgressBar();
 
         WATO.elem('#registerForm fieldset', function (newsletterBox) {
@@ -224,13 +255,13 @@
                     '<label class="small-12 columns" id="kk07_address_option--wrapper">' +
                     '<div class="row">' +
                     '<div class="column small-12">' +
-                    '<strong>Abweichende Rechnungs- oder Lieferadresse</strong>' +
+                    '<strong>Abweichende Lieferadresse</strong>' +
                     '<div class="row h-largeOffset-bottom-inner h-smallOffset-bottom-outer">' +
                     '<div class="column shrink">' +
                     '<input id="kk07_address_option" name="kk07_address_option" type="checkbox" value="true"></div>' +
                     '<div class="column">' +
                     '<label for="kk07_address_option">' +
-                    '<p>Ich möchte mein Paket an eine <b>andere Adresse</b> schicken lassen.</p></label>' +
+                    '<p>Ich möchte mein Paket an eine <b>andere Adresse</b> schicken lassen. (Diese kann im nächsten Schritt angeben werden.)</p></label>' +
                     '</div>' +
                     '</div>' +
                     '</div>' +

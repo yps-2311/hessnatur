@@ -15,8 +15,12 @@
 }
 
 .kk-login {
-    .js_backstopWrapper .h-mediumOffset-bottom-outer {
-        display: none;
+    .js_backstopWrapper {
+
+        +.footerWrapper,
+        .h-mediumOffset-bottom-outer {
+            display: none;
+        }
     }
 
     form {
@@ -79,43 +83,54 @@
 
     .item--done {
         .progressTracker__Item__content {
-            background: #5FB609;
-            color: #fff;
+            background: #fff;
+            color: #101010;
 
-            strong {
-                font-weight: 400;
-                font-size: 14px;
-                line-height: 18px;
+            >:before {
+                width: 100%;
+                font-size: 0;
+                height: 18px;
+                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='18'%3E%3Cpath fill='%235FB609' d='M23.649.359a1.182 1.182 0 00-1.698 0L7.575 15.042 2.049 9.398a1.182 1.182 0 00-1.698 0 1.244 1.244 0 000 1.733l6.375 6.51a1.183 1.183 0 001.697 0L23.65 2.092a1.244 1.244 0 000-1.733z'/%3E%3C/svg%3E") center center/contain no-repeat;
             }
 
             &:after {
-                border-left-color: #5FB609;
+                border-left-color: #fff;
             }
         }
     }
 
     .item--current {
         .progressTracker__Item__content {
-            background: #f6f6f5;
+            background: #4D5A78;
 
-            strong {
-                font-weight: 700;
-                color: #393939;
-                font-size: 14px;
-                line-height: 18px;
+            >* {
+                color: #fff;
             }
 
             &:after {
-                border-left-color: #f6f6f5;
+                border-left-color: #4D5A78;
             }
         }
     }
 
     .progressTracker__Item__content {
+        background: #f6f6f5;
+
         >:before {
             display: block;
             font-size: 20px;
-            margin-bottom: 5px;
+            font-weight: 400;
+            margin: 5px 0;
+        }
+
+        >* {
+            font-weight: 200;
+            font-size: 12px;
+            line-height: 18px;
+        }
+
+        &:after {
+            border-left-color: #f6f6f5;
         }
 
         >* {
@@ -125,6 +140,32 @@
     }
 
 }
+
+.kk-address {
+    .progressTracker .collapse li:first-child {
+        // .kk-data .item--current {
+
+        .progressTracker__Item__content {
+            background: #fff;
+            color: #101010;
+
+            strong {
+                color: #101010;
+            }
+
+            &:after {
+                border-left-color: #fff;
+            }
+        }
+    }
+
+    .js_backstopWrapper {
+        +.footerWrapper {
+            display: none;
+        }
+    }
+}
+
 
 #kk07_address_option--wrapper {
     strong {
@@ -187,48 +228,28 @@
     }
 }
 
-.kk-address .progressTracker .collapse li:first-child,
-.kk-data .item--current {
+// .kk-data {
+//     .item--current {
 
-    .progressTracker__Item__content {
-        background: #5FB609;
-        color: #fff;
+//         +.progressTracker__Item {
+//             .progressTracker__Item__content {
+//                 background: #f6f6f5;
 
-        strong {
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 18px;
-            color: #fff;
-        }
+//                 span {
+//                     font-weight: 700;
+//                     font-size: 14px;
+//                     line-height: 18px;
+//                 }
 
-        &:after {
-            border-left-color: #5FB609;
-        }
-    }
-}
-
-.kk-data {
-    .item--current {
-
-        +.progressTracker__Item {
-            .progressTracker__Item__content {
-                background: #f6f6f5;
-
-                span {
-                    font-weight: 700;
-                    font-size: 14px;
-                    line-height: 18px;
-                }
-
-                &:after {
-                    border-left-color: #f6f6f5;
-                }
-            }
-        }
-    }
+//                 &:after {
+//                     border-left-color: #f6f6f5;
+//                 }
+//             }
+//         }
+//     }
 
 
-}
+// }
 
 .kk-address-modified {
     #additional--address {
