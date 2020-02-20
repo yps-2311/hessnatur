@@ -546,6 +546,8 @@
         var request = new XMLHttpRequest();
         request.open('GET', url, true);
 
+        request.timeout = 2000;
+
         request.onload = function () {
             if (this.status >= 200 && this.status < 400) {
                 try {

@@ -25,7 +25,6 @@
      * HELPERS
      */
     function setStorage(key, value) {
-        console.log('setStorage', key, value);
         window.sessionStorage.setItem(key, value);
     }
 
@@ -63,6 +62,7 @@
                     progressSteps = ['Anmelden', 'Ihre Daten', 'Zahlungsart', 'Bestätigung'],
                     forStart = 0;
 
+                // logged in users only have 3 steps
                 if (stepsAmount < 4) {
                     steps[0].parentNode.insertAdjacentHTML('beforebegin',
                         '<li class="column row progressTracker__Item item--done">' +
@@ -70,11 +70,14 @@
                         '<strong>Anmelden</strong>' +
                         '</a>' +
                         '</li>');
+                    // skip first progressStep naming
+                    // steps only has 3 items at this point, so only 3 steps have to be renamed
                     progressSteps.shift();
                 } else {
                     steps[0].href = '#';
                 }
 
+                // guest users don't have the first step "Anmelden"
                 if (savedPath.indexOf('guest') !== -1) {
                     if (savedPath === PATH) {
                         steps[1].parentNode.classList.add('item--current');
@@ -83,6 +86,7 @@
                     forStart = 1;
                 }
 
+                // rename steps
                 for (var i = forStart; i < stepsAmount; i++) {
                     steps[i].children[0].innerHTML = progressSteps[i];
 
@@ -131,21 +135,36 @@
             }
         });
 
+        // toggle delivery address form
         WATO.ready(function () {
+            console.log(WATO.qs('label[for="additional_address_trigger"]'));
             WATO.qs('label[for="additional_address_trigger"]').click();
+            WATO.elem('#additional_address_trigger:not(:checked)', function (input) {
+                if (input) {
+                    console.log('input');
+                    WATO.qs('label[for="additional_address_trigger"]').click();
+                }
+            });
+            // WATO.elem('#additional_address_trigger:checked', function (input) {
+            //     console.log(input, WATO.qs('#additional--address.hide'));
+            //     if (input && WATO.qs('#additional--address.hide')) {
+            //         // WATO.qs('#additional--address.hide').classList.remove('hide');
+
+            //         WATO.qs('label[for="additional_address_trigger"]').click();
+            //         WATO.qs('label[for="additional_address_trigger"]').click();
+            //     }
+            // });
         });
 
+        // prefill zip, city, street with invoice data
         prefillInput('#zipAlternative', '#zip');
         prefillInput('#cityAlternative', '#city');
         prefillInput('[name="line1Alternative"]', '[name="line1"]');
+
         WATO.elem('[name="firstNameAlternative"]', function (firstNameAlternative) {
             if (firstNameAlternative) {
                 resetValueOnFocus(firstNameAlternative[0]);
-            }
-        });
-        WATO.elem('[name="lastNameAlternative"]', function (lastNameAlternative) {
-            if (lastNameAlternative) {
-                resetValueOnFocus(lastNameAlternative[0]);
+                resetValueOnFocus(WATO.qs('[name="lastNameAlternative"]'));
             }
         });
     }
@@ -223,6 +242,10 @@
                 // Change headline
                 WATO.qs('.h3', loginForm).innerHTML = 'Ich bin bereits Kunde & möchte mich anmelden';
 
+                WATO.qs('.button', loginForm).addEventListener('click', function () {
+                    setStorage(STORAGE, true);
+                });
+
                 // Add toggle
                 loginForm.insertAdjacentHTML('beforeend',
                     '<div class="columns align-self-bottom small-12">' +
@@ -237,12 +260,13 @@
         removeStorage('KK09PATH');
 
         // PAGE: IHRE DATEN (GAST)
-    } else if (checkPATH("register/guest-update") || checkPATH("register")) {
+    } else if (checkPATH("register")) {
 
         console.log("PAGE: IHRE DATEN - GAST || NEUKUNDE");
 
         // add css prefix
         addClass(document.documentElement, "data");
+        addClass(document.documentElement, checkPATH("register/guest-update") ? "guest" : "register");
         // skip next page
         setStorage(STORAGE, true);
         setStorage('KK09PATH', PATH);
@@ -342,6 +366,22 @@
             }, 250);
         } else {
             editAddressPage();
+
+            WATO.ready(function () {
+
+                if (document.URL.indexOf('show-invoice') !== -1) {
+                    window.setTimeout(function () {
+
+                        console.log('show-invoice');
+                        WATO.elem(function () {
+                            return typeof jQuery !== 'undefined';
+                        }, function () {
+                            console.log('show-invoice scroll', jQuery('#addressId').prev().offset().top);
+                            jQuery("html, body").animate({ scrollTop: jQuery('#addressId').prev().offset().top - 25 });
+                        });
+                    }, 800);
+                }
+            });
         }
 
 
@@ -388,11 +428,14 @@
             if (contentPanel) {
                 contentPanel = contentPanel[0];
 
+                // if delivery and invoice addresses are equal, only display invoice address as "Liefer- & Rechnungsadresse"
                 var addresses = WATO.qsa('.columns.small-12.h-xLargeOffset-bottom-outer:not(.h4)', contentPanel),
                     deliveryAddressWrapper = addresses[1].closest('.align-top');
                 if (addresses[0].textContent === addresses[1].textContent) {
                     addresses[0].previousElementSibling.innerHTML = 'Liefer- & Rechnungsadresse';
                     addClass(deliveryAddressWrapper, 'hide');
+                } else {
+                    WATO.qs('.button.hollow', addresses[0].closest('.align-top')).href = WATO.qs('.button.hollow', addresses[0].closest('.align-top')).href + '?show-invoice';
                 }
 
                 var paymentOption = getStorage('KK09PAYMENT').split('|'),
@@ -410,6 +453,7 @@
 
                 var savings = 0;
 
+                // each product
                 for (var i = 0; i < productNames.length; i++) {
                     var productWrapper = productNames[i].closest('.large-10'),
                         availability = productNames[i].nextElementSibling.nextElementSibling,
@@ -418,14 +462,17 @@
 
                     console.log(productWrapper);
                     addClass(productWrapper, 'product-wrapper');
+
+                    // add delete btn
                     productImage.insertAdjacentHTML('afterend', '<button type="button" class="js-entry-remove button textLink" data-entryNumber="' + i + '"><img src="/_ui/responsive/common/images/icons/garbage.svg" title="Entfernen" class="icon-trash"></button>');
                     var deleteButton = productImage.nextElementSibling;
+                    // move availability below the image
                     productImage.insertAdjacentElement('afterend', availability);
 
                     deleteButton.addEventListener('click', function (e) {
                         e.preventDefault();
                         console.log('click');
-                        $.ajax({
+                        jQuery.ajax({
                             type: "POST",
                             url: "https://www.hessnatur.com/de/cart/update",
                             data: {
@@ -439,13 +486,17 @@
                         });
                     });
 
+                    // check if there are 2 prices -> product has a discount
                     addClass(prices[0].parentElement, 'price');
                     if (prices.length > 1) {
                         addClass(prices[0].parentElement, 'sale-price');
+                        // calculate savings
                         savings += parseFloat(prices[1].textContent.replace(',', '.').replace('€ ', '').replace('*', '')) - parseFloat(prices[0].textContent.replace(',', '.').replace('€ ', '').replace('*', ''));
                     }
 
                 }
+
+                // total prices at the end of the page
                 WATO.elem('.totalPrice', function (totalPrices) {
                     if (totalPrices) {
                         console.log(totalPrices);
@@ -457,12 +508,15 @@
                         var deliveryCostWrapper = totalPrices[1].closest('.row'),
                             deliveryLink = WATO.qs('.textLink', deliveryCostWrapper.nextElementSibling);
                         addClass(deliveryCostWrapper, 'delivery-cost');
+                        // Rearrange items
                         deliveryLink.innerHTML = 'Versand';
                         totalPrices[1].insertAdjacentElement('beforeend', deliveryLink);
 
+                        // Add savings tip if there is any
                         if (savings) {
-                            totalPrices[1].parentElement.insertAdjacentHTML('afterend', '<div class="row" id="kk07_sum__savings"><div class="column small-8 small-offset-4"><span>Sie sparen mit dieser Bestellung <b>&euro;&nbsp;' + savings.toFixed(2).replace('.', ',') + '</b></span></div></div>');
+                            totalPrices[1].parentElement.insertAdjacentHTML('afterend', '<div class="row" id="kk07_sum__savings"><div class="column small-12"><span>Sie sparen mit dieser Bestellung <b>&euro;&nbsp;' + savings.toFixed(2).replace('.', ',') + '</b></span></div></div>');
                         }
+
                         // 2 -> Gesamtsumme
                         addClass(totalPrices[2].closest('.row'), 'total-sum');
 

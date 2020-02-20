@@ -3,7 +3,7 @@
 
 /**
  * @function
- * @author Max Mustermann
+ * @author Nguyet Dang
  * @namespace V1
  * @name Variation 01
  * @description
@@ -11,11 +11,11 @@
 (function (WATO) {
     'use strict';
 
-    console.log('ÖKO!');
 
-    WATO.xhr_get('https://products-approval.hessnatur.com/products/' + document.URL.match(/de\/.*\/p\/(\d+)/)[1], function (data) {
+
+    WATO.xhr_get('https://products.hessnatur.com/products/' + document.URL.match(/de\/.*\/p\/(\d+)/)[1], function (data) {
         if (data) {
-            console.log('success', data);
+
             var ecoData = data.products[0].ecological_data;
             if (ecoData) {
                 if (ecoData.water_savings_in_liter && ecoData.carbon_dioxide_savings_in_gram && ecoData.clean_earth_in_square_meter) {

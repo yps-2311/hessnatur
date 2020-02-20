@@ -142,22 +142,22 @@
 }
 
 .kk-address {
-    .progressTracker .collapse li:first-child {
-        // .kk-data .item--current {
+    // .progressTracker .collapse li:first-child {
+    //     // .kk-data .item--current {
 
-        .progressTracker__Item__content {
-            background: #fff;
-            color: #101010;
+    //     .progressTracker__Item__content {
+    //         background: #fff;
+    //         color: #101010;
 
-            strong {
-                color: #101010;
-            }
+    //         strong {
+    //             color: #101010;
+    //         }
 
-            &:after {
-                border-left-color: #fff;
-            }
-        }
-    }
+    //         &:after {
+    //             border-left-color: #fff;
+    //         }
+    //     }
+    // }
 
     .js_backstopWrapper {
         +.footerWrapper {
@@ -219,6 +219,9 @@
     &:nth-child(6) {
         display: none;
     }
+}
+
+.kk-guest #registerForm>.row>.columns {
 
     &:nth-child(12),
     &:nth-child(13),
@@ -252,14 +255,15 @@
 // }
 
 .kk-address-modified {
-    #additional--address {
-        display: flex !important;
-    }
+    // #additional--address {
+    //     display: flex !important;
+    // }
 
     #addressForm {
         >.medium-10 {
             display: flex;
             flex-wrap: wrap;
+            flex-direction: column;
 
             >div {
                 &:first-child {
@@ -279,7 +283,8 @@
                     order: 0;
 
                     fieldset {
-                        display: none;
+                        position: absolute;
+                        left: -10000px;
                     }
 
                     .h4 {
@@ -293,7 +298,6 @@
 
                 &:last-child {
                     order: 3;
-                    width: 100%;
                 }
             }
         }
@@ -695,5 +699,12 @@
         padding: 7px 10px;
         display: inline-block;
         margin-top: 10px;
+    }
+}
+
+
+@media screen and (max-width: 320px) {
+    .progressTracker .progressTracker__Item__content>* {
+        font-size: 9px;
     }
 }
