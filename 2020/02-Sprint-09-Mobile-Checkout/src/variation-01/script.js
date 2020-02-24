@@ -52,13 +52,19 @@
     }
 
     function adjustProgressBar() {
+        var savedPath = getStorage('KK09PATH') || '',
+            isGuest = savedPath.indexOf('guest') !== -1;
+        if (isGuest) {
+            addClass(document.documentElement, 'guest-checkout');
+        }
+
+
         WATO.elem('.progressTracker', function (progressBar) {
             if (progressBar) {
                 progressBar = progressBar[0];
 
                 var steps = WATO.qsa('.progressTracker__Item a', progressBar),
                     stepsAmount = steps.length,
-                    savedPath = getStorage('KK09PATH') || '',
                     progressSteps = ['Anmelden', 'Ihre Daten', 'Zahlungsart', 'Bestätigung'],
                     forStart = 0;
 
@@ -77,12 +83,11 @@
                     steps[0].href = '#';
                 }
 
-                // guest users don't have the first step "Anmelden"
-                if (savedPath.indexOf('guest') !== -1) {
+                // guest users don't have the first step "Anmelden" (hidden via CSS)
+                if (isGuest) {
                     if (savedPath === PATH) {
                         steps[1].parentNode.classList.add('item--current');
                     }
-                    steps[0].parentNode.remove();
                     forStart = 1;
                 }
 
@@ -363,7 +368,7 @@
                     removeClass(document.documentElement, "address-hide");
                     editAddressPage();
                 }, 4000);
-            }, 250);
+            }, 500);
         } else {
             editAddressPage();
 
