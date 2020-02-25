@@ -1,6 +1,6 @@
 // load core and global js
 // @codekit-prepend "../global/global.js";
-
+/*jshint loopfunc: true */
 /**
  * @function
  * @author Max Mustermann
@@ -25,6 +25,7 @@
      * HELPERS
      */
     function setStorage(key, value) {
+        console.log('setStorage', key, value);
         window.sessionStorage.setItem(key, value);
     }
 
@@ -142,12 +143,28 @@
 
         // toggle delivery address form
         WATO.ready(function () {
-            console.log(WATO.qs('label[for="additional_address_trigger"]'));
-            WATO.qs('label[for="additional_address_trigger"]').click();
-            WATO.elem('#additional_address_trigger:not(:checked)', function (input) {
-                if (input) {
-                    console.log('input');
-                    WATO.qs('label[for="additional_address_trigger"]').click();
+            WATO.elem('label[for="additional_address_trigger"]', function (deliveryAddressLabel) {
+                if (deliveryAddressLabel[0]) {
+                    deliveryAddressLabel = deliveryAddressLabel[0];
+                    console.log(deliveryAddressLabel);
+                    deliveryAddressLabel.click();
+                    WATO.elem('#additional--address.hide', function (input) {
+                        if (input) {
+                            console.log(input);
+                            console.log(deliveryAddressLabel);
+                            if (WATO.qs('#additional_address_trigger:checked')) {
+                                window.setTimeout(function () {
+                                    console.log('click 1');
+                                    deliveryAddressLabel.click();
+                                }, 2000);
+                            }
+                            window.setTimeout(function () {
+                                console.log('click 2');
+                                deliveryAddressLabel.click();
+                            }, 2000);
+                        }
+                    });
+
                 }
             });
             // WATO.elem('#additional_address_trigger:checked', function (input) {
@@ -180,8 +197,8 @@
      */
     // PAGE: LOGIN
     if (PATH === "/de/login/checkout") {
-
         console.log("PAGE: LOGIN");
+        setStorage(STORAGE, false);
 
         // add css prefix
         addClass(document.documentElement, "login");
@@ -370,6 +387,8 @@
                 }, 4000);
             }, 500);
         } else {
+
+            setStorage(STORAGE, false);
             editAddressPage();
 
             WATO.ready(function () {
@@ -403,7 +422,7 @@
                     if (i === 1) {
                         // Paypal
                         paymentOptions[1].innerHTML = 'PayPal';
-                    } else if (i == 2) {
+                    } else if (i === 2) {
                         // Kreditkarte
                         paymentOptions[2].innerHTML = 'Kreditkarte';
                     }

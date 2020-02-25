@@ -530,7 +530,8 @@
         margin-bottom: 0;
 
         .h4 {
-            margin-bottom: 2.4rem;
+            margin-bottom: 1.5rem;
+            padding-right: 70px;
         }
 
         .align-self-bottom {
@@ -550,13 +551,18 @@
 }
 
 .kk-summary {
+    .h1 {
+        margin-bottom: 0.6rem;
+    }
+
     .cart__productname {
         font-family: Roboto;
         font-size: 1.35rem;
         line-height: 1.8rem;
 
         +div {
-            margin-top: 0.35rem;
+            margin-top: .25rem;
+            margin-bottom: 0.9rem !important;
             font-size: 11px;
         }
     }
@@ -567,7 +573,7 @@
         padding: 1rem;
         background: rgba(255, 255, 255, .8);
         position: relative;
-        top: -38px;
+        top: -36px;
     }
 
     img~.button {
@@ -576,6 +582,9 @@
         margin-left: 10px;
     }
 
+    .small-text-left .h-smallOffset-bottom-outer {
+        margin-bottom: .9rem;
+    }
 }
 
 #checkoutSummaryForm1 {
@@ -610,6 +619,12 @@
             font-size: 12px;
             font-weight: 600;
             color: #393939;
+            line-height: 14px;
+
+            +span {
+                line-height: 20px;
+
+            }
 
             &:after {
                 content: ' ';
@@ -627,6 +642,10 @@
 
 .kk-price {
     justify-content: flex-end;
+
+    div {
+        padding-bottom: .4rem;
+    }
 
     +p {
         text-align: right;
