@@ -12,7 +12,7 @@
     "use strict";
 
     console.log("KK: 2020 - Hessnatur - Sprint 09");
-
+    WATO.AB07_goals();
 
     /**
      * CONSTANTEN
@@ -36,11 +36,6 @@
     function removeStorage(key) {
 
         return window.sessionStorage.removeItem(key);
-    }
-
-    function checkPATH(value) {
-
-        return PATH.indexOf("/de/checkout/multi/" + value) !== -1;
     }
 
     function addClass(elem, value) {
@@ -285,13 +280,13 @@
         removeStorage('KK09PATH');
 
         // PAGE: IHRE DATEN (GAST)
-    } else if (checkPATH("register")) {
+    } else if (WATO.AB07_checkPATH("register")) {
 
         console.log("PAGE: IHRE DATEN - GAST || NEUKUNDE");
 
         // add css prefix
         addClass(document.documentElement, "data");
-        addClass(document.documentElement, checkPATH("register/guest-update") ? "guest" : "register");
+        addClass(document.documentElement, WATO.AB07_checkPATH("register/guest-update") ? "guest" : "register");
 
         setStorage('KK09PATH', PATH);
         adjustProgressBar();
@@ -318,14 +313,14 @@
                     '</label>'
                 );
 
-                if (!getStorage(STORAGE) === 'false') {
+                if (getStorage(STORAGE) !== 'false' || !getStorage(STORAGE)) {
                     // skip next page
                     setStorage(STORAGE, true);
                 }
 
                 WATO.qs('input', newsletterBox[0].previousElementSibling).addEventListener('change', function () {
                     setStorage(STORAGE, !this.checked);
-
+                    WATO.AB07_sendGoal('kk_ab09_click_delivery_checkbox');
                     // Change button text depending on checkbox value
                     changeButtonText(this.checked ? 'Adresseingabe' : 'Zahlungsart');
                 });
@@ -338,7 +333,7 @@
 
 
         // PAGE: IHRE DATEN (NEUKUNDE)
-        // } else if (checkPATH("register")) {
+        // } else if (WATO.AB07_checkPATH("register")) {
 
         //     console.log("PAGE: IHRE DATEN - NEUKUNDE");
 
@@ -350,7 +345,7 @@
 
 
         // PAGE: Adressen
-    } else if (checkPATH("addresses/add-delivery-address")) {
+    } else if (WATO.AB07_checkPATH("addresses/add-delivery-address")) {
 
         console.log("PAGE: Adressen");
 
@@ -420,7 +415,7 @@
 
 
         // PAGE: Zahlungsart
-    } else if (checkPATH("payment/add-payment-method")) {
+    } else if (WATO.AB07_checkPATH("payment/add-payment-method")) {
 
         console.log("PAGE: Zahlungsart");
         adjustProgressBar();
@@ -452,7 +447,7 @@
 
 
         // PAGE: Zusammenfassung
-    } else if (checkPATH("summary")) {
+    } else if (WATO.AB07_checkPATH("summary")) {
 
         // add css prefix
         addClass(document.documentElement, "summary");
@@ -507,6 +502,8 @@
                     deleteButton.addEventListener('click', function (e) {
                         e.preventDefault();
                         console.log('click');
+                        WATO.AB07_sendGoal('kk_ab09_delete_product');
+
                         jQuery.ajax({
                             type: "POST",
                             url: "https://www.hessnatur.com/de/cart/update",
