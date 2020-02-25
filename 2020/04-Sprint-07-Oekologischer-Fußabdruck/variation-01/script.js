@@ -59,7 +59,7 @@
                 '</div>' +
                 '<div class="column large-4 kk07_eco__point">' +
                 '<div class="kk07_eco__icon earth"></div>' +
-                '<div class="kk07_eco__amount"><span data-property="clean_earth_in_square_meter">' + formatNumber(window.kk07_ecoData.clean_earth_in_square_meter) + '</span> m<sup>2</sup></div>' +
+                '<div class="kk07_eco__amount"><span data-property="clean_earth_in_square_meter">' + formatNumber(window.kk07_ecoData.clean_earth_consumption_in_square_meter) + '</span> m<sup>2</sup></div>' +
                 '<strong>Boden/Erde*</strong>' +
                 '<span>Wir verwenden ausschließlich Rohstoffe aus ökologischer Landwirtschaft.</span>' +
                 '</div>' +
