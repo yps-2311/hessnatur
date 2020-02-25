@@ -66,8 +66,7 @@
 
                 var steps = WATO.qsa('.progressTracker__Item a', progressBar),
                     stepsAmount = steps.length,
-                    progressSteps = ['Anmelden', 'Ihre Daten', 'Zahlungsart', 'Bestätigung'],
-                    forStart = 0;
+                    progressSteps = ['Anmelden', 'Ihre Daten', 'Zahlungsart', 'Bestätigung'];
 
                 // logged in users only have 3 steps
                 if (stepsAmount < 4) {
@@ -85,15 +84,19 @@
                 }
 
                 // guest users don't have the first step "Anmelden" (hidden via CSS)
-                if (isGuest) {
+                if (savedPath) {
+                    steps[0].parentNode.classList.remove('item--current');
+                    steps[0].parentNode.classList.add('item--done');
                     if (savedPath === PATH) {
                         steps[1].parentNode.classList.add('item--current');
                     }
-                    forStart = 1;
+                    if (isGuest) {
+                        progressSteps[0] = 'Gast';
+                    }
                 }
 
                 // rename steps
-                for (var i = forStart; i < stepsAmount; i++) {
+                for (var i = 0; i < stepsAmount; i++) {
                     steps[i].children[0].innerHTML = progressSteps[i];
 
                 }
@@ -156,12 +159,12 @@
                                 window.setTimeout(function () {
                                     console.log('click 1');
                                     deliveryAddressLabel.click();
-                                }, 2000);
+                                }, 550);
                             }
                             window.setTimeout(function () {
                                 console.log('click 2');
                                 deliveryAddressLabel.click();
-                            }, 2000);
+                            }, 500);
                         }
                     });
 
@@ -198,7 +201,7 @@
     // PAGE: LOGIN
     if (PATH === "/de/login/checkout") {
         console.log("PAGE: LOGIN");
-        setStorage(STORAGE, false);
+        removeStorage(STORAGE);
 
         // add css prefix
         addClass(document.documentElement, "login");
@@ -289,13 +292,13 @@
         // add css prefix
         addClass(document.documentElement, "data");
         addClass(document.documentElement, checkPATH("register/guest-update") ? "guest" : "register");
-        // skip next page
-        setStorage(STORAGE, true);
+
         setStorage('KK09PATH', PATH);
         adjustProgressBar();
 
         WATO.elem('#registerForm fieldset', function (newsletterBox) {
             if (newsletterBox) {
+                console.log(getStorage(STORAGE), getStorage(STORAGE) === 'false');
                 // Add checkbox -> skip next page or not?
                 newsletterBox[0].insertAdjacentHTML('beforebegin',
                     '<label class="small-12 columns" id="kk07_address_option--wrapper">' +
@@ -304,7 +307,7 @@
                     '<strong>Abweichende Lieferadresse</strong>' +
                     '<div class="row h-largeOffset-bottom-inner h-smallOffset-bottom-outer">' +
                     '<div class="column shrink">' +
-                    '<input id="kk07_address_option" name="kk07_address_option" type="checkbox" value="true"></div>' +
+                    '<input id="kk07_address_option" name="kk07_address_option" type="checkbox" value="true"' + (getStorage(STORAGE) === 'false' ? ' checked="checked"' : '') + '></div>' +
                     '<div class="column">' +
                     '<label for="kk07_address_option">' +
                     '<p>Ich möchte mein Paket an eine <b>andere Adresse</b> schicken lassen. (Diese kann im nächsten Schritt angeben werden.)</p></label>' +
@@ -315,17 +318,24 @@
                     '</label>'
                 );
 
+                if (!getStorage(STORAGE) === 'false') {
+                    // skip next page
+                    setStorage(STORAGE, true);
+                }
+
                 WATO.qs('input', newsletterBox[0].previousElementSibling).addEventListener('change', function () {
                     setStorage(STORAGE, !this.checked);
 
                     // Change button text depending on checkbox value
                     changeButtonText(this.checked ? 'Adresseingabe' : 'Zahlungsart');
                 });
+
+                // Change button text
+                changeButtonText(getStorage(STORAGE) === 'false' ? 'Adresseingabe' : 'Zahlungart');
             }
         });
 
-        // Change button text
-        changeButtonText('Zahlungart');
+
 
         // PAGE: IHRE DATEN (NEUKUNDE)
         // } else if (checkPATH("register")) {
@@ -349,7 +359,7 @@
         addClass(document.documentElement, "address");
         // skip page
         if (getStorage(STORAGE) === "true") {
-            setStorage(STORAGE, false);
+            removeStorage(STORAGE);
             addClass(document.documentElement, "address-hide");
             console.log("SHOW LOADER");
 
@@ -414,6 +424,7 @@
 
         console.log("PAGE: Zahlungsart");
         adjustProgressBar();
+        removeStorage(STORAGE);
 
         WATO.elem('#paymentDetailsForm ul li label', function (paymentOptions) {
             if (paymentOptions) {
