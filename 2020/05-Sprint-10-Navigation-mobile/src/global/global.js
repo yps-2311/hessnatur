@@ -21,7 +21,7 @@
 
         _self.elem('#offCanvasNavigation > li:not([aria-label="Outdoor"]), #offCanvasNavigation > li:not([aria-label="Outdoor"]) > ul > li:not(.h-text-bold):not([data-drilldown-back-levels]), #offCanvasNavigation > li:not([aria-label="Outdoor"]) > ul > li > ul > li:not(.h-text-bold):not([data-drilldown-back-levels])', function(firstHierarchy){ //:not(.h-text-bold)
             if(firstHierarchy){
-                console.log('firstHierarchy.length: ', firstHierarchy.length);
+                // console.log('firstHierarchy.length: ', firstHierarchy.length);
                 for (var i = 0; i < firstHierarchy.length; i++) {
                     try {
                         var thisMenuPoint = firstHierarchy[i],
@@ -41,7 +41,7 @@
 
                             thisMenuPoint.setAttribute('style', 'background-image: '+isLabel[0].children[0].getAttribute('value').toLowerCase().trim()+'.png');
 
-                            console.log(isLabel[0].children[0].getAttribute('value').toLowerCase().trim()+'.png');
+                            // console.log(isLabel[0].children[0].getAttribute('value').toLowerCase().trim()+'.png');
                         }else{
                             // Alternativ wird der Text im Menüpunkt verwendet, erweitert um die Kategorie in der dieser sich befindet
                             var tempTitle = "",
@@ -55,7 +55,7 @@
 
                             thisMenuPoint.setAttribute('style', 'background-image: '+ tempHeadlineText + tempTitle + '.png');
 
-                            console.log(tempHeadlineText + tempTitle + '.png');
+                            // console.log(tempHeadlineText + tempTitle + '.png');
                         }
 
                         
