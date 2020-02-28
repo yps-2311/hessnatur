@@ -3,7 +3,7 @@
 /*jshint loopfunc: true */
 /**
  * @function
- * @author Max Mustermann
+ * @author Nguyet Dang
  * @namespace V1
  * @name Variation 01
  * @description
@@ -12,7 +12,7 @@
     "use strict";
 
     console.log("KK: 2020 - Hessnatur - Sprint 09");
-    WATO.AB07_goals();
+    WATO.AB09_goals();
 
     /**
      * CONSTANTEN
@@ -47,6 +47,18 @@
         elem.classList.remove("kk-" + value);
     }
 
+    function makeProgressBarSticky(progressBar) {
+        console.log(progressBar);
+        document.addEventListener('scroll', function () {
+            console.log(progressBar.getBoundingClientRect());
+            if (progressBar.getBoundingClientRect().top <= 0) {
+                addClass(progressBar, 'sticky');
+            } else {
+                removeClass(progressBar, 'sticky');
+            }
+        });
+    }
+
     function adjustProgressBar() {
         var savedPath = getStorage('KK09PATH') || '',
             isGuest = savedPath.indexOf('guest') !== -1;
@@ -65,28 +77,38 @@
 
                 // logged in users only have 3 steps
                 if (stepsAmount < 4) {
+
                     steps[0].parentNode.insertAdjacentHTML('beforebegin',
                         '<li class="column row progressTracker__Item item--done">' +
                         '<a href="#" class="column progressTracker__Item__content h-text-decoration-none">' +
                         '<strong>Anmelden</strong>' +
                         '</a>' +
                         '</li>');
+
                     // skip first progressStep naming
-                    // steps only has 3 items at this point, so only 3 steps have to be renamed
+                    // steps only contains 3 items at this point, so only 3 steps have to be renamed
                     progressSteps.shift();
+
+                    if (PATH.indexOf('addresses') !== -1) {
+                        console.log('hier', steps, steps[0]);
+                        steps[0].parentNode.classList.remove('item--done');
+                        steps[0].parentNode.classList.add('item--current');
+                    }
                 } else {
                     steps[0].href = '#';
-                }
 
-                // guest users don't have the first step "Anmelden" (hidden via CSS)
-                if (savedPath) {
-                    steps[0].parentNode.classList.remove('item--current');
-                    steps[0].parentNode.classList.add('item--done');
-                    if (savedPath === PATH) {
-                        steps[1].parentNode.classList.add('item--current');
-                    }
-                    if (isGuest) {
-                        progressSteps[0] = 'Gast';
+                    if (savedPath) {
+                        steps[0].parentNode.classList.remove('item--current');
+                        steps[0].parentNode.classList.add('item--done');
+                        if (savedPath === PATH) {
+                            steps[1].parentNode.classList.add('item--current');
+                        }
+                        if (isGuest) {
+                            progressSteps[0] = 'Gast';
+                            // } else if (!isGuest && PATH.indexOf('addresses') !== -1) {
+                            // steps[0].parentNode.classList.remove('item--done');
+                            // steps[0].parentNode.classList.add('item--current');
+                        }
                     }
                 }
 
@@ -95,7 +117,10 @@
                     steps[i].children[0].innerHTML = progressSteps[i];
 
                 }
-
+                makeProgressBarSticky(progressBar);
+                if (progressBar.getBoundingClientRect().top <= 0) {
+                    addClass(progressBar, 'sticky');
+                }
             }
         });
     }
@@ -144,12 +169,12 @@
             WATO.elem('label[for="additional_address_trigger"]', function (deliveryAddressLabel) {
                 if (deliveryAddressLabel[0]) {
                     deliveryAddressLabel = deliveryAddressLabel[0];
-                    console.log(deliveryAddressLabel);
+                    // console.log(deliveryAddressLabel);
                     deliveryAddressLabel.click();
                     WATO.elem('#additional--address.hide', function (input) {
                         if (input) {
-                            console.log(input);
-                            console.log(deliveryAddressLabel);
+                            // console.log(input);
+                            // console.log('label, checked', deliveryAddressLabel, WATO.qs('#additional_address_trigger:checked'));
                             if (WATO.qs('#additional_address_trigger:checked')) {
                                 window.setTimeout(function () {
                                     console.log('click 1');
@@ -163,6 +188,13 @@
                         }
                     });
 
+                    // just to be safe...
+                    window.setTimeout(function () {
+                        if (!WATO.qs('#additional_address_trigger:checked')) {
+                            console.log('click again');
+                            deliveryAddressLabel.click();
+                        }
+                    }, 750);
                 }
             });
             // WATO.elem('#additional_address_trigger:checked', function (input) {
@@ -233,6 +265,12 @@
                     '</div>' +
                     '</div>' +
                     '</div>');
+
+                var progressBar = wrapper[0].firstElementChild;
+                makeProgressBarSticky(progressBar);
+                if (progressBar.getBoundingClientRect().top <= 0) {
+                    addClass(progressBar, 'sticky');
+                }
             }
         });
 
@@ -269,10 +307,11 @@
                 // Add toggle
                 loginForm.insertAdjacentHTML('beforeend',
                     '<div class="columns align-self-bottom small-12">' +
-                    '<div class="button expanded-small-only" id="kk07_login_toggle">Zum Kundenlogin</div>' +
+                    '<div class="button expanded-small-only" id="kk09_login_toggle">Zum Kundenlogin</div>' +
                     '</div>');
-                WATO.qs('#kk07_login_toggle', loginForm).addEventListener('click', function () {
+                WATO.qs('#kk09_login_toggle', loginForm).addEventListener('click', function () {
                     addClass(loginForm, 'show');
+                    WATO.AB09_sendGoal('kk_ab09_click_login_toggle');
                 });
             }
         });
@@ -280,13 +319,13 @@
         removeStorage('KK09PATH');
 
         // PAGE: IHRE DATEN (GAST)
-    } else if (WATO.AB07_checkPATH("register")) {
+    } else if (WATO.AB09_checkPATH("register")) {
 
         console.log("PAGE: IHRE DATEN - GAST || NEUKUNDE");
 
         // add css prefix
         addClass(document.documentElement, "data");
-        addClass(document.documentElement, WATO.AB07_checkPATH("register/guest-update") ? "guest" : "register");
+        addClass(document.documentElement, WATO.AB09_checkPATH("register/guest-update") ? "guest" : "register");
 
         setStorage('KK09PATH', PATH);
         adjustProgressBar();
@@ -296,15 +335,15 @@
                 console.log(getStorage(STORAGE), getStorage(STORAGE) === 'false');
                 // Add checkbox -> skip next page or not?
                 newsletterBox[0].insertAdjacentHTML('beforebegin',
-                    '<label class="small-12 columns" id="kk07_address_option--wrapper">' +
+                    '<label class="small-12 columns" id="kk09_address_option--wrapper">' +
                     '<div class="row">' +
                     '<div class="column small-12">' +
                     '<strong>Abweichende Lieferadresse</strong>' +
                     '<div class="row h-largeOffset-bottom-inner h-smallOffset-bottom-outer">' +
                     '<div class="column shrink">' +
-                    '<input id="kk07_address_option" name="kk07_address_option" type="checkbox" value="true"' + (getStorage(STORAGE) === 'false' ? ' checked="checked"' : '') + '></div>' +
+                    '<input id="kk09_address_option" name="kk09_address_option" type="checkbox" value="true"' + (getStorage(STORAGE) === 'false' ? ' checked="checked"' : '') + '></div>' +
                     '<div class="column">' +
-                    '<label for="kk07_address_option">' +
+                    '<label for="kk09_address_option">' +
                     '<p>Ich möchte mein Paket an eine <b>andere Adresse</b> schicken lassen. (Diese kann im nächsten Schritt angeben werden.)</p></label>' +
                     '</div>' +
                     '</div>' +
@@ -320,20 +359,20 @@
 
                 WATO.qs('input', newsletterBox[0].previousElementSibling).addEventListener('change', function () {
                     setStorage(STORAGE, !this.checked);
-                    WATO.AB07_sendGoal('kk_ab09_click_delivery_checkbox');
+                    WATO.AB09_sendGoal('kk_ab09_click_delivery_checkbox');
                     // Change button text depending on checkbox value
                     changeButtonText(this.checked ? 'Adresseingabe' : 'Zahlungsart');
                 });
 
                 // Change button text
-                changeButtonText(getStorage(STORAGE) === 'false' ? 'Adresseingabe' : 'Zahlungart');
+                changeButtonText(getStorage(STORAGE) === 'false' ? 'Adresseingabe' : 'Zahlungsart');
             }
         });
 
 
 
         // PAGE: IHRE DATEN (NEUKUNDE)
-        // } else if (WATO.AB07_checkPATH("register")) {
+        // } else if (WATO.AB09_checkPATH("register")) {
 
         //     console.log("PAGE: IHRE DATEN - NEUKUNDE");
 
@@ -345,7 +384,7 @@
 
 
         // PAGE: Adressen
-    } else if (WATO.AB07_checkPATH("addresses/add-delivery-address")) {
+    } else if (WATO.AB09_checkPATH("addresses/add-delivery-address")) {
 
         console.log("PAGE: Adressen");
 
@@ -415,7 +454,7 @@
 
 
         // PAGE: Zahlungsart
-    } else if (WATO.AB07_checkPATH("payment/add-payment-method")) {
+    } else if (WATO.AB09_checkPATH("payment/add-payment-method")) {
 
         console.log("PAGE: Zahlungsart");
         adjustProgressBar();
@@ -447,7 +486,7 @@
 
 
         // PAGE: Zusammenfassung
-    } else if (WATO.AB07_checkPATH("summary")) {
+    } else if (WATO.AB09_checkPATH("summary")) {
 
         // add css prefix
         addClass(document.documentElement, "summary");
@@ -502,7 +541,7 @@
                     deleteButton.addEventListener('click', function (e) {
                         e.preventDefault();
                         console.log('click');
-                        WATO.AB07_sendGoal('kk_ab09_delete_product');
+                        WATO.AB09_sendGoal('kk_ab09_delete_product');
 
                         jQuery.ajax({
                             type: "POST",
@@ -546,7 +585,7 @@
 
                         // Add savings tip if there is any
                         if (savings) {
-                            totalPrices[1].parentElement.insertAdjacentHTML('afterend', '<div class="row" id="kk07_sum__savings"><div class="column small-12"><span>Sie sparen mit dieser Bestellung <b>&euro;&nbsp;' + savings.toFixed(2).replace('.', ',') + '</b></span></div></div>');
+                            totalPrices[1].parentElement.insertAdjacentHTML('afterend', '<div class="row" id="kk09_sum__savings"><div class="column small-12"><span>Sie sparen mit dieser Bestellung <b>&euro;&nbsp;' + savings.toFixed(2).replace('.', ',') + '</b></span></div></div>');
                         }
 
                         // 2 -> Gesamtsumme
