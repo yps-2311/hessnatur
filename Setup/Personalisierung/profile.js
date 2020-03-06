@@ -1,6 +1,12 @@
 (function(){
 
-    // https://www.w3.org/2013/12/ceddl-201312.pdf
+    /**
+     * Iridion Data Layer - Condition Variables
+     * https://docs.google.com/spreadsheets/d/1Jmwxpjr4PVXaZJwwhUfuO2uD2CiznM5QnWTmPsp6aFQ/edit#gid=822582104
+     * 
+     * Customer Experience Digital Data Layer 1.0 
+     * https://www.w3.org/2013/12/ceddl-201312.pdf
+     */
     window.dataLayer = {
         page: {
             pageInfo: {
