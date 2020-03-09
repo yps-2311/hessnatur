@@ -16,7 +16,7 @@
     if(document.URL.indexOf('/p/') !== -1) {
         // Productpage
 
-        console.log('PDS');
+        // console.log('PDS');
 
         var kk_pi_cat = false,
         getCat = function(so_id){
@@ -63,7 +63,7 @@
             try {
                 kk_pi_cat = window.pi.category_id || window.basketTrackingObject.category_id;
 
-                console.log(kk_pi_cat);
+                // console.log(kk_pi_cat);
 
                 return !!kk_pi_cat;
             }
@@ -71,7 +71,8 @@
             return false;
         }, function(pi_found){
             if(pi_found) {
-                console.log('kk_pi_cat: '+kk_pi_cat);
+                // console.log('kk_pi_cat: '+kk_pi_cat);
+                // do nothing and its okay :D
             }
         });
 
@@ -82,7 +83,7 @@
                 _group = getCat(kk_pi_cat),
                 _thisGroup = _ls[_group];
                 
-                console.log(_group);
+                // console.log(_group);
                 if(_group !== '') {
                     if(!_thisGroup) {
                         _thisGroup = 1;

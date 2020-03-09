@@ -37,7 +37,7 @@
 		var _self = this;
 		variant = variant || 0;
 
-		console.log(variant);
+		// console.log(variant);
 
 		_self.exclude(1023, _self.reload);
 
@@ -198,7 +198,7 @@
 					// if product found get product info from API
 					if(promo) {
 						_self.xhr_get('https://www.hessnatur.com/de/p/'+promo+'/json', false, function(data){
-							console.log(data);
+							// console.log(data);
 
 							var init_img_url = '',
 							init_color_text = '',
