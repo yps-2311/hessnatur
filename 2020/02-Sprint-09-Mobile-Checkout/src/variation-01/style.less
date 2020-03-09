@@ -15,8 +15,12 @@
 }
 
 .kk-login {
-    .js_backstopWrapper .h-mediumOffset-bottom-outer {
-        display: none;
+    .js_backstopWrapper {
+
+        +.footerWrapper,
+        .h-mediumOffset-bottom-outer {
+            display: none;
+        }
     }
 
     form {
@@ -79,43 +83,54 @@
 
     .item--done {
         .progressTracker__Item__content {
-            background: #5FB609;
-            color: #fff;
+            background: #fff;
+            color: #101010;
 
-            strong {
-                font-weight: 400;
-                font-size: 14px;
-                line-height: 18px;
+            >:before {
+                width: 100%;
+                font-size: 0;
+                height: 18px;
+                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='18'%3E%3Cpath fill='%235FB609' d='M23.649.359a1.182 1.182 0 00-1.698 0L7.575 15.042 2.049 9.398a1.182 1.182 0 00-1.698 0 1.244 1.244 0 000 1.733l6.375 6.51a1.183 1.183 0 001.697 0L23.65 2.092a1.244 1.244 0 000-1.733z'/%3E%3C/svg%3E") center center/contain no-repeat;
             }
 
             &:after {
-                border-left-color: #5FB609;
+                border-left-color: #fff;
             }
         }
     }
 
     .item--current {
         .progressTracker__Item__content {
-            background: #f6f6f5;
+            background: #4D5A78;
 
-            strong {
-                font-weight: 700;
-                color: #393939;
-                font-size: 14px;
-                line-height: 18px;
+            >* {
+                color: #fff;
             }
 
             &:after {
-                border-left-color: #f6f6f5;
+                border-left-color: #4D5A78;
             }
         }
     }
 
     .progressTracker__Item__content {
+        background: #f6f6f5;
+
         >:before {
             display: block;
             font-size: 20px;
-            margin-bottom: 5px;
+            font-weight: 400;
+            margin: 5px 0;
+        }
+
+        >* {
+            font-weight: 200;
+            font-size: 12px;
+            line-height: 18px;
+        }
+
+        &:after {
+            border-left-color: #f6f6f5;
         }
 
         >* {
@@ -123,10 +138,41 @@
             height: auto;
         }
     }
-
 }
 
-#kk07_address_option--wrapper {
+// .kk-guest-checkout {
+//     .progressTracker ul li:first-child {
+//         display: none;
+//     }
+// }
+
+.kk-address {
+    // .progressTracker .collapse li:first-child {
+    //     // .kk-data .item--current {
+
+    //     .progressTracker__Item__content {
+    //         background: #fff;
+    //         color: #101010;
+
+    //         strong {
+    //             color: #101010;
+    //         }
+
+    //         &:after {
+    //             border-left-color: #fff;
+    //         }
+    //     }
+    // }
+
+    .js_backstopWrapper {
+        +.footerWrapper {
+            display: none;
+        }
+    }
+}
+
+
+#kk09_address_option--wrapper {
     strong {
         display: block;
         margin-bottom: .76923rem;
@@ -150,7 +196,7 @@
         margin-bottom: 0;
     }
 
-    #kk07_login_toggle {
+    #kk09_login_toggle {
         display: block;
     }
 
@@ -163,7 +209,7 @@
             transition: max-height .5s ease-in-out;
         }
 
-        #kk07_login_toggle {
+        #kk09_login_toggle {
             display: none;
         }
 
@@ -178,6 +224,9 @@
     &:nth-child(6) {
         display: none;
     }
+}
+
+.kk-guest #registerForm>.row>.columns {
 
     &:nth-child(12),
     &:nth-child(13),
@@ -187,48 +236,28 @@
     }
 }
 
-.kk-address .progressTracker .collapse li:first-child,
-.kk-data .item--current {
+// .kk-data {
+//     .item--current {
 
-    .progressTracker__Item__content {
-        background: #5FB609;
-        color: #fff;
+//         +.progressTracker__Item {
+//             .progressTracker__Item__content {
+//                 background: #f6f6f5;
 
-        strong {
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 18px;
-            color: #fff;
-        }
+//                 span {
+//                     font-weight: 700;
+//                     font-size: 14px;
+//                     line-height: 18px;
+//                 }
 
-        &:after {
-            border-left-color: #5FB609;
-        }
-    }
-}
-
-.kk-data {
-    .item--current {
-
-        +.progressTracker__Item {
-            .progressTracker__Item__content {
-                background: #f6f6f5;
-
-                span {
-                    font-weight: 700;
-                    font-size: 14px;
-                    line-height: 18px;
-                }
-
-                &:after {
-                    border-left-color: #f6f6f5;
-                }
-            }
-        }
-    }
+//                 &:after {
+//                     border-left-color: #f6f6f5;
+//                 }
+//             }
+//         }
+//     }
 
 
-}
+// }
 
 .kk-address-modified {
     #additional--address {
@@ -239,6 +268,7 @@
         >.medium-10 {
             display: flex;
             flex-wrap: wrap;
+            flex-direction: column;
 
             >div {
                 &:first-child {
@@ -258,7 +288,8 @@
                     order: 0;
 
                     fieldset {
-                        display: none;
+                        position: absolute;
+                        left: -10000px;
                     }
 
                     .h4 {
@@ -272,7 +303,6 @@
 
                 &:last-child {
                     order: 3;
-                    width: 100%;
                 }
             }
         }
@@ -500,7 +530,8 @@
         margin-bottom: 0;
 
         .h4 {
-            margin-bottom: 2.4rem;
+            margin-bottom: 1.5rem;
+            padding-right: 70px;
         }
 
         .align-self-bottom {
@@ -520,13 +551,18 @@
 }
 
 .kk-summary {
+    .h1 {
+        margin-bottom: 0.6rem;
+    }
+
     .cart__productname {
         font-family: Roboto;
         font-size: 1.35rem;
         line-height: 1.8rem;
 
         +div {
-            margin-top: 0.35rem;
+            margin-top: .25rem;
+            margin-bottom: 0.9rem !important;
             font-size: 11px;
         }
     }
@@ -537,7 +573,7 @@
         padding: 1rem;
         background: rgba(255, 255, 255, .8);
         position: relative;
-        top: -38px;
+        top: -36px;
     }
 
     img~.button {
@@ -546,6 +582,9 @@
         margin-left: 10px;
     }
 
+    .small-text-left .h-smallOffset-bottom-outer {
+        margin-bottom: .9rem;
+    }
 }
 
 #checkoutSummaryForm1 {
@@ -580,6 +619,12 @@
             font-size: 12px;
             font-weight: 600;
             color: #393939;
+            line-height: 14px;
+
+            +span {
+                line-height: 20px;
+
+            }
 
             &:after {
                 content: ' ';
@@ -597,6 +642,10 @@
 
 .kk-price {
     justify-content: flex-end;
+
+    div {
+        padding-bottom: .4rem;
+    }
 
     +p {
         text-align: right;
@@ -663,7 +712,7 @@
     }
 }
 
-#kk07_sum__savings {
+#kk09_sum__savings {
     .column {
         text-align: right;
     }
@@ -674,5 +723,25 @@
         padding: 7px 10px;
         display: inline-block;
         margin-top: 10px;
+    }
+}
+
+.kk-sticky {
+    padding-top: 63px;
+    border: 0;
+
+    >.row {
+        width: 100%;
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        border-bottom: .07692rem solid #e5e4e3;
+    }
+}
+
+@media screen and (max-width: 335px) {
+    .progressTracker .progressTracker__Item__content>* {
+        font-size: 9px;
     }
 }

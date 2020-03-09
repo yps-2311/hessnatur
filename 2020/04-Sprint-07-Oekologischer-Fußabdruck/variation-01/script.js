@@ -3,15 +3,13 @@
 
 /**
  * @function
- * @author Max Mustermann
+ * @author Nguyet Dang
  * @namespace V1
  * @name Variation 01
  * @description
  */
 (function (WATO) {
     'use strict';
-
-    console.log('ÖKO!');
 
 
     var windowHeight = (window.innerHeight || document.documentElement.clientHeight),
@@ -30,7 +28,6 @@
         var ecoWrapper = WATO.qs('#kk07_ecological').getBoundingClientRect(),
             vertInView = (ecoWrapper.top <= windowHeight) && ((ecoWrapper.top + ecoWrapper.height) >= 0),
             horInView = (ecoWrapper.left <= windowWidth) && ((ecoWrapper.left + ecoWrapper.width) >= 0);
-        console.log('checkScrollDepth', vertInView && horInView);
         if (vertInView && horInView) {
 
             window.iridion.push(['goal', 'kk07_eco_seen']);
@@ -62,7 +59,7 @@
                 '</div>' +
                 '<div class="column large-4 kk07_eco__point">' +
                 '<div class="kk07_eco__icon earth"></div>' +
-                '<div class="kk07_eco__amount"><span data-property="clean_earth_in_square_meter">' + formatNumber(window.kk07_ecoData.clean_earth_in_square_meter) + '</span> m<sup>2</sup></div>' +
+                '<div class="kk07_eco__amount"><span data-property="clean_earth_in_square_meter">' + formatNumber(window.kk07_ecoData.clean_earth_consumption_in_square_meter) + '</span> m<sup>2</sup></div>' +
                 '<strong>Boden/Erde*</strong>' +
                 '<span>Wir verwenden ausschließlich Rohstoffe aus ökologischer Landwirtschaft.</span>' +
                 '</div>' +
@@ -77,27 +74,24 @@
         }
     });
 
-    WATO.elem('#desc__size', function (sizes) {
-        if (sizes) {
-            sizes[0].addEventListener('change', function () {
+    // WATO.elem('#desc__size', function (sizes) {
+    //     if (sizes) {
+    //         sizes[0].addEventListener('change', function () {
 
-                WATO.xhr_get('https://products-approval.hessnatur.com/products/' + WATO.qs('[name="productCodePost"]').value.substring(0, 7), function (data) {
-                    if (data) {
-                        console.log('success', data);
-                        var ecoData = data.products[0].ecological_data;
-                        if (ecoData) {
-                            var ecoDataWrappers = WATO.qsa('#kk07_ecological .kk07_eco__amount span');
-                            for (var i = 0; i < 3; i++) {
-                                ecoDataWrappers[i].innerHTML = formatNumber(ecoData[ecoDataWrappers[i].getAttribute('data-property')]);
-                            }
-                        }
-                    } else {
-                        console.log('no products', data);
-                    }
-                });
-            });
-        }
-    });
+    //             WATO.xhr_get('https://products-approval.hessnatur.com/products/' + WATO.qs('[name="productCodePost"]').value.substring(0, 7), function (data) {
+    //                 if (data) {
+    //                     var ecoData = data.products[0].ecological_data;
+    //                     if (ecoData) {
+    //                         var ecoDataWrappers = WATO.qsa('#kk07_ecological .kk07_eco__amount span');
+    //                         for (var i = 0; i < 3; i++) {
+    //                             ecoDataWrappers[i].innerHTML = formatNumber(ecoData[ecoDataWrappers[i].getAttribute('data-property')]);
+    //                         }
+    //                     }
+    //                 }
+    //             });
+    //         });
+    //     }
+    // });
 
 
 })(new window.WATO());
