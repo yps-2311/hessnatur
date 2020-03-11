@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 /*jshint loopfunc: true */
 /**
  * @function
@@ -11,7 +11,6 @@
 (function (WATO) {
     "use strict";
 
-    console.log("KK: 2020 - Hessnatur - Sprint 09");
     WATO.AB09_goals();
 
     /**
@@ -25,7 +24,6 @@
      * HELPERS
      */
     function setStorage(key, value) {
-        console.log('setStorage', key, value);
         window.sessionStorage.setItem(key, value);
     }
 
@@ -48,9 +46,7 @@
     }
 
     function makeProgressBarSticky(progressBar) {
-        console.log(progressBar);
         document.addEventListener('scroll', function () {
-            console.log(progressBar.getBoundingClientRect());
             if (progressBar.getBoundingClientRect().top <= 0) {
                 addClass(progressBar, 'sticky');
             } else {
@@ -90,7 +86,6 @@
                     progressSteps.shift();
 
                     if (PATH.indexOf('addresses') !== -1) {
-                        console.log('hier', steps, steps[0]);
                         steps[0].parentNode.classList.remove('item--done');
                         steps[0].parentNode.classList.add('item--current');
                     }
@@ -169,20 +164,17 @@
             WATO.elem('label[for="additional_address_trigger"]', function (deliveryAddressLabel) {
                 if (deliveryAddressLabel[0]) {
                     deliveryAddressLabel = deliveryAddressLabel[0];
-                    // console.log(deliveryAddressLabel);
+
                     deliveryAddressLabel.click();
                     WATO.elem('#additional--address.hide', function (input) {
                         if (input) {
-                            // console.log(input);
-                            // console.log('label, checked', deliveryAddressLabel, WATO.qs('#additional_address_trigger:checked'));
+
                             if (WATO.qs('#additional_address_trigger:checked')) {
                                 window.setTimeout(function () {
-                                    console.log('click 1');
                                     deliveryAddressLabel.click();
                                 }, 550);
                             }
                             window.setTimeout(function () {
-                                console.log('click 2');
                                 deliveryAddressLabel.click();
                             }, 500);
                         }
@@ -191,21 +183,11 @@
                     // just to be safe...
                     window.setTimeout(function () {
                         if (!WATO.qs('#additional_address_trigger:checked')) {
-                            console.log('click again');
                             deliveryAddressLabel.click();
                         }
                     }, 750);
                 }
             });
-            // WATO.elem('#additional_address_trigger:checked', function (input) {
-            //     console.log(input, WATO.qs('#additional--address.hide'));
-            //     if (input && WATO.qs('#additional--address.hide')) {
-            //         // WATO.qs('#additional--address.hide').classList.remove('hide');
-
-            //         WATO.qs('label[for="additional_address_trigger"]').click();
-            //         WATO.qs('label[for="additional_address_trigger"]').click();
-            //     }
-            // });
         });
 
         // prefill zip, city, street with invoice data
@@ -227,7 +209,6 @@
      */
     // PAGE: LOGIN
     if (PATH === "/de/login/checkout") {
-        console.log("PAGE: LOGIN");
         removeStorage(STORAGE);
 
         // add css prefix
@@ -321,7 +302,6 @@
         // PAGE: IHRE DATEN (GAST)
     } else if (WATO.AB09_checkPATH("register")) {
 
-        console.log("PAGE: IHRE DATEN - GAST || NEUKUNDE");
 
         // add css prefix
         addClass(document.documentElement, "data");
@@ -332,7 +312,7 @@
 
         WATO.elem('#registerForm fieldset', function (newsletterBox) {
             if (newsletterBox) {
-                console.log(getStorage(STORAGE), getStorage(STORAGE) === 'false');
+
                 // Add checkbox -> skip next page or not?
                 newsletterBox[0].insertAdjacentHTML('beforebegin',
                     '<label class="small-12 columns" id="kk09_address_option--wrapper">' +
@@ -369,24 +349,9 @@
             }
         });
 
-
-
-        // PAGE: IHRE DATEN (NEUKUNDE)
-        // } else if (WATO.AB09_checkPATH("register")) {
-
-        //     console.log("PAGE: IHRE DATEN - NEUKUNDE");
-
-        //     // add css prefix
-        //     addClass(document.documentElement, "register");
-
-        //     // skip next page
-        //     setStorage(STORAGE, true);
-
-
         // PAGE: Adressen
     } else if (WATO.AB09_checkPATH("addresses/add-delivery-address")) {
 
-        console.log("PAGE: Adressen");
 
 
         // add css prefix
@@ -395,7 +360,6 @@
         if (getStorage(STORAGE) === "true") {
             removeStorage(STORAGE);
             addClass(document.documentElement, "address-hide");
-            console.log("SHOW LOADER");
 
             // setStorage(STORAGE, false);
 
@@ -417,7 +381,6 @@
                 WATO.elem('#addressForm .button[type="submit"]', function (CTA) {
 
                     if (CTA) {
-                        console.log('CTA', CTA);
                         // send form
                         CTA[0].click();
                     }
@@ -440,11 +403,9 @@
                 if (document.URL.indexOf('show-invoice') !== -1) {
                     window.setTimeout(function () {
 
-                        console.log('show-invoice');
                         WATO.elem(function () {
                             return typeof jQuery !== 'undefined';
                         }, function () {
-                            console.log('show-invoice scroll', jQuery('#addressId').prev().offset().top);
                             jQuery("html, body").animate({ scrollTop: jQuery('#addressId').prev().offset().top - 25 });
                         });
                     }, 800);
@@ -456,7 +417,6 @@
         // PAGE: Zahlungsart
     } else if (WATO.AB09_checkPATH("payment/add-payment-method")) {
 
-        console.log("PAGE: Zahlungsart");
         adjustProgressBar();
         removeStorage(STORAGE);
 
@@ -490,7 +450,6 @@
 
         // add css prefix
         addClass(document.documentElement, "summary");
-        console.log("PAGE: Zusammenfassung");
         adjustProgressBar();
 
         WATO.elem('#checkoutContentPanel', function (contentPanel) {
@@ -518,7 +477,6 @@
 
         WATO.elem('.cart__productname', function (productNames) {
             if (productNames) {
-                console.log('productname', productNames);
 
                 var savings = 0;
 
@@ -529,7 +487,6 @@
                         productImage = WATO.qs('img', productWrapper),
                         prices = WATO.qsa('.price', productWrapper);
 
-                    console.log(productWrapper);
                     addClass(productWrapper, 'product-wrapper');
 
                     // add delete btn
@@ -540,7 +497,6 @@
 
                     deleteButton.addEventListener('click', function (e) {
                         e.preventDefault();
-                        console.log('click');
                         WATO.AB09_sendGoal('kk_ab09_delete_product');
 
                         jQuery.ajax({
@@ -570,7 +526,6 @@
                 // total prices at the end of the page
                 WATO.elem('.totalPrice', function (totalPrices) {
                     if (totalPrices) {
-                        console.log(totalPrices);
 
                         addClass(totalPrices[0].closest('.print-page-break-avoid'), 'sums');
 

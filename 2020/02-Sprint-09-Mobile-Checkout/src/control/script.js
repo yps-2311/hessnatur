@@ -1,17 +1,16 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 /*jshint loopfunc: true */
 /**
  * @function
  * @author Nguyet Dang
- * @namespace V1
- * @name Variation 01
+ * @namespace C
+ * @name Control
  * @description
  */
 (function (WATO) {
     "use strict";
 
-    console.log("KK: 2020 - Hessnatur - Sprint 09 - Control");
     WATO.AB09_goals();
 
     if (WATO.AB09_checkPATH("addresses/add-delivery-address")) {
