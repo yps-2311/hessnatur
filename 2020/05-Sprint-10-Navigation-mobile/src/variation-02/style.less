@@ -7,8 +7,12 @@
 /* DEFINE VARIATION CSS */
 
 .kk_topnav {
-    background-color: lightblue;
-    padding: 7px;
+    // background-color: lightblue;
+    background: transparent url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB10/v2header/Neutral.png") no-repeat center center;
+    background-size: 100% auto;
+    // transition: background-image 1s ease-in-out;
+    padding: 7px 23px;
+    margin-bottom: 5px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -27,31 +31,54 @@
             background: #393939;
         }
     }
-}
-#offCanvasNavigation > li {
-    height: 0;
-    margin: 0;
-    > a {
-        display: none;
+
+    &.kk_active_NEU {
+        background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB10/v2header/Neu.png");
+    }
+    &.kk_active_Damen {
+        background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB10/v2header/Damen.png");
+    }
+    &.kk_active_Herren {
+        background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB10/v2header/Herren.png");
+    }
+    &.kk_active_Home {
+        background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB10/v2header/Home.png");
+    }
+    &.kk_active_Sale {
+        background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB10/v2header/Sale.png");
+    }
+    &.kk_active_Junior {
+        background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB10/v2header/Junior.png");
     }
 }
-#offCanvasNavPrgRedirectionForm {
-    margin-top: 6px;
-}
-
-.is-drilldown-submenu-parent:first-child {
-    margin-top: 6px;
-    &::before {
+.kk_s10nav  {
+    #offCanvasNavigation > li {
+        height: 0;
+        margin: 0;
+        > a {
+            display: none;
+        }
+    }
+    #offCanvasNavPrgRedirectionForm {
+        margin-top: 6px;
+    }
+    .is-drilldown-submenu-parent:first-child {
+        margin-top: 6px;
+        &::before {
+            display: none;
+        }
+    }
+    .is-drilldown li[data-drilldown-back-levels="1"],
+    .is-drilldown li[data-drilldown-back-levels="2"],
+    .is-drilldown li[data-drilldown-back-levels="3"] {
         display: none;
+    }
+    .is-drilldown li[data-drilldown-back-levels="2"] + li[data-drilldown-back-levels="1"],
+    .is-drilldown li[data-drilldown-back-levels="3"] + li[data-drilldown-back-levels="2"] {
+        display: block;
     }
 }
 
-.is-drilldown li[data-drilldown-back-levels="1"],
-.is-drilldown li[data-drilldown-back-levels="2"],
-.is-drilldown li[data-drilldown-back-levels="3"] {
-    display: none;
-}
-.is-drilldown li[data-drilldown-back-levels="2"] + li[data-drilldown-back-levels="1"],
-.is-drilldown li[data-drilldown-back-levels="3"] + li[data-drilldown-back-levels="2"] {
-    display: block;
-}
+
+
+

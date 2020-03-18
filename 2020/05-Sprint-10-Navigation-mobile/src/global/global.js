@@ -12,59 +12,46 @@
     
     WATO.prototype.sprint10 = function(){
         var _self = this,
-            imgPath = "https://dev.web-arts.de/hessnatur/2020/05-Sprint-10-Navigation-mobile/img/katimg/";
+            imgPath = "https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB10/katimg/";
 
         function cleanMenuHeadline(ele) {
-            if(ele){
-                return ele.textContent.toLowerCase().trim().replace(" & ","_").replace("/","").replace("ä","ae").replace("ü","ue").replace("ö","oe").replace("ß","ss").replace(/ /g,"_").replace("✿","");
+            if(typeof ele === "object"){
+                // Zur korrekten URL Benennung werden alle Sonderzeichen ersetzt
+                return ele.textContent.toLowerCase().trim().replace(" & ","_").replace("/","").replace("ä","ae").replace("ü","ue").replace("ö","oe").replace("ß","ss").replace(/ /g,"_"); // .replace("✿","")
             }
         }
 
-        _self.elem('#offCanvasNavigation > li:not([aria-label="Outdoor"]), #offCanvasNavigation > li:not([aria-label="Outdoor"]) > ul > li:not(.h-text-bold):not([data-drilldown-back-levels]), #offCanvasNavigation > li:not([aria-label="Outdoor"]) > ul > li > ul > li:not(.h-text-bold):not([data-drilldown-back-levels])', function(firstHierarchy){ //:not(.h-text-bold)
-            if(firstHierarchy){
-                for (var i = 0; i < firstHierarchy.length; i++) {
+        // Navi Hierarchy
+        _self.elem( '#offCanvasNavigation > li:not([aria-label="Outdoor"]), '+ // Level 1
+                    '#offCanvasNavigation > li:not([aria-label="Outdoor"]) > ul > li:not(.h-text-bold):not([data-drilldown-back-levels]), '+ // Level 2
+                    '#offCanvasNavigation > li:not([aria-label="Outdoor"]) > ul > li > ul > li:not(.h-text-bold):not([data-drilldown-back-levels])', // Level 3
+                    function(all3LevelHierarchy){ //:not(.h-text-bold)
+            if(all3LevelHierarchy){
+                for (var i = 0; i < all3LevelHierarchy.length; i++) {
                     try {
-                        var thisMenuPoint = firstHierarchy[i],
-                            // isLabel = thisMenuPoint.children,
+                        var thisMenuPoint = all3LevelHierarchy[i],
                             tempHL = thisMenuPoint.parentNode.parentNode.parentNode.previousElementSibling,
                             tempHL2 = thisMenuPoint.parentNode.previousElementSibling,
-                            // newHL = tempHL ? tempHL : thisMenuPoint.parentNode.previousElementSibling, //_self.qs('li.is-drilldown-submenu-back-item + li.is-drilldown-submenu-back-item, li.is-drilldown-submenu-back-item + .h-text-bold', thisMenuPoint.parentNode), // 'li[data-drilldown-back-levels="2"] + li[data-drilldown-back-levels="1"], li[data-drilldown-back-levels="1"] + .h-text-bold'
                             tempHeadlineText = "";
-
-                        // Menüpunkte werden teilweise mit ihren Kategorie-Headlines definiert
-                        // damit z.B. Jeans zu Männer oder Frauen zugeordnet werden können
-                        // if(newHL && !thisMenuPoint.parentNode.getAttribute('id')){
-                        //     tempHeadlineText = cleanMenuHeadline(newHL) + '_';
-                        // }
-
+                        
+                        // Für Level 3 - Wenn ein Navi-Punkt eine Level3 Benennung hat wird dieser hier für die Benennung mitaufgenommen
+                        // z.B. damen_bekleidung_hose wird hier damen aufgenommen
                         if(tempHL && tempHL.textContent.trim().length > 0){
                             tempHeadlineText = cleanMenuHeadline(tempHL) + '_';
                         }
+                        // Für Level 2
+                        // z.B. damen_bekleidung_hose wird hier bekleidung aufgenommen
                         if(tempHL2){
                             tempHeadlineText += cleanMenuHeadline(tempHL2) + '_';
                         }
+                        // Bei Level 1 bleibt tempHeadlineText leer
                         
-                        // if(isLabel.length > 0 && isLabel[0].classList.contains('navNodeWrapper') && 
-                        //    isLabel[0].children[0].classList.contains('prgRedirData')){
-                        //     // Wenn ein input für diesen Menüpunkt existiert wird der eindeutige Value hiervon für den Dateinamen verwendet
+                        var isTitleInA = _self.qs("a", thisMenuPoint);
 
-                        //     thisMenuPoint.setAttribute('style', 'background-image: url("'+ imgPath + isLabel[0].children[0].getAttribute('value').toLowerCase().trim()+'.png")');
-                        // }else{
-                            // Alternativ wird der Text im Menüpunkt verwendet, erweitert um die Kategorie in der dieser sich befindet
-                            var tempTitle = "",
-                                isTitleInA = _self.qs("a", thisMenuPoint);
-
-                            if(isTitleInA){
-                                tempTitle = cleanMenuHeadline(isTitleInA);
-                            }else{
-                                tempTitle = cleanMenuHeadline(thisMenuPoint);
-                            }
-
-                            thisMenuPoint.setAttribute('style', 'background-image: url("' + imgPath + tempHeadlineText + tempTitle + '.png")');
-                            console.log(tempHeadlineText + tempTitle);
-                        // }
-
-                        
+                        // Navi-Punkt-Titel
+                        thisMenuPoint.setAttribute('style', 'background-image: url("' + imgPath + tempHeadlineText + 
+                            cleanMenuHeadline((isTitleInA ? isTitleInA : thisMenuPoint)) + 
+                            '.png")');
 
                     } catch (error) {
                         console.log('Error: ', error);

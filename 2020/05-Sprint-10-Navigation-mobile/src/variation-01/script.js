@@ -9,21 +9,6 @@
  * @description
  */
 
-// window.mzOptions = {
-//     onZoomReady: function() {
-//         console.log('onReady', arguments[0]);
-//     },
-//     onUpdate: function() {
-//         console.log('onUpdated', arguments[0], arguments[1], arguments[2]);
-//     },
-//     onZoomIn: function() {
-//         console.log('onZoomIn', arguments[0]);
-//     },
-//     onZoomOut: function() {
-//         console.log('onZoomOut', arguments[0]);
-//     }
-// };
-
 
 (function(WATO) {
     "use strict";
@@ -38,6 +23,8 @@
     //     }
     // }
     // WATO.goalsFromCat();
+
+    document.documentElement.classList.add('kk_s10nav');
 
     WATO.sprint10();
 
