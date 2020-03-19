@@ -11,8 +11,8 @@ window.iridion.econda = (function(window){
     "use strict";
 
     var data = [],
-        emos2Status = false;
-        // emos3Status = false;
+        // emos2Status = false;
+        emos3Status = false;
 
     function pushErrorGoal() {
         window.iridion = window.iridion || [];
@@ -23,8 +23,8 @@ window.iridion.econda = (function(window){
 
         try {
             for(var i = 0; i < data.length; i++){
-                // window.emos3.send(data[i]);
-                window.emospro.icampv.push(data[i]);
+                window.emos3.send(data[i]);
+                // window.emosPropertiesEvent(data[i]);
             }
             data = [];
         } catch(e) {
@@ -33,10 +33,11 @@ window.iridion.econda = (function(window){
     }
 
     function checkStatus() {
-        // if(typeof window.emos3 !== "undefined" && typeof window.emos3.send === "function"){
-        if(typeof window.emospro !== "undefined" && typeof window.emospro.icampv === "function"){
-            // emos3Status = true;
-            emos2Status = true;
+        // if(typeof window.emospro !== "undefined" && typeof window.emosPropertiesEvent === "function"){
+        //     emos2Status = true;
+
+        if(typeof window.emos3 !== "undefined" && typeof window.emos3.send === "function"){
+            emos3Status = true;
             return true;
         }
         return false;
@@ -66,11 +67,13 @@ window.iridion.econda = (function(window){
                 data.push({
                     // siteID: 1,
                     // content: (siteTitle ? "HTML-Title/" + siteTitle: "content"),
-                    abtest:  [tracking]
+                    // rqtype: 'hiddenpi',
+                    type :'event',
+                    abtest: [tracking]
                 });
-
-                // if(emos3Status){
-                if(emos2Status){
+                
+                // if(emos2Status){
+                if(emos3Status){
                 
                     sendEcondaTracking();
                 }
