@@ -15,11 +15,16 @@
     /*jshint loopfunc: true */
 
     WATO.sprint10();
+    WATO.sprint10goals();
 
     function addClass(elem, thisclassname) {
         if(elem){
             elem.classList.add(thisclassname);
         }
+    }
+
+    function pushGoal(key){
+        window.iridion.push(['goal', key]);
     }
 
     addClass(document.documentElement, 'kk_s10nav');
@@ -52,7 +57,6 @@
                 '</div>'
             );
 
-
             // Syncen und Klickbarkeit der neuen Navi
             var newTopNav = WATO.qsa(".kk_topnav > div", navi.parentNode);
 
@@ -78,6 +82,29 @@
                     }
 
                     WATO.qs('#offCanvasNavigation > [aria-label="'+dataTitle+'"] > a', navi).click();
+
+                    pushGoal("clicklevel1");
+
+                    switch (dataTitle) {
+                        case "NEU":
+                            pushGoal("click_neu");
+                            break;
+                        case "Damen":
+                            pushGoal("click_damen");
+                            break;
+                        case "Herren":
+                            pushGoal("click_herren");
+                            break;
+                        case "Junior":
+                            pushGoal("click_junior");
+                            break;
+                        case "Home":
+                            pushGoal("click_home");
+                            break;
+                        case "Sale":
+                            pushGoal("click_sale");
+                            break;
+                    }
                 });
             }
 

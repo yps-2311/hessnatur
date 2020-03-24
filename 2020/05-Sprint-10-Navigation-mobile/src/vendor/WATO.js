@@ -103,26 +103,26 @@
      *
      * @param {function} callback
      */
-	// window.WATO.prototype.ready = function(callback) {
+	window.WATO.prototype.ready = function(callback) {
 
-    //     // http://youmightnotneedjquery.com/ IE9+
-    //     if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
+        // http://youmightnotneedjquery.com/ IE9+
+        if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
 
-    //         callback();
-    //     } else {
+            callback();
+        } else {
 
-    //         document.addEventListener('DOMContentLoaded', callback);
-    //     }
+            document.addEventListener('DOMContentLoaded', callback);
+        }
 
-	// 	// BUGFIX LD 09.05.2017
-	// 	// var state = document.readyState !== 'loading';
-	// 	// if(state) {
-	// 	// 	callback();
-	// 	// } else {
-	// 	// 	document.addEventListener('DOMContentLoaded', callback);
-	// 	// }
-	// 	// return state;
-    // };
+		// BUGFIX LD 09.05.2017
+		// var state = document.readyState !== 'loading';
+		// if(state) {
+		// 	callback();
+		// } else {
+		// 	document.addEventListener('DOMContentLoaded', callback);
+		// }
+		// return state;
+    };
 
     /**
      * @function initObserver

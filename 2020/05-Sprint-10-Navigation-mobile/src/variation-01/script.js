@@ -27,5 +27,7 @@
     document.documentElement.classList.add('kk_s10nav');
 
     WATO.sprint10();
+    WATO.sprint10goals();
+    
 
 })(new window.WATO());
