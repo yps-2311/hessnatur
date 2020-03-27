@@ -208,6 +208,8 @@
         }else if(URL.indexOf("/checkout/orderConfirmation") !== -1){
             // Danke
             goalPush('page_conv');
+
+            window.localStorage.setItem("kk_hasbought", true);
     
             // Revenue
             var wa_interval = setInterval(function(){
