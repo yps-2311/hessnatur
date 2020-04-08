@@ -1,0 +1,70 @@
+/* IMPORT VAR LESS FILE */
+@import "../global/vars.less";
+
+/* IMPORT GLOBAL LESS FILES */
+@import "../global/global.less";
+
+/* DEFINE VARIATION CSS */
+
+
+.kk_kachel {
+    > div {
+        background: #fff no-repeat center 0;
+        background-size: 100% auto;
+        padding: 36px;
+        height: 100%;
+        position: relative;
+        h3 {
+            margin: 20% 0 21%;
+            font-family: "Roboto",Helvetica,Arial,sans-serif;
+            font-weight: normal;
+            font-size: 15px;
+            text-align: center;
+            text-transform: uppercase;
+            min-height: 30px;
+        }
+        > div {
+            margin: 0 0 19%;
+            padding-left: 19%;
+            font-size: 0.9rem;
+            min-height: 51px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        img {
+            margin: 10px auto;
+            display: block;
+            width: 48%;
+        }
+        &::before {
+            content: "";
+            width: 13%;
+            height: 1px;
+            border: solid 1px #999;
+            position: absolute;
+            top: 55px;
+            left: 15%;
+        }
+        &::after {
+            content: "";
+            width: 13%;
+            height: 1px;
+            border: solid 1px #999;
+            position: absolute;
+            top: 55px;
+            right: 15%;
+        }
+    }
+    &.kk_quali > div {
+        background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/quali1.jpg");
+    }
+    &.kk_nachteile > div {
+        background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/keinenachteile1.jpg");
+    }
+    &.kk_trage > div {
+        background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/trage1.jpg");
+    }
+}
+
+
