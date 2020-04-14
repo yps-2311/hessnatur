@@ -34,11 +34,13 @@
             WATO.qs(".gridviewProductItemWrapper:nth-child(6)", parentProds).insertAdjacentHTML('afterend', 
                 '<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel kk_quali">'+
                     '<div>'+
-                        '<img src="'+hessnaturLogo+'">'+
-                        '<h3>Höchste Qualität</h3>'+
-                        '<div>Verwendung kontrollierter BIO-Naturfaser</div>'+
-                        '<div>Höchste Qualität bei unseren Produkten</div>'+
-                        '<div>Kompletter Ausschuss belastender Chemikalien</div>'+
+                        '<div class="kk_content">'+
+                            '<img src="'+hessnaturLogo+'">'+
+                            '<h3>Höchste Qualität</h3>'+
+                            '<div>Verwendung kontrollierter BIO-Naturfaser</div>'+
+                            '<div>Höchste Qualität bei unseren Produkten</div>'+
+                            '<div>Kompletter Ausschuss belastender Chemikalien</div>'+
+                        '</div>'+
                     '</div>'+
                 '</div>'
             );
@@ -46,11 +48,13 @@
             WATO.qs(".gridviewProductItemWrapper:nth-child(10)", parentProds).insertAdjacentHTML('afterend', 
                 '<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel kk_nachteile">'+
                     '<div>'+
-                        '<img src="'+hessnaturLogo+'">'+
-                        '<h3>Keine Nachteile für Mensch & Natur</h3>'+
-                        '<div>Konsequente Einhaltung von Naturschutz, Gesundheit und Fairness</div>'+
-                        '<div>Ein Herstellungsprozess mit ökoligischer Verantwortung</div>'+
-                        '<div>Vorschriften zum Umwelt- schutz (z.B. Abwasserklär- anlagen)</div>'+
+                        '<div class="kk_content">'+
+                            '<img src="'+hessnaturLogo+'">'+
+                            '<h3>Keine Nachteile für Mensch & Natur</h3>'+
+                            '<div>Konsequente Einhaltung von Naturschutz, Gesundheit und Fairness</div>'+
+                            '<div>Ein Herstellungsprozess mit ökoligischer Verantwortung</div>'+
+                            '<div>Vorschriften zum Umwelt- schutz (z.B. Abwasserklär- anlagen)</div>'+
+                        '</div>'+
                     '</div>'+
                 '</div>'
             );
@@ -58,21 +62,22 @@
             prodWrapper[0].insertAdjacentHTML('afterend', 
                 '<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel kk_trage">'+
                     '<div>'+
-                        '<img src="'+hessnaturLogo+'">'+
-                        '<h3>Höchste Qualität</h3>'+
-                        '<div>Verwendung kontrollierter BIO-Naturfaser</div>'+
-                        '<div>Höchste Qualität bei unseren Produkten</div>'+
-                        '<div>Kompletter Ausschuss belastender Chemikalien</div>'+
+                        '<div class="kk_content">'+
+                            '<img src="'+hessnaturLogo+'">'+
+                            '<h3>Höchste Qualität</h3>'+
+                            '<div>Verwendung kontrollierter BIO-Naturfaser</div>'+
+                            '<div>Höchste Qualität bei unseren Produkten</div>'+
+                            '<div>Kompletter Ausschuss belastender Chemikalien</div>'+
+                        '</div>'+
                     '</div>'+
                 '</div>'
             );
-
-            kk_nachteile
 
 
         }
     });
 
+    
     
 
 })(new window.WATO());
