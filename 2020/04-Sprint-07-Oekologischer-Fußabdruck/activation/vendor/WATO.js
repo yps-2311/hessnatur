@@ -541,7 +541,7 @@
      * 
      * @author Lukas Dziambor
      */
-/*
+
     window.WATO.prototype.xhr_get = function (url, callback, scopedData) {
         var request = new XMLHttpRequest();
         request.open('GET', url, true);
@@ -570,7 +570,7 @@
         // request.withCredentials = true;
         request.send();
     };
-*/
+
 
     /**
      * @function xhr_post

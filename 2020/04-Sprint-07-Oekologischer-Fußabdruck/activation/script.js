@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend '../global/global.js';
+// @codekit-prepend './vendor/WATO.js';
 
 /**
  * @function
@@ -22,7 +22,8 @@
                     ecoData.carbon_dioxide_savings_in_gram &&
                     ecoData.clean_earth_consumption_in_square_meter) {
                     window.kk07_ecoData = ecoData;
-                    window.iridion.push(['run', '942344586200']);
+                    window.iridion.push(['run', '945287385013']);
+                    window.iridion.push(['run', '952572184314']);
                 }
             }
         }
