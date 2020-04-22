@@ -12,10 +12,8 @@
     'use strict';
 
 
-
     WATO.xhr_get('https://products.hessnatur.com/products/' + document.URL.match(/de\/.*\/p\/(\d+)/)[1], function (data) {
         if (data) {
-
             var ecoData = data.products[0].ecological_data;
             if (ecoData) {
                 if (ecoData.water_savings_in_liter &&

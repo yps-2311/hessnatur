@@ -12,12 +12,26 @@
     'use strict';
 
 
-    var ecoData,
+    var ecoData, waterValue,
+        co2Value,
+        earthValue,
         s3 = 'https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB07-KK/';
 
     function pushGoal(goal) {
-        window.iridion = window.iridion || [];
-        window.iridion.push(['goal', goal]);
+        _w.iridion = _w.iridion || [];
+        _w.iridion.push(['goal', goal]);
+    }
+
+    function getStyledValue(value, styled) {
+        return !styled ? value : '<strong>' + value + '</strong>';
+    }
+
+    function getValueText(type, styled) {
+        switch (type) {
+            case 0: return getStyledValue(waterValue, styled) + ' gefüllte Badewanne' + (waterValue > 1 ? 'n' : '');
+            case 1: return getStyledValue(co2Value, styled) + ' ' + (co2Value > 1 ? 'Flüge' : 'Flug') + ' (Frankfurt-Paris)';
+            case 2: return getStyledValue(earthValue, styled) + ' ' + (earthValue > 1 ? 'gefüllte Blumentöpfe' : 'gefüllter Blumentopf');
+        }
     }
 
     document.documentElement.classList.add('kk07A');
@@ -27,10 +41,10 @@
         return !!ecoData;
     }, function (run) {
         if (run) {
+            waterValue = Math.round(ecoData.water_savings_in_liter / 120);
+            co2Value = Math.round(ecoData.carbon_dioxide_savings_in_gram / 207);
+            earthValue = Math.round(ecoData.clean_earth_consumption_in_square_meter / 0.82);
 
-            var waterValue = Math.round(ecoData.water_savings_in_liter / 120),
-                co2Value = Math.round(ecoData.carbon_dioxide_savings_in_gram / 207),
-                earthValue = Math.round(ecoData.clean_earth_consumption_in_square_meter / 0.82);
 
             WATO.elem('.pds-cockpit__wrapper .align-justify', function (headerElem) {
                 if (headerElem) {
@@ -40,9 +54,9 @@
                         '<div>' +
                         '<div class="kk07_headline">Ihre ökologische Ersparnis</div><span>bei der Herstellung dieses Artikels.</span>' +
                         '<ul>' +
-                        '<li><span><i class="kk07_icon water"></i>Wasser</span> <strong>' + waterValue + '</strong> gefüllte Badewannen</li>' +
-                        '<li><span><i class="kk07_icon co2"></i>CO2</span> <strong>' + co2Value + '</strong> Flüge (Frankfurt-Paris)</li>' +
-                        '<li><span><i class="kk07_icon earth"></i>Erde</span> <strong>' + earthValue + '</strong> gefüllte Blumentöpfe</li>' +
+                        '<li><span><i class="kk07_icon water"></i>Wasser</span> ' + getValueText(0, true) + '</li>' +
+                        '<li><span><i class="kk07_icon co2"></i>CO2</span> ' + getValueText(1, true) + '</li>' +
+                        '<li><span><i class="kk07_icon earth"></i>Erde</span> ' + getValueText(2, true) + '</li>' +
                         '</ul>' +
                         '<a href="#kk07_ecological">mehr Infos</a>' +
                         '</div>' +
@@ -74,9 +88,9 @@
                         '<div class="kk07_head">' +
                         '<i class="kk07_icon water"></i>' +
                         '<strong>weniger Wasserverbrauch</strong>' +
-                        '<span>= ' + waterValue + ' gefüllte Badewannen</span>' +
+                        '<span>= ' + getValueText(0, false) + '</span>' +
                         '</div>' +
-                        '<p>Eine Badewanne fasst Ø 120l Wasser. Bei der Produktion dieses Kleidungsstücks wird im Vergleich zur herkömmlichen Herstellung die Wassermenge von ' + waterValue + ' gefüllten Badewannen eingespart. Sie sparen somit ' + (waterValue * 120) + 'l Wasser.</p>' +
+                        '<p>Eine Badewanne fasst Ø 120l Wasser. Bei der Produktion dieses Kleidungsstücks wird im Vergleich zur herkömmlichen Herstellung die Wassermenge von ' + getValueText(0, false) + ' eingespart. Sie sparen somit ' + (waterValue * 120) + 'l Wasser.</p>' +
                         '</div>' +
                         '</div>' +
                         '<div class="column large-4 kk07_eco__point">' +
@@ -85,9 +99,9 @@
                         '<div class="kk07_head">' +
                         '<i class="kk07_icon co2"></i>' +
                         '<strong>weniger CO2-Ausstoß</strong>' +
-                        '<span>= ' + co2Value + ' Flüge (Frankfurt-Paris)</span>' +
+                        '<span>= ' + getValueText(1, false) + '</span>' +
                         '</div>' +
-                        '<p>Ein Flug von Frankfurt nach Paris verbraucht 207 kg CO2 pro Person. <br/>Bei der Herstellung dieses Produktes werden allein ' + (co2Value * 207) + ' CO2 eingespart. Das entspricht umgerechnet ' + co2Value + ' Flügen von Frankfurt nach Paris.</p>' +
+                        '<p>Ein Flug von Frankfurt nach Paris verbraucht 207 kg CO2 pro Person. <br/>Bei der Herstellung dieses Produktes werden allein ' + (co2Value * 207) + ' kg CO2 eingespart. Das entspricht umgerechnet ' + co2Value + ' ' + (co2Value > 1 ? 'Flügen' : 'Flug') + ' von Frankfurt nach Paris.</p>' +
                         '</div>' +
                         '</div>' +
                         '<div class="column large-4 kk07_eco__point">' +
@@ -96,9 +110,9 @@
                         '<div class="kk07_head">' +
                         '<i class="kk07_icon earth"></i>' +
                         '<strong>gesündere Erde</strong>' +
-                        '<span>= ' + earthValue + ' gefüllte Blumentöpfe <br/>ohne Pestizide</span>' +
+                        '<span>= ' + getValueText(2, false) + ' <br/>ohne Pestizide</span>' +
                         '</div>' +
-                        '<p>Ein normaler Blumentopf fasst ca. 0,82 Liter Erde. Bei der Produktion dieses Kleidungsstücks werden umgerechnet ' + earthValue + ' gefüllte Blumentöpfe weniger mit künstlichem Dünger & Pestiziden behandelt, als bei der herkömmlichen Produktion.</p>' +
+                        '<p>Ein normaler Blumentopf fasst ca. 0,82 Liter Erde. Bei der Produktion dieses Kleidungsstücks werden umgerechnet ' + getValueText(2, false) + ' weniger mit künstlichem Dünger & Pestiziden behandelt als bei der herkömmlichen Produktion.</p>' +
                         '</div>' +
                         '</div>' +
                         '</div>';

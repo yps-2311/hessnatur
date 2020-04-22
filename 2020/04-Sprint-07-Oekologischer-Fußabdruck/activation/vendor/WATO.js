@@ -546,10 +546,10 @@
         var request = new XMLHttpRequest();
         request.open('GET', url, true);
 
-        request.timeout = 2000;
+        request.timeout = 8000;
 
         request.onload = function () {
-            if (this.status >= 200 && this.status < 400) {
+            if (this.readyState === 4 && this.status >= 200 && this.status < 400) {
                 try {
                     var data = JSON.parse(this.response);
                     callback(data, scopedData);
