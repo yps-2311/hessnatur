@@ -47,60 +47,70 @@
                     navi2 = _self.qsa(naviLvl2),
                     navi3 = _self.qsa(naviLvl3);
 
-                for (var l = 0; l < navi1.length; l++) {
-                    _self.qs("a", navi1[l]).addEventListener('touchend', function(e){
-                        console.log("clicklevel1");
-                        pushGoal("clicklevel1");
+                if(navi1.length > 0){
+                    for (var l = 0; l < navi1.length; l++) {
+                        var childLink1 = _self.qs("a", navi1[l]);
+                        if(childLink1){
+                            childLink1.addEventListener('touchend', function(e){
+                                // console.log("clicklevel1");
+                                pushGoal("clicklevel1");
+                                var thisParent = e.target.parentNode;
 
-                        switch (e.target.parentNode.getAttribute('aria-label')) {
-                            case "NEU":
-                                pushGoal("click_neu");
-                                break;
-                            case "Damen":
-                                pushGoal("click_damen");
-                                break;
-                            case "Herren":
-                                pushGoal("click_herren");
-                                break;
-                            case "Junior":
-                                pushGoal("click_junior");
-                                break;
-                            case "Home":
-                                pushGoal("click_home");
-                                break;
-                            case "Sale":
-                                pushGoal("click_sale");
-                                break;
+                                if(thisParent && thisParent.getAttribute('aria-label')){
+                                    switch (thisParent.getAttribute('aria-label')) {
+                                        case "NEU":
+                                            pushGoal("click_neu");
+                                            break;
+                                        case "Damen":
+                                            pushGoal("click_damen");
+                                            break;
+                                        case "Herren":
+                                            pushGoal("click_herren");
+                                            break;
+                                        case "Junior":
+                                            pushGoal("click_junior");
+                                            break;
+                                        case "Home":
+                                            pushGoal("click_home");
+                                            break;
+                                        case "Sale":
+                                            pushGoal("click_sale");
+                                            break;
+                                    }
+                                }
+                            });
                         }
-                    });
-                }
-
-                for (var m = 0; m < navi2.length; m++) {
-                    var childLink2 = _self.qs("a", navi2[m]);
-                    if(childLink2){
-                        childLink2.addEventListener('touchend', function(e){
-                            if(e.target.parentNode.classList.contains('is-submenu-item')){
-                                console.log("clicklevel2");
-                                pushGoal("clicklevel2");
-                            }
-                        });
                     }
                 }
-
-                for (var n = 0; n < navi3.length; n++) {
-                    var childLink3 = _self.qs("a", navi3[n]);
-                    if(childLink3){
-                        childLink3.addEventListener('touchend', function(e){
-                            if(e.target.parentNode.classList.contains('is-submenu-item')){
-                                console.log("clicklevel3");
-                                pushGoal("clicklevel3");
-                            }
-                        });
+                if(navi2.length > 0){
+                    for (var m = 0; m < navi2.length; m++) {
+                        var childLink2 = _self.qs("a", navi2[m]);
+                        if(childLink2){
+                            childLink2.addEventListener('touchend', function(e){
+                                if(e.target.parentNode && e.target.parentNode.classList.contains('is-submenu-item')){
+                                    // console.log("clicklevel2");
+                                    pushGoal("clicklevel2");
+                                }
+                            });
+                        }
+                    }
+                }
+                if(navi3.length > 0){
+                    for (var n = 0; n < navi3.length; n++) {
+                        var childLink3 = _self.qs("a", navi3[n]);
+                        if(childLink3){
+                            childLink3.addEventListener('touchend', function(e){
+                                if(e.target.parentNode && e.target.parentNode.classList.contains('is-submenu-item')){
+                                    // console.log("clicklevel3");
+                                    pushGoal("clicklevel3");
+                                }
+                            });
+                        }
                     }
                 }
             } catch (error) {
                 // pushGoal("error_setup");
-                window.iridion.push(['goal', 'error_setup', 1]);
+                window.iridion.push(['goal', 'error_sprint2', 1]);
                 // console.log('Error: ', error);
             }
                 
@@ -160,10 +170,9 @@
 
                 } catch (error) {
                     // pushGoal("error_setup");
-                    window.iridion.push(['goal', 'error_setup', 3]);
+                    window.iridion.push(['goal', 'error_sprint2', 10]);
                     // console.log('Error: ', error);
                 }
-                
             }
         });
     };
