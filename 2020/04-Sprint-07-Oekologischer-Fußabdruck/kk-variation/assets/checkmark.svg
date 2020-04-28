@@ -1,3 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14">
-  <polyline fill="none" stroke="#88C440" stroke-linecap="square" stroke-width="1.98" points="122 11.88 126.437 15.84 134.1 5.94" transform="translate(-120 -4.04)"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="14"><path fill="none" stroke="#88C440" stroke-linecap="square" stroke-width="1.98" d="M2 7.84l4.437 3.96L14.1 1.9"/></svg>

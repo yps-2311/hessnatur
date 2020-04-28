@@ -23,12 +23,15 @@
     }
 
     function getStyledValue(value, styled) {
+        var num_parts = value.toString().split(".");
+        num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        value = num_parts.join(",");
         return !styled ? value : '<strong>' + value + '</strong>';
     }
 
-    function getValueText(type, styled) {
+    function getValueText(type, styled, akkusativ) {
         switch (type) {
-            case 0: return getStyledValue(waterValue, styled) + ' gefüllte Badewanne' + (waterValue > 1 ? 'n' : '');
+            case 0: return getStyledValue(waterValue, styled) + ' gefüllte' + (akkusativ ? 'n' : '') + ' Badewanne' + (waterValue > 1 ? 'n' : '');
             case 1: return getStyledValue(co2Value, styled) + ' ' + (co2Value > 1 ? 'Flüge' : 'Flug') + ' (Frankfurt-Paris)';
             case 2: return getStyledValue(earthValue, styled) + ' ' + (earthValue > 1 ? 'gefüllte Blumentöpfe' : 'gefüllter Blumentopf');
         }
@@ -43,7 +46,7 @@
         if (run) {
             waterValue = Math.round(ecoData.water_savings_in_liter / 120);
             co2Value = Math.round(ecoData.carbon_dioxide_savings_in_gram / 207);
-            earthValue = Math.round(ecoData.clean_earth_consumption_in_square_meter / 0.82);
+            earthValue = Math.round((ecoData.clean_earth_consumption_in_square_meter * 0.1) / 0.00082);
 
 
             WATO.elem('.pds-cockpit__wrapper .align-justify', function (headerElem) {
@@ -90,7 +93,7 @@
                         '<strong>weniger Wasserverbrauch</strong>' +
                         '<span>= ' + getValueText(0, false) + '</span>' +
                         '</div>' +
-                        '<p>Eine Badewanne fasst Ø 120l Wasser. Bei der Produktion dieses Kleidungsstücks wird im Vergleich zur herkömmlichen Herstellung die Wassermenge von ' + getValueText(0, false) + ' eingespart. Sie sparen somit ' + (waterValue * 120) + 'l Wasser.</p>' +
+                        '<p>Eine Badewanne fasst Ø 120l Wasser. Bei der Produktion dieses Kleidungsstücks werden im Vergleich zur herkömmlichen Herstellung ' + (waterValue * 120) + 'l Wasser eingespart. Sie sparen somit die Menge von ' + getValueText(0, false, true) + ' Wasser.</p>' +
                         '</div>' +
                         '</div>' +
                         '<div class="column large-4 kk07_eco__point">' +
