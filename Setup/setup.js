@@ -65,7 +65,8 @@
     
     try {
 
-        var URL = document.URL;
+        var URL = document.URL,
+            pathNameURL = window.location.pathname;
 
         if(new RegExp(/.*hessnatur.com\/de\/?($|((\?|\#).*))/).test(URL)){
             // Startseite
@@ -92,11 +93,25 @@
             
     
         }else if(
-            URL.indexOf("/de/damen") !== -1 ||
-            URL.indexOf("/de/herren") !== -1 ||
-            URL.indexOf("/de/baby") !== -1 ||
-            URL.indexOf("/de/home") !== -1 ||
-            URL.indexOf("/de/sale") !== -1
+            pathNameURL === "/de/NEU" || 
+            pathNameURL === "/de/damen" || 
+            pathNameURL === "/de/herren" || 
+            pathNameURL === "/de/outdoor" || 
+            pathNameURL === "/de/baby" || 
+            pathNameURL === "/de/home" || 
+            pathNameURL === "/de/sale"
+            ){
+
+            // Kategorieeinsteigsseite
+            goalPush('page_lp_cat');
+
+        }else if(
+            // URL.indexOf("/de/damen") !== -1 ||
+            // URL.indexOf("/de/herren") !== -1 ||
+            // URL.indexOf("/de/baby") !== -1 ||
+            // URL.indexOf("/de/home") !== -1 ||
+            // URL.indexOf("/de/sale") !== -1
+            URL.indexOf("/c/") !== -1
         ){
 
             // Kategorie
@@ -108,13 +123,15 @@
                         interval = setInterval(function(){
                             if(typeof _filterTab !== "undefined"){
                                 clearInterval(interval);
-                                var _filterLabel = _filterTab.querySelector('strong').innerHTML;
-                                if(_filterLabel.indexOf('(0)') === -1 && _filterLabel.indexOf('>0<') === -1) {
-                                    goalPush('filter_genutzt');
+                                var _filterLabel = _filterTab.querySelector('strong');
+                                if(typeof _filterLabel !== "undefined"){
+                                    if(_filterLabel.innerHTML.indexOf('(0)') === -1 && _filterLabel.innerHTML.indexOf('>0<') === -1) {
+                                        goalPush('filter_genutzt');
+                                    }
+                                    _filterTab.addEventListener('click', function(){
+                                        goalPush('filter_click');
+                                    });
                                 }
-                                _filterTab.addEventListener('click', function(){
-                                    goalPush('filter_click');
-                                });
                             }
                         }, 100);
                     setTimeout(function(){
@@ -137,7 +154,7 @@
                 }
 
                 try {
-                    var sortButton = document.querySelector('#tabSort-label'); //desktop__sort
+                    var sortButton = document.querySelector('#tabSort-label'), //desktop__sort
                         interval2 = setInterval(function(){
                             if(typeof sortButton !== "undefined"){
                                 clearInterval(interval2);
