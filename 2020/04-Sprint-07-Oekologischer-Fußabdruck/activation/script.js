@@ -21,7 +21,7 @@
                     ecoData.clean_earth_consumption_in_square_meter) {
                     window.kk07_ecoData = ecoData;
                     window.iridion.push(['run', '945287385013']);
-                    window.iridion.push(['run', '952572184314']);
+                    // window.iridion.push(['run', '952572184314']);
                 }
             }
         }

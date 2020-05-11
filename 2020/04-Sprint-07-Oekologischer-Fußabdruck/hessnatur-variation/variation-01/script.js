@@ -53,7 +53,7 @@
                 '</div>' +
                 '<div class="column large-4 kk07_eco__point">' +
                 '<div class="kk07_eco__icon co2"></div>' +
-                '<div class="kk07_eco__amount"><span data-property="carbon_dioxide_savings_in_gram">' + formatNumber(window.kk07_ecoData.carbon_dioxide_savings_in_gram) + '</span> kg</div>' +
+                '<div class="kk07_eco__amount"><span data-property="carbon_dioxide_savings_in_gram">' + formatNumber(window.kk07_ecoData.carbon_dioxide_savings_in_gram / 1000) + '</span> kg</div>' +
                 '<strong>CO2*</strong>' +
                 '<span>Wir nutzen so wenig Strom wie möglich und nur aus nachhaltigen Energiequellen.</span>' +
                 '</div>' +
