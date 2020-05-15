@@ -8,6 +8,54 @@
 
 
 
+.kk_quali {
+    background-color: #fff;
+    border: 2px solid #ccc;
+    margin: -15% 0 35px;
+    width: 80%;
+    padding: 20px 10% 10px;
+    max-width: 473px;
+    span {
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 20px;
+        line-height: 26px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+        display: block;
+    }
+    > div {
+        margin: 13px;
+        padding-left: 40px;
+    }
+}
+.kk_siegel {
+    background-color: #fff;
+    border: 2px solid #ccc;
+    padding: 10px 15px;
+    width: 368px;
+    margin: 0 0 10px -25px;
+    .h3 {
+        font-size: 0;
+        &::after {
+            font-size: 2.07692rem;
+            content: "Ausgezeichnet durch:";
+        }
+    }
+    .certificateTextWrapper {
+        display: none;
+    }
+    .certificateWrapper {
+        justify-content: space-between;
+        max-width: 107%;
+        > .columns.row {
+            width: 30%;
+            flex: 0 0 30%;
+            max-width: 30%;
+        }
+    }
+}
+
 
 @media only screen and (min-width: 1024px) {
     .kk_kachel {
