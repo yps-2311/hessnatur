@@ -379,7 +379,7 @@
      * @param {number} width -
      * @param {function} callback
      */
-    /*
+    
 	window.WATO.prototype.exclude = function(width, callback){
 		
 		function _checkWidth() {
@@ -406,7 +406,7 @@
 			};
 		}
 	};
-	*/
+	
 
     /**
      * @function storageAvailable
@@ -440,10 +440,10 @@
      *
      * @author Lukas Dziambor
      */
-    /*
+    
 	window.WATO.prototype.reload = function(){
         location.reload();
         location.href=location.href.split('#')[0];
 	};
-	*/
+	
 })(window, document);

@@ -53,6 +53,7 @@
     padding: 10px 15px;
     width: 368px;
     margin: 0 0 10px -25px;
+    min-width: 110%;
     .h3 { 
         font-size: 0;
         &::after {
@@ -64,12 +65,23 @@
         display: none;
     }
     .certificateWrapper {
-        justify-content: space-between;
-        max-width: 107%;
+        justify-content: space-around;
+        max-width: 100%;
+        margin: 0;
         > .columns.row {
             width: 30%;
             flex: 0 0 30%;
             max-width: 30%;
+        }
+        .h-smallOffset-bottom-outer {
+            min-width: 91px;
+            padding: 0;
+            max-width: 100%;
+        }
+        .shrink {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
     }
 }
@@ -157,7 +169,7 @@
     .xlarge-order-2 {
         order: 1;
         min-width: 250px;
-        padding-left: 2.30769rem;
+        padding-left: 2.30769rem !important;
     }
     .medium-order-1 {
         order: 2;
@@ -213,7 +225,7 @@
     }
     .pds-cockpit__addProductWrapper {
         .xlarge-order-2 {
-            padding-left: 1.15385rem;
+            padding-left: 1.15385rem !important;
         }
         .medium-order-1 {
             padding-left: 1.15385rem;
@@ -245,6 +257,7 @@
             }
             .kk_content {
                 background-color: #fff;
+                width: 100%;
                 > div {
                     background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/check.svg") #fff no-repeat 9% 2px;
                     margin: 0 0 17%;
@@ -294,7 +307,13 @@
 }
 
 
-
+@media only screen and (min-width: 1800px) {
+    .kk_kachel > div h3,
+    .kk_kachel > div .kk_content > div {
+        font-size: 1.3rem;
+        line-height: 2rem;
+    }
+}
 
 
 @media only screen and (max-width: 1024px) {
