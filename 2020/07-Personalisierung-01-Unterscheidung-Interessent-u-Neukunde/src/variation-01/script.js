@@ -25,12 +25,18 @@
     // WATO.goalsFromCat();
 
 
-    var isInteressent = !window.localStorage.getItem("kk_hasbought"),
+    var isInteressent = !window.localStorage.getItem("kk_hasbought") && document.location.search.indexOf("show=neukunde") === -1,
         hessnaturLogo = "https://www.hessnatur.com/medias/sys_master/images/images/hcc/hed/8967611056158/hessnatur-Logo-1c.svg",
         isPDS = window.document.location.pathname.indexOf("/p/") !== -1,
-        favProducts = [43309,47936,42601,42668,43319,22219,42746,43342,42384,22215,42600,43157,48606,39996,26975,48847,49837,48702,48948,41739,22224,47404,20051,42745,47505,41741,47858,49842,49686,49025,49839,46239,49609,48403,47299,18424,48612,42747,36986,49692],
-        sehrgefragtProducts = [47936,43309,22219,26975,42668,42601,22215,43319,42746,46645,43157,47858,49638,49681,43342,42600,22224,49323,39996,18424,46623,42745,20051,46632,49686,48383,48435,36986,41741,41739,46267,49304,46585,49049,49862,49692,42384,49837,46627,49025];
+        favProducts = [47936,42600,42601,42668,42384,22219,47858,48873,49681,42746,43342,45064,49233,42384,46632,49609,42745,48251,46514,48254,49629,49611,41741,22215,49377,18424,49839,46585,26975,49837,43157,38034,42385,41739,49818,47464,47464,48386,49578,36986],
+        sehrgefragtProducts = [47936,42601,42668,42600,43309,22219,42384,47858,42746,43342,48873,22215,26975,49681,43157,42745,49609,49837,45064,49233,41741,46632,18424,41739,49839,49842,49692,49686,22224,47589,49687,46239,38034,36986,49611,42384,42747,49688,46632,46627];
         
+        
+          
+
+
+    console.log('isInteressent: ', isInteressent);
+
     try {
         window.iridion.push(["segment", (isInteressent ? "32812" : "32813")]);
         
@@ -41,6 +47,7 @@
           
     if(isPDS){
         // PDS
+
 
         var thisProductID = parseInt(window.location.pathname.split("/p/")[1].substring(0,5));
 
@@ -116,14 +123,18 @@
         
         WATO.elem('footer', function(prodWrapper){
             if(prodWrapper){
-                var parentProds = WATO.qs(".js-product-grid > .gridviewProductItemWrapper").parentNode;
+                // var parentProds = WATO.qs(".js-product-grid > .gridviewProductItemWrapper").parentNode;
+                var allProds = WATO.qsa(".js-product-grid > .gridviewProductItemWrapper");
+                console.log('allProds: ', allProds);
 
                 if(isInteressent) {
+
                     // Interessent
-                    var prod6 = WATO.qs(".gridviewProductItemWrapper:nth-child(6)", parentProds) || WATO.qs(".gridviewProductItemWrapper:last-child", parentProds),
-                        prod10 = WATO.qs(".gridviewProductItemWrapper:nth-child(10)", parentProds),
-                        prod15 = WATO.qs(".gridviewProductItemWrapper:nth-child(15)", parentProds);
+                    var prod6 = allProds[4] || allProds[allProds.length-1],//WATO.qs(".gridviewProductItemWrapper:nth-child(6)", parentProds) || WATO.qs(".gridviewProductItemWrapper:last-child", parentProds),
+                        prod9 = allProds[7], //WATO.qs(".gridviewProductItemWrapper:nth-child(9)", parentProds),
+                        prod15 = allProds[13]; //WATO.qs(".gridviewProductItemWrapper:nth-child(15)", parentProds);
                     
+                        console.log('prod6: ', prod6);
                     if(prod6){
                         prod6.insertAdjacentHTML('afterend', 
                             '<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel kk_hoechstequali">'+
@@ -131,8 +142,8 @@
                                     '<div class="kk_content">'+
                                         '<img src="'+hessnaturLogo+'">'+
                                         '<h3>Höchste Qualität</h3>'+
-                                        '<div>Verwendung kontrollierter BIO-Naturfaser</div>'+
-                                        '<div>Höchste Qualität bei unseren Produkten</div>'+
+                                        '<div>Verwendung kontrollierter<br>BIO-Naturfaser</div>'+
+                                        '<div>Höchste Qualität bei<br>unseren Produkten</div>'+
                                         '<div>Kompletter Ausschuss belastender Chemikalien</div>'+
                                     '</div>'+
                                 '</div>'+
@@ -140,8 +151,8 @@
                         );
                     }
                     
-                    if(prod10){
-                        prod10.insertAdjacentHTML('afterend', 
+                    if(prod9){
+                        prod9.insertAdjacentHTML('afterend', 
                             '<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel kk_nachteile">'+
                                 '<div>'+
                                     '<div class="kk_content">'+
@@ -149,7 +160,7 @@
                                         '<h3>Keine Nachteile für Mensch & Natur</h3>'+
                                         '<div>Konsequente Einhaltung von Naturschutz, Gesundheit und Fairness</div>'+
                                         '<div>Ein Herstellungsprozess mit ökoligischer Verantwortung</div>'+
-                                        '<div>Vorschriften zum Umwelt- schutz (z.B. Abwasserklär- anlagen)</div>'+
+                                        '<div>Vorschriften zum Umweltschutz (z.B. Abwasserkläranlagen)</div>'+
                                     '</div>'+
                                 '</div>'+
                             '</div>'
@@ -174,7 +185,8 @@
 
                 }else{
                     // Neukunde
-                    var allProducts = WATO.qsa(".dropdown-pane", parentProds);
+                    var allProducts = WATO.qsa(".dropdown-pane");
+                    console.log('allProducts: ', allProducts);
 
                     for (var i = 0; i < allProducts.length; i++) {
                         var thisProd = allProducts[i],

@@ -45,6 +45,8 @@
     > div {
         padding: 16px 13px 16px 76px;
         font-size: 14px;
+        width: 297px;
+        margin: 0 auto;
     }
 }
 .kk_siegel {
@@ -168,13 +170,17 @@
 .pds-cockpit__addProductWrapper {
     .xlarge-order-2 {
         order: 1;
-        min-width: 250px;
+        min-width: 202px;
         padding-left: 2.30769rem !important;
+        flex: 0 0 62%;
+        max-width: 62%;
     }
     .medium-order-1 {
         order: 2;
         padding-left: 0;
         margin-left: 0;
+        flex: 0 0 38% !important;
+        max-width: 38% !important;
     }
 }
 .kk_cta_uvps {
@@ -213,11 +219,11 @@
     .kk_quali {
         margin-top: -9%;
     }
-    .pds-cockpit__addProductWrapper .medium-order-1 {
-        -ms-flex: 0 0 40%;
-        flex: 0 0 40%;
-        max-width: 40%;
-    }
+    // .pds-cockpit__addProductWrapper .medium-order-1 {
+        // -ms-flex: 0 0 40%;
+        // flex: 0 0 40%;
+        // max-width: 40%;
+    // }
 }
 @media only screen and (max-width: 1200px) {
     .kk_quali {
@@ -229,9 +235,9 @@
         }
         .medium-order-1 {
             padding-left: 1.15385rem;
-            -ms-flex: 0 0 100%;
-            flex: 0 0 100%;
-            max-width: 100%;
+            // -ms-flex: 0 0 100%;
+            // flex: 0 0 100%;
+            // max-width: 100%;
         }
     }
 }
@@ -247,9 +253,9 @@
             position: relative;
             display: flex;
             h3 {
-                margin: 19% 10px;
+                margin: 18% 10px 10%;
                 font-family: "Roboto",Helvetica,Arial,sans-serif;
-                font-weight: normal;
+                font-weight: bold;
                 font-size: 15px;
                 text-align: center;
                 text-transform: uppercase;
@@ -258,12 +264,16 @@
             .kk_content {
                 background-color: #fff;
                 width: 100%;
+                position: relative;
                 > div {
-                    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/check.svg") #fff no-repeat 9% 2px;
-                    margin: 0 0 17%;
-                    padding: 0 15px 0 23%;
-                    font-size: 0.9rem;
-                    min-height: 51px;
+                    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/check2.svg") #fff no-repeat center 0;
+                    margin: 0 0 5%;
+                    padding: 14% 7% 0;
+                    font-size: 1rem;
+                    min-height: 82px;
+                    text-align: center;
+                    line-height: 17px;
+                    font-weight: 300;
                     &:last-child {
                         margin-bottom: 0;
                     }
@@ -271,24 +281,24 @@
                 img {
                     margin: 25px auto;
                     display: block;
-                    width: 48%;
+                    width: 40%;
                 }
                 &::before {
                     content: "";
                     width: 13%;
                     height: 1px;
-                    border: solid 1px #999;
+                    border: solid 1px #CBCBCB;
                     position: absolute;
-                    top: 55px;
+                    top: 53px;
                     left: 15%;
                 }
                 &::after {
                     content: "";
                     width: 13%;
                     height: 1px;
-                    border: solid 1px #999;
+                    border: solid 1px #CBCBCB;
                     position: absolute;
-                    top: 55px;
+                    top: 53px;
                     right: 15%;
                 }
             }
