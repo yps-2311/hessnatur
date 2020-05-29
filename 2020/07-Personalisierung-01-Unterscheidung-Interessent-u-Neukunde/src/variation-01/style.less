@@ -146,7 +146,7 @@
         position: absolute;
         top: -8px;
         z-index: 20;
-        left: 5px;
+        right: 5px;
         border-radius: 2px;
         display: block;
         background: #F9DC02 url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/daumen.svg") no-repeat 6px 8px;
@@ -253,58 +253,72 @@
             position: relative;
             display: flex;
             h3 {
-                margin: 18% 10px 10%;
+                // margin: 16% 10px 10%;
+                margin: 0 10px;
                 font-family: "Roboto",Helvetica,Arial,sans-serif;
                 font-weight: bold;
                 font-size: 15px;
                 text-align: center;
                 text-transform: uppercase;
                 min-height: 30px;
+                width: 100%;
             }
             .kk_content {
                 background-color: #fff;
                 width: 100%;
                 position: relative;
+
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                padding-bottom: 7px;
                 > div {
-                    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/check2.svg") #fff no-repeat center 0;
-                    margin: 0 0 5%;
-                    padding: 14% 7% 0;
+                    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/check.svg") #fff no-repeat center 0;
+                    // margin: 0 0 5%;
+                    margin: 0;
+                    // padding: 14% 7% 0;
+                    padding: 29px 7% 0;
                     font-size: 1rem;
                     min-height: 82px;
                     text-align: center;
                     line-height: 17px;
                     font-weight: 300;
+                    width: 100%;
                     &:last-child {
                         margin-bottom: 0;
                     }
                 }
                 img {
-                    margin: 25px auto;
+                    // margin: 30px auto 20px;
+                    margin: 10px auto 5px;
                     display: block;
-                    width: 40%;
+                    width: 81%;
                 }
-                &::before {
-                    content: "";
-                    width: 13%;
-                    height: 1px;
-                    border: solid 1px #CBCBCB;
-                    position: absolute;
-                    top: 53px;
-                    left: 15%;
-                }
-                &::after {
-                    content: "";
-                    width: 13%;
-                    height: 1px;
-                    border: solid 1px #CBCBCB;
-                    position: absolute;
-                    top: 53px;
-                    right: 15%;
-                }
+                // &::before {
+                //     content: "";
+                //     width: 13%;
+                //     height: 1px;
+                //     border: solid 1px #CBCBCB;
+                //     position: absolute;
+                //     top: 53px;
+                //     left: 15%;
+                // }
+                // &::after {
+                //     content: "";
+                //     width: 13%;
+                //     height: 1px;
+                //     border: solid 1px #CBCBCB;
+                //     position: absolute;
+                //     top: 53px;
+                //     right: 15%;
+                // }
             }
         }
         &.kk_hoechstequali > div {
             background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/quali1.jpg");
+            .kk_content > div {
+                background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/check2.svg") #fff no-repeat center 0;
+            }
         }
         &.kk_nachteile > div {
             background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/keinenachteile1.jpg");
@@ -317,12 +331,20 @@
 }
 
 
-@media only screen and (min-width: 1800px) {
+
+@media only screen and (min-width: 1400px) {
     .kk_kachel > div h3,
     .kk_kachel > div .kk_content > div {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         line-height: 2rem;
     }
+    // .kk_kachel > div .kk_content > div {
+    //     font-size: 1.2rem;
+    //     line-height: 2rem;
+    //     // margin: 0 0 12%;
+    //     // padding: 9% 7% 0;
+    // }
+   
 }
 
 

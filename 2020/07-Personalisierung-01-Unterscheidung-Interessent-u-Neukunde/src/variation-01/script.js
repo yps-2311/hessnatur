@@ -13,7 +13,7 @@
 (function(WATO) {
     "use strict";
 
-    // window.iridion.econda.push(["Sprint06", "V1"]);
+    // window.iridion.econda.push(["Sprint10", "V1"]);
 
     // function pushGoal(key, sendOnNextPageView){    
     //     if(sendOnNextPageView){
@@ -26,20 +26,14 @@
 
 
     var isInteressent = !window.localStorage.getItem("kk_hasbought") && document.location.search.indexOf("show=neukunde") === -1,
-        hessnaturLogo = "https://www.hessnatur.com/medias/sys_master/images/images/hcc/hed/8967611056158/hessnatur-Logo-1c.svg",
+        hessnaturLogo = "https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/boxlogo.svg", //"https://www.hessnatur.com/medias/sys_master/images/images/hcc/hed/8967611056158/hessnatur-Logo-1c.svg",
         isPDS = window.document.location.pathname.indexOf("/p/") !== -1,
         favProducts = [47936,42600,42601,42668,42384,22219,47858,48873,49681,42746,43342,45064,49233,42384,46632,49609,42745,48251,46514,48254,49629,49611,41741,22215,49377,18424,49839,46585,26975,49837,43157,38034,42385,41739,49818,47464,47464,48386,49578,36986],
         sehrgefragtProducts = [47936,42601,42668,42600,43309,22219,42384,47858,42746,43342,48873,22215,26975,49681,43157,42745,49609,49837,45064,49233,41741,46632,18424,41739,49839,49842,49692,49686,22224,47589,49687,46239,38034,36986,49611,42384,42747,49688,46632,46627];
         
-        
-          
-
-
-    console.log('isInteressent: ', isInteressent);
 
     try {
         window.iridion.push(["segment", (isInteressent ? "32812" : "32813")]);
-        
     } catch (error) {
     }
     
@@ -109,9 +103,9 @@
                 addToCartBox[0].insertAdjacentHTML('afterend', 
                     '<div class="kk_cta_uvps">'+
                         '<ul>'+
-                            '<li>Kostenlose Rücksendung</li>'+
-                            '<li>14 Tage Rückgaberecht</li>'+
-                            '<li>Versand aller Pakete mit DHL</li>'+
+                            '<li>Wir versenden Ihr Paket per DHL</li>'+
+                            '<li>14 Tage bequem Zuhause anprobieren</li>'+
+                            '<li>Einfach & kostenlos zurücksenden</li>'+
                         '</ul>'+
                     '</div>'
                 );
@@ -128,15 +122,12 @@
                 console.log('allProds: ', allProds);
 
                 if(isInteressent) {
-
                     // Interessent
-                    var prod6 = allProds[4] || allProds[allProds.length-1],//WATO.qs(".gridviewProductItemWrapper:nth-child(6)", parentProds) || WATO.qs(".gridviewProductItemWrapper:last-child", parentProds),
-                        prod9 = allProds[7], //WATO.qs(".gridviewProductItemWrapper:nth-child(9)", parentProds),
-                        prod15 = allProds[13]; //WATO.qs(".gridviewProductItemWrapper:nth-child(15)", parentProds);
-                    
-                        console.log('prod6: ', prod6);
-                    if(prod6){
-                        prod6.insertAdjacentHTML('afterend', 
+
+                    var prod6 = allProds[4] || allProds[allProds.length-1],
+                        prod9 = allProds[7],
+                        prod15 = allProds[13],
+                        all3boxes = [
                             '<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel kk_hoechstequali">'+
                                 '<div>'+
                                     '<div class="kk_content">'+
@@ -147,12 +138,7 @@
                                         '<div>Kompletter Ausschuss belastender Chemikalien</div>'+
                                     '</div>'+
                                 '</div>'+
-                            '</div>'
-                        );
-                    }
-                    
-                    if(prod9){
-                        prod9.insertAdjacentHTML('afterend', 
+                            '</div>',
                             '<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel kk_nachteile">'+
                                 '<div>'+
                                     '<div class="kk_content">'+
@@ -160,27 +146,39 @@
                                         '<h3>Keine Nachteile für Mensch & Natur</h3>'+
                                         '<div>Konsequente Einhaltung von Naturschutz, Gesundheit und Fairness</div>'+
                                         '<div>Ein Herstellungsprozess mit ökoligischer Verantwortung</div>'+
-                                        '<div>Vorschriften zum Umweltschutz (z.B. Abwasserkläranlagen)</div>'+
+                                        '<div>Vorschriften zum Umweltschutz<br>(z.B. Abwasserkläranlagen)</div>'+
                                     '</div>'+
                                 '</div>'+
-                            '</div>'
-                        );
-                    }
-        
-                    if(prod15){
-                        prod15.insertAdjacentHTML('afterend', 
+                            '</div>',
                             '<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel kk_trage">'+
                                 '<div>'+
                                     '<div class="kk_content">'+
                                         '<img src="'+hessnaturLogo+'">'+
-                                        '<h3>Höchste Qualität</h3>'+
-                                        '<div>Verwendung kontrollierter BIO-Naturfaser</div>'+
-                                        '<div>Höchste Qualität bei unseren Produkten</div>'+
-                                        '<div>Kompletter Ausschuss belastender Chemikalien</div>'+
+                                        '<h3>Tragekomfort ohne Schadstoffe</h3>'+
+                                        '<div>Verwendung von hautsympathischen Materialien</div>'+
+                                        '<div>Besondere Verträglichkeit bei unseren Produkten</div>'+
+                                        '<div>Kompletter Ausschluss belastender Chemikalien</div>'+
                                     '</div>'+
                                 '</div>'+
                             '</div>'
-                        );
+                        ];
+
+                    // Zufällige Reihenfolge
+                    for (var i = all3boxes.length - 1; i > 0; i--) {
+                        var j = Math.floor(Math.random() * (i + 1));
+                        var temp = all3boxes[i];
+                        all3boxes[i] = all3boxes[j];
+                        all3boxes[j] = temp;
+                    }
+                    
+                    if(prod6){
+                        prod6.insertAdjacentHTML('afterend', all3boxes[0]);
+                    }
+                    if(prod9){
+                        prod9.insertAdjacentHTML('afterend',  all3boxes[1]);
+                    }
+                    if(prod15){
+                        prod15.insertAdjacentHTML('afterend',  all3boxes[2]);
                     }
 
                 }else{
