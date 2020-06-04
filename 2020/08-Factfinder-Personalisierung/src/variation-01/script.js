@@ -73,17 +73,11 @@
                                     '<div class="flyOut-headline -font-small search-results--inner-space h-no-margin-bottom">Kategorievorschläge</div>'+
                                     '<hr class="color-medium-light-gray h-noneOffset-top-outer h-noneOffset-bottom-outer">'+
                                     '<ul id="kk_catvorschl" class="no-bullet search-results--inner-space">'+
-                                        // '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de/search?q=*%3Aproductgroup%3AHosen&amp;userInput=hose" title="Hosen" class="h-text-decoration-none-hover"><span class="h-text-decoration-underline">Hose</span>n<span class="suggestTextAmount"></span></a></span></li>'+
-                                        // '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de/search?q=*%3Aproductgroup%3AG%25C3%25BCrtel%252FHosentr%25C3%25A4ger&amp;userInput=hose" title="Gürtel/Hosenträger" class="h-text-decoration-none-hover">Gürtel/<span class="h-text-decoration-underline">Hose</span>nträger<span class="suggestTextAmount"></span></a></span></li>'+
                                     '</ul>'+
                                 '</li>'+
                                 '<li>'+
                                     '<hr class="color-medium-light-gray h-noneOffset-top-outer h-noneOffset-bottom-outer"><div class="flyOut-headline -font-small search-results--inner-space h-no-margin-bottom">Suchvorschläge</div><hr class="color-medium-light-gray h-noneOffset-top-outer h-noneOffset-bottom-outer">'+
                                     '<ul id="kk_suchvorsch" class="no-bullet search-results--inner-space">'+
-                                        '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de/textillexikon/C/cargo-hose" title="Cargo-Hose" class="h-text-decoration-none-hover">Cargo-<span class="h-text-decoration-underline">Hose</span><span class="suggestTextAmount"></span></a></span></li>'+
-                                        '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de/textillexikon/F/flatfront-hose" title="Flatfront-Hose" class="h-text-decoration-none-hover">Flatfront-<span class="h-text-decoration-underline">Hose</span><span class="suggestTextAmount"></span></a></span></li>'+
-                                        '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de/textillexikon/M/marlene-hose" title="Marlene-Hose" class="h-text-decoration-none-hover">Marlene-<span class="h-text-decoration-underline">Hose</span><span class="suggestTextAmount"></span></a></span></li>'+
-                                        '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de/search?text=HOSE&amp;userInput=hose" title="HOSE" class="h-text-decoration-none-hover"><span class="h-text-decoration-underline">HOSE</span><span class="suggestTextAmount">(97 Produkte)</span></a></span></li>'+
                                     '</ul>'+
                                 '</li>'+
                             '</ul>'+
@@ -94,65 +88,102 @@
                     '</div>'+
                     '<hr class="color-medium-light-gray h-noneOffset-top-outer h-noneOffset-bottom-outer">'+
                     '<div class="show-results text-center">'+
-                        '<a href="/de/search?text=hose" class="h-text-uppercase h-text-bold">Alle Ergebnisse für „hose” anzeigen</a>'+
+                        '<a id="kk_direktsuche" href="/de/search" class="h-text-uppercase h-text-bold"></a>'+
                     '</div>'+
                 '</div>'
             );
 
-            var productsPlace = WATO.qs("#kk_resultprods", search_form.parentNode),
-                kategorieVorschlaege = WATO.qs("#kk_catvorschl", search_form.parentNode),
-                suchvorschlaege = WATO.qs("#kk_suchvorsch", search_form.parentNode);
+            var searchLayer = WATO.qs("#kk_suggest_layer", search_form.parentNode),
+                productsPlace = WATO.qs("#kk_resultprods", searchLayer),
+                kategorieVorschlaege = WATO.qs("#kk_catvorschl", searchLayer),
+                suchvorschlaege = WATO.qs("#kk_suchvorsch", searchLayer),
+                direktsuche = WATO.qs("#kk_direktsuche", searchLayer);
+
+                function underlineAccordance(textString, searchText) {
+                    var underlineStart = textString.toLowerCase().indexOf(searchText);
+                    return (textString.substring(0, underlineStart) + '<span class="h-text-decoration-underline">' + textString.substring(underlineStart, (underlineStart+searchText.length)) + '</span>' + textString.substring((underlineStart+searchText.length), textString.length));
+                }
 
             clone.addEventListener('keyup', function(e){
                 e.preventDefault();
 
-                var thisVal = e.target.value;
+                var thisVal = e.target.value.toLowerCase();
 
-                if(thisVal.length > 2){
+                if(thisVal.length > 1){
+
                     getXHR("GET","https://ffbackoffice.hessnatur.com/FF73-Query/Suggest.ff?username=hessnatur&password=d6648543b7ec3c456e38f93d7187a9d8&channel=LIVE-DE-Online-de&format=json&query="+thisVal, function(callbackContent) {
                         var responseJSON = JSON.parse(callbackContent.responseText);
                         console.log('responseJSON: ', responseJSON);
 
                         var prodMarkup = "",
                             katMarkup = "",
-                            suchMarkup = "";
+                            suchMarkup = "",
+                            mengeDerErgebnisse = responseJSON.suggestions.length;
 
-                        for (var i = 0; i < responseJSON.suggestions.length; i++) {
-                            try {
-                                var thisProd = responseJSON.suggestions[i];
+                        if(mengeDerErgebnisse > 0) {
+                            searchLayer.style.display = "block";
 
-                                if(thisProd.type === "productName"){
-                                    var name = thisProd.name;
-                                
-                                    prodMarkup += '<ul class="prod_list no-bullet">'+
-                                                        '<a href="/de'+thisProd.attributes.deeplink+'" title="'+name+'">'+
-                                                        '<ul class="no-bullet h-list--horizontal search-results--inner-space">'+
-                                                        '<li class="flyout-image">'+
-                                                            '<img src="'+thisProd.image+'" alt="'+name+'" width="69px">'+
-                                                        '</li>'+
-                                                        '<li class="flyOut-item-headline">'+name+'</li>'+
-                                                    '</ul>'+
-                                                    '</a>'+
-                                                    '<hr class="color-medium-light-gray h-noneOffset-top-outer h-noneOffset-bottom-outer">';
+                            for (var i = 0; i < mengeDerErgebnisse; i++) {
+                                try {
+                                    var thisProd = responseJSON.suggestions[i];
 
-                                }else if(thisProd.type === "category"){
+                                    if(thisProd.type === "productName"){
+                                        var name = thisProd.name;
                                     
-                                    var searchquery = thisProd.searchParams.split("query=*")[1].split("&channel")[0];
+                                        prodMarkup += '<ul class="prod_list no-bullet">'+
+                                                            '<a href="/de'+thisProd.attributes.deeplink+'" title="'+name+'">'+
+                                                            '<ul class="no-bullet h-list--horizontal search-results--inner-space">'+
+                                                            '<li class="flyout-image">'+
+                                                                '<img src="'+thisProd.image+'" alt="'+name+'" width="69px">'+
+                                                            '</li>'+
+                                                            '<li class="flyOut-item-headline">'+name+'</li>'+
+                                                        '</ul>'+
+                                                        '</a>'+
+                                                        '<hr class="color-medium-light-gray h-noneOffset-top-outer h-noneOffset-bottom-outer">';
 
-                                    katMarkup += '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de/search?q='+thisProd.name+searchquery+'&amp;userInput='+thisProd.name+'" title="Hosen" class="h-text-decoration-none-hover"><span class="h-text-decoration-underline">'+thisProd.name+'</span>n<span class="suggestTextAmount"></span></a></span></li>';
+                                    }else if(thisProd.type === "category"){
+                                        
+                                        var searchquery = thisProd.searchParams.split("query=*")[1].split("&channel")[0],
+                                            queryName = thisProd.name;
 
+                                        katMarkup +=    '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de/search?q='+queryName+searchquery+'&amp;userInput='+queryName+'" title="'+thisVal+'" class="h-text-decoration-none-hover">'+
+                                                        underlineAccordance(queryName, thisVal)+
+                                                        '<span class="suggestTextAmount"></span></a></span></li>';
+
+                                    }else if(thisProd.type === "content"){
+                                        
+                                        suchMarkup += '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de'+thisProd.attributes.link+'" title="'+thisProd.name+'" class="h-text-decoration-none-hover">'+
+                                            underlineAccordance(thisProd.name, thisVal)+
+                                            '<span class="suggestTextAmount"></span></a></span></li>';
+
+                                    }else if(thisProd.type === "searchTerm"){
+                                        
+                                        suchMarkup += '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de/search?text='+thisProd.name.replace(/ /g, '+')+'&userInput='+thisVal+'" title="'+thisProd.name+'" class="h-text-decoration-none-hover">'+
+                                            underlineAccordance(thisProd.name, thisVal)+
+                                            '<span class="suggestTextAmount"> ('+thisProd.hitCount+' Produkte)</span></a></span></li>';
+
+                                    }
+
+                                    direktsuche.setAttribute('href', '/de/search?text='+thisVal);
+                                    direktsuche.innerHTML = 'Alle Ergebnisse für „'+thisVal+'” anzeigen';
+                                    
+                                } catch (error) {
+                                    console.log('Error: ', error);
                                 }
-                            } catch (error) {
-                                console.log('Error: ', error);
                             }
+
+                            productsPlace.innerHTML = prodMarkup;
+
+                            kategorieVorschlaege.innerHTML = katMarkup;
+
+                            suchvorschlaege.innerHTML = suchMarkup;
+
+                        }else{
+                            searchLayer.style.display = "none";
                         }
-
-                        productsPlace.innerHTML = prodMarkup;
-
-                        kategorieVorschlaege.innerHTML = katMarkup;
-
-                        suchvorschlaege.innerHTML = suchMarkup;
                     });
+                }else{
+                    searchLayer.style.display = "none";
                 }
             });
 
