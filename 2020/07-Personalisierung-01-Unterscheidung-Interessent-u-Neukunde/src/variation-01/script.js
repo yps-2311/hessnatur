@@ -124,7 +124,7 @@
                 if(isInteressent) {
                     // Interessent
 
-                    var prod6 = allProds[4] || allProds[allProds.length-1],
+                    var prod6 = allProds[4] || allProds[allProds.length-2] || allProds[allProds.length-1],
                         prod9 = allProds[7],
                         prod15 = allProds[13],
                         all3boxes = [
@@ -165,8 +165,9 @@
 
                     // Zufällige Reihenfolge
                     for (var i = all3boxes.length - 1; i > 0; i--) {
-                        var j = Math.floor(Math.random() * (i + 1));
-                        var temp = all3boxes[i];
+                        var j = Math.floor(Math.random() * (i + 1)),
+                            temp = all3boxes[i];
+
                         all3boxes[i] = all3boxes[j];
                         all3boxes[j] = temp;
                     }
