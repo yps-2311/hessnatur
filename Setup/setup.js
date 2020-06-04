@@ -300,6 +300,11 @@
                 window.iridion.push(["segment", "32785"]);
                 window.localStorage.removeItem("kk_buytype");
             }
+
+            try {
+                window.iridion.push(['profile', 'setValue', 'hasbought', 'true']);
+            } catch (error) {
+            }
         }
 
         // TODO hochladen und testen
@@ -332,6 +337,14 @@
                 goalPush('error_setup4');
             }
         });
+
+        try {
+            if(window.localStorage.getItem("kk_hasbought")){
+                window.iridion.push(['profile', 'setValue', 'hasbought', 'true']);
+            }
+        } catch (error) {
+        }
+
     } catch (error) {
         // console.log(error);
         goalPush('error_setup');
