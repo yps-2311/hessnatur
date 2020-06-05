@@ -57,7 +57,7 @@
                             'Höchste Qualität durch<br>reine BIO-Naturfasern'+
                         '</div>'+
                         '<div class="kk_stuecke">'+
-                            'Kleindungsstücke ohne<br>Nachteile für Menschen & Natur'+
+                            'Kleidungsstücke ohne<br>Nachteile für Menschen & Natur'+
                         '</div>'+
                         '<div class="kk_tropfen">'+
                             'Tragekomfort ohne<br>Schadstoffbelastung für die Haut'+
@@ -135,7 +135,7 @@
                                         '<h3>Höchste Qualität</h3>'+
                                         '<div>Verwendung kontrollierter<br>BIO-Naturfaser</div>'+
                                         '<div>Höchste Qualität bei<br>unseren Produkten</div>'+
-                                        '<div>Kompletter Ausschuss belastender Chemikalien</div>'+
+                                        '<div>Kompletter Ausschluss belastender Chemikalien</div>'+
                                     '</div>'+
                                 '</div>'+
                             '</div>',
@@ -145,7 +145,7 @@
                                         '<img src="'+hessnaturLogo+'">'+
                                         '<h3>Keine Nachteile für Mensch & Natur</h3>'+
                                         '<div>Konsequente Einhaltung von Naturschutz, Gesundheit und Fairness</div>'+
-                                        '<div>Ein Herstellungsprozess mit ökoligischer Verantwortung</div>'+
+                                        '<div>Ein Herstellungsprozess mit ökologischer Verantwortung</div>'+
                                         '<div>Vorschriften zum Umweltschutz<br>(z.B. Abwasserkläranlagen)</div>'+
                                     '</div>'+
                                 '</div>'+

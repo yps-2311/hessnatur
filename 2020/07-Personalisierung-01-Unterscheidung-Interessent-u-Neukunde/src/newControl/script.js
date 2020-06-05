@@ -10,10 +10,18 @@
  */
 
 try {
-    window.iridion.econda.push(["Sprint10", "V0"]);
+    // window.iridion.econda.push(["Sprint10", "V0"]);
 } catch (error) {
     // console.log('Error: ', error);
 }
+try {
+    window.iridion.push(["segment", ((!window.localStorage.getItem("kk_hasbought") && document.location.search.indexOf("show=neukunde") === -1) ? "32812" : "32813")]);
+} catch (error) {
+    console.log('Error: ', error);
+}
+
+
+
 
 
 
