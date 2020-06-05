@@ -13,6 +13,8 @@
 (function(WATO) {
     "use strict";
 
+    /*jshint loopfunc: true */
+
     // window.iridion.econda.push(["Sprint06", "V1"]);
 
     // function pushGoal(key, sendOnNextPageView){    
@@ -48,6 +50,8 @@
     }
 
     console.log("Factfinder Test");
+
+    var factfiderLogin = "username=hessnatur&password=d6648543b7ec3c456e38f93d7187a9d8&channel=LIVE-DE-Online-de&";
 
     WATO.elem('#search_form', function(search_form){
         if(search_form){
@@ -97,7 +101,8 @@
                 productsPlace = WATO.qs("#kk_resultprods", searchLayer),
                 kategorieVorschlaege = WATO.qs("#kk_catvorschl", searchLayer),
                 suchvorschlaege = WATO.qs("#kk_suchvorsch", searchLayer),
-                direktsuche = WATO.qs("#kk_direktsuche", searchLayer);
+                direktsuche = WATO.qs("#kk_direktsuche", searchLayer),
+                inputWait = false;
 
                 function underlineAccordance(textString, searchText) {
                     var underlineStart = textString.toLowerCase().indexOf(searchText);
@@ -107,92 +112,163 @@
             clone.addEventListener('keyup', function(e){
                 e.preventDefault();
 
-                var thisVal = e.target.value.toLowerCase();
+                inputWait = true;
 
-                if(thisVal.length > 1){
+                setTimeout(function(){
 
-                    getXHR("GET","https://ffbackoffice.hessnatur.com/FF73-Query/Suggest.ff?username=hessnatur&password=d6648543b7ec3c456e38f93d7187a9d8&channel=LIVE-DE-Online-de&format=json&query="+thisVal, function(callbackContent) {
-                        var responseJSON = JSON.parse(callbackContent.responseText);
-                        console.log('responseJSON: ', responseJSON);
+                    if(inputWait){
 
-                        var prodMarkup = "",
-                            katMarkup = "",
-                            suchMarkup = "",
-                            mengeDerErgebnisse = responseJSON.suggestions.length;
+                        var thisVal = e.target.value.toLowerCase();
 
-                        if(mengeDerErgebnisse > 0) {
-                            searchLayer.style.display = "block";
+                        if(thisVal.length > 1){
 
-                            for (var i = 0; i < mengeDerErgebnisse; i++) {
-                                try {
-                                    var thisProd = responseJSON.suggestions[i];
+                            getXHR("GET","https://ffbackoffice.hessnatur.com/FF73-Query/Suggest.ff?"+factfiderLogin+"format=json&query="+thisVal, function(callbackContent) {
+                                var responseJSON = JSON.parse(callbackContent.responseText);
+                                console.log('responseJSON: ', responseJSON);
 
-                                    if(thisProd.type === "productName"){
-                                        var name = thisProd.name;
-                                    
-                                        prodMarkup += '<ul class="prod_list no-bullet">'+
-                                                            '<a href="/de'+thisProd.attributes.deeplink+'" title="'+name+'">'+
-                                                            '<ul class="no-bullet h-list--horizontal search-results--inner-space">'+
-                                                            '<li class="flyout-image">'+
-                                                                '<img src="'+thisProd.image+'" alt="'+name+'" width="69px">'+
-                                                            '</li>'+
-                                                            '<li class="flyOut-item-headline">'+name+'</li>'+
-                                                        '</ul>'+
-                                                        '</a>'+
-                                                        '<hr class="color-medium-light-gray h-noneOffset-top-outer h-noneOffset-bottom-outer">';
+                                var prodMarkup = "",
+                                    katMarkup = "",
+                                    suchMarkup = "",
+                                    mengeDerErgebnisse = responseJSON.suggestions.length;
 
-                                    }else if(thisProd.type === "category"){
-                                        
-                                        var searchquery = thisProd.searchParams.split("query=*")[1].split("&channel")[0],
-                                            queryName = thisProd.name;
+                                if(mengeDerErgebnisse > 0) {
+                                    searchLayer.style.display = "block";
 
-                                        katMarkup +=    '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de/search?q='+queryName+searchquery+'&amp;userInput='+queryName+'" title="'+thisVal+'" class="h-text-decoration-none-hover">'+
-                                                        underlineAccordance(queryName, thisVal)+
-                                                        '<span class="suggestTextAmount"></span></a></span></li>';
+                                    for (var i = 0; i < mengeDerErgebnisse; i++) {
+                                        try {
+                                            var thisProd = responseJSON.suggestions[i];
 
-                                    }else if(thisProd.type === "content"){
-                                        
-                                        suchMarkup += '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de'+thisProd.attributes.link+'" title="'+thisProd.name+'" class="h-text-decoration-none-hover">'+
-                                            underlineAccordance(thisProd.name, thisVal)+
-                                            '<span class="suggestTextAmount"></span></a></span></li>';
+                                            if(thisProd.type === "productName"){
+                                                var name = thisProd.name;
+                                            
+                                                prodMarkup += '<ul class="prod_list no-bullet">'+
+                                                                    '<a href="/de'+thisProd.attributes.deeplink+'" title="'+name+'">'+
+                                                                    '<ul class="no-bullet h-list--horizontal search-results--inner-space">'+
+                                                                    '<li class="flyout-image">'+
+                                                                        '<img src="'+thisProd.image+'" alt="'+name+'" width="69px">'+
+                                                                    '</li>'+
+                                                                    '<li class="flyOut-item-headline">'+name+'</li>'+
+                                                                '</ul>'+
+                                                                '</a>'+
+                                                                '<hr class="color-medium-light-gray h-noneOffset-top-outer h-noneOffset-bottom-outer">';
 
-                                    }else if(thisProd.type === "searchTerm"){
-                                        
-                                        suchMarkup += '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de/search?text='+thisProd.name.replace(/ /g, '+')+'&userInput='+thisVal+'" title="'+thisProd.name+'" class="h-text-decoration-none-hover">'+
-                                            underlineAccordance(thisProd.name, thisVal)+
-                                            '<span class="suggestTextAmount"> ('+thisProd.hitCount+' Produkte)</span></a></span></li>';
+                                            }else if(thisProd.type === "category"){
+                                                
+                                                var searchquery = thisProd.searchParams.split("query=*")[1].split("&channel")[0],
+                                                    queryName = thisProd.name;
 
+                                                katMarkup +=    '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de/search?q='+queryName+searchquery+'&amp;userInput='+queryName+'" title="'+thisVal+'" class="h-text-decoration-none-hover">'+
+                                                                underlineAccordance(queryName, thisVal)+
+                                                                '<span class="suggestTextAmount"></span></a></span></li>';
+
+                                            }else if(thisProd.type === "content"){
+                                                
+                                                suchMarkup += '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de'+thisProd.attributes.link+'" title="'+thisProd.name+'" class="h-text-decoration-none-hover">'+
+                                                    underlineAccordance(thisProd.name, thisVal)+
+                                                    '<span class="suggestTextAmount"></span></a></span></li>';
+
+                                            }else if(thisProd.type === "searchTerm"){
+                                                
+                                                suchMarkup += '<li class="suggestRow"><span class="suggestTextQuery"><a href="/de/search?text='+thisProd.name.replace(/ /g, '+')+'&userInput='+thisVal+'" title="'+thisProd.name+'" class="h-text-decoration-none-hover">'+
+                                                    underlineAccordance(thisProd.name, thisVal)+
+                                                    '<span class="suggestTextAmount"> ('+thisProd.hitCount+' Produkte)</span></a></span></li>';
+
+                                            }
+
+                                            direktsuche.setAttribute('href', '/de/search?text='+thisVal);
+                                            direktsuche.innerHTML = 'Alle Ergebnisse für „'+thisVal+'” anzeigen';
+                                            
+                                        } catch (error) {
+                                            console.log('Error: ', error);
+                                        }
                                     }
 
-                                    direktsuche.setAttribute('href', '/de/search?text='+thisVal);
-                                    direktsuche.innerHTML = 'Alle Ergebnisse für „'+thisVal+'” anzeigen';
-                                    
-                                } catch (error) {
-                                    console.log('Error: ', error);
+                                    productsPlace.innerHTML = prodMarkup;
+
+                                    kategorieVorschlaege.innerHTML = katMarkup;
+
+                                    suchvorschlaege.innerHTML = suchMarkup;
+
+                                }else{
+                                    searchLayer.style.display = "none";
                                 }
-                            }
-
-                            productsPlace.innerHTML = prodMarkup;
-
-                            kategorieVorschlaege.innerHTML = katMarkup;
-
-                            suchvorschlaege.innerHTML = suchMarkup;
-
+                            });
                         }else{
                             searchLayer.style.display = "none";
                         }
-                    });
-                }else{
-                    searchLayer.style.display = "none";
-                }
+
+                    }
+
+                    inputWait = false;
+                }, 300);
+
+                
             });
 
             search_form.insertAdjacentElement('afterend', clone);
-
-            
-            
         }
     });
+
+    var sitePathname = window.document.location.pathname;
+    console.log('sitePathname: ', sitePathname);
+
+
+    if(sitePathname.indexOf("/p/") !== -1){
+        // PDS
+
+        var produktID = sitePathname.split("/p/")[1];
+
+        WATO.elem('h1.pds-cockpit__productName', function(h1){
+            if(h1){
+                getXHR("GET",'https://ffbackoffice.hessnatur.com/FF73-Indexer/Tracking.ff?event=click&'+factfiderLogin+'sid=s56784193202896&id='+produktID+
+                            '&masterId='+produktID.substring(0,5)+'&title='+encodeURI(h1[0].textContent)+'&query=*&pos=24&origPos=1&origPageSize=48&page=1', function(callbackContent) { // &pos=24&origPos=103&page=1&origPageSize=48
+                    console.log('callbackContent: ', callbackContent);
+                });
+            }
+        });
+
+        
+
+    }else if(sitePathname.indexOf("/cart") !== -1){
+
+
+        WATO.elem('.item__form', function(allProds){
+            if(allProds){
+                for (var j = 0; j < allProds.length; j++) {
+                    var thisProd = allProds[j],
+                        prodID = WATO.qs('input[name="variantCode"]', thisProd).value;
+                        console.log('thisProd: ', thisProd);
+                    
+                    getXHR("GET",'https://ffbackoffice.hessnatur.com/FF73-Indexer/Tracking.ff?event=cart&'+factfiderLogin+'sid=s21599821818272&id='+prodID+'&masterId='+prodID.substring(0,5)+'&title='+encodeURI(WATO.qs('.cart__productname', thisProd).textContent)+'&count='+WATO.qs('.qty.input-group-field', thisProd).value+'&price='+WATO.qs(".price", thisProd).textContent.replace("€","").replace("*","").replace(",","."), function(callbackContent) { // &pos=24&origPos=103&page=1&origPageSize=48
+                        console.log('callbackContent: ', callbackContent);
+                        if(callbackContent.responseText.indexOf("The event was successfully tracked") !== -1){
+                            // Goal korrekt abgeschickt
+                            console.log("Goal korrekt abgeschickt");
+                        }else{
+                            // Goal ein Problem
+                            console.log("Goal ein Problem");
+                        }
+                    });
+                }
+            }
+        });
+
+
+
+        
+
+
+    }
+
+
+            
+    // https://ffbackoffice.hessnatur.com/FF73-Query/Search.ff?username=hessnatur&password=d6648543b7ec3c456e38f93d7187a9d8&channel=LIVE-DE-Online-de&page=1&productsPerPage=48&filterlineType=P&filtercategory_pathROOT%2Fdamen=damen-bekleidung&filtercategory_pathROOT%2Fdamen%2Fdamen-bekleidung=damen-bekleidung-strickjacken&filtercategory_pathROOT=damen&format=json&sid=s56784184194912&noArticleNumberSearch=false&noCampaign=false&catalog=true&navigation=true&idsOnly=false&duplicateFilter=colorvariantcode
+
+
+
+
+
+    
     
 
 })(new window.WATO());
