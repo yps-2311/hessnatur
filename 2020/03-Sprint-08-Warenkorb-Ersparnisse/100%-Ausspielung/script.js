@@ -119,9 +119,13 @@
                     if (_oldPrice) {
                         // active Test
                         // window.iridion.push(['run', '939393152827']);
+
                         // 100% Ausspielung
                         window.iridion.push(['run', '949584067611']);
 
+                        // Sprint 12 active Test
+                        window.iridion.push(['run', '961003306345']);
+                        
                         break;
                     }
                 }
