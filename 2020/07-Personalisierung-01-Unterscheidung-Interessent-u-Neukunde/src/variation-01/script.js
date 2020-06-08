@@ -10,10 +10,10 @@
  */
 
 
-(function(WATO) {
+(function(WATO, window) {
     "use strict";
 
-    // window.iridion.econda.push(["Sprint10", "V1"]);
+    window.iridion.econda.push(["SprintPS01", "V1"]);
 
     // function pushGoal(key, sendOnNextPageView){    
     //     if(sendOnNextPageView){
@@ -33,7 +33,9 @@
         
 
     try {
-        window.iridion.push(["segment", (isInteressent ? "32812" : "32813")]);
+        if ((!window.iridion.push(['hasSegment', "32812"])) && (!window.iridion.push(['hasSegment', "32813"]))) {
+            window.iridion.push(["segment", (isInteressent ? "32812" : "32813")]);
+        }
     } catch (error) {
     }
     
@@ -119,7 +121,7 @@
             if(prodWrapper){
                 // var parentProds = WATO.qs(".js-product-grid > .gridviewProductItemWrapper").parentNode;
                 var allProds = WATO.qsa(".js-product-grid > .gridviewProductItemWrapper");
-                console.log('allProds: ', allProds);
+                // console.log('allProds: ', allProds);
 
                 if(isInteressent) {
                     // Interessent
@@ -185,7 +187,7 @@
                 }else{
                     // Neukunde
                     var allProducts = WATO.qsa(".dropdown-pane");
-                    console.log('allProducts: ', allProducts);
+                    // console.log('allProducts: ', allProducts);
 
                     for (var i = 0; i < allProducts.length; i++) {
                         var thisProd = allProducts[i],
@@ -208,4 +210,4 @@
     
     
 
-})(new window.WATO());
+})(new window.WATO(), window);
