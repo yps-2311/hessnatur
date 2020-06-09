@@ -8,9 +8,9 @@
  * @name Variation 01
  * @description
  */
-(function(WATO) {
-    "use strict";
+// (function(WATO) {
+//     "use strict";
 
-    WATO.s8(1);
+//     WATO.s8(0);
 
-})(new window.WATO());
+// })(new window.WATO());

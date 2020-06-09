@@ -41,7 +41,7 @@
 
 		_self.exclude(1023, _self.reload);
 
-		if(variant === 0) {
+		if(variant === 0 || window.iridion.push(['profile', 'getValue', 'hadStrikePrice'])) {
 			return false;
 		}
 
@@ -114,15 +114,16 @@
 				kk_total = sumPrices[1];
 	
 				// kk_sum.id="kk_sum";
-				kk_sum.classList.add('discountPrice');
-				kk_sum.insertAdjacentHTML('afterend', ''+
-					'<div class="column shrink price strikeValue h-no-padding-left h-xsmallOffset-bottom-inner h-smallOffset-left-outer kk_sums">€ '+float2Price(price2Float(kk_sum.textContent) + _youSaved)+'*</div>'
-				);
+
+				// kk_sum.classList.add('discountPrice');
+				// kk_sum.insertAdjacentHTML('afterend', ''+
+				// 	'<div class="column shrink price strikeValue h-no-padding-left h-xsmallOffset-bottom-inner h-smallOffset-left-outer kk_sums">€ '+float2Price(price2Float(kk_sum.textContent) + _youSaved)+'*</div>'
+				// );
 				
-				_self.qs('.btn-deliverycosts').insertAdjacentHTML('afterend', ''+
-					'<br/>'+
-					'<div class="kk_save" style="display: inline-block; color: #393939"><span style="font-weight:300">Sie sparen mit dieser Bestellung</span> € '+float2Price(_youSaved)+'</div>'
-				);
+				// _self.qs('.btn-deliverycosts').insertAdjacentHTML('afterend', ''+
+				// 	'<br/>'+
+				// 	'<div class="kk_save" style="display: inline-block; color: #393939"><span style="font-weight:300">Sie sparen mit dieser Bestellung</span> € '+float2Price(_youSaved)+'</div>'
+				// );
 
 				_self.elem('#hessnaturVoucherForm', function(hessnaturVoucherForm){
 					if(hessnaturVoucherForm) {
@@ -139,36 +140,37 @@
 					_cats = Object.keys(_ls),
 					_cat = '',
 					_catCount = 0,
-					upsellProds = (variant === 1 ?
+					upsellProds = 
+					// (variant === 1 ?
+					// { 
+					// 	'herren': [
+					// 		// Ersparniss >= 20
+					// 		'4238409',
+					// 		// Ersparniss >= 10
+					// 		'4266889',
+					// 	],
+					// 	'damen': [
+					// 		// Ersparniss >= 20
+					// 		'4260009',
+					// 		// Ersparniss >= 10
+					// 		'4266889',
+					// 	],
+					// 	'baby': [
+					// 		// Ersparniss >= 20
+					// 		'4568785',
+					// 		// Ersparniss >= 10
+					// 		'36581',
+					// 	],
+					// 	'kids': [
+					// 		// Ersparniss >= 20
+					// 		'3606218',
+					// 	],
+					// 	'home': [
+					// 		// Ersparniss >= 20
+					// 		'4793601',
+					// 	],
+					// } :
 					{ // V1
-						'herren': [
-							// Ersparniss >= 20
-							'4238409',
-							// Ersparniss >= 10
-							'4266889',
-						],
-						'damen': [
-							// Ersparniss >= 20
-							'4260009',
-							// Ersparniss >= 10
-							'4266889',
-						],
-						'baby': [
-							// Ersparniss >= 20
-							'4568785',
-							// Ersparniss >= 10
-							'36581',
-						],
-						'kids': [
-							// Ersparniss >= 20
-							'3606218',
-						],
-						'home': [
-							// Ersparniss >= 20
-							'4793601',
-						],
-					} :
-					{ // V2
 						'herren': [
 							// Warenkorbwert <= 40
 							'4266889',
@@ -193,7 +195,7 @@
 						'home': [
 							'4793601',
 						],
-					}),
+					},
 					upsellPreselect = {
 						'4793601': '479360151',
 					};
@@ -214,24 +216,24 @@
 					// decide which product will be shown
 					var upsellIndex = 2;
 					
-					if(variant === 1) {
+					// if(variant === 1) {
+					// 	// V1
+					// 	if(_youSaved >= 20) {
+					// 		upsellIndex = 0;
+					// 	}
+					// 	else if(_youSaved >= 10) {
+					// 		upsellIndex = 1;
+					// 	}
+					// }else{
 						// V1
-						if(_youSaved >= 20) {
-							upsellIndex = 0;
-						}
-						else if(_youSaved >= 10) {
-							upsellIndex = 1;
-						}
+					if(parseFloat(_self.qs(".h-xLargeOffset-bottom-outer .price").textContent.replace("€","").replace("*","").replace(".","").replace(",",".")) <= 40){
+						// Warenkorbwert <= 40
+						upsellIndex = 0;
 					}else{
-						// V2
-						if(parseFloat(_self.qs(".h-xLargeOffset-bottom-outer .price").textContent.replace("€","").replace("*","").replace(".","").replace(",",".")) <= 40){
-							// Warenkorbwert <= 40
-							upsellIndex = 0;
-						}else{
-							// Warenkorbwert > 40
-							upsellIndex = 1;
-						}
+						// Warenkorbwert > 40
+						upsellIndex = 1;
 					}
+					// }
 					
 					var promo = promoProd[upsellIndex];
 
@@ -262,13 +264,13 @@
 									var thisSize = _sizes[s],
 										thisSelected = '';
 
-									if(variant === 1){
+									// if(variant === 1){
+									// 	// V1
+									// 	thisSelected = ((sizesHTML === '' && upsellPreselect[promo] === thisSize.code) ? 'selected="selected"' : '' );
+									// }else{
 										// V1
-										thisSelected = ((sizesHTML === '' && upsellPreselect[promo] === thisSize.code) ? 'selected="selected"' : '' );
-									}else{
-										// V2
 										thisSelected = ((sizesHTML === '' && firstItemSize === thisSize.code.substring(7,9)) ? 'selected="selected"' : '' );
-									}
+									// }
 
 									_sizesHTML += '<option value="'+thisSize.code+'" '+thisSelected+'>'+thisSize.size+'</option>';
 								}
@@ -308,14 +310,14 @@
 										'<div id="kk_upsell_inner" class="row" style="border: 5px solid #CBF1A5; padding:10px">'+
 											'<div class="medium-5" style="padding-right:67px;display:flex">'+
 												'<div id="kk_upsell_left">'+
-													(variant === 1 ? (
-														'<p>Glückwunsch, <br/>Sie sparen €&nbsp'+float2Price(_youSaved)+'!</p>'+
-														'<p>Warum nicht einfach die Ersparnis nutzen und <br/>ein '+((promo === '4266889') ? 'Paar '+name.replace('Socke', 'Socken') : name )+' für nur <b id="kk_price_left">€&nbsp;'+float2Price(init_price)+'</b> hinzufügen?</p>'
-													):(
+													// (variant === 1 ? (
+													// 	'<p>Glückwunsch, <br/>Sie sparen €&nbsp'+float2Price(_youSaved)+'!</p>'+
+													// 	'<p>Warum nicht einfach die Ersparnis nutzen und <br/>ein '+((promo === '4266889') ? 'Paar '+name.replace('Socke', 'Socken') : name )+' für nur <b id="kk_price_left">€&nbsp;'+float2Price(init_price)+'</b> hinzufügen?</p>'
+													// ):(
 														'<p>Glückwunsch zu Ihrer Produktauswahl!</p>'+
 														'<p>Wie wäre es mit einem weiteren Kundenliebling aus unserem Sortiment? Jetzt für nur <b>€&nbsp;'+float2Price(init_price)+'</b> hinzufügen.</p>'+
-														'<div id="kk_highbadge">Highlight</div>'
-													))+
+														'<div id="kk_highbadge">Highlight</div>'+
+													// ))+
 												'</div>'+
 											'</div>'+
 											'<div id="kk_upsell_right" class="medium-7">'+
@@ -475,10 +477,11 @@
 				}
 	
 				// kk_total.id="kk_total";
-				kk_total.classList.add('discountPrice');
-				kk_total.insertAdjacentHTML('afterend', ''+
-					'<div class="column shrink price strikeValue h-no-padding-left h-xsmallOffset-bottom-inner h-smallOffset-left-outer kk_sums">€ '+float2Price(price2Float(kk_total.textContent) + _youSaved)+'*</div>'
-				);
+
+				// kk_total.classList.add('discountPrice');
+				// kk_total.insertAdjacentHTML('afterend', ''+
+				// 	'<div class="column shrink price strikeValue h-no-padding-left h-xsmallOffset-bottom-inner h-smallOffset-left-outer kk_sums">€ '+float2Price(price2Float(kk_total.textContent) + _youSaved)+'*</div>'
+				// );
 
 				kk_total.closest('.h-xsmallOffset-bottom-outer:not(.column)').insertAdjacentHTML('afterbegin', '<div class="column small-12 large-10 large-offset-1"><hr></div>');
 				
