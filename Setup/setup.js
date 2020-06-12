@@ -259,7 +259,11 @@
             // Danke
             goalPush('page_conv');
 
+            // Für PS01
             window.localStorage.setItem("kk_hasbought", true);
+
+            // Für Sprint8 und Sprint12
+            window.localStorage.removeItem('kk_upsell_hide');
     
             // Revenue
             var wa_interval = setInterval(function(){
