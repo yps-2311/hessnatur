@@ -282,27 +282,43 @@
      * @param {function} callback -
      */
 
-    window.WATO.prototype.ajax = function (url, callback) {
+    // window.WATO.prototype.ajax = function (url, callback) {
 
-        var request = XMLHttpRequest.prototype.open;
+    //     var request = XMLHttpRequest.prototype.open;
 
-        XMLHttpRequest.prototype.open = function (method, uri, async, user, pass) {
+    //     XMLHttpRequest.prototype.open = function (method, uri, async, user, pass) {
 
-            this.addEventListener("loadend", function () {
+    //         this.addEventListener("loadend", function () {
 
-                if (this.readyState === 4) {
+    //             if (this.readyState === 4) {
 
-                    if (uri.indexOf(url) !== -1) {
+    //                 if (uri.indexOf(url) !== -1) {
 
-                        if (typeof callback === "function") {
+    //                     if (typeof callback === "function") {
 
-                            callback();
-                        }
+    //                         callback();
+    //                     }
+    //                 }
+    //             }
+    //         }, false);
+
+    //         request.call(this, method, uri, async, user, pass);
+    //     };
+    // };
+
+    window.WATO.prototype.ajaxPost = function(callback) {
+        var request = XMLHttpRequest.prototype.send;
+        XMLHttpRequest.prototype.send = function(body) {
+            this.addEventListener("loadend", function(e) {
+                try {
+                    if (this.readyState === 4 && this.status === 200) {
+                        callback(body, e.target.responseURL);
                     }
+                } catch (error) {
+                    console.log(error);
                 }
-            }, false);
-
-            request.call(this, method, uri, async, user, pass);
+            } );
+            request.call(this, body);
         };
     };
 
@@ -315,7 +331,7 @@
      *
      * @param {string} name - Cookie name
      */
-    /*
+    
 	window.WATO.prototype.getCookie = function(name){
 		
 		var cookies = document.cookie.split(";");
@@ -330,7 +346,7 @@
 		
 		return false;
 	};
-	*/
+	
 
     /**
      * @function setCookie

@@ -34,6 +34,7 @@
     }
 
 	WATO.prototype.s8 = function(variant){
+
 		var _self = this;
 		variant = variant || 0;
 
@@ -41,8 +42,9 @@
 
 		_self.exclude(1023, _self.reload);
 
+
 		if(variant === 0 || window.iridion.push(['profile', 'getValue', 'hadStrikePrice'])) {
-			return false;
+			// return false;
 		}
 
 		function price2Float(str) {
@@ -58,6 +60,8 @@
 
 			return _temp;
 		}
+
+		console.log(2);
 	
 		// add blue alert at top
 		_self.elem('#hessnaturQuickAddForm', function(hessnaturQuickAddForm){
@@ -77,8 +81,10 @@
 		_self.elem('.h-mediumOffset-bottom-inner .button.success', function(bottomCTA) {
 			if(bottomCTA) {
 				var _products = _self.qsa('.listing__table--item'), 
-				_productCount = _products.length,
-				_youSaved = 0;
+					_productCount = _products.length;
+				// _youSaved = 0;
+
+				console.log(3);
 	
 				// iterate all products and find savings
 				for(var i=0; i < _productCount; i++) {
@@ -91,9 +97,9 @@
 						_save = price2Float(_oldPrice.textContent) - price2Float(_newPrice.textContent);
 	
 						// sum savings
-						if(_save > 0) {
-							_youSaved += _save;
-						}
+						// if(_save > 0) {
+						// 	_youSaved += _save;
+						// }
 	
 						_oldPriceWrapper.classList.add('kk_price');
 						
@@ -110,8 +116,8 @@
 				}
 	
 				var sumPrices = _self.qsa('.offset-price-left'),
-				kk_sum = sumPrices[0],
-				kk_total = sumPrices[1];
+					kk_sum = sumPrices[0],
+					kk_total = sumPrices[1];
 	
 				// kk_sum.id="kk_sum";
 
@@ -195,10 +201,12 @@
 						'home': [
 							'4793601',
 						],
-					},
-					upsellPreselect = {
-						'4793601': '479360151',
 					};
+					// upsellPreselect = {
+					// 	'4793601': '479360151',
+					// };
+
+					console.log(4);
 
 					// find category with highest product add2cart
 					for(var c = 0; c < _cats.length; c++) {
@@ -212,6 +220,8 @@
 					}
 
 					var promoProd = upsellProds[_cat];
+					console.log('_cat: ', _cat);
+					console.log('promoProd: ', promoProd);
 
 					// decide which product will be shown
 					var upsellIndex = 2;
@@ -226,7 +236,7 @@
 					// 	}
 					// }else{
 						// V1
-					if(parseFloat(_self.qs(".h-xLargeOffset-bottom-outer .price").textContent.replace("€","").replace("*","").replace(".","").replace(",",".")) <= 40){
+					if(_cat === "kids" || _cat === "home" || parseFloat(_self.qs(".h-xLargeOffset-bottom-outer .price").textContent.replace("€","").replace("*","").replace(".","").replace(",",".")) <= 40){
 						// Warenkorbwert <= 40
 						upsellIndex = 0;
 					}else{
@@ -236,9 +246,12 @@
 					// }
 					
 					var promo = promoProd[upsellIndex];
+					console.log('upsellIndex: ', upsellIndex);
+					console.log('promo: ', promo);
 
 					// if product found get product info from API
 					if(promo) {
+						console.log(5);
 						_self.xhr_get('https://www.hessnatur.com/de/p/'+promo+'/json', false, function(data){
 							console.log(data);
 
@@ -292,10 +305,12 @@
 								}
 
 								var colorCode = thisProd.colorCode;
+								console.log('colorCode: ', colorCode);
 
 								colors[colorCode] = thisProd;
+								console.log('thisProd: ', thisProd);
 
-								colorsHTML += '<li data-color="'+colorCode+'">'+
+								colorsHTML += '<li data-color="'+colorCode+'" data-colorname="'+thisProd.color+'">'+
 									'<a class="productItemColor" href="#color" onclick="return false">'+
 										'<img itemprop="image" src="'+thisProd.colorUrl+'" alt="2312754" class="h-shape-circle">'+
 									'</a>'+
@@ -314,9 +329,9 @@
 													// 	'<p>Glückwunsch, <br/>Sie sparen €&nbsp'+float2Price(_youSaved)+'!</p>'+
 													// 	'<p>Warum nicht einfach die Ersparnis nutzen und <br/>ein '+((promo === '4266889') ? 'Paar '+name.replace('Socke', 'Socken') : name )+' für nur <b id="kk_price_left">€&nbsp;'+float2Price(init_price)+'</b> hinzufügen?</p>'
 													// ):(
+														'<div id="kk_highbadge">Highlight</div>'+
 														'<p>Glückwunsch zu Ihrer Produktauswahl!</p>'+
 														'<p>Wie wäre es mit einem weiteren Kundenliebling aus unserem Sortiment? Jetzt für nur <b>€&nbsp;'+float2Price(init_price)+'</b> hinzufügen.</p>'+
-														'<div id="kk_highbadge">Highlight</div>'+
 													// ))+
 												'</div>'+
 											'</div>'+
@@ -338,7 +353,7 @@
 													'</div>'+
 													'<div>'+
 														'<div>'+
-															'<p><span class="h-text-muted">Farbe:</span> '+init_color_text+'</p>'+
+															'<p><span class="h-text-muted">Farbe:</span> <span id="kk_colorname">'+init_color_text+'</span></p>'+
 															'<ul class="menu pds-cockpit__colorSwitch show-for-large js-color-bubbles" style="margin: 10px 0;">'+
 																colorsHTML+
 															'</ul>'+
@@ -368,6 +383,7 @@
 														'<div>'+
 															'<button id="kk_addToCartButton" class="button success expanded pds-cockpit__addToCartButton js-add-to-cart-button" type="submit" style="margin-bottom:0">'+
 																'<span class="pds-cockpit__addToCartButtonIconWrapper">Zum Warenkorb hinzufügen</span>'+
+																'<span><div class="lds-ring"><div></div><div></div><div></div><div></div></div>wird ihrem Warenkorb hinzugefügt</span>'+
 															'</button>'+
 														'</div>'+
 													'</div>'+
@@ -377,6 +393,7 @@
 									'</div>'+
 								'</div>'
 							);
+
 							var kk_upsell_wrapper = _self.qs('#kk_upsell_wrapper');
 
 							// set first color active
@@ -387,7 +404,7 @@
 
 								try {
 									var _li = this.parentElement,
-									_color = colors[_li.getAttribute('data-color')];
+										_color = colors[_li.getAttribute('data-color')];
 
 									// update sizes dropdown
 									_self.qs('#kk_sizes').innerHTML = buildSizesHTML(_color.sizes);
@@ -398,6 +415,10 @@
 									// set selected color active
 									_self.qs('.active', kk_upsell_wrapper).classList.remove('active');
 									_li.classList.add('active');
+
+									console.log("change");
+
+									_self.qs("#kk_colorname").innerHTML = _li.getAttribute('data-colorname');
 
 									// trigger change for price update 
 									if ("createEvent" in document) {
@@ -430,7 +451,8 @@
 								catch(err) {}
 							};
 
-							var _color_bopsels = _self.qsa('.productItemColor', kk_upsell_wrapper);
+							var _color_bopsels = _self.qsa('.productItemColor', kk_upsell_wrapper),
+								addToCartCTA = _self.qs('#kk_addToCartButton', kk_upsell_wrapper);
 
 							for(var c = 0; c < _color_bopsels.length; c++) {
 								_color_bopsels[c].addEventListener('click', changeColor);
@@ -439,7 +461,7 @@
 							_self.qs('#kk_sizes').addEventListener('change', changeSize);
 
 
-							_self.qs('#kk_addToCartButton', kk_upsell_wrapper).addEventListener('click', function(){
+							addToCartCTA.addEventListener('click', function(){
 								var _prodId = _self.qs('#kk_sizes').value,
 								params = { 
 									productCodePost: _prodId,
@@ -464,6 +486,9 @@
 										location.reload();
 									});
 								}
+
+								addToCartCTA.classList.add('kk_klickbuy');
+								
 							});
 
 							_self.qs('#kk_hide_upsell', kk_upsell_wrapper).addEventListener('click', function(){
