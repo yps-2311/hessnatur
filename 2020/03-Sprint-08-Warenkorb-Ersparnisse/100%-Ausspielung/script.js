@@ -82,8 +82,10 @@
                     // _group = window.emosSelectVariantEventPrototype.group.split('/')[0],
                     _group = getCat(kk_pi_cat),
                     _thisGroup = _ls[_group];
-
+                    
+                // console.log('_thisGroup: ', _thisGroup);
                 // console.log(_group);
+
                 if (_group !== '') {
                     if (!_thisGroup) {
                         _thisGroup = 1;
@@ -96,8 +98,9 @@
 
                     localStorage.setItem('kk_cats', JSON.stringify(_ls));
                 }
+            }catch (e) {
+                // console.log('e: ', e);
             }
-            catch (e) { }
         });
     }
     else {

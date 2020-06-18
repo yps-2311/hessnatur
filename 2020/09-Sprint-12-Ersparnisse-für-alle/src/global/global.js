@@ -33,7 +33,7 @@
         window.iridion.push(['goal', key]);
     }
 
-	WATO.prototype.s8 = function(variant){
+	WATO.prototype.s12 = function(variant){
 
 		var _self = this;
 		variant = variant || 0;
@@ -140,7 +140,7 @@
 					}
 				});
 
-				if(!localStorage.getItem('kk_upsell_hide')) { // variant === 2
+				if(!localStorage.getItem('kk_upsell_hide') && localStorage.getItem('kk_cats')) { // variant === 2
 					// get localstorage category from add to cart (PDS 100%)
 					var _ls = JSON.parse(localStorage.getItem('kk_cats')),
 					_cats = Object.keys(_ls),
@@ -220,6 +220,7 @@
 					}
 
 					var promoProd = upsellProds[_cat];
+
 					console.log('_cat: ', _cat);
 					console.log('promoProd: ', promoProd);
 
@@ -246,28 +247,31 @@
 					// }
 					
 					var promo = promoProd[upsellIndex];
+
 					console.log('upsellIndex: ', upsellIndex);
 					console.log('promo: ', promo);
 
 					// if product found get product info from API
 					if(promo) {
 						console.log(5);
-						_self.xhr_get('https://www.hessnatur.com/de/p/'+promo+'/json', false, function(data){
+
+						_self.xhr_get('https://www.hessnatur.com/de/p/'+promo.substring(0,5)+'/json', false, function(data){
+
 							console.log(data);
 
 							var init_img_url = '',
-							init_color_text = '',
-							init_price = '',
-							name = data.name,
+								init_color_text = '',
+								init_price = '',
+								name = data.name,
 
-							colors = {},
-							colorsHTML = '',
-							sizesHTML = '',
+								colors = {},
+								colorsHTML = '',
+								sizesHTML = '',
 
-							prod_variations = data.colors,
-							prod_variation_count = prod_variations.length,
+								prod_variations = data.colors,
+								prod_variation_count = prod_variations.length,
 
-							firstItemSize = _self.qs(".value--size").textContent,
+								firstItemSize = _self.qs(".value--size").textContent,
 
 							buildSizesHTML = function(_sizes){
 								var _sizeCount = _sizes.length,
@@ -348,7 +352,7 @@
 															'<div class="row align-right-for-medium">'+
 																'<div class="column shrink price h-xsmallOffset-bottom-inner">€ <span id="kk_price">'+float2Price(init_price)+'</span>*</div>'+
 															'</div>'+
-															'<p class="h-text-muted">inkl. 19% Mwst.</p>'+
+															'<p class="h-text-muted">inkl. MwSt.</p>'+ //  19%
 														'</div>'+
 													'</div>'+
 													'<div>'+
@@ -446,9 +450,14 @@
 
 									// update price
 									_self.qs('#kk_price').innerHTML = float2Price(_price);
-									_self.qs('#kk_price_left').innerHTML = '€&nbsp;'+float2Price(_price);
+									// _self.qs('#kk_price_left').innerHTML = '€&nbsp;'+float2Price(_price);
+									_self.qs("#kk_upsell_left p b").innerHTML = '€&nbsp;'+float2Price(_price);
+
 								}
-								catch(err) {}
+								catch(err) {
+									console.log('err: ', err);
+								}
+								
 							};
 
 							var _color_bopsels = _self.qsa('.productItemColor', kk_upsell_wrapper),
