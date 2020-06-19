@@ -201,6 +201,9 @@
 						'home': [
 							'4793601',
 						],
+						'sonstiges': [
+							'4266889',
+						]
 					};
 					// upsellPreselect = {
 					// 	'4793601': '479360151',
@@ -237,13 +240,14 @@
 					// 	}
 					// }else{
 						// V1
-					if(_cat === "kids" || _cat === "home" || parseFloat(_self.qs(".h-xLargeOffset-bottom-outer .price").textContent.replace("€","").replace("*","").replace(".","").replace(",",".")) <= 40){
+					if(_cat === "kids" || _cat === "home" || _cat === "sonstiges" || parseFloat(_self.qs(".h-xLargeOffset-bottom-outer .price").textContent.replace("€","").replace("*","").replace(".","").replace(",",".")) <= 40){
 						// Warenkorbwert <= 40
 						upsellIndex = 0;
 					}else{
 						// Warenkorbwert > 40
 						upsellIndex = 1;
 					}
+					
 					// }
 					
 					var promo = promoProd[upsellIndex];
@@ -253,7 +257,6 @@
 
 					// if product found get product info from API
 					if(promo) {
-						console.log(5);
 
 						_self.xhr_get('https://www.hessnatur.com/de/p/'+promo.substring(0,5)+'/json', false, function(data){
 
@@ -420,8 +423,6 @@
 									_self.qs('.active', kk_upsell_wrapper).classList.remove('active');
 									_li.classList.add('active');
 
-									console.log("change");
-
 									_self.qs("#kk_colorname").innerHTML = _li.getAttribute('data-colorname');
 
 									// trigger change for price update 
@@ -434,7 +435,9 @@
 										_self.qs('#kk_sizes').fireEvent("onchange");
 									}
 								}
-								catch(err) {}
+								catch(err) {
+									console.log('err: ', err);
+								}
 
 								return false;
 							},

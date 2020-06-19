@@ -53,6 +53,9 @@
                     case "SO-007":
                         ret = 'home';
                         break;
+                    default:
+                        ret = 'sonstiges';
+                        break;
                 }
                 return ret;
             };

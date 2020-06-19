@@ -242,7 +242,7 @@
 
 								colors[colorCode] = thisProd;
 
-								colorsHTML += '<li data-color="'+colorCode+'">'+
+								colorsHTML += '<li data-color="'+colorCode+'" data-colorname="'+thisProd.color+'">'+
 									'<a class="productItemColor" href="#color" onclick="return false">'+
 										'<img itemprop="image" src="'+thisProd.colorUrl+'" alt="2312754" class="h-shape-circle">'+
 									'</a>'+
@@ -273,12 +273,12 @@
 															'<div class="row align-right-for-medium">'+
 																'<div class="column shrink price h-xsmallOffset-bottom-inner">€ <span id="kk_price">'+float2Price(init_price)+'</span>*</div>'+
 															'</div>'+
-															'<p class="h-text-muted">inkl. 19% Mwst.</p>'+
+															'<p class="h-text-muted">inkl. MwSt.</p>'+
 														'</div>'+
 													'</div>'+
 													'<div>'+
 														'<div>'+
-															'<p><span class="h-text-muted">Farbe:</span> '+init_color_text+'</p>'+
+															'<p><span class="h-text-muted">Farbe:</span> <span id="kk_colorname">'+init_color_text+'</span></p>'+
 															'<ul class="menu pds-cockpit__colorSwitch show-for-large js-color-bubbles" style="margin: 10px 0;">'+
 																colorsHTML+
 															'</ul>'+
@@ -339,6 +339,9 @@
 									// set selected color active
 									_self.qs('.active', kk_upsell_wrapper).classList.remove('active');
 									_li.classList.add('active');
+
+
+									_self.qs("#kk_colorname").innerHTML = _li.getAttribute('data-colorname');
 
 									// trigger change for price update 
 									if ("createEvent" in document) {
