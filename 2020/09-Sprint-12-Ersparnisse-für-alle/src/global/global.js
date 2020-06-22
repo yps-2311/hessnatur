@@ -38,13 +38,12 @@
 		var _self = this;
 		variant = variant || 0;
 
-		// console.log(variant);
 
 		_self.exclude(1023, _self.reload);
 
 
 		if(variant === 0 || window.iridion.push(['profile', 'getValue', 'hadStrikePrice'])) {
-			// return false;
+			return false;
 		}
 
 		function price2Float(str) {
@@ -60,8 +59,6 @@
 
 			return _temp;
 		}
-
-		console.log(2);
 	
 		// add blue alert at top
 		_self.elem('#hessnaturQuickAddForm', function(hessnaturQuickAddForm){
@@ -82,9 +79,6 @@
 			if(bottomCTA) {
 				var _products = _self.qsa('.listing__table--item'), 
 					_productCount = _products.length;
-				// _youSaved = 0;
-
-				console.log(3);
 	
 				// iterate all products and find savings
 				for(var i=0; i < _productCount; i++) {
@@ -96,10 +90,6 @@
 						_oldPriceWrapper = _oldPrice.parentElement,
 						_save = price2Float(_oldPrice.textContent) - price2Float(_newPrice.textContent);
 	
-						// sum savings
-						// if(_save > 0) {
-						// 	_youSaved += _save;
-						// }
 	
 						_oldPriceWrapper.classList.add('kk_price');
 						
@@ -118,18 +108,7 @@
 				var sumPrices = _self.qsa('.offset-price-left'),
 					kk_sum = sumPrices[0],
 					kk_total = sumPrices[1];
-	
-				// kk_sum.id="kk_sum";
 
-				// kk_sum.classList.add('discountPrice');
-				// kk_sum.insertAdjacentHTML('afterend', ''+
-				// 	'<div class="column shrink price strikeValue h-no-padding-left h-xsmallOffset-bottom-inner h-smallOffset-left-outer kk_sums">€ '+float2Price(price2Float(kk_sum.textContent) + _youSaved)+'*</div>'
-				// );
-				
-				// _self.qs('.btn-deliverycosts').insertAdjacentHTML('afterend', ''+
-				// 	'<br/>'+
-				// 	'<div class="kk_save" style="display: inline-block; color: #393939"><span style="font-weight:300">Sie sparen mit dieser Bestellung</span> € '+float2Price(_youSaved)+'</div>'
-				// );
 
 				_self.elem('#hessnaturVoucherForm', function(hessnaturVoucherForm){
 					if(hessnaturVoucherForm) {
@@ -147,35 +126,6 @@
 					_cat = '',
 					_catCount = 0,
 					upsellProds = 
-					// (variant === 1 ?
-					// { 
-					// 	'herren': [
-					// 		// Ersparniss >= 20
-					// 		'4238409',
-					// 		// Ersparniss >= 10
-					// 		'4266889',
-					// 	],
-					// 	'damen': [
-					// 		// Ersparniss >= 20
-					// 		'4260009',
-					// 		// Ersparniss >= 10
-					// 		'4266889',
-					// 	],
-					// 	'baby': [
-					// 		// Ersparniss >= 20
-					// 		'4568785',
-					// 		// Ersparniss >= 10
-					// 		'36581',
-					// 	],
-					// 	'kids': [
-					// 		// Ersparniss >= 20
-					// 		'3606218',
-					// 	],
-					// 	'home': [
-					// 		// Ersparniss >= 20
-					// 		'4793601',
-					// 	],
-					// } :
 					{ // V1
 						'herren': [
 							// Warenkorbwert <= 40
@@ -205,11 +155,6 @@
 							'4266889',
 						]
 					};
-					// upsellPreselect = {
-					// 	'4793601': '479360151',
-					// };
-
-					console.log(4);
 
 					// find category with highest product add2cart
 					for(var c = 0; c < _cats.length; c++) {
@@ -224,22 +169,9 @@
 
 					var promoProd = upsellProds[_cat];
 
-					console.log('_cat: ', _cat);
-					console.log('promoProd: ', promoProd);
-
 					// decide which product will be shown
 					var upsellIndex = 2;
-					
-					// if(variant === 1) {
-					// 	// V1
-					// 	if(_youSaved >= 20) {
-					// 		upsellIndex = 0;
-					// 	}
-					// 	else if(_youSaved >= 10) {
-					// 		upsellIndex = 1;
-					// 	}
-					// }else{
-						// V1
+
 					if(_cat === "kids" || _cat === "home" || _cat === "sonstiges" || parseFloat(_self.qs(".h-xLargeOffset-bottom-outer .price").textContent.replace("€","").replace("*","").replace(".","").replace(",",".")) <= 40){
 						// Warenkorbwert <= 40
 						upsellIndex = 0;
@@ -252,15 +184,10 @@
 					
 					var promo = promoProd[upsellIndex];
 
-					console.log('upsellIndex: ', upsellIndex);
-					console.log('promo: ', promo);
-
 					// if product found get product info from API
 					if(promo) {
 
 						_self.xhr_get('https://www.hessnatur.com/de/p/'+promo.substring(0,5)+'/json', false, function(data){
-
-							console.log(data);
 
 							var init_img_url = '',
 								init_color_text = '',
@@ -284,13 +211,7 @@
 									var thisSize = _sizes[s],
 										thisSelected = '';
 
-									// if(variant === 1){
-									// 	// V1
-									// 	thisSelected = ((sizesHTML === '' && upsellPreselect[promo] === thisSize.code) ? 'selected="selected"' : '' );
-									// }else{
-										// V1
-										thisSelected = ((sizesHTML === '' && firstItemSize === thisSize.code.substring(7,9)) ? 'selected="selected"' : '' );
-									// }
+									thisSelected = ((sizesHTML === '' && firstItemSize === thisSize.code.substring(7,9)) ? 'selected="selected"' : '' );
 
 									_sizesHTML += '<option value="'+thisSize.code+'" '+thisSelected+'>'+thisSize.size+'</option>';
 								}
@@ -312,10 +233,8 @@
 								}
 
 								var colorCode = thisProd.colorCode;
-								console.log('colorCode: ', colorCode);
 
 								colors[colorCode] = thisProd;
-								console.log('thisProd: ', thisProd);
 
 								colorsHTML += '<li data-color="'+colorCode+'" data-colorname="'+thisProd.color+'">'+
 									'<a class="productItemColor" href="#color" onclick="return false">'+
@@ -332,14 +251,9 @@
 										'<div id="kk_upsell_inner" class="row" style="border: 5px solid #CBF1A5; padding:10px">'+
 											'<div class="medium-5" style="padding-right:67px;display:flex">'+
 												'<div id="kk_upsell_left">'+
-													// (variant === 1 ? (
-													// 	'<p>Glückwunsch, <br/>Sie sparen €&nbsp'+float2Price(_youSaved)+'!</p>'+
-													// 	'<p>Warum nicht einfach die Ersparnis nutzen und <br/>ein '+((promo === '4266889') ? 'Paar '+name.replace('Socke', 'Socken') : name )+' für nur <b id="kk_price_left">€&nbsp;'+float2Price(init_price)+'</b> hinzufügen?</p>'
-													// ):(
-														'<div id="kk_highbadge">Highlight</div>'+
-														'<p>Glückwunsch zu Ihrer Produktauswahl!</p>'+
-														'<p>Wie wäre es mit einem weiteren Kundenliebling aus unserem Sortiment? Jetzt für nur <b>€&nbsp;'+float2Price(init_price)+'</b> hinzufügen.</p>'+
-													// ))+
+													'<div id="kk_highbadge">Highlight</div>'+
+													'<p>Glückwunsch zu Ihrer Produktauswahl!</p>'+
+													'<p>Wie wäre es mit einem weiteren Kundenliebling aus unserem Sortiment? Jetzt für nur <b>€&nbsp;'+float2Price(init_price)+'</b> hinzufügen.</p>'+
 												'</div>'+
 											'</div>'+
 											'<div id="kk_upsell_right" class="medium-7">'+
@@ -355,7 +269,7 @@
 															'<div class="row align-right-for-medium">'+
 																'<div class="column shrink price h-xsmallOffset-bottom-inner">€ <span id="kk_price">'+float2Price(init_price)+'</span>*</div>'+
 															'</div>'+
-															'<p class="h-text-muted">inkl. MwSt.</p>'+ //  19%
+															'<p class="h-text-muted">inkl. MwSt.</p>'+
 														'</div>'+
 													'</div>'+
 													'<div>'+
@@ -380,11 +294,6 @@
 																		'<img src="/_ui/responsive/common/images/icons/garbage.svg" class="icon-trash">'+
 																	'</button>'+
 																'</div>'+
-																// '<div>'+
-																// 	'<button type="button" class="js-entry-edit textLink" style="margin-right: 10px">'+
-																// 		'<img src="/_ui/responsive/common/images/icons/edit.png" title="Details ändern" class="icon-edit">'+
-																// 	'</button>'+
-																// '</div>'+
 															'</div>'+
 														'</div>'+
 														'<div>'+
@@ -436,7 +345,7 @@
 									}
 								}
 								catch(err) {
-									console.log('err: ', err);
+									// console.log('err: ', err);
 								}
 
 								return false;
@@ -453,12 +362,11 @@
 
 									// update price
 									_self.qs('#kk_price').innerHTML = float2Price(_price);
-									// _self.qs('#kk_price_left').innerHTML = '€&nbsp;'+float2Price(_price);
 									_self.qs("#kk_upsell_left p b").innerHTML = '€&nbsp;'+float2Price(_price);
 
 								}
 								catch(err) {
-									console.log('err: ', err);
+									// console.log('err: ', err);
 								}
 								
 							};
@@ -485,7 +393,7 @@
 									CSRFToken: window.ACC.config.CSRFToken
 								};
 
-								goalPush('kk_s8_a2c');
+								goalPush('kk_s12_a2c');
 
 								if(_prodId !== '') {
 									_self.xhr_post('https://www.hessnatur.com/de/cart/add', 
@@ -504,7 +412,7 @@
 							});
 
 							_self.qs('#kk_hide_upsell', kk_upsell_wrapper).addEventListener('click', function(){
-								goalPush('kk_s8_del');
+								goalPush('kk_s12_del');
 
 								localStorage.setItem('kk_upsell_hide', 1);
 								kk_upsell_wrapper.outerHTML = '';
@@ -512,13 +420,6 @@
 						});
 					}
 				}
-	
-				// kk_total.id="kk_total";
-
-				// kk_total.classList.add('discountPrice');
-				// kk_total.insertAdjacentHTML('afterend', ''+
-				// 	'<div class="column shrink price strikeValue h-no-padding-left h-xsmallOffset-bottom-inner h-smallOffset-left-outer kk_sums">€ '+float2Price(price2Float(kk_total.textContent) + _youSaved)+'*</div>'
-				// );
 
 				kk_total.closest('.h-xsmallOffset-bottom-outer:not(.column)').insertAdjacentHTML('afterbegin', '<div class="column small-12 large-10 large-offset-1"><hr></div>');
 				
