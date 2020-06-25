@@ -318,36 +318,36 @@
                 // Add checkbox -> skip next page or not?
                 newsletterBox[0].insertAdjacentHTML('beforebegin',
                     '<label class="small-12 columns" id="kk09_address_option--wrapper">' +
-                        '<div class="row">' +
-                            '<div class="column small-12">' +
-                                // '<strong>Abweichende Lieferadresse</strong>' +
-                                '<div class="h-largeOffset-bottom-inner h-smallOffset-bottom-outer">' + // row
-                                    // '<div class="column shrink">' +
-                                        // '<input id="kk09_address_option" name="kk09_address_option" type="checkbox" value="true"' + (getStorage(STORAGE) === 'false' ? ' checked="checked"' : '') + '>'+
-                                    // '</div>' +
-                                    '<div class="column">' +
-                                        '<label for="kk09_address_option">' +
-                                        // '<p>Ich möchte mein Paket an eine <b>andere Adresse</b> schicken lassen. (Diese kann im nächsten Schritt angeben werden.)</p></label>' +
-                                            '<b>Meine Lieferadresse und Rechnungsadresse sind identisch.</b>'+
-                                        '</label>' +
-                                        '<div class="row">' +
-                                            '<div class="column small-2">' +
-                                                '<label for="kk09_address_option">' +
-                                                    '<input id="kk09_address_option" name="kk09_address_option" type="radio" value="true"' + ((getStorage(STORAGE) === 'true' || !getStorage(STORAGE)) ? ' checked="checked"' : '') + '>'+
-                                                    'Ja'+
-                                                '</label>'+
-                                            '</div>' +
-                                            '<div class="column small-4">' +
-                                                '<label for="kk09_address_option_false">' +
-                                                    '<input id="kk09_address_option_false" name="kk09_address_option" type="radio" value=""' + (getStorage(STORAGE) === 'false' ? ' checked="checked"' : '') + '>'+
-                                                    'Nein'+
-                                                '</label>'+
-                                            '</div>' +
-                                        '</div>' +
-                                    '</div>' +
-                                '</div>' +
-                            '</div>' +
-                        '</div>' +
+                    '<div class="row">' +
+                    '<div class="column small-12">' +
+                    // '<strong>Abweichende Lieferadresse</strong>' +
+                    '<div class="h-largeOffset-bottom-inner h-smallOffset-bottom-outer">' + // row
+                    // '<div class="column shrink">' +
+                    // '<input id="kk09_address_option" name="kk09_address_option" type="checkbox" value="true"' + (getStorage(STORAGE) === 'false' ? ' checked="checked"' : '') + '>'+
+                    // '</div>' +
+                    '<div class="column">' +
+                    '<label for="kk09_address_option">' +
+                    // '<p>Ich möchte mein Paket an eine <b>andere Adresse</b> schicken lassen. (Diese kann im nächsten Schritt angeben werden.)</p></label>' +
+                    '<b>Meine Lieferadresse und Rechnungsadresse sind identisch.</b>' +
+                    '</label>' +
+                    '<div class="row">' +
+                    '<div class="column small-2">' +
+                    '<label for="kk09_address_option">' +
+                    '<input id="kk09_address_option" name="kk09_address_option" type="radio" value="true"' + ((getStorage(STORAGE) === 'true' || !getStorage(STORAGE)) ? ' checked="checked"' : '') + '>' +
+                    'Ja' +
+                    '</label>' +
+                    '</div>' +
+                    '<div class="column small-4">' +
+                    '<label for="kk09_address_option_false">' +
+                    '<input id="kk09_address_option_false" name="kk09_address_option" type="radio" value=""' + (getStorage(STORAGE) === 'false' ? ' checked="checked"' : '') + '>' +
+                    'Nein' +
+                    '</label>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
                     '</label>'
                 );
 
@@ -445,7 +445,7 @@
                         WATO.elem(function () {
                             return typeof jQuery !== 'undefined';
                         }, function () {
-                            jQuery("html, body").animate({ scrollTop: jQuery('#addressId').prev().offset().top - 25 });
+                            jQuery("html, body").animate({ scrollTop: jQuery('#addressId').prev().offset().top - 100 });
                         });
                     }, 800);
                 }
@@ -497,7 +497,7 @@
 
                 // if delivery and invoice addresses are equal, only display invoice address as "Liefer- & Rechnungsadresse"
                 // var addresses = WATO.qsa('.columns.small-12.h-xLargeOffset-bottom-outer:not(.h4)', contentPanel),
-                //     deliveryAddressWrapper = addresses[1].closest('.align-top');
+                // deliveryAddressWrapper = addresses[1].closest('.align-top');
                 // if (addresses[0].textContent === addresses[1].textContent) {
                 //     addresses[0].previousElementSibling.innerHTML = 'Liefer- & Rechnungsadresse';
                 //     addClass(deliveryAddressWrapper, 'hide');
@@ -505,12 +505,15 @@
                 //     WATO.qs('.button.hollow', addresses[0].closest('.align-top')).href = WATO.qs('.button.hollow', addresses[0].closest('.align-top')).href + '?show-invoice';
                 // }
 
-                var paymentOption = getStorage('KK09PAYMENT').split('|'),
-                    paymentWrapper = WATO.qs('.columns.small-12.h-smallOffset-bottom-inner', deliveryAddressWrapper.nextElementSibling);
+                var invoiceBtn = WATO.qs('a.button.hollow[href*="add-delivery-address"]');
+                invoiceBtn.href = invoiceBtn.href + '?show-invoice';
 
-                addClass(paymentWrapper, 'payment-option');
-                addClass(paymentWrapper, paymentOption[1]);
-                paymentWrapper.innerHTML = paymentOption[0];
+                // var paymentOption = getStorage('KK09PAYMENT').split('|'),
+                //     paymentWrapper = WATO.qs('.columns.small-12.h-smallOffset-bottom-inner', deliveryAddressWrapper.nextElementSibling);
+
+                // addClass(paymentWrapper, 'payment-option');
+                // addClass(paymentWrapper, paymentOption[1]);
+                // paymentWrapper.innerHTML = paymentOption[0];
 
             }
         });
