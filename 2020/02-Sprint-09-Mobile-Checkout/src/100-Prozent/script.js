@@ -313,7 +313,7 @@
         WATO.elem('#registerForm fieldset', function (newsletterBox) {
             if (newsletterBox) {
 
-                console.log('getStorage(STORAGE): ', getStorage(STORAGE));
+                // console.log('getStorage(STORAGE): ', getStorage(STORAGE));
 
                 // Add checkbox -> skip next page or not?
                 newsletterBox[0].insertAdjacentHTML('beforebegin',
@@ -389,9 +389,9 @@
         // PAGE: Adressen
     } else if (WATO.AB09_checkPATH("addresses/add-delivery-address") || WATO.AB09_checkPATH("register/guest-update")) {
 
-        console.log("PAGE: Adressen");
+        // console.log("PAGE: Adressen");
 
-        console.log('getStorage(STORAGE): ', getStorage(STORAGE));
+        // console.log('getStorage(STORAGE): ', getStorage(STORAGE));
 
         // add css prefix
         addClass(document.documentElement, "address");
