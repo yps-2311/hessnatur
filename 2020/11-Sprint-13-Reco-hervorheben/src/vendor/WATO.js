@@ -259,7 +259,7 @@
         XMLHttpRequest.prototype.open = function(method, uri, async, user, pass) {
 
             this.addEventListener("loadend", function() {
-                console.log("ajax");
+                // console.log("ajax");
                 var respText = this.responseText;
                 if (this.readyState === 4) {
                     if (uri.indexOf(url) !== -1) {

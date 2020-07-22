@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -10,16 +10,25 @@
  */
 
 
-(function(WATO) {
+(function(WATO, window) {
     "use strict";
 
-    // window.iridion.econda.push(["Sprint13", "V1"]);
+    window.iridion.econda.push(["Sprint13", "V1"]);
 
     function pushGoal(key, sendOnNextPageView){    
         if(sendOnNextPageView){
             window.iridion.push(['goal', key, '', true]);
         }else{
             window.iridion.push(['goal', key]);
+        }
+    }
+
+    function getProdID(fromString) {
+        try {
+            return parseInt(fromString.match(/\d{5,9}/)[0].substring(0,5));
+        } catch (error) {
+            // console.log('Error: ', error);
+            return 0;
         }
     }
 
@@ -54,11 +63,14 @@
         // Warten bis min ein Produkt geladen ist
         WATO.elem('.js-productSliderWrapper .productitem', function(recoSliderItems){
             if(recoSliderItems){
+                // console.log('recoSliderItems: ', recoSliderItems);
 
                 try {
                     var recoClone = recoSliderItems[0].parentNode.cloneNode(true),
                         allItems = WATO.qsa(".productitem", recoClone),
-                        newReco =  WATO.qs("#kk_reco");
+                        newReco =  WATO.qs("#kk_reco"),
+                        templs = window.localStorage.getItem("kk_recoproduct"),
+                        lsReco = (templs ? templs.split(',') : false) || [];
 
                     // Attribute müssen entfernt werden, 
                     for (var i = 0; i < allItems.length; i++) {
@@ -73,6 +85,7 @@
                         return typeof jQuery !== "undefined";
                     }, function(isJquery){
                         if(isJquery){
+                            // console.log('isJquery: ', isJquery);
                             try {
                                 // Doku des Sliders: https://flickity.metafizzy.co/
                                 jQuery('#kk_reco').flickity({
@@ -88,7 +101,9 @@
                                 });
 
                                 // Klick eines Produktes der Reco
-                                WATO.qs(".flickity-viewport", newReco).addEventListener('click', function(){
+                                var recoWrapper = WATO.qs(".flickity-viewport", newReco);
+
+                                recoWrapper.addEventListener('click', function(e){
                                     pushGoal('click_reco_pds_top', true);
                                 });
 
@@ -108,14 +123,26 @@
                                 rightButton.addEventListener('click', function(){
                                     pushGoal('click_recoarrow_pds_top');
                                 });
+
+                                recoWrapper.addEventListener('mouseup', function(e){
+                                    var newID = getProdID(e.target.closest("a.item__image").getAttribute('href'));
+                
+                                    if(lsReco.indexOf(newID) === -1){
+                                        lsReco.push(newID);
+                                    }
+                                    window.localStorage.setItem("kk_recoproduct", lsReco);
+                                });
+
                             } catch (error) {
-                                console.log('Error: ', error);
+                                // console.log('Error: ', error);
+                                pushGoal("wa_setup_monitoring");
                             }
                         }
                     });
 
                 } catch (error) {
-                    console.log('Error: ', error);
+                    // console.log('Error: ', error);
+                    pushGoal("wa_setup_monitoring");
                 }
             }
         });
@@ -129,7 +156,7 @@
     });
     
 
-})(new window.WATO());
+})(new window.WATO(), window);
 
 
 

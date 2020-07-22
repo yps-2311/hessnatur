@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -13,7 +13,7 @@
 (function(WATO) {
     "use strict";
 
-    // window.iridion.econda.push(["Sprint13", "V0"]);
+    window.iridion.econda.push(["Sprint13", "V0"]);
 
     WATO.sprint13goals();
 
