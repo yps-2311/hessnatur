@@ -70,6 +70,7 @@
 
     WATO.prototype.sprint13goals = function(){
         var _self = this,
+            isInDrag = false,
             templs = window.localStorage.getItem("kk_recoproduct"),
             lsReco = (templs ? templs.split(',') : false) || [];
 
@@ -77,9 +78,9 @@
             if(recoItem){
                 theRecoObj = recoItem[0].parentNode.parentNode;
 
-                theRecoObj.addEventListener('click', function(){
-                    pushGoal("click_reco_pds_orginal", true);
-                });
+                // theRecoObj.addEventListener('click', function(){
+                //     pushGoal("click_reco_pds_orginal", true);
+                // });
                 
                 var arrowButton = _self.qs(".flickity-prev-next-button", theRecoObj.parentNode),
                     goalKey = "click_recoarrow_pds_orginal";
@@ -93,13 +94,36 @@
                     });
                 }
 
-                theRecoObj.addEventListener('mouseup', function(e){
-                    var newID = getProdID(e.target.closest("a.item__image").getAttribute('href'));
+                _self.elem(function() {
+                    return typeof jQuery !== "undefined";
+                }, function(isJquery){
+                    if(isJquery){
+                        var oldReco = $("#ecRecommendationsContainer");
 
-                    if(lsReco.indexOf(newID) === -1){
-                        lsReco.push(newID);
+                        oldReco.on('dragStart.flickity', function() {
+                            isInDrag = true;
+                        });
+                        oldReco.on('dragEnd.flickity', function() {
+                            isInDrag = false;
+                        });
                     }
-                    window.localStorage.setItem("kk_recoproduct", lsReco);
+                });
+
+
+                theRecoObj.addEventListener('mouseup', function(e){
+                    if(!isInDrag){
+                        pushGoal('click_reco_pds_orginal', true);
+
+                        try {
+                            var newID = getProdID(e.target.closest("a.item__image").getAttribute('href'));
+
+                            if(lsReco.indexOf(newID) === -1){
+                                lsReco.push(newID);
+                            }
+                            window.localStorage.setItem("kk_recoproduct", lsReco);
+                        } catch (error) {
+                        }
+                    }
                 });
 
                 // Scroll Goal 
@@ -110,7 +134,7 @@
         });
 
         _self.ajax("/cart/add", function(){
-            if(lsReco.indexOf(getProdID(window.location.pathname)) === -1){
+            if(lsReco.indexOf(getProdID(window.location.pathname)) !== -1){
                 pushGoal("addcart_recoprod");
             }
         });

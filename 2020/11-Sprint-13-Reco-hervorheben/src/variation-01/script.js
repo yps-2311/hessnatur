@@ -15,6 +15,23 @@
 
     window.iridion.econda.push(["Sprint13", "V1"]);
 
+    if (!Element.prototype.matches) {
+        Element.prototype.matches = Element.prototype.msMatchesSelector || 
+                                    Element.prototype.webkitMatchesSelector;
+    }
+    
+    if (!Element.prototype.closest) {
+    Element.prototype.closest = function(s) {
+        var el = this;
+    
+        do {
+        if (Element.prototype.matches.call(el, s)) return el;
+        el = el.parentElement || el.parentNode;
+        } while (el !== null && el.nodeType === 1);
+        return null;
+    };
+    }
+
     function pushGoal(key, sendOnNextPageView){    
         if(sendOnNextPageView){
             window.iridion.push(['goal', key, '', true]);
@@ -36,7 +53,8 @@
 
     function createNewReco() {
 
-        var existsNewReco = WATO.qs("#kk_newreco");
+        var existsNewReco = WATO.qs("#kk_newreco"),
+            isInDrag = false;
 
         if(existsNewReco){
             existsNewReco.parentNode.removeChild(existsNewReco);
@@ -88,7 +106,8 @@
                             // console.log('isJquery: ', isJquery);
                             try {
                                 // Doku des Sliders: https://flickity.metafizzy.co/
-                                jQuery('#kk_reco').flickity({
+                                var newjQReco = jQuery('#kk_reco');
+                                newjQReco.flickity({
                                     initialIndex: 0,
                                     cellAlign: 'left',
                                     contain: true,
@@ -100,11 +119,30 @@
                                     groupCells: !0
                                 });
 
+                                newjQReco.on('dragStart.flickity', function() {
+                                    isInDrag = true;
+                                });
+                                newjQReco.on('dragEnd.flickity', function() {
+                                    isInDrag = false;
+                                });
+
                                 // Klick eines Produktes der Reco
                                 var recoWrapper = WATO.qs(".flickity-viewport", newReco);
 
-                                recoWrapper.addEventListener('click', function(e){
-                                    pushGoal('click_reco_pds_top', true);
+                                recoWrapper.addEventListener('mouseup', function(e){
+                                    if(!isInDrag){
+                                        pushGoal('click_reco_pds_top', true);
+
+                                        try {
+                                            var newID = getProdID(e.target.closest("a.item__image").getAttribute('href'));
+                
+                                            if(lsReco.indexOf(newID) === -1){
+                                                lsReco.push(newID);
+                                            }
+                                            window.localStorage.setItem("kk_recoproduct", lsReco);
+                                        } catch (error) {
+                                        }
+                                    }
                                 });
 
                                 // Pfeile austauschen
@@ -124,14 +162,9 @@
                                     pushGoal('click_recoarrow_pds_top');
                                 });
 
-                                recoWrapper.addEventListener('mouseup', function(e){
-                                    var newID = getProdID(e.target.closest("a.item__image").getAttribute('href'));
-                
-                                    if(lsReco.indexOf(newID) === -1){
-                                        lsReco.push(newID);
-                                    }
-                                    window.localStorage.setItem("kk_recoproduct", lsReco);
-                                });
+                                // recoWrapper.addEventListener('mouseup', function(e){
+                                    
+                                // });
 
                             } catch (error) {
                                 // console.log('Error: ', error);
