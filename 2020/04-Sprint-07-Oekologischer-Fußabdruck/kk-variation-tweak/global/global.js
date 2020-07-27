@@ -77,6 +77,11 @@
 				window.removeEventListener('scroll', checkScrollDepth);
 			}
 		}
+
+		_self.exclude(1023, function () {
+			_self.reload();
+		});
+
 		if (document.URL.indexOf('/p/') !== -1) {
 			document.documentElement.classList.add('kk07B');
 
@@ -127,12 +132,13 @@
 								}
 							});
 							ecoWrapper.style.opacity = '1';
+
+							if (!checkScrollDepth()) {
+								window.addEventListener('scroll', checkScrollDepth);
+							}
 						}
 					});
 
-					if (!checkScrollDepth()) {
-						window.addEventListener('scroll', checkScrollDepth);
-					}
 
 				}
 			});

@@ -384,34 +384,34 @@
      * @param {number} width -
      * @param {function} callback
      */
-    /*
-	window.WATO.prototype.exclude = function(width, callback){
-		
-		function _checkWidth() {
-			
-			var current = window.innerWidth || document.body.clientWidth;
-			
-			if(current <= width && !exclude){
-				
-				exclude = true;
-				
-				callback();
-			}
-		}
-		
-		var exclude = false;
-		
-		_checkWidth();
-		
-		if(typeof callback === "function"){
-			
-			window.onresize = function() {
 
-				_checkWidth();
-			};
-		}
-	};
-	*/
+    window.WATO.prototype.exclude = function (width, callback) {
+
+        function _checkWidth() {
+
+            var current = window.innerWidth || document.body.clientWidth;
+
+            if (current <= width && !exclude) {
+
+                exclude = true;
+
+                callback();
+            }
+        }
+
+        var exclude = false;
+
+        _checkWidth();
+
+        if (typeof callback === "function") {
+
+            window.onresize = function () {
+
+                _checkWidth();
+            };
+        }
+    };
+
 
     /**
      * @function storageAvailable
@@ -445,12 +445,12 @@
      *
      * @author Lukas Dziambor
      */
-    /*
-	window.WATO.prototype.reload = function(){
+
+    window.WATO.prototype.reload = function () {
         location.reload();
-        location.href=location.href.split('#')[0];
-	};
-    */
+        location.href = location.href.split('#')[0];
+    };
+
 
     /**
      * @function offsetY
