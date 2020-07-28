@@ -100,7 +100,7 @@
 
                     // Galerie initialisieren
                     WATO.elem(function() {
-                        return typeof jQuery !== "undefined";
+                        return typeof jQuery !== "undefined" && typeof jQuery.fn.flickity !== "undefined";
                     }, function(isJquery){
                         if(isJquery){
                             // console.log('isJquery: ', isJquery);
@@ -129,21 +129,23 @@
                                 // Klick eines Produktes der Reco
                                 var recoWrapper = WATO.qs(".flickity-viewport", newReco);
 
-                                recoWrapper.addEventListener('mouseup', function(e){
-                                    if(!isInDrag){
-                                        pushGoal('click_reco_pds_top', true);
-
-                                        try {
-                                            var newID = getProdID(e.target.closest("a.item__image").getAttribute('href'));
-                
-                                            if(lsReco.indexOf(newID) === -1){
-                                                lsReco.push(newID);
+                                if(recoWrapper){
+                                    recoWrapper.addEventListener('mouseup', function(e){
+                                        if(!isInDrag){
+                                            pushGoal('click_reco_pds_top', true);
+    
+                                            try {
+                                                var newID = getProdID(e.target.closest("a.item__image").getAttribute('href'));
+                    
+                                                if(lsReco.indexOf(newID) === -1){
+                                                    lsReco.push(newID);
+                                                }
+                                                window.localStorage.setItem("kk_recoproduct", lsReco);
+                                            } catch (error) {
                                             }
-                                            window.localStorage.setItem("kk_recoproduct", lsReco);
-                                        } catch (error) {
                                         }
-                                    }
-                                });
+                                    });
+                                }
 
                                 // Pfeile austauschen
                                 var leftButton = WATO.qs(".flickity-prev-next-button", newReco),
@@ -162,13 +164,10 @@
                                     pushGoal('click_recoarrow_pds_top');
                                 });
 
-                                // recoWrapper.addEventListener('mouseup', function(e){
-                                    
-                                // });
-
                             } catch (error) {
                                 // console.log('Error: ', error);
                                 pushGoal("wa_setup_monitoring");
+                                pushGoal("wa_setup_monitoring1");
                             }
                         }
                     });
