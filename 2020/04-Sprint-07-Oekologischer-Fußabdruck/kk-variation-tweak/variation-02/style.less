@@ -5,22 +5,33 @@
 
 /* DEFINE VARIATION CSS */
 
-.kk_old_totals,
-.kk_old_totals+div {
-    display: none;
-}
+// .kk_old_totals {
+//     display: none;
+// }
 
 @media screen and (min-width: 1024px) {
 
+    .js-update-entry-form {
+        .discountPrice {
+            order: 1;
+        }
+
+        .strikeValue {
+            font-weight: 400;
+        }
+    }
+
     .kk_summary {
+        margin: 1.5rem 0 4rem;
         padding: 0 8.33333%;
 
         >div:first-child {
             margin-left: 0;
+            margin-bottom: 0;
         }
 
         >div:last-child {
-
+            margin-bottom: 0 !important;
             -webkit-box-flex: 0;
             -ms-flex: 0 0 50%;
             flex: 0 0 50%;
@@ -35,7 +46,7 @@
                 &:first-child {
                     padding-top: 14px;
 
-                    .column {
+                    >.column {
                         display: flex;
                         justify-content: space-between;
 
@@ -101,9 +112,15 @@
                 margin-left: 4rem;
                 color: #393939 !important;
             }
+
+            .strikeValue {
+                font-weight: 400;
+            }
         }
 
         .kk07_header {
+            height: 100%;
+
             .kk07_headline {
                 flex: 0 0 205px;
                 display: flex;
@@ -113,14 +130,24 @@
                 padding-right: 5px;
 
                 &+div {
+                    display: flex;
+                    align-items: center;
                     padding: 20px 15px;
                 }
             }
 
+            ul {
+                width: 100%;
+            }
+
             li {
                 strong {
-                    flex-basis: 60px;
+                    flex-basis: 70px;
                 }
+            }
+
+            .column>div {
+                height: 100%;
             }
         }
 
@@ -166,14 +193,23 @@
 }
 
 @media screen and (max-width: 1080px) {
-    .kk_summary .kk07_header {
-        .kk07_headline {
-            padding-left: 15px;
+    .kk_summary {
+        .kk07_header {
+            .kk07_headline {
+                padding-left: 15px;
 
-            &+div {
-
-                padding: 20px 10px;
+                &+div {
+                    padding: 20px 10px;
+                }
             }
+
+            li strong {
+                flex-basis: 62px;
+            }
+        }
+
+        .kk07_eco__icon {
+            margin-right: 8px;
         }
     }
 }

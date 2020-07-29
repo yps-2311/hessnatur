@@ -13,8 +13,10 @@
 	WATO.prototype.KK_AB07_BOX = function (ecoData, pds) {
 
 		function formatValue(value) {
-			var num_parts = (Math.round(value * 10) / 10).toString().split(".");
+			var toRound = value > 999 ? 10 : 100,
+				num_parts = (Math.round(value * toRound) / toRound).toString().split(".");
 			num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+			console.log(num_parts);
 			return num_parts.join(",");
 		}
 
@@ -117,7 +119,9 @@
 						jQuery("html, body").animate({ scrollTop: jQuery('#kk07_ecological').offset().top - 75 });
 					});
 
-					_self.qs('.js-pds-more-details').addEventListener('click', function () {
+					_self.qs('.js-pds-more-details').addEventListener('click', function (e) {
+						e.preventDefault();
+						jQuery("html, body").animate({ scrollTop: jQuery('.productInfoTop').offset().top - 75 });
 						pushGoal('kk07_click_more_details');
 					});
 

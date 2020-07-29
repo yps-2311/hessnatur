@@ -35,7 +35,8 @@
                     var id = productNames[i].href.match(/de\/.*\/p\/(\d+)/)[1];
 
                     if (productInfo[id]) {
-                        window.iridion.push(['run', '945287385013']);
+                        console.log('found', id);
+                        window.iridion.push(['run', '969446889188']);
                         break;
                     } else {
                         try {
@@ -45,11 +46,12 @@
                                     if (ecoData) {
                                         if (ecoData.water_savings_in_liter &&
                                             ecoData.clean_earth_consumption_in_square_meter) {
+                                            console.log('found', id);
 
                                             productInfo[id] = [ecoData.water_savings_in_liter, ecoData.clean_earth_consumption_in_square_meter];
                                             window.localStorage.setItem('kk_eco_products', JSON.stringify(productInfo));
                                             found = true;
-                                            window.iridion.push(['run', '945287385013']);
+                                            window.iridion.push(['run', '969446889188']);
                                         }
                                     }
                                 }

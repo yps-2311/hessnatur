@@ -37,14 +37,36 @@
                 summaryRow = summaryRow[0];
                 var summaryParent = summaryRow.parentNode;
                 summaryParent.classList.add('kk_summary');
-                summaryParent.nextElementSibling.nextElementSibling.classList.add('kk_old_totals');
+                // summaryParent.nextElementSibling.nextElementSibling.classList.add('kk_old_totals');
 
                 Array.prototype.forEach.call(WATO.qsa('.cart__productname'), function (productName) {
                     var id = productName.href.match(/de\/.*\/p\/(\d+)/)[1],
                         qty = parseInt(WATO.qs('.qty', productName.parentNode.parentNode.parentNode).value);
 
                     if (productInfo[id]) {
+                        // productName.style.color = 'red';
+                        // productName.innerHTML = productName.innerHTML + ' ' + id;
+                        console.log(id, productInfo[id], qty);
                         showEcoInfo(productInfo[id], qty);
+                    } else {
+                        try {
+                            WATO.xhr_get('https://products.hessnatur.com/products/' + id, function (data) {
+                                if (data) {
+                                    var ecoData = data.products[0].ecological_data;
+                                    if (ecoData) {
+                                        if (ecoData.water_savings_in_liter &&
+                                            ecoData.clean_earth_consumption_in_square_meter) {
+
+                                            // productName.style.color = 'green';
+                                            // productName.innerHTML = productName.innerHTML + ' ' + id;
+                                            productInfo[id] = [ecoData.water_savings_in_liter, ecoData.clean_earth_consumption_in_square_meter];
+                                            showEcoInfo(productInfo[id], qty);
+                                            window.localStorage.setItem('kk_eco_products', JSON.stringify(productInfo));
+                                        }
+                                    }
+                                }
+                            });
+                        } catch (e) { console.log(e); }
                     }
                 });
 
@@ -59,7 +81,7 @@
                         totalWrapper.insertAdjacentElement('beforeend', totals[1].parentNode.parentNode);
                         totalWrapper.insertAdjacentElement('beforeend', totals[2].parentNode.parentNode);
 
-                        WATO.qs('#hessnaturVoucherForm .quickadd_button').addEventListener('click', function () {
+                        WATO.qs('#hessnaturVoucherForm .quickadd__button').addEventListener('click', function () {
                             pushGoal('kk07_click_voucher_btn');
                         });
 
@@ -72,6 +94,9 @@
                 WATO.elem('#kk_upsell_wrapper', function (upsell) {
                     if (upsell) {
                         upsell[0].insertAdjacentElement('afterend', summaryParent);
+                        if (WATO.qs('hr', summaryParent.nextElementSibling)) {
+                            summaryParent.nextElementSibling.style.display = 'none';
+                        }
                     }
                 });
             }
