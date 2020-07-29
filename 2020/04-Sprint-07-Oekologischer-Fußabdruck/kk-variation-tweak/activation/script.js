@@ -23,6 +23,7 @@
         });
     } else {
         var productInfo = JSON.parse(window.localStorage.getItem('kk_eco_products')) || {};
+        console.log('pi activation', productInfo);
 
         WATO.elem('.column.yCmsContentSlot', function (summaryRow) {
             if (summaryRow) {
@@ -35,28 +36,32 @@
                     var id = productNames[i].href.match(/de\/.*\/p\/(\d+)/)[1];
 
                     if (productInfo[id]) {
-                        console.log('found', id);
+                        console.log('found ls', id);
                         window.iridion.push(['run', '969446889188']);
                         break;
                     } else {
-                        try {
-                            WATO.xhr_get('https://products.hessnatur.com/products/' + id, function (data) {
+                        WATO.xhr_get('https://products.hessnatur.com/products/' + id, function (data) {
+                            try {
                                 if (data) {
                                     var ecoData = data.products[0].ecological_data;
-                                    if (ecoData) {
+                                    if (ecoData && !found) {
                                         if (ecoData.water_savings_in_liter &&
                                             ecoData.clean_earth_consumption_in_square_meter) {
-                                            console.log('found', id);
+                                            console.log('found api', data.products[0].sku, data.products);
 
-                                            productInfo[id] = [ecoData.water_savings_in_liter, ecoData.clean_earth_consumption_in_square_meter];
+                                            productInfo[data.products[0].sku] = [ecoData.water_savings_in_liter, ecoData.clean_earth_consumption_in_square_meter];
+                                            console.log('save ls 3', productInfo);
                                             window.localStorage.setItem('kk_eco_products', JSON.stringify(productInfo));
                                             found = true;
                                             window.iridion.push(['run', '969446889188']);
+                                        } else {
+                                            productInfo[data.products[0].sku] = 'NO_API_DATA';
+                                            window.localStorage.setItem('kk_eco_products', JSON.stringify(productInfo));
                                         }
                                     }
                                 }
-                            });
-                        } catch (e) { console.log(e); }
+                            } catch (e) { console.log(e); }
+                        });
                     }
                 }
             }

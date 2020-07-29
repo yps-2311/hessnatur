@@ -19,15 +19,19 @@
         .strikeValue {
             font-weight: 400;
         }
+
+        .kk_save {
+            color: #1F6E00;
+        }
     }
 
     .kk_summary {
-        margin: 1.5rem 0 4rem;
-        padding: 0 8.33333%;
+        margin: 1.5rem auto 1rem;
 
         >div:first-child {
             margin-left: 0;
             margin-bottom: 0;
+            padding-left: calc(~"8.33333% + 30px");
         }
 
         >div:last-child {
@@ -36,7 +40,7 @@
             -ms-flex: 0 0 50%;
             flex: 0 0 50%;
             max-width: 50%;
-            padding-right: 4.61538rem;
+            padding-right: calc(~"8.33333% + 60px");
 
             .column {
                 padding-right: 0;
@@ -188,7 +192,18 @@
 
 @media screen and (max-width: 1200px) {
     .kk_summary>div:last-child {
-        padding-right: 2.3077rem;
+        padding-right: calc(~"8.33333% + 45px");
+    }
+}
+
+@media screen and (max-width: 1125px) {
+
+    .kk_summary {
+        .kk07_header {
+            .kk07_headline {
+                flex: 0 0 195px;
+            }
+        }
     }
 }
 
