@@ -1,0 +1,69 @@
+/* IMPORT VAR LESS FILE */
+@import "../global/vars.less";
+
+/* IMPORT GLOBAL LESS FILES */
+// @import "../global/global.less";
+
+/* DEFINE VARIATION CSS */
+
+
+// @media only screen and (max-width: 1190px) and (min-width: 1024px) {
+    
+// }
+
+
+.kk_slider {
+    height: auto !important;
+}
+
+
+.flickity-viewport {
+    width: 83%;
+    // height: auto !important;
+}
+.js_productImagesCarouselWrapper {
+    display: flex;
+    flex-direction: row;
+}
+.flickity-page-dots {
+    width: 17%;
+    position: relative;
+    margin-top: 15px;
+    .dot {
+        margin: 0;
+        width: 100%;
+        background-color: #fff;
+        border-radius: 0;
+        height: 90px;
+        overflow: hidden;
+        opacity: 1;
+        img {
+            max-height: 100%;
+        }
+        &.is-selected {
+            // border: solid 1px red;
+        }
+    }
+}
+
+.pds__imageAndCockpitWrapper{
+    > .column {
+        margin-bottom: 0;
+    }
+}
+
+.js_backstopWrapper {
+    > .row > .column.small-12:first-child {
+        position: absolute;
+        z-index: 100;
+    }
+}
+.breadcrumb--back {
+    span {
+        font-size: 0;
+        &::before {
+            content: "Zurück";
+            font-size: 12px;
+        }
+    }
+}

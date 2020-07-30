@@ -13,242 +13,300 @@
 (function(WATO, window) {
     "use strict";
 
-    // window.iridion.econda.push(["Sprint13", "V1"]);
-
-    // if (!Element.prototype.matches) {
-    //     Element.prototype.matches = Element.prototype.msMatchesSelector || 
-    //                                 Element.prototype.webkitMatchesSelector;
-    // }
-    
-    // if (!Element.prototype.closest) {
-    // Element.prototype.closest = function(s) {
-    //     var el = this;
-    
-    //     do {
-    //     if (Element.prototype.matches.call(el, s)) return el;
-    //     el = el.parentElement || el.parentNode;
-    //     } while (el !== null && el.nodeType === 1);
-    //     return null;
-    // };
-    // }
-
-    // function pushGoal(key, sendOnNextPageView){    
-    //     if(sendOnNextPageView){
-    //         window.iridion.push(['goal', key, '', true]);
-    //     }else{
-    //         window.iridion.push(['goal', key]);
-    //     }
-    // }
-
-
-    console.log(1);
-
-
-
-    function sliderHeight() {
-        
-        var temp = window.innerWidth * 0.452;
-        if(temp > 850){
-            return 850;
-        }else{
-            return parseFloat(temp).toFixed(3);
+    // Element entfernen
+    function removeObject(el) {
+        if(el){
+            el.parentNode.removeChild(el);
         }
     }
 
-    function buildHeader(colorID) {
-        
-        // Gallerie und Buybox
-        WATO.elem('.pds__imageAndCockpitWrapper', function(mainWrapper){
-            if(mainWrapper){
-                console.log(2);
-                try {
-                    mainWrapper = mainWrapper[0];
-                    console.log('mainWrapper: ', mainWrapper);
+    // Galerie erstellen
+    function buildGallery(bigPicture, markup, farbID, imgValue) {
 
-                    WATO.elem(function() {
-                        if(colorID){
-                            return typeof window.ACC !== "undefined" && typeof window.ACC.productDetail !== "undefined" && typeof window.ACC.productDetail.galleryImages !== "undefined";
-                        }else{
-                            return true;
+        WATO.elem('.pds-cockpit__wrapper', function(mainContent){
+            if(mainContent){
+                mainContent = mainContent[0];
+
+                var mainContentWrapper = mainContent.parentNode;
+                
+                // falls die Galerie mit einer anderen Farbe schon vorhanden ist wird diese entfernt
+                removeObject(WATO.qs(".kk_slider", mainContentWrapper));
+
+                // Alle anderen Galerien der Seite werden ebenfalls entfernt da es sonst nach dem initalisieren zu fehlern kommt
+                removeObject(WATO.qs(".show-for-medium-only.column.small-12.medium-6", mainContentWrapper));
+                removeObject(WATO.qs(".pds-productImage__mzThumbsWrapper.js_magicZoomThumbWrapper", mainContentWrapper));
+                removeObject(WATO.qs(".js_magicZoomKeyVisualWrapper", mainContentWrapper));
+                removeObject(WATO.qs(".column.small-12.hide-for-medium.h-smallmediumOffset-bottom-outer.h-no-padding", mainContentWrapper));
+
+                // Markup der neuen Galerie
+                mainContent.insertAdjacentHTML('beforebegin', 
+                        '<div id="kk_slider'+farbID+'" class="h-largeOffset-bottom-outer kk_slider">'+
+                                bigPicture+
+                            '<div class="kk_sliderThumbs">'+
+                                markup+
+                            '</div>'+
+                        '</div>'
+                    );
+                
+                if(imgValue === 1){
+                    mainContent.parentNode.classList.add("kk_onlyone");
+                }
+                // Außer beim initialen laden, muss die Magiczoom funktion die neue Galerie initalisieren
+                if(farbID !== 0){
+                    WATO.elem(function(){
+                        // Falls noch nicht geladen
+                        return typeof window.MagicZoom !== "undefined";
+
+                    }, function(){
+                        // init MagicZoom
+                        window.MagicZoom.start();
+                    });
+                }
+
+                // Nur für Entwicklung
+                setTimeout(function(){
+                    window.MagicZoom.start();
+                }, 1000);
+            }
+        });
+    }
+
+    // Informationen zur Galerie werden zusammengestellt
+    function buildGalleryWrapper(colorID) {
+
+        WATO.elem(function() {
+            if(colorID){
+                // Wenn auf der Seite die Informationen aller Produktfarben verfügbar sind
+                // können diese genutzt werden um selbst die neue Galerie zu erstellen
+                // liegen alle in indow.ACC.productDetail.galleryImages
+                return typeof window.ACC !== "undefined" && typeof window.ACC.productDetail !== "undefined" && typeof window.ACC.productDetail.galleryImages !== "undefined";
+            }else{
+                return true;
+            }
+        }, function(avalibeColorImages){
+            if(avalibeColorImages){
+
+                var onlyOneImage = 0;
+
+                if(colorID){
+                    // Galerie nach Farbwechsel
+
+                    // Wird aus window.ACC.productDetail.galleryImages gebaut
+                    colorID = parseInt(colorID);
+
+                    var galleryImgs = window.ACC.productDetail.galleryImages,
+                        mainPicColor = "",
+                        markupHTMLColor = "";
+
+                    // Galerie wird mit den BilderURLs erstellt
+                    for (var j = 0; j < galleryImgs.length; j++) {
+                        var thisProduct = galleryImgs[j];
+                        if(parseInt(thisProduct.product.color) === colorID){
+
+                            var picURL = thisProduct.zoom.url,
+                                altText = thisProduct.zoom.altText,
+                                picReco = picURL.replace("_zoom/","_reco/"),
+                                picThumb = picURL.replace("_zoom/","_thumb/");
+
+                                markupHTMLColor +=   '<a data-zoom-id="zoomMedium" class="thumbnailContainer js_thumbnailContainer mz-thumb" href="'+picURL+'" data-color="'+colorID+'" data-image="'+picReco+'">'+
+                                                '<img src="'+picThumb+'" alt="'+altText+'" data-color="'+colorID+'">'+
+                                            '</a>';
+
+                            if(mainPicColor === ""){
+                                mainPicColor =   '<a class="MagicZoom" data-options="hint: always; zoomPosition: inner" id="zoomMedium" href="'+picURL+'">'+
+                                                '<img src="'+picReco+'" alt="'+altText+'">'+
+                                            '</a>';
+                            }
+                            onlyOneImage++;
                         }
-                    }, function(avalibeColorImages){
-                        if(avalibeColorImages){
+                    }
 
-                            console.log(3);
+                    buildGallery(mainPicColor, markupHTMLColor, colorID, onlyOneImage);
 
+                }else{
+                    // Galerie initialer Seitenaufruf
 
-                            // adaptiveHeight: true
+                    var mainPicInitial = "",
+                        markupHTMLInitial = "";
 
-                            // asNavFor
-                            // https://flickity.metafizzy.co/options.html
+                    WATO.elem('meta[property="og:image"]', function(initPic){
+                        if(initPic){
+                
+                            // Die Galeriebilder liegen in Metadaten im Head
+                            for (var i = 0; i < initPic.length; i++) {
 
-                            var dots = WATO.qsa(".flickity-page-dots > .dot"),
-                                thumbnails = WATO.qsa(".show-for-medium-only .thumbnailContainer.js_thumbnailContainer", mainWrapper);
-                                
-                            console.log('dots: ', dots);
+                                var picURL = initPic[i].getAttribute("content"),
+                                    altText = WATO.qs('meta[property="twitter:title"]').getAttribute("content"),
+                                    picReco = picURL.replace("_zoom/","_reco/"),
+                                    picThumb = picURL.replace("_zoom/","_thumb/");
 
-                            for (var i = 0; i < dots.length; i++) {
-                                dots[i].innerHTML = '<img data-index="'+i+'" src="'+thumbnails[i].getAttribute("data-image")+'">';
+                                    markupHTMLInitial +=   '<a data-zoom-id="zoomMedium" class="thumbnailContainer js_thumbnailContainer mz-thumb" href="'+picURL+'" data-color="" data-image="'+picReco+'">'+
+                                                    '<img src="'+picThumb+'" alt="'+altText+'" data-color="">'+
+                                                '</a>';
 
-                                WATO.qs("img", dots[i]).addEventListener('click', function(e){
-                                    
-                                    $('.js_productImagesCarouselWrapper').flickity( 'select', e.target.getAttribute('data-index'));
-                                });
+                                if(mainPicInitial === ""){
+                                    mainPicInitial = '<a class="MagicZoom" data-options="hint: always; zoomPosition: inner" id="zoomMedium" href="'+picURL+'">'+
+                                        '<img src="'+picReco+'" alt="'+altText+'">'+
+                                    '</a>';
+                                }
                             }
 
-
-                            var firstGaleryImg = WATO.qs(".js_carousel-cell");
-
-                            
-                            firstGaleryImg.parentNode.parentNode.style.height = firstGaleryImg.offsetHeight+"px";
-
-                            // for (var i = 0; i < thumbnails.length; i++) {
-                            //     var productPicURL = thumbnails[i].getAttribute("data-image");
-                            // }
-
-
-                            // var existingSlider = WATO.qs(".kk_slider", mainWrapper);
-
-                            // if(existingSlider){
-                            //     existingSlider.parentNode.removeChild(existingSlider);
-                            // }
-
-                            // var thumbnails = WATO.qsa(".show-for-medium-only .thumbnailContainer.js_thumbnailContainer", mainWrapper),
-                            //     markupHTML = "";
-                            
-                            // console.log('thumbnails: ', thumbnails);
-
-                            // if(colorID){
-                            //     // Wird aus window.ACC.productDetail.galleryImages gebaut
-                            //     colorID = parseInt(colorID);
-                            //     console.log('colorID: ', colorID);
-
-                            //     var galleryImgs = window.ACC.productDetail.galleryImages;
-                            //     console.log('galleryImgs: ', galleryImgs);
-
-                            //     for (var j = 0; j < galleryImgs.length; j++) {
-                            //         var thisProduct = galleryImgs[j];
-                            //         if(parseInt(thisProduct.product.color) === colorID){
-
-                            //             var picURL = thisProduct.zoom.url;
-                            //             console.log('picURL: ', picURL);
-
-                            //             markupHTML += 
-                            //             '<div class="carousel-cell">'+
-                            //                 '<a href="'+picURL+'" data-options="zoomPosition: right" class="MagicZoom">'+
-                            //                     '<img src="'+picURL.replace("_zoom/","_reco/")+'">'+
-                            //                 '</a>'+
-                            //             '</div>';
-                            //         }
-                            //     }
-                            // }else{
-                            //     // wird aus Original-Slider gebaut
-
-                            //     // Neue Gallerie Markup wird gebaut
-                            //     for (var i = 0; i < thumbnails.length; i++) {
-                            //         var productPicURL = thumbnails[i].getAttribute("data-image");
-
-                            //         markupHTML += 
-                            //         '<div class="carousel-cell">'+
-                            //             '<a href="'+productPicURL.replace("_main/","_zoom/")+'" data-options="zoomPosition: right;" class="MagicZoom">'+ //zoomWidth:600px; zoomHeight:1000px; 
-                            //                 '<img src="'+productPicURL.replace("_main/","_reco/")+'">'+
-                            //             '</a>'+
-                            //         '</div>';
-                            //     }
-                            // }
-        
-                            // // Markup und Statische Felder für "Complete the Look" und "Titel" werden eingebaut
-                            // mainWrapper.insertAdjacentHTML('afterbegin', 
-                            //     '<div class="kk_slider small-8 main-carousel" style="height: '+sliderHeight()+'px">'+ // style="min-height: '+(window.innerWidth * 0.4149)+'px"
-                            //         '<div class="static-banner kk_complete"><span>Complete the Look &rsaquo;</span></div>'+
-                            //         markupHTML+
-                            //     '</div>'
-                            // );
-
-                            // console.log('sliderHeight(): ', sliderHeight());
-        
-                            // Auf jQuery und Gallerie Funktion warten
-                            // WATO.elem(function(){
-                            //     return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
-                            // }, function(){
-                            //     try {
-
-                            //         // Slider Options
-                            //         var sliderOptions = {
-                            //             cellAlign: 'left',
-                            //             cellSelector: '.carousel-cell',
-                            //             draggable: false,
-                            //             wrapAround: true,
-                            //         },
-                            //         thumbPics = thumbnails.length;
-        
-                            //         if(thumbPics <= 2){
-                            //             // Bei einem oder zwei Produktbilder die
-                            //             // Interaktion mit der Gallerie deaktivieren
-                            //             sliderOptions.prevNextButtons = false;
-                            //             sliderOptions.pageDots = false;
-        
-                            //             if(thumbPics === 1){
-                            //                 sliderOptions.cellAlign = 'center';
-                            //             }
-                            //         }
-                            //         // Init Slider
-                            //         jQuery('.kk_slider').flickity(sliderOptions);
-
-                            //         // Complete the Look
-                            //         // Funktion ist original von der Seite übernommen
-                            //         WATO.elem('.js-completeTheLookWrapper > .row', function(isCompletteTheLook){
-                            //             if(isCompletteTheLook){
-                            //                 var myCompletteBtn = WATO.qs(".kk_complete", mainWrapper);
-                            //                 myCompletteBtn.style.opacity = 1;
-                            //                 myCompletteBtn.addEventListener('click', function(){
-                            //                     var completeBtn = jQuery(".js-completeTheLookWrapper").first();
-                            //                     if(completeBtn.length){
-                            //                         window.ACC.global.scrollToElement(completeBtn);
-                            //                     }
-                            //                     WATO.goalPush("completelookanker");
-                            //                 });
-                            //             }
-                            //         });
-        
-                            //     } catch (error) {
-                            //         // console.log(error);
-                            //         WATO.goalPush("wa_setup_monitoring");
-                            //     }
-                            // });
-
+                            onlyOneImage = initPic.length;
                         }
                     });
-
-                } catch (error) {
-                    // console.log(error);
-                    WATO.goalPush("wa_setup_monitoring");
+                    
+                    buildGallery(mainPicInitial, markupHTMLInitial, 0, onlyOneImage);
                 }
             }
         });
     }
-    buildHeader(false);
 
-    // Farbe wechseln
-    // WATO.elem('.pds-cockpit__colorSwitch a', function(colorSwitcher){
-    //     if(colorSwitcher){
-    //         var clickColor = function(){
-    //             buildHeader(this.parentNode.getAttribute("data-color"));
-    //         };
-    //         for (var k = 0; k < colorSwitcher.length; k++) {
-    //             colorSwitcher[k].addEventListener('click', clickColor);
+    // Farbe gewächselt
+    function changeColor(e) {
+        var thisTarget = e.target.parentNode.getAttribute("data-color");
+
+        if(!thisTarget){
+            thisTarget = e.target.parentNode.parentNode.getAttribute("data-color");
+        }
+        
+        // Ausgewählte Farbe an Galerie übergeben
+        buildGalleryWrapper(parseInt(thisTarget));
+    }
+
+    // Produkt UVPs
+    // WATO.elem('.h-largeOffset-bottom-outer.show-for-large', function(uvps){
+    //     if(uvps){
+    //         uvps = uvps[0];
+
+    //         // Umplatzieren
+    //         WATO.qs(".align-justify.h-xsmallOffset-bottom-inner", uvps.parentNode).insertAdjacentElement('beforebegin', uvps);
+
+    //         // Jedem UVP wird der Punkt entfernt
+    //         Array.prototype.forEach.call(WATO.qsa(".pds-cockpit__shortDescription li", uvps),function(elem){
+    //             elem.innerHTML = elem.innerHTML.replace("·", "").trim();
+    //         });    
+            
+    //         var moreDetails = WATO.qs(".js-pds-more-details", uvps);
+    //         // Mehr details Link
+    //         if(moreDetails){
+    //             moreDetails.innerHTML = "mehr Produktdetails";
+    //             // Scrollto animation repariert
+    //             moreDetails.addEventListener('click', function(e){
+    //                 e.preventDefault();
+
+    //                 WATO.goalPush("klick_produktdetails");
+
+    //                 setTimeout(function(){
+    //                     window.ACC.global.scrollToElement(jQuery(".accordion.productInfoAccordion"));
+    //                 }, 700);
+    //             });
     //         }
     //     }
     // });
+    
+    // Merken Button über die CTA geschoben
+    // WATO.elem('#addToWishlistForm', function(addToWishlistForm){
+    //     if(addToWishlistForm){
+    //         WATO.qs("#avail_container").insertAdjacentElement('beforebegin', addToWishlistForm[0]);
+    //     }
+    // });
 
-
-
-
-
-    // Farbwechsel des Produkts
-    WATO.ajax("reload?", function() {
-        // createNewReco();
+    // Zurück-Button
+    WATO.elem('.breadcrumb--back a', function(breadcrumb){
+        if(breadcrumb){
+            breadcrumb = breadcrumb[0];
+            breadcrumb.innerHTML = 'zurück';
+            breadcrumb.addEventListener('click', function(){
+                WATO.goalPush("kategorie_back", true);
+            });
+        }
     });
+
+    WATO.elem('.js-badges-container', function(badges){
+        if(badges){
+            WATO.elem('.pds-cockpit__ratingSummaryWrapper', function(stars){
+                if(stars){
+                    stars = stars[0];
+                    WATO.qs("a + span", stars).innerHTML = WATO.qs("meta", stars).getAttribute('content').substring(0,4);
+                    badges[0].insertAdjacentElement('afterbegin', stars);
+                }
+            });
+        }
+    });
+
+    // Merken Button - Wishlist
+    // WATO.elem('#addToWishlistButton', function(addToWishlistButton){
+    //     if(addToWishlistButton){
+    //         addToWishlistButton = addToWishlistButton[0];
+    //         try {
+    //             var siteURL = window.location.pathname.split("/p/")[1];
+
+    //             addToWishlistButton.addEventListener('click', function(){
+    //                 window.localStorage.setItem("kk_"+siteURL, true);
+    //             });
+
+    //             if(window.localStorage.getItem("kk_"+siteURL)){
+    //                 addToWishlistButton.classList.add("kk_gemerkt");
+    //                 WATO.qs(".pds-cockpit__addToWishlistButtonIconWrapper", addToWishlistButton).innerHTML = "Gemerkt";
+    //             }
+    //         } catch (error) {
+    //             // console.log(error);
+    //         }
+    //     }
+    // });
+    
+    // Farben
+    WATO.elem('.pds-cockpit__colorSwitch li a', function(colorSwitch){
+        if(colorSwitch){
+            var imgURL = WATO.qs('meta[property="og:image"]').getAttribute('content').replace("detail_zoom","detail_thumb"),
+                prodID = imgURL.match(/\d{5}/);
+
+            for (var j = 0; j < colorSwitch.length; j++) {
+                var thisColorLink = colorSwitch[j];
+                
+                
+
+                thisColorLink.innerHTML = '<img src="'+imgURL.split(prodID)[0] + prodID + '_' + thisColorLink.parentNode.getAttribute('data-color') + '_8.jpg">';
+
+                // https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_detail_thumb/Basic_T_Shirt_aus_reiner_Bio_Baumwolle-36062_18_8.jpg
+                // https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_detail_zoom/Basic_T_Shirt_aus_reiner_Bio_Baumwolle-36062_76_7.jpg
+                // TODO man kann die Bilder-URLs auch statisch bauen
+
+                thisColorLink.addEventListener('click', changeColor);
+            }
+            // WATO.elem(function() {
+            //     return typeof window.ACC !== "undefined" && typeof window.ACC.productDetail !== "undefined" && typeof window.ACC.productDetail.galleryImages !== "undefined";
+            // }, function(avalibeColorImages){
+            //     if(avalibeColorImages){
+            //         var allProducts = window.ACC.productDetail.galleryImages,
+            //             imgForColorIDs = {};
+
+            //         for (var k = 0; k < allProducts.length; k++) {
+            //             var thisColorID = allProducts[k].thumbnail.color;
+
+            //             if(!imgForColorIDs[thisColorID]) {
+			// 				imgForColorIDs[thisColorID] = [];
+			// 			}
+			// 			imgForColorIDs[thisColorID] = allProducts[k].thumbnail.url;
+            //         }
+
+
+            //         for (var j = 0; j < colorSwitch.length; j++) {
+            //             var thisColorLink = colorSwitch[j];
+                        
+            //             thisColorLink.innerHTML = '<img src="'+imgForColorIDs[thisColorLink.parentNode.getAttribute('data-color')]+'">';
+            //             // https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_detail_thumb/Basic_T_Shirt_aus_reiner_Bio_Baumwolle-36062_18_8.jpg
+            //             // TODO man kann die Bilder-URLs auch statisch bauen
+
+            //             thisColorLink.addEventListener('click', changeColor);
+            //         }
+            //     }
+            // });
+        }
+    });
+
+    // Initaile Galerie erstellen
+    buildGalleryWrapper();
     
 
 })(new window.WATO(), window);

@@ -57,6 +57,7 @@
             return false;
         }
     }
+    
 
     function getProdID(fromString) {
         try {
@@ -72,6 +73,7 @@
             isInDrag = false,
             templs = window.localStorage.getItem("kk_recoproduct"),
             lsReco = (templs ? templs.split(',') : false) || [];
+            console.log('lsReco: ', lsReco);
 
         _self.elem('#ecRecommendationsContainer .productitem', function(recoItem){
             if(recoItem){
@@ -133,10 +135,11 @@
         });
 
         _self.ajax("/cart/add", function(){
-            if(lsReco.indexOf(getProdID(window.location.pathname)) !== -1){
+            if(lsReco.indexOf(String(getProdID(window.location.pathname))) !== -1){
                 pushGoal("addcart_recoprod");
             }
         });
+
 
     }
 
