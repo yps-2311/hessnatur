@@ -115,6 +115,7 @@ body {
         max-width: 100%;
         text-align: left;
         padding-right: 0;
+        display: flex;
     }
     > .row > .small-12 > .row.align-middle:first-child {
         align-items: flex-start;
@@ -146,6 +147,7 @@ h1.pds-cockpit__productName {
 }
 .pds-cockpit__badge {
     margin: 0 3px 0 0;
+    order: 2;
 }
 .pds-cockpit__shortDescription {
     margin: 0;
@@ -191,6 +193,7 @@ h1.pds-cockpit__productName {
 .pds-cockpit__ratingSummaryWrapper {
     display: inline-block;
     padding: 0 20px 0 0;
+    order: 1;
     .starRatingWrapper {
         font-size: 14px;
         span {
@@ -249,6 +252,11 @@ h1.pds-cockpit__productName {
     display: flex !important;
     padding-right: 0;
 }
+.column.small-9.large-10 {
+    padding-left: 0;
+}
+
+
 #size_advisor {
     font-size: 0;
     height: 17px;
@@ -266,6 +274,9 @@ h1.pds-cockpit__productName {
 }
 .availability__item--color {
     width: 10rem;
+}
+.availability__title {
+    padding-left: 10rem;
 }
 .js-price-container {
     .price span {
@@ -356,25 +367,26 @@ h1.pds-cockpit__productName {
 // }
 #addToWishlistButton {
     margin: 0;
-    background-color: transparent;
+    background-color: #F5F5F5;
     border-bottom: none;
     position: relative;
-    padding-left: 0;
+    padding: 0;
+    height: 44px;
 
     &::before {
         content: "";
         // background-color: #f2f1f0;
-        background: no-repeat center center #f2f1f0 url("data:image/svg+xml;charset=utf-8,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.5 16c-4.289-4.047-6.5-4.783-7-7.5C1.06 5.172 3.557 2 6 2.5 7.6 2 9 2.7 10 5c1-2.3 2.4-3 4-2.5 2.443-.5 4.94 2.672 4.5 6-.5 2.717-2.66 3.445-7 7.5L10 17.5 8.5 16z' stroke='%23959493' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
+        background: no-repeat center center #F5F5F5 url("data:image/svg+xml;charset=utf-8,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.5 16c-4.289-4.047-6.5-4.783-7-7.5C1.06 5.172 3.557 2 6 2.5 7.6 2 9 2.7 10 5c1-2.3 2.4-3 4-2.5 2.443-.5 4.94 2.672 4.5 6-.5 2.717-2.66 3.445-7 7.5L10 17.5 8.5 16z' stroke='%23393939' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
         position: absolute;
         left: 0;
-        top: 0;
-        width: 40px;
+        top: 2px;
+        width: 100%;
         height: 40px;
-        border-radius: 50%;
-        z-index: -1;
+        // border-radius: 50%;
+        z-index: 1;
     }
     span {
-        background: none;
+        display: none;
     }
     &:hover,
     &:focus,
@@ -392,7 +404,7 @@ h1.pds-cockpit__productName {
     max-width: 100%;
     -ms-flex: 0 0 100%;
     flex: 0 0 100%;
-    padding: 11px;
+    padding: 11px 11px 11px 0;
     position: absolute;
     bottom: -51px;
 }
@@ -514,6 +526,33 @@ button.mz-button.mz-button-close {
 .pds-cockpit__addProductWrapper {
     margin: 0 !important;
 }
+.pds-cockpit__addProductWrapper  {
+    .yCmsContentSlot {
+        padding-left: 0;
+        -ms-flex: 0 0 80%;
+        flex: 0 0 80%;
+        max-width: 80%;
+        & + div {
+            -ms-flex: 0 0 20%;
+            flex: 0 0 20%;
+            max-width: 20%;
+            padding: 0;
+        }
+    }
+}
+.button.success {
+    height: 44px;
+    background-color: #373939;
+    .pds-cockpit__addToCartButtonIconWrapper {
+        background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/shoppingbag.svg");
+    }
+    
+}
 .js-availability-info  {
     white-space: nowrap;
+}
+
+.row.h-mediumOffset-bottom-outer,
+.pds-cockpit__sozialMediaShareWrapper {
+    display: none;
 }

@@ -254,6 +254,16 @@
     //         }
     //     }
     // });
+
+
+    
+
+    WATO.elem('#size_advisor', function(sizeAdvisor){
+        if(sizeAdvisor){
+            sizeAdvisor[0].setAttribute('href', "/de/groessenberatung");
+        }
+    });
+
     
     // Farben
     WATO.elem('.pds-cockpit__colorSwitch li a', function(colorSwitch){
