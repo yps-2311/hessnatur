@@ -31,7 +31,6 @@
     if (document.URL.indexOf('/cart') !== -1) {
 
         var productInfo = JSON.parse(window.localStorage.getItem('kk_eco_products')) || {};
-        console.log('pi', productInfo);
 
         WATO.elem('.column.yCmsContentSlot', function (summaryRow) {
             if (summaryRow) {
@@ -41,19 +40,13 @@
                 // summaryParent.nextElementSibling.nextElementSibling.classList.add('kk_old_totals');
 
                 Array.prototype.forEach.call(WATO.qsa('.js-update-entry-form'), function (product) {
-                    var productName = WATO.qs('.cart__productname', product),
-                        id = productName.href.match(/de\/.*\/p\/(\d+)/)[1],
+                    var id = WATO.qs('.cart__productname', product).href.match(/de\/.*\/p\/(\d+)/)[1],
                         qty = parseInt(WATO.qs('.qty', product).value);
 
-                    console.log('id', id);
                     if (productInfo[id] !== 'NO_API_DATA') {
                         if (productInfo[id]) {
-                            productName.style.color = 'red';
-                            productName.innerHTML = productName.innerHTML + ' ' + id;
-                            console.log('ls', productInfo[id], qty);
                             showEcoInfo(productInfo[id], qty);
                         } else {
-                            console.log('get api', id);
                             WATO.xhr_get('https://products.hessnatur.com/products/' + id, function (data) {
                                 try {
                                     if (data) {
@@ -62,12 +55,9 @@
                                             if (ecoData.water_savings_in_liter &&
                                                 ecoData.clean_earth_consumption_in_square_meter) {
 
-                                                productName.style.color = 'green';
-                                                productName.innerHTML = productName.innerHTML + ' ' + data.products[0].sku;
                                                 productInfo[data.products[0].sku] = [ecoData.water_savings_in_liter, ecoData.clean_earth_consumption_in_square_meter];
                                                 showEcoInfo(productInfo[data.products[0].sku], qty);
 
-                                                console.log('save to ls 2', data.products[0].sku, productInfo);
                                                 window.localStorage.setItem('kk_eco_products', JSON.stringify(productInfo));
                                             }
                                         }

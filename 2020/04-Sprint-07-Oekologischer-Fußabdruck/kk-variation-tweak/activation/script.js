@@ -23,7 +23,6 @@
         });
     } else {
         var productInfo = JSON.parse(window.localStorage.getItem('kk_eco_products')) || {};
-        console.log('pi activation', productInfo);
 
         WATO.elem('.column.yCmsContentSlot', function (summaryRow) {
             if (summaryRow) {
@@ -36,7 +35,6 @@
                     var id = productNames[i].href.match(/de\/.*\/p\/(\d+)/)[1];
 
                     if (productInfo[id]) {
-                        console.log('found ls', id);
                         window.iridion.push(['run', '969446889188']);
                         break;
                     } else {
@@ -47,10 +45,8 @@
                                     if (ecoData && !found) {
                                         if (ecoData.water_savings_in_liter &&
                                             ecoData.clean_earth_consumption_in_square_meter) {
-                                            console.log('found api', data.products[0].sku, data.products);
 
                                             productInfo[data.products[0].sku] = [ecoData.water_savings_in_liter, ecoData.clean_earth_consumption_in_square_meter];
-                                            console.log('save ls 3', productInfo);
                                             window.localStorage.setItem('kk_eco_products', JSON.stringify(productInfo));
                                             found = true;
                                             window.iridion.push(['run', '969446889188']);

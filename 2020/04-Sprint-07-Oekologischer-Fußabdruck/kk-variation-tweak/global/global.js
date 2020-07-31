@@ -98,7 +98,6 @@
 					savings = boxInfos.savings;
 
 					productInfo[document.URL.match(/de\/.*\/p\/(\d+)/)[1]] = ecoData;
-					console.log('save to ls 1', document.URL.match(/de\/.*\/p\/(\d+)/)[1], productInfo);
 					window.localStorage.setItem('kk_eco_products', JSON.stringify(productInfo));
 
 
