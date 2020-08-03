@@ -35,13 +35,19 @@
         WATO.elem('.column.yCmsContentSlot', function (summaryRow) {
             if (summaryRow) {
                 summaryRow = summaryRow[0];
-                var summaryParent = summaryRow.parentNode;
+                var summaryParent = summaryRow.parentNode,
+                    productRows = WATO.qsa('.js-update-entry-form');
                 summaryParent.classList.add('kk_summary');
                 // summaryParent.nextElementSibling.nextElementSibling.classList.add('kk_old_totals');
 
-                Array.prototype.forEach.call(WATO.qsa('.js-update-entry-form'), function (product) {
-                    var id = WATO.qs('.cart__productname', product).href.match(/de\/.*\/p\/(\d+)/)[1],
-                        qty = parseInt(WATO.qs('.qty', product).value);
+                for (var i = 0; i < productRows.length; i++) {
+                    // Array.prototype.forEach.call(WATO.qsa('.js-update-entry-form'), function (product) {
+                    var id = WATO.qs('.cart__productname', productRows[i]).href.match(/de\/.*\/p\/(\d+.*)/)[1],
+                        qty = parseInt(WATO.qs('.qty', productRows[i]).value);
+
+                    if (window.kk_excludedArticleIds && window.kk_excludedArticleIds.indexOf(id.substr(0, 5)) !== -1) {
+                        continue;
+                    }
 
                     if (productInfo[id] !== 'NO_API_DATA') {
                         if (productInfo[id]) {
@@ -62,11 +68,12 @@
                                             }
                                         }
                                     }
-                                } catch (e) { console.log(e); }
+                                } catch (e) { }
                             });
                         }
                     }
-                });
+                    // });
+                }
 
                 if (summaryParent.nextElementSibling.classList.contains('bgColor-super-light-gray')) {
                     summaryParent.style.marginBottom = '4rem';

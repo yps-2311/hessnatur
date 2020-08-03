@@ -13,6 +13,8 @@
 
     var docURL = document.URL;
 
+    window.kk_excludedArticleIds = ['47826', '47826', '47835', '47822', '47824', '47828', '47828', '47835', '47837', '47837'];
+
     if (docURL.indexOf('/p/') !== -1) {
         WATO.elem(function () {
             return !!_w.kk07_ecoData;
@@ -32,7 +34,11 @@
 
                 for (var i = 0; i < productNames.length; i++) {
                     if (found) { break; }
-                    var id = productNames[i].href.match(/de\/.*\/p\/(\d+)/)[1];
+                    var id = productNames[i].href.match(/de\/.*\/p\/(\d+.*)/)[1];
+
+                    if (window.kk_excludedArticleIds.indexOf(id.substr(0, 5)) !== -1) {
+                        continue;
+                    }
 
                     if (productInfo[id]) {
                         window.iridion.push(['run', '969446889188']);
@@ -56,7 +62,7 @@
                                         }
                                     }
                                 }
-                            } catch (e) { console.log(e); }
+                            } catch (e) { }
                         });
                     }
                 }
