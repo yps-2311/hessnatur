@@ -33,8 +33,12 @@ body {
  {
     display: none !important;
 }
-.js-color-name,
 .h-largeOffset-bottom-outer.show-for-large {
+    margin-bottom: 22px;
+    display: block !important;
+}
+.js-color-name {
+    padding-left: 50px;
     display: block !important;
 }
 
@@ -42,6 +46,7 @@ body {
     display: flex;
     flex-direction: row;
     min-height: 350px;
+    margin-bottom: 24px;
     > a {
         width: 83.5%;
         -ms-flex: 0 0 83.5%;
@@ -98,7 +103,8 @@ body {
     right: 15px;
 }
 .pds-cockpit__articleNumber {
-    display: none;
+    text-align: left;
+    padding: 30px 0 0;
 }
 .pds-cockpit__wrapper {
     padding: 0 24px;
@@ -121,11 +127,11 @@ body {
         align-items: flex-start;
     }
     .align-justify.h-xsmallOffset-bottom-inner {
-        padding-bottom: 13px;
+        padding-bottom: 18px;
     }
     .align-middle.h-largeOffset-bottom-outer {
         position: relative;
-        margin-bottom: 5rem;
+        margin-bottom: 2.46rem;
         .row.align-middle {
             .shrink {
                 max-width: 50%;
@@ -139,14 +145,14 @@ h1.pds-cockpit__productName {
     font-size: 24px;
     font-weight: 300;
     text-align: left;
-    margin: 24px 0 26px;
+    margin: 21px 0 31px;
     line-height: 22px;
     letter-spacing: 0.03em;
     text-transform: uppercase;
     color: #373939;
 }
 .pds-cockpit__badge {
-    margin: 0 3px 0 0;
+    margin: -2px 3px -2px 0;
     order: 2;
 }
 .pds-cockpit__shortDescription {
@@ -158,8 +164,8 @@ h1.pds-cockpit__productName {
         font-size: 13px;
         position: relative;
         font-weight: 100;
-        padding-left: 26px;
-        margin-bottom: 6px;
+        padding-left: 28px;
+        margin-bottom: 5px;
         &::before {
             // content: "\f00c";
             // font-family: "FontAwesome";
@@ -171,8 +177,8 @@ h1.pds-cockpit__productName {
             height: 11px;
             display: block;
             position: absolute;
-            left: 0;
-            top: 4px;
+            left: 1px;
+            top: 3px;
         }
     }
     li:nth-child(4),
@@ -195,17 +201,18 @@ h1.pds-cockpit__productName {
     padding: 0 20px 0 0;
     order: 1;
     .starRatingWrapper {
-        font-size: 14px;
+        font-size: 12px;
         span {
             letter-spacing: 4px !important;
         }
-        & + span {
-            padding-left: 4px;
-        }
+        // & + span {
+        //     padding-left: 4px;
+        // }
     }
 }
 .menu.pds-cockpit__colorSwitch {
     display: flex !important;
+    margin: 6px 0 0;
     li a {
         width: 45px;
         height: 60px;
@@ -228,15 +235,22 @@ h1.pds-cockpit__productName {
 }
 .align-self-top-for-large:not(.text-right) {
     position: absolute;
+    & + div {
+        margin-bottom: 27px;
+    }
 }
-.js-color-name {
-    padding-left: 50px;
-}
+// .small-9.h-mediumOffset-bottom-outer.h-no-padding-right-large {
+//     margin-bottom: 13px;
+// }
+
 .align-self-top-for-large.text-right {
     display: flex !important;
     position: absolute;
     right: 0;
     padding-right: 14px;
+    a {
+        font-size: 13px;
+    }
 }
 .h-no-padding-right-large.small-9 {
     -ms-flex: 0 0 55%;
@@ -441,9 +455,6 @@ h1.pds-cockpit__productName {
 .kk_subline {
     margin-top: 10px;
 }
-// .accordion.productInfoAccordion {
-//     padding-bottom: 0;
-// }
 .footerBenefitWrapper {
     border-top: 1px solid #e5e4e3;
     border-bottom: 1px solid #e5e4e3;
@@ -483,26 +494,29 @@ h1.pds-cockpit__productName {
     display: none;
 }
 
-.breadcrumbs li.breadcrumb--back {
-    &::before {
-        font-family: "FontAwesome";
-        font-weight: normal;
-        content: "\f104";
-        font-size: 18px;
-        background-image: none;
-        width: 13px;
-        height: 26px;
-        position: absolute;
-        top: 4px;
-    }
-    a {
-        font-weight: normal;
-        font-size: 13px;
-        padding-left: 13px;
-        font-weight: bold;
-        text-transform: uppercase;
-        b {
+.breadcrumbs {
+    margin: 2px 0 0 4px;
+    li.breadcrumb--back {
+        &::before {
+            font-family: "FontAwesome";
+            font-weight: normal;
+            content: "\f104";
+            font-size: 22px;
+            background-image: none;
+            width: 13px;
+            height: 26px;
+            position: absolute;
+            top: 7px;
+        }
+        a {
+            font-weight: normal;
+            font-size: 13px;
+            padding-left: 18px;
             font-weight: bold;
+            text-transform: uppercase;
+            b {
+                font-weight: bold;
+            }
         }
     }
 }
@@ -528,7 +542,7 @@ button.mz-button.mz-button-close {
 }
 .pds-cockpit__addProductWrapper  {
     .yCmsContentSlot {
-        padding-left: 0;
+        padding: 0;
         -ms-flex: 0 0 80%;
         flex: 0 0 80%;
         max-width: 80%;
@@ -555,4 +569,49 @@ button.mz-button.mz-button-close {
 .row.h-mediumOffset-bottom-outer,
 .pds-cockpit__sozialMediaShareWrapper {
     display: none;
+}
+#addToWishlistForm {
+    margin-left: 14px;
+}
+
+.productInfoAccordion {
+    padding: 0 14px;
+}
+.accordion-item {
+    > a {
+        display: none;
+    }
+    > .accordion-content {
+        border: none;
+    }
+}
+.kk_show {
+    display: block !important;
+}
+#infoTabs {
+    height: 54px;
+    margin-top: 50px;
+    .flickity-viewport {
+        min-height: 54px;
+    }
+    .kk_carousel {
+        padding: 10px 6px 10px 24px;
+        font-family: "Roboto Condensed Bold";
+        font-size: 18px;
+        white-space: nowrap;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        color: #969A9C;
+        &.kk_active {
+            color: #373939;
+            // text-decoration: underline;
+            &::after {
+                content: "";
+                border-top: 1px solid #6D7273;
+                display: block;
+                margin-top: 3px;
+            }
+        }
+    }
+
 }
