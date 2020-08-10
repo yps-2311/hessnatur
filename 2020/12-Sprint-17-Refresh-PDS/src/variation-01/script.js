@@ -20,6 +20,48 @@
         }
     }
 
+    function initGallery(galID) {
+        WATO.elem(function(){
+            return typeof $ !== "undefined";
+        }, function(isjq){
+            if(isjq){
+                $(galID).flickity({
+                    // options
+                    draggable: true,
+                    cellAlign: 'left',
+                    contain: true,
+                    prevNextButtons: false,
+                    pageDots: false,
+                    percentPosition: true,
+                    setGallerySize: true
+                });
+            }
+        });
+    }
+
+    // Send JSON data
+    function getXHR(sendtype ,url, callback, data) {
+                    
+        var XHR = new XMLHttpRequest();
+
+        // Set up our request
+        XHR.open(sendtype, url);
+        
+        // Add the required HTTP header for form data POST requests
+        // XHR.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        XHR.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+        XHR.onreadystatechange = function() { // Call a function when the state changes.
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                // Request finished. Do processing here.
+                callback(this);
+            }
+        };
+
+        // Finally, send our data.
+        XHR.send(data||true);
+    }
+
     // Galerie erstellen
     function buildGallery(bigPicture, markup, farbID, imgValue) {
 
@@ -286,29 +328,38 @@
         if(colorSwitch){
             var imgURL = WATO.qs('meta[property="og:image"]').getAttribute('content').replace("detail_zoom","detail_thumb"),
                 prodID = imgURL.match(/\d{5}/);
+
+
+            for (var j = 0; j < colorSwitch.length; j++) {
+                var thisColorLink = colorSwitch[j];
+
+                thisColorLink.innerHTML = '<img src="'+imgURL.split(prodID)[0] + prodID + '_' + thisColorLink.parentNode.getAttribute('data-color') +'_7.jpg">'; //  + imgNumber +
+
+                thisColorLink.addEventListener('click', changeColor);
+            }
             
-            WATO.elem(function() {
-                return typeof window.ACC !== "undefined" && typeof window.ACC.productDetail !== "undefined" && typeof window.ACC.productDetail.galleryImages !== "undefined";
-            }, function(avalibeColorImages){
-                if(avalibeColorImages){
-                    var imgThumbUrl = window.ACC.productDetail.galleryImages.pop().thumbnail.url,
-                        imgNumber = imgThumbUrl.substring(imgThumbUrl.length-6, imgThumbUrl.length);
+            // WATO.elem(function() {
+            //     return typeof window.ACC !== "undefined" && typeof window.ACC.productDetail !== "undefined" && typeof window.ACC.productDetail.galleryImages !== "undefined";
+            // }, function(avalibeColorImages){
+            //     if(avalibeColorImages){
+            //         // var imgThumbUrl = window.ACC.productDetail.galleryImages.pop().thumbnail.url,
+            //             // imgNumber = imgThumbUrl.substring(imgThumbUrl.length-6, imgThumbUrl.length);
 
-                    for (var j = 0; j < colorSwitch.length; j++) {
-                        var thisColorLink = colorSwitch[j];
+            //         for (var j = 0; j < colorSwitch.length; j++) {
+            //             var thisColorLink = colorSwitch[j];
         
-                        thisColorLink.innerHTML = '<img src="'+imgURL.split(prodID)[0] + prodID + '_' + thisColorLink.parentNode.getAttribute('data-color') + imgNumber + '">';
+            //             thisColorLink.innerHTML = '<img src="'+imgURL.split(prodID)[0] + prodID + '_' + thisColorLink.parentNode.getAttribute('data-color') +'_7.jpg">'; //  + imgNumber +
         
-                        // https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_detail_thumb/Basic_T_Shirt_aus_reiner_Bio_Baumwolle-36062_18_8.jpg
-                        // https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_detail_zoom/Basic_T_Shirt_aus_reiner_Bio_Baumwolle-36062_76_7.jpg
-                        // TODO man kann die Bilder-URLs auch statisch bauen
+            //             // https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_detail_thumb/Basic_T_Shirt_aus_reiner_Bio_Baumwolle-36062_18_8.jpg
+            //             // https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_detail_zoom/Basic_T_Shirt_aus_reiner_Bio_Baumwolle-36062_76_7.jpg
+            //             // TODO man kann die Bilder-URLs auch statisch bauen
         
-                        thisColorLink.addEventListener('click', changeColor);
-                    }
+            //             thisColorLink.addEventListener('click', changeColor);
+            //         }
 
 
-                }
-            });
+            //     }
+            // });
 
             // WATO.elem(function() {
             //     return typeof window.ACC !== "undefined" && typeof window.ACC.productDetail !== "undefined" && typeof window.ACC.productDetail.galleryImages !== "undefined";
@@ -349,15 +400,12 @@
 
     WATO.elem('.productInfoAccordion .accordion-item', function(productInfoAccordionItem){
         if(productInfoAccordionItem){
-            productInfoAccordionItem[0].parentNode.insertAdjacentHTML('beforebegin', 
-                '<div id="infoTabs">'+
-                '</div>'
-            );
+            var prodInfoAccordion = productInfoAccordionItem[0].parentNode;
+            prodInfoAccordion.insertAdjacentHTML('beforebegin', '<div id="infoTabs"></div>');
+
             WATO.qs("div", productInfoAccordionItem[0]).classList.add('kk_show');
-
-            WATO.qs("#Produktbeschreibung .pds-productDescription__text", productInfoAccordionItem[0]).insertAdjacentElement('afterend', WATO.qs(".pds-cockpit__articleNumber"));
-
-            var infoTabs = WATO.qs("#infoTabs", productInfoAccordionItem[0].parentNode.parentNode);
+            
+            var infoTabs = WATO.qs("#infoTabs", prodInfoAccordion.parentNode);
 
             for (var i = 0; i < productInfoAccordionItem.length; i++) {
                 var prodContent = WATO.qs("div", productInfoAccordionItem[i]),
@@ -380,36 +428,110 @@
                 });
             }
 
-            WATO.elem(function(){
-                return typeof $ !== "undefined";
-            }, function(isjq){
-                if(isjq){
-                    $('#infoTabs').flickity({
-                        // options
-                        draggable: true,
-                        cellAlign: 'left',
-                        contain: true,
-                        prevNextButtons: false,
-                        pageDots: false
-                    });
+            // WATO.elem(function(){
+            //     return typeof $ !== "undefined";
+            // }, function(isjq){
+            //     if(isjq){
+            //         $('#infoTabs').flickity({
+            //             // options
+            //             draggable: true,
+            //             cellAlign: 'left',
+            //             contain: true,
+            //             prevNextButtons: false,
+            //             pageDots: false
+            //         });
+            //     }
+            // });
+            initGallery('#infoTabs');
+
+            var articleNumber = WATO.qs(".pds-cockpit__articleNumber"),
+                articleNumberID = WATO.qs("span", articleNumber).textContent.trim(),
+                colorNumber = WATO.qs(".pds-cockpit__colorSwitch .active").getAttribute('data-color');
+
+            WATO.qs("#Produktbeschreibung .pds-productDescription__text", productInfoAccordionItem[0]).insertAdjacentElement('afterend', articleNumber);
+
+            // Bsp.:
+            getXHR("GET","https://products.hessnatur.com/products/"+articleNumberID+colorNumber, function(callbackContent) {
+
+                try {
+                    var responseJSON = JSON.parse(callbackContent.responseText),
+                        data = responseJSON.products[0].ecological_data,
+                        savingWater = data.water_savings_in_liter;
+                        console.log('data: ', data);
+
+                    if(savingWater !== 0){
+                        prodInfoAccordion.parentNode.insertAdjacentHTML('afterend', 
+                            '<div class="kk_nachhaltig">'+
+                                '<h4>Für Weniger Kurzlebigkeit, FÜR mehr Zukunft: <span>Wir haben dieses Produkt nachhaltig für Sie produziert.</span></h4>'+
+                                '<div class="kk_water">'+
+                                    '<h5>'+Math.round(savingWater)+' l<b>Wasser*</b></h5>'+
+                                    '<p>Im Einklang mit der Natur: Wir setzen durchweg auf wassersparende und -schonende Verfahren.</p>'+
+                                '</div>'+
+                                '<div class="kk_cloud">'+
+                                    '<h5>'+data.clean_earth_consumption_in_square_meter+' kg<b>CO₂*</b></h5>'+
+                                    '<p>Ressourcenschonend: Wir nutzen so wenig Strom wie möglich und nur aus nachhaltigen Energiequellen.</p>'+
+                                '</div>'+
+                                '<div class="kk_earth">'+
+                                    '<h5>'+data.carbon_dioxide_consumption_in_gram+' g<b>BODEN/ERDE*</b></h5>'+
+                                    '<p>Für weniger Künstlichkeit: Wir verwenden ausschließlich Rohstoffe aus ökologischer Landwirtschaft.</p>'+
+                                '</div>'+
+                                // '<a>mehr erfahren</a>'+
+                                '<small>*im Vergleich zur konventionellen Produktion</small>'+
+                            '</div>'
+                        );
+                    }
+                } catch (error) {
+                    console.log('Error: ', error);
+                }
+                
+            });
+
+        }
+    });
+
+    WATO.elem('.js-jump-complete-look', function(completeTheLookLink){
+        if(completeTheLookLink){
+            
+            WATO.elem('.h-xxLargeOffset-bottom-inner-xLarge-up > img', function(completeTheLookImg){
+                if(completeTheLookImg){
+                    completeTheLookLink = completeTheLookLink[0];
+                    completeTheLookLink.innerHTML = "Complete the Look";
+
+                    var CTLTeaserImgSrc = completeTheLookImg[0].getAttribute('src'), // .replace("reco","detail") thumb
+                        CTLWrapper = WATO.qs(".js-completeTheLookWrapper"),
+                        CTLProducts = WATO.qsa(".item__image", CTLWrapper);
+
+                    completeTheLookLink.setAttribute('style', 'background-image: url('+CTLTeaserImgSrc+')');
+                    
+                    CTLWrapper.insertAdjacentHTML('afterend', 
+                        '<div class="kk_ctl">'+
+                            '<img src="'+CTLTeaserImgSrc+'">'+
+                            '<div class="kk_subline">Complete the Look</div>'+
+                            '<div class="kk_teaser">FÜR MEHR STIL: IHR<br>PerfekteS Outfit</div>'+
+                            '<div id="kk_ctlwrapper"></div>'+
+                        '</div>'
+                    );
+
+                    var newCTLWrapper = WATO.qs("#kk_ctlwrapper", CTLWrapper.parentNode);
+                    
+                    for (var i = 0; i < CTLProducts.length; i++) {
+                        newCTLWrapper.insertAdjacentElement('beforeend', CTLProducts[i]);
+                    }
+                    
+                    initGallery('#kk_ctlwrapper');
                 }
             });
         }
     });
 
-
-    WATO.elem('.js-product-references-wrapper', function(referencesWrapper){
-        if(referencesWrapper){
-            referencesWrapper[0].insertAdjacentHTML('afterend', 
-                '<div class="kk_nachhaltig">'+
-                    '<h4><b>Für Weniger Kurzlebigkeit, FÜR mehr Zukunft:</b> Wir haben dieses Produkt nachhaltig für Sie produziert.</h4>'+
-                    '<div>'+
-                        '<h5>220 l<b>Wasser*</b></h5>'+
-                    '</div>'+
-                '</div>'
-            );
+    WATO.elem('#ecRecommendationsContainer', function(ecRecommendationsContainer){
+        if(ecRecommendationsContainer){
+            initGallery('#ecRecommendationsContainer');
         }
     });
+
+    
+    
 
     
 

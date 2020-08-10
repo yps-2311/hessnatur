@@ -420,7 +420,9 @@ h1.pds-cockpit__productName {
     flex: 0 0 100%;
     padding: 11px 11px 11px 0;
     position: absolute;
-    bottom: -51px;
+    // bottom: -51px;
+    bottom: -37px;
+    left: 91px;
 }
 // .pds-cockpit__addToWishlistButton .pds-cockpit__addToWishlistButtonIconWrapper {
 //     margin-left: -11px;
@@ -589,7 +591,8 @@ button.mz-button.mz-button-close {
     display: block !important;
 }
 #infoTabs {
-    height: 54px;
+    min-height: 54px;
+    // height: 100%;
     margin-top: 50px;
     .flickity-viewport {
         min-height: 54px;
@@ -602,6 +605,8 @@ button.mz-button.mz-button-close {
         letter-spacing: 0.03em;
         text-transform: uppercase;
         color: #969A9C;
+        height: 100%;
+        width: auto;
         &.kk_active {
             color: #373939;
             // text-decoration: underline;
@@ -613,5 +618,171 @@ button.mz-button.mz-button-close {
             }
         }
     }
+    .flickity-slider {
+        min-width: 200%;
+    }
+    div[data="Produktbeschreibung"] {
+        width: 171px;
+    }
+    div[data="Ausgezeichnete_Qualitaet"] {
+        width: 253px;
+    }
+    div[data="Material"] {
+        width: 101px;
+    }
+    div[data="Made_In"] {
+        width: 98px;
+    }
+    div[data="Pflege"] {
+        width: 89px;
+    }
+    
+}
 
+.row.h-largeOffset-bottom-outer.hide-for-small-only,
+.pds-completeTheLookWrapper > div {
+    display: block !important;
+    margin-bottom: 0 !important;
+}
+.js-jump-complete-look {
+    height: 72px;
+    margin-top: 31px;
+    // min-width: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: 0;
+    padding: 29px 0 0 43px !important;
+    text-align: left;
+    text-decoration: none !important;
+    &::after {
+        content: "";
+        border-top: 1px solid #6D7273;
+        display: block;
+        margin-top: 2px;
+    }
+}
+
+.kk_nachhaltig {
+    background: url("https://dev.web-arts.de/hessnatur/2020/12-Sprint-17-Refresh-PDS/img/bg.jpg") no-repeat center center;
+    background-size: cover;
+    padding: 32px 52px 30px;
+    h4 {
+        font-size: 24px;
+        line-height: 100%;
+        margin-bottom: 30px;
+        span {
+            font-family: "Roboto Condensed",Helvetica,Arial,"Archer A",sans-serif;
+            font-weight: 100;
+        }
+    }
+    div {
+        padding: 0 0 16px 86px;
+        h5 {
+            font-family: "Roboto",Helvetica,Arial,"Archer A",sans-serif;
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 0.03em;
+            line-height: 120%;
+            text-transform: none;
+            white-space: nowrap;
+            b {
+                font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+                font-size: 16px;
+                line-height: 100%;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+                padding-left: 11px;
+            }
+        }
+        p {
+            font-size: 11px;
+            line-height: 130%;
+            letter-spacing: 0.04em;
+        }
+    }
+    small {
+        padding: 57px 0 13px;
+        display: block;
+        font-size: 11px;
+        line-height: 150%;
+        opacity: 0.7;
+    }
+}
+.kk_water {
+    background: url("https://dev.web-arts.de/hessnatur/2020/12-Sprint-17-Refresh-PDS/img/Icon-Wasser.svg") no-repeat 0 0;
+}
+.kk_cloud {
+    background: url("https://dev.web-arts.de/hessnatur/2020/12-Sprint-17-Refresh-PDS/img/Icon-CO2.svg") no-repeat 0 0;
+}
+.kk_earth {
+    background: url("https://dev.web-arts.de/hessnatur/2020/12-Sprint-17-Refresh-PDS/img/Icon-Blatt.svg") no-repeat 0 0;
+}
+.pds-completeTheLookWrapper {
+    display: none;
+}
+
+#kk_ctlwrapper {
+    .item__image {
+        padding: 24px 0 0 24px;
+        width: 43%;
+    }
+}
+.kk_ctl {
+    .kk_subline {
+        font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+        font-size: 13px;
+        line-height: 120%;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        margin: 24px 24px 0;
+        color: #969A9C;
+    }
+    // .desc-name {
+    //     font-size: 11px;
+    //     line-height: 130%;
+    //     letter-spacing: 0.04em;
+    //     text-align: left;
+    // }
+    // .price {
+    //     font-size: 11px;
+    //     line-height: 130%;
+    //     font-weight: 400;
+    // }
+    .desc-price {
+        text-align: left;
+    }
+}
+#ecRecommendationsContainer.flickity-productslider.flickity-productslider .productitem {
+    padding: 0 0 0 24px;
+    width: 43%;
+    .desc-price {
+        height: 15px;
+        text-align: left;
+    }
+}
+.flickity-viewport {
+    .desc-name {
+        font-size: 11px;
+        line-height: 130%;
+        letter-spacing: 0.04em;
+        text-align: left;
+    }
+    .price {
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 130%;
+    }
+}
+.kk_teaser,
+.recommendation-headline {
+    font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+    font-size: 24px;
+    line-height: 100%;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin: 4px 24px 24px !important;
+    text-align: left;
+}
+.recommendation-headline {
+    margin: 60px 10px 0 !important;
 }
