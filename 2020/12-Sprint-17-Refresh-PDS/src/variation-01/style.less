@@ -46,17 +46,18 @@ body {
     display: flex;
     flex-direction: row;
     min-height: 350px;
-    margin-bottom: 24px;
+    margin-bottom: 33px;
     > a {
-        width: 83.5%;
-        -ms-flex: 0 0 83.5%;
-        flex: 0 0 83.5%;
-        max-width: 83.5%;
+        width: 83.3%;
+        -ms-flex: 0 0 83.3%;
+        flex: 0 0 83.3%;
+        max-width: 83.3%;
         margin-left: 0;
     }
     .kk_sliderThumbs {
-        flex: 0 0 17.03%;
-        max-width: 17.03%;
+        -ms-flex: 0 0 16.70%;
+        flex: 0 0 16.70%;
+        max-width: 16.70%;
         margin: 0;
         img {
             position: relative;
@@ -134,9 +135,9 @@ body {
         margin-bottom: 2.46rem;
         .row.align-middle {
             .shrink {
-                max-width: 50%;
-                -ms-flex: 0 0 50%;
-                flex: 0 0 50%;
+                max-width: 41%;
+                -ms-flex: 0 0 41%;
+                flex: 0 0 41%;
             }
         }
     }
@@ -212,18 +213,24 @@ h1.pds-cockpit__productName {
 }
 .menu.pds-cockpit__colorSwitch {
     display: flex !important;
+    flex-wrap: wrap;
     margin: 6px 0 0;
-    li a {
-        width: 45px;
-        height: 60px;
-        border-color: #fff !important;
-        box-sizing: border-box;
-        padding: 5px;
-        margin-right: 8px;
-        img {
-            width: 35px;
-            height: 50px;
-            border: none;
+    li {
+        max-width: none;
+        -ms-flex: inherit;
+        flex: inherit;
+        a {
+            width: 45px;
+            height: 60px;
+            border-color: #fff !important;
+            box-sizing: border-box;
+            padding: 5px;
+            margin-right: 8px;
+            img {
+                width: 35px;
+                height: 50px;
+                border: none;
+            }
         }
     }
     li.active {
@@ -237,6 +244,9 @@ h1.pds-cockpit__productName {
     position: absolute;
     & + div {
         margin-bottom: 27px;
+        -ms-flex: 0 0 90%;
+        flex: 0 0 90%;
+        max-width: 90%;
     }
 }
 // .small-9.h-mediumOffset-bottom-outer.h-no-padding-right-large {
@@ -300,6 +310,7 @@ h1.pds-cockpit__productName {
         color: #6D7273;
         font-size: 11px;
         letter-spacing: 0.04em;
+        line-height: 14px;
         .js-discountable {
             b {
                 color: #6D7273;
@@ -310,8 +321,14 @@ h1.pds-cockpit__productName {
             color: #6D7273;
         }
     }
+    .price.price {
+        display: flex;
+        align-items: center;
+    }
 }
-
+#write_reviews {
+    padding: 0 24px;
+}
 
 // .js-price-container {
 //     // flex-direction: column;
@@ -414,16 +431,16 @@ h1.pds-cockpit__productName {
         width: 110%;
     }
 }
-#avail_container {
-    max-width: 100%;
-    -ms-flex: 0 0 100%;
-    flex: 0 0 100%;
-    padding: 11px 11px 11px 0;
-    position: absolute;
-    // bottom: -51px;
-    bottom: -37px;
-    left: 91px;
-}
+// #avail_container {
+//     max-width: 100%;
+//     -ms-flex: 0 0 100%;
+//     flex: 0 0 100%;
+//     padding: 11px 11px 11px 0;
+//     position: absolute;
+//     // bottom: -51px;
+//     bottom: -37px;
+//     left: 91px;
+// }
 // .pds-cockpit__addToWishlistButton .pds-cockpit__addToWishlistButtonIconWrapper {
 //     margin-left: -11px;
 //     padding: 9px 0 0 42px;
@@ -564,9 +581,9 @@ button.mz-button.mz-button-close {
     }
     
 }
-.js-availability-info  {
-    white-space: nowrap;
-}
+// .js-availability-info  {
+//     white-space: nowrap;
+// }
 
 .row.h-mediumOffset-bottom-outer,
 .pds-cockpit__sozialMediaShareWrapper {
@@ -577,8 +594,9 @@ button.mz-button.mz-button-close {
 }
 
 .productInfoAccordion {
-    padding: 0 14px;
+    padding: 0 14px 25px;
 }
+
 .accordion-item {
     > a {
         display: none;
@@ -618,24 +636,24 @@ button.mz-button.mz-button-close {
             }
         }
     }
-    .flickity-slider {
-        min-width: 200%;
-    }
-    div[data="Produktbeschreibung"] {
-        width: 171px;
-    }
-    div[data="Ausgezeichnete_Qualitaet"] {
-        width: 253px;
-    }
-    div[data="Material"] {
-        width: 101px;
-    }
-    div[data="Made_In"] {
-        width: 98px;
-    }
-    div[data="Pflege"] {
-        width: 89px;
-    }
+    // .flickity-slider {
+    //     min-width: 200%;
+    // }
+    // div[data="Produktbeschreibung"] {
+    //     width: 171px;
+    // }
+    // div[data="Ausgezeichnete_Qualitaet"] {
+    //     width: 253px;
+    // }
+    // div[data="Material"] {
+    //     width: 101px;
+    // }
+    // div[data="Made_In"] {
+    //     width: 98px;
+    // }
+    // div[data="Pflege"] {
+    //     width: 89px;
+    // }
     
 }
 
@@ -663,7 +681,7 @@ button.mz-button.mz-button-close {
 }
 
 .kk_nachhaltig {
-    background: url("https://dev.web-arts.de/hessnatur/2020/12-Sprint-17-Refresh-PDS/img/bg.jpg") no-repeat center center;
+    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/bg.jpg") no-repeat center center;
     background-size: cover;
     padding: 32px 52px 30px;
     h4 {
@@ -709,13 +727,13 @@ button.mz-button.mz-button-close {
     }
 }
 .kk_water {
-    background: url("https://dev.web-arts.de/hessnatur/2020/12-Sprint-17-Refresh-PDS/img/Icon-Wasser.svg") no-repeat 0 0;
+    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-Wasser.svg") no-repeat 0 0;
 }
 .kk_cloud {
-    background: url("https://dev.web-arts.de/hessnatur/2020/12-Sprint-17-Refresh-PDS/img/Icon-CO2.svg") no-repeat 0 0;
+    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-CO2.svg") no-repeat 0 0;
 }
 .kk_earth {
-    background: url("https://dev.web-arts.de/hessnatur/2020/12-Sprint-17-Refresh-PDS/img/Icon-Blatt.svg") no-repeat 0 0;
+    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-Blatt.svg") no-repeat 0 0;
 }
 .pds-completeTheLookWrapper {
     display: none;
@@ -758,6 +776,11 @@ button.mz-button.mz-button-close {
     .desc-price {
         height: 15px;
         text-align: left;
+        .price.full.hide {
+            & + .price + .price + .price {
+                margin-left: -6px;
+            }
+        }
     }
 }
 .flickity-viewport {
@@ -785,4 +808,134 @@ button.mz-button.mz-button-close {
 }
 .recommendation-headline {
     margin: 60px 10px 0 !important;
+    font-size: 24px;
+    line-height: 100%;
+    font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+}
+
+
+#kk_rating {
+    overflow: hidden;
+    background: #FAFAFA;
+    padding: 43px 0 24px;
+    font-size: 18px;
+    > div:first-child {
+        font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+        font-size: 18px;
+        letter-spacing: 0.03em;
+        margin: 0 24px;
+    }
+    .rating--stars,
+    .color-medium-gray {
+        font-size: 12px;
+        letter-spacing: 4px;
+    }    
+}
+#kk_rating_gallery {
+    padding-left: 24px;
+    .flickity-viewport {
+        overflow: visible;
+        transition: height 0.8s;
+    }
+    .js_ratingItem {
+        background: #FFFFFF;
+        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08), 0px 4px 24px rgba(0, 0, 0, 0.12);
+        border-radius: 3px;
+        width: 80%;
+        margin: 24px 12px 12px 0;
+        display: flex !important;
+        padding: 24px;
+        // height: 100%;
+        flex-direction: column;
+        > .rating__title {
+            order: 4;
+            padding-top: 16px;
+            p {
+                margin: 0;
+            }
+        }
+        > .rating__headline {
+            order: 1;
+            display: flex;
+            flex-direction: row;
+            padding-bottom: 18px;
+            justify-content: flex-start;
+            align-items: flex-start;
+            .shrink {
+                order: 2;
+            }
+            .expanded {
+                order: 1;
+                font-size: 16px;
+                font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+            }
+        }
+        > .rating__text {
+            order: 2;
+            font-size: 13px;
+            line-height: 160%;
+            letter-spacing: 0.04em;
+            font-weight: normal;
+        }
+        > .rating__comment {
+            order: 3;
+            font-size: 13px;
+            line-height: 160%;
+            letter-spacing: 0.04em;
+
+        }
+        strong.title__name {
+            font-size: 13px;
+            line-height: 160%;
+            font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+            font-weight: normal;
+            padding-left: 24px;
+            background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/account.svg") no-repeat left center;
+        }
+        .title__date {
+            margin-left: 20px;
+            color: #969A9C;
+            font-size: 13px;
+            line-height: 160%;
+            letter-spacing: 0.04em;
+        }
+    }
+}
+
+
+.ratingAccordion {
+    .accordion-item {
+        &:first-child {
+            display: none !important;
+        }
+        &:last-child {
+            display: block !important;
+        }
+    }
+}
+
+#accordion-review-label {
+    display: block !important;
+    border-color: #EAEBEB;
+    font-size: 18px;
+    font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+    line-height: 100%;
+    letter-spacing: 0.03em;
+    padding: 22px 24px 23px;
+    text-transform: uppercase;
+    margin: 0;
+    &::before {
+        display: none;
+    }
+    &::after {
+        background: transparent url(https://www.hessnatur.com/_ui/responsive/common/images/icons/icon_arrow-bottom.png) 50% 50% no-repeat;
+        content: "";
+        width: 10px;
+        height: 10px;
+        display: inline-block;
+        margin-left: 18px;
+    }
+}
+.is-active #accordion-review-label::after {
+    background-image: url(https://www.hessnatur.com/_ui/responsive/common/images/icons/icon_arrow-top.png);
 }

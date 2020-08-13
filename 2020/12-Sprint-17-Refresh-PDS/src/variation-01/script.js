@@ -13,6 +13,8 @@
 (function(WATO, window) {
     "use strict";
 
+    console.log(1);
+
     // Element entfernen
     function removeObject(el) {
         if(el){
@@ -20,11 +22,12 @@
         }
     }
 
-    function initGallery(galID) {
+    function initGallery(galID, adaptiveHeight) {
         WATO.elem(function(){
             return typeof $ !== "undefined";
         }, function(isjq){
             if(isjq){
+                // Doku https://flickity.metafizzy.co/
                 $(galID).flickity({
                     // options
                     draggable: true,
@@ -33,7 +36,8 @@
                     prevNextButtons: false,
                     pageDots: false,
                     percentPosition: true,
-                    setGallerySize: true
+                    setGallerySize: true,
+                    adaptiveHeight: !!adaptiveHeight
                 });
             }
         });
@@ -160,6 +164,8 @@
                                             '</a>';
                             }
                             onlyOneImage++;
+
+                            // WATO.qs(".js-jump-complete-look").setAttribute('style', 'background-image: url('+picThumb+')');
                         }
                     }
 
@@ -173,18 +179,45 @@
 
                     WATO.elem('meta[property="og:image"]', function(initPic){
                         if(initPic){
+                            var initPicLength = initPic.length;
+                            
+                            // Farben
+                            WATO.elem('.pds-cockpit__colorSwitch li a', function(colorSwitch){
+                                if(colorSwitch){
+
+                                    var firstPic = initPic[0].getAttribute("content").replace("detail_zoom","detail_thumb");
+
+                                    if(initPicLength === 1){
+
+                                        colorSwitch[0].innerHTML = '<img src="'+firstPic+'">';
+                                        colorSwitch[0].addEventListener('click', changeColor);
+
+                                    }else{
+                                        var prodID = firstPic.match(/\d{5}/),
+                                            numberOfColors = colorSwitch.length;
+
+                                        for (var j = 0; j < numberOfColors; j++) {
+                                            var thisColorLink = colorSwitch[j];
+
+                                            thisColorLink.innerHTML = '<img src="'+firstPic.split(prodID)[0] + prodID + '_' + thisColorLink.parentNode.getAttribute('data-color') +'_7.jpg">'; //  + imgNumber +
+
+                                            thisColorLink.addEventListener('click', changeColor);
+                                        }
+                                    }
+                                }
+                            });
                 
                             // Die Galeriebilder liegen in Metadaten im Head
-                            for (var i = 0; i < initPic.length; i++) {
+                            for (var i = 0; i < initPicLength; i++) {
 
                                 var picURL = initPic[i].getAttribute("content"),
                                     altText = WATO.qs('meta[property="twitter:title"]').getAttribute("content"),
                                     picReco = picURL.replace("_zoom/","_reco/"),
                                     picThumb = picURL.replace("_zoom/","_thumb/");
 
-                                    markupHTMLInitial +=   '<a data-zoom-id="zoomMedium" class="thumbnailContainer js_thumbnailContainer mz-thumb" href="'+picURL+'" data-color="" data-image="'+picReco+'">'+
-                                                    '<img src="'+picThumb+'" alt="'+altText+'" data-color="">'+
-                                                '</a>';
+                                    markupHTMLInitial += '<a data-zoom-id="zoomMedium" class="thumbnailContainer js_thumbnailContainer mz-thumb" href="'+picURL+'" data-color="" data-image="'+picReco+'">'+
+                                                            '<img src="'+picThumb+'" alt="'+altText+'" data-color="">'+
+                                                        '</a>';
 
                                 if(mainPicInitial === ""){
                                     mainPicInitial = '<a class="MagicZoom" data-options="hint: always; zoomPosition: inner" id="zoomMedium" href="'+picURL+'">'+
@@ -215,43 +248,42 @@
         buildGalleryWrapper(parseInt(thisTarget));
     }
 
-    // Produkt UVPs
-    // WATO.elem('.h-largeOffset-bottom-outer.show-for-large', function(uvps){
-    //     if(uvps){
-    //         uvps = uvps[0];
+    // Klick auf mehr Details
+    WATO.elem('.js-pds-more-details', function(moreDetails){
+        if(moreDetails){
+            moreDetails[0].addEventListener('click', function(e){
+                e.preventDefault();
+                // WATO.goalPush("klick_produktdetails");
 
-    //         // Umplatzieren
-    //         WATO.qs(".align-justify.h-xsmallOffset-bottom-inner", uvps.parentNode).insertAdjacentElement('beforebegin', uvps);
+                setTimeout(function(){
+                    try {
+                        window.ACC.global.scrollToElement($(".accordion.productInfoAccordion"));
+                    } catch (error) {
+                        // console.log('Error: ', error);
+                    }
+                }, 700);
+            });
+        }
+    });
 
-    //         // Jedem UVP wird der Punkt entfernt
-    //         Array.prototype.forEach.call(WATO.qsa(".pds-cockpit__shortDescription li", uvps),function(elem){
-    //             elem.innerHTML = elem.innerHTML.replace("·", "").trim();
-    //         });    
-            
-    //         var moreDetails = WATO.qs(".js-pds-more-details", uvps);
-    //         // Mehr details Link
-    //         if(moreDetails){
-    //             moreDetails.innerHTML = "mehr Produktdetails";
-    //             // Scrollto animation repariert
-    //             moreDetails.addEventListener('click', function(e){
-    //                 e.preventDefault();
+    function pushGoal(key, sendOnNextPageView){    
+        if(sendOnNextPageView){
+            window.iridion.push(['goal', key, '', true]);
+        }else{
+            window.iridion.push(['goal', key]);
+        }
+    }
 
-    //                 WATO.goalPush("klick_produktdetails");
-
-    //                 setTimeout(function(){
-    //                     window.ACC.global.scrollToElement(jQuery(".accordion.productInfoAccordion"));
-    //                 }, 700);
-    //             });
-    //         }
-    //     }
-    // });
-    
-    // Merken Button über die CTA geschoben
-    // WATO.elem('#addToWishlistForm', function(addToWishlistForm){
-    //     if(addToWishlistForm){
-    //         WATO.qs("#avail_container").insertAdjacentElement('beforebegin', addToWishlistForm[0]);
-    //     }
-    // });
+    function addClass(elem, thisclassname) {
+        if(elem){
+            elem.classList.add(thisclassname);
+        }
+    }
+    function removeClass(elem, thisclassname) {
+        if(elem){
+            elem.classList.remove(thisclassname);
+        }
+    }
 
     // Zurück-Button
     WATO.elem('.breadcrumb--back a', function(breadcrumb){
@@ -264,6 +296,7 @@
         }
     });
 
+    // Sterne und Bewertung unter das Haupt-Bild platzieren
     WATO.elem('.js-badges-container', function(badges){
         if(badges){
             WATO.elem('.pds-cockpit__ratingSummaryWrapper', function(stars){
@@ -276,119 +309,10 @@
         }
     });
 
-    // Merken Button - Wishlist
-    // WATO.elem('#addToWishlistButton', function(addToWishlistButton){
-    //     if(addToWishlistButton){
-    //         addToWishlistButton = addToWishlistButton[0];
-    //         try {
-    //             var siteURL = window.location.pathname.split("/p/")[1];
-
-    //             addToWishlistButton.addEventListener('click', function(){
-    //                 window.localStorage.setItem("kk_"+siteURL, true);
-    //             });
-
-    //             if(window.localStorage.getItem("kk_"+siteURL)){
-    //                 addToWishlistButton.classList.add("kk_gemerkt");
-    //                 WATO.qs(".pds-cockpit__addToWishlistButtonIconWrapper", addToWishlistButton).innerHTML = "Gemerkt";
-    //             }
-    //         } catch (error) {
-    //             // console.log(error);
-    //         }
-    //     }
-    // });
-
-
-    // WATO.elem('.page-productDetails', function(element){
-    //     if(element){
-    //         element[0].insertAdjacentHTML('afterbegin', 
-    //             '<img style="opacity: 0.5; position: absolute; top:-12px; z-index:1000;" src="https://dev.web-arts.de/hessnatur/2020/12-Sprint-17-Refresh-PDS/img/MobileHD.png">'
-    //         );
-            
-    //     }
-    // });
-
-    
-
+    // Größenberatung Fallback
     WATO.elem('#size_advisor', function(sizeAdvisor){
         if(sizeAdvisor){
             sizeAdvisor[0].setAttribute('href', "/de/groessenberatung");
-        }
-    });
-
-    WATO.elem('.price > span', function(price){
-        if(price){
-            price = price[0];
-
-            price.innerHTML = "€ "+price.innerHTML.replace("€","");
-        }
-    });
-    
-    // Farben
-    WATO.elem('.pds-cockpit__colorSwitch li a', function(colorSwitch){
-        if(colorSwitch){
-            var imgURL = WATO.qs('meta[property="og:image"]').getAttribute('content').replace("detail_zoom","detail_thumb"),
-                prodID = imgURL.match(/\d{5}/);
-
-
-            for (var j = 0; j < colorSwitch.length; j++) {
-                var thisColorLink = colorSwitch[j];
-
-                thisColorLink.innerHTML = '<img src="'+imgURL.split(prodID)[0] + prodID + '_' + thisColorLink.parentNode.getAttribute('data-color') +'_7.jpg">'; //  + imgNumber +
-
-                thisColorLink.addEventListener('click', changeColor);
-            }
-            
-            // WATO.elem(function() {
-            //     return typeof window.ACC !== "undefined" && typeof window.ACC.productDetail !== "undefined" && typeof window.ACC.productDetail.galleryImages !== "undefined";
-            // }, function(avalibeColorImages){
-            //     if(avalibeColorImages){
-            //         // var imgThumbUrl = window.ACC.productDetail.galleryImages.pop().thumbnail.url,
-            //             // imgNumber = imgThumbUrl.substring(imgThumbUrl.length-6, imgThumbUrl.length);
-
-            //         for (var j = 0; j < colorSwitch.length; j++) {
-            //             var thisColorLink = colorSwitch[j];
-        
-            //             thisColorLink.innerHTML = '<img src="'+imgURL.split(prodID)[0] + prodID + '_' + thisColorLink.parentNode.getAttribute('data-color') +'_7.jpg">'; //  + imgNumber +
-        
-            //             // https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_detail_thumb/Basic_T_Shirt_aus_reiner_Bio_Baumwolle-36062_18_8.jpg
-            //             // https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_detail_zoom/Basic_T_Shirt_aus_reiner_Bio_Baumwolle-36062_76_7.jpg
-            //             // TODO man kann die Bilder-URLs auch statisch bauen
-        
-            //             thisColorLink.addEventListener('click', changeColor);
-            //         }
-
-
-            //     }
-            // });
-
-            // WATO.elem(function() {
-            //     return typeof window.ACC !== "undefined" && typeof window.ACC.productDetail !== "undefined" && typeof window.ACC.productDetail.galleryImages !== "undefined";
-            // }, function(avalibeColorImages){
-            //     if(avalibeColorImages){
-            //         var allProducts = window.ACC.productDetail.galleryImages,
-            //             imgForColorIDs = {};
-
-            //         for (var k = 0; k < allProducts.length; k++) {
-            //             var thisColorID = allProducts[k].thumbnail.color;
-
-            //             if(!imgForColorIDs[thisColorID]) {
-			// 				imgForColorIDs[thisColorID] = [];
-			// 			}
-			// 			imgForColorIDs[thisColorID] = allProducts[k].thumbnail.url;
-            //         }
-
-
-            //         for (var j = 0; j < colorSwitch.length; j++) {
-            //             var thisColorLink = colorSwitch[j];
-                        
-            //             thisColorLink.innerHTML = '<img src="'+imgForColorIDs[thisColorLink.parentNode.getAttribute('data-color')]+'">';
-            //             // https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_detail_thumb/Basic_T_Shirt_aus_reiner_Bio_Baumwolle-36062_18_8.jpg
-            //             // TODO man kann die Bilder-URLs auch statisch bauen
-
-            //             thisColorLink.addEventListener('click', changeColor);
-            //         }
-            //     }
-            // });
         }
     });
 
@@ -396,13 +320,16 @@
     buildGalleryWrapper();
 
 
-
-
+    // Produktdetails vom Akordion in einen Slider umbauen
     WATO.elem('.productInfoAccordion .accordion-item', function(productInfoAccordionItem){
         if(productInfoAccordionItem){
+
             var prodInfoAccordion = productInfoAccordionItem[0].parentNode;
+
+            // Tabs
             prodInfoAccordion.insertAdjacentHTML('beforebegin', '<div id="infoTabs"></div>');
 
+            // Erstes Tab einblenden
             WATO.qs("div", productInfoAccordionItem[0]).classList.add('kk_show');
             
             var infoTabs = WATO.qs("#infoTabs", prodInfoAccordion.parentNode);
@@ -411,37 +338,27 @@
                 var prodContent = WATO.qs("div", productInfoAccordionItem[i]),
                     tabText = prodContent.previousElementSibling.textContent;
 
+                // Umtexten
                 if(tabText === "Produktbeschreibung") {
                     tabText = "Produktdetails";
                 }
 
+                // Markup der Tabs setzen
                 infoTabs.insertAdjacentHTML('beforeend', 
                     '<div class="kk_carousel'+(i===0 ? " kk_active":'')+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
                 );
+
+                // Interaktion mit Tabs
                 WATO.qs(".kk_carousel:last-child", infoTabs).addEventListener('click', function(e){
                     var thisTarget = e.target;
-                    WATO.qs(".kk_show").classList.remove('kk_show');
-                    WATO.qs(".kk_active").classList.remove('kk_active');
+                    removeClass(WATO.qs(".kk_show"), 'kk_show');
+                    removeClass(WATO.qs(".kk_active"), 'kk_active');
 
-                    WATO.qs("#"+thisTarget.getAttribute('data')).classList.add('kk_show');
-                    thisTarget.classList.add('kk_active');
+                    addClass(WATO.qs("#"+thisTarget.getAttribute('data')), 'kk_show');
+                    addClass(thisTarget, 'kk_active');
                 });
             }
 
-            // WATO.elem(function(){
-            //     return typeof $ !== "undefined";
-            // }, function(isjq){
-            //     if(isjq){
-            //         $('#infoTabs').flickity({
-            //             // options
-            //             draggable: true,
-            //             cellAlign: 'left',
-            //             contain: true,
-            //             prevNextButtons: false,
-            //             pageDots: false
-            //         });
-            //     }
-            // });
             initGallery('#infoTabs');
 
             var articleNumber = WATO.qs(".pds-cockpit__articleNumber"),
@@ -450,44 +367,46 @@
 
             WATO.qs("#Produktbeschreibung .pds-productDescription__text", productInfoAccordionItem[0]).insertAdjacentElement('afterend', articleNumber);
 
-            // Bsp.:
+            
             getXHR("GET","https://products.hessnatur.com/products/"+articleNumberID+colorNumber, function(callbackContent) {
-
-                try {
-                    var responseJSON = JSON.parse(callbackContent.responseText),
-                        data = responseJSON.products[0].ecological_data,
-                        savingWater = data.water_savings_in_liter;
-                        console.log('data: ', data);
-
-                    if(savingWater !== 0){
-                        prodInfoAccordion.parentNode.insertAdjacentHTML('afterend', 
-                            '<div class="kk_nachhaltig">'+
-                                '<h4>Für Weniger Kurzlebigkeit, FÜR mehr Zukunft: <span>Wir haben dieses Produkt nachhaltig für Sie produziert.</span></h4>'+
-                                '<div class="kk_water">'+
-                                    '<h5>'+Math.round(savingWater)+' l<b>Wasser*</b></h5>'+
-                                    '<p>Im Einklang mit der Natur: Wir setzen durchweg auf wassersparende und -schonende Verfahren.</p>'+
-                                '</div>'+
-                                '<div class="kk_cloud">'+
-                                    '<h5>'+data.clean_earth_consumption_in_square_meter+' kg<b>CO₂*</b></h5>'+
-                                    '<p>Ressourcenschonend: Wir nutzen so wenig Strom wie möglich und nur aus nachhaltigen Energiequellen.</p>'+
-                                '</div>'+
-                                '<div class="kk_earth">'+
-                                    '<h5>'+data.carbon_dioxide_consumption_in_gram+' g<b>BODEN/ERDE*</b></h5>'+
-                                    '<p>Für weniger Künstlichkeit: Wir verwenden ausschließlich Rohstoffe aus ökologischer Landwirtschaft.</p>'+
-                                '</div>'+
-                                // '<a>mehr erfahren</a>'+
-                                '<small>*im Vergleich zur konventionellen Produktion</small>'+
-                            '</div>'
-                        );
+                var respText = callbackContent.responseText;
+                if(typeof respText !== "undefined"){
+                    try {
+                        var responseJSON = JSON.parse(respText),
+                            data = responseJSON.products[0].ecological_data,
+                            savingWater = data.water_savings_in_liter;
+    
+                        if(savingWater !== 0){
+                            prodInfoAccordion.parentNode.insertAdjacentHTML('afterend', 
+                                '<div class="kk_nachhaltig">'+
+                                    '<h4>Für Weniger Kurzlebigkeit, FÜR mehr Zukunft: <span>Wir haben dieses Produkt nachhaltig für Sie produziert.</span></h4>'+
+                                    '<div class="kk_water">'+
+                                        '<h5>'+Math.round(savingWater)+' l<b>Wasser*</b></h5>'+
+                                        '<p>Im Einklang mit der Natur: Wir setzen durchweg auf wassersparende und -schonende Verfahren.</p>'+
+                                    '</div>'+
+                                    '<div class="kk_cloud">'+
+                                        '<h5>'+data.clean_earth_consumption_in_square_meter+' kg<b>CO<sub>2</sub>*</b></h5>'+
+                                        '<p>Ressourcenschonend: Wir nutzen so wenig Strom wie möglich und nur aus nachhaltigen Energiequellen.</p>'+
+                                    '</div>'+
+                                    '<div class="kk_earth">'+
+                                        '<h5>'+data.carbon_dioxide_consumption_in_gram+' g<b>BODEN/ERDE*</b></h5>'+
+                                        '<p>Für weniger Künstlichkeit: Wir verwenden ausschließlich Rohstoffe aus ökologischer Landwirtschaft.</p>'+
+                                    '</div>'+
+                                    // '<a>mehr erfahren</a>'+
+                                    '<small>*im Vergleich zur konventionellen Produktion</small>'+
+                                '</div>'
+                            );
+                        }
+                    } catch (error) {
+                        // console.log('Error: ', error);
                     }
-                } catch (error) {
-                    console.log('Error: ', error);
                 }
-                
             });
-
         }
     });
+
+
+    console.log(7);
 
     WATO.elem('.js-jump-complete-look', function(completeTheLookLink){
         if(completeTheLookLink){
@@ -524,19 +443,40 @@
         }
     });
 
+
+    console.log(8);
+
     WATO.elem('#ecRecommendationsContainer', function(ecRecommendationsContainer){
         if(ecRecommendationsContainer){
             initGallery('#ecRecommendationsContainer');
+            ecRecommendationsContainer[0].parentNode.previousElementSibling.innerHTML = '<div class="h4 text-center recommendation-headline">Nachhaltige Produkte für Sie</div>';
         }
     });
 
-    
-    
+    console.log(9);
 
-    
+    WATO.elem('.ratingAccordion', function(ratingAccordion){
+        if(ratingAccordion){
+            ratingAccordion = ratingAccordion[0];
+
+            ratingAccordion.insertAdjacentHTML('beforebegin', 
+                '<div id="kk_rating">'+
+                    '<div>'+WATO.qs("#accordion-rating-label", ratingAccordion).innerHTML.replace("Bewertungen","Kundenbewertungen")+'</div>'+
+                    '<div id="kk_rating_gallery"></div>'+
+                '</div>'
+            );
+
+            var ratingGal = WATO.qs("#kk_rating_gallery", ratingAccordion.parentNode),
+                allRatings = WATO.qsa(".js_ratingItem", ratingAccordion);
+
+            for (var i = 0; i < allRatings.length; i++) {
+                var author = WATO.qs(".title__name", allRatings[i]);
+                author.innerHTML = author.innerHTML.replace(",", "");
+                ratingGal.insertAdjacentElement('beforeend', allRatings[i]);
+            }
+            initGallery('#kk_rating_gallery', true);
+            
+        }
+    });
 
 })(new window.WATO(), window);
-
-
-
-// BUG in KK: 2019 Sprint 03.2 DE - mobile Relevanz erhöhen [100% V1]

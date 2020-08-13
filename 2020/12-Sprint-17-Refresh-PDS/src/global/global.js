@@ -7,8 +7,8 @@
  */
 
 
-(function(WATO, window){
-    "use strict";
+// (function(WATO, window){
+//     "use strict";
 
     /*jshint loopfunc: true */
 
@@ -142,4 +142,4 @@
     // }
 
 	
-})(window.WATO, window);
+// })(window.WATO, window);
