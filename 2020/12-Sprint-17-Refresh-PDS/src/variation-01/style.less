@@ -46,7 +46,7 @@ body {
     display: flex;
     flex-direction: row;
     min-height: 350px;
-    margin-bottom: 33px;
+    margin-bottom: 0;
     > a {
         width: 83.3%;
         -ms-flex: 0 0 83.3%;
@@ -111,7 +111,7 @@ body {
     padding: 0 24px;
 
     > .h-smallOffset-bottom-outer {
-        margin-top: -20px;
+        margin-top: 12px;
         margin-bottom: 0 !important;
         // padding: 0 23% 0 6%;
         min-height: 30px;
@@ -167,19 +167,21 @@ h1.pds-cockpit__productName {
         font-weight: 100;
         padding-left: 28px;
         margin-bottom: 5px;
+        background: #fff url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/check.svg") no-repeat left center;
         &::before {
+            display: none !important;
             // content: "\f00c";
             // font-family: "FontAwesome";
             // font-weight: normal;
-            content: "" !important;
-            margin-left: 0 !important;
-            background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/check.svg") no-repeat;
-            width: 12px;
-            height: 11px;
-            display: block;
-            position: absolute;
-            left: 1px;
-            top: 3px;
+            // content: "" !important;
+            // margin-left: 0 !important;
+            // background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/check.svg") no-repeat;
+            // width: 12px;
+            // height: 11px;
+            // display: block;
+            // position: absolute;
+            // left: 1px;
+            // top: 3px;
         }
     }
     li:nth-child(4),
@@ -528,10 +530,10 @@ h1.pds-cockpit__productName {
             top: 7px;
         }
         a {
+            font-family: "Roboto Condensed Bold";
             font-weight: normal;
             font-size: 13px;
             padding-left: 18px;
-            font-weight: bold;
             text-transform: uppercase;
             b {
                 font-weight: bold;
@@ -578,6 +580,9 @@ button.mz-button.mz-button-close {
     background-color: #373939;
     .pds-cockpit__addToCartButtonIconWrapper {
         background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/shoppingbag.svg");
+        font-family: "Roboto Condensed Bold";
+        font-weight: normal;
+        letter-spacing: 0.04em;
     }
     
 }
@@ -915,6 +920,7 @@ button.mz-button.mz-button-close {
 }
 
 #accordion-review-label {
+    background-color: #FAFAFA;
     display: block !important;
     border-color: #EAEBEB;
     font-size: 18px;
@@ -938,4 +944,7 @@ button.mz-button.mz-button-close {
 }
 .is-active #accordion-review-label::after {
     background-image: url(https://www.hessnatur.com/_ui/responsive/common/images/icons/icon_arrow-top.png);
+}
+#accordion-review {
+    background-color: #FAFAFA;
 }

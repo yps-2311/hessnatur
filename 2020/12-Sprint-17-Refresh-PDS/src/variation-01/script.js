@@ -13,6 +13,10 @@
 (function(WATO, window) {
     "use strict";
 
+
+    // window.iridion.econda.push(["Sprint13", "V1"]);
+
+
     console.log(1);
 
     // Element entfernen
@@ -28,6 +32,7 @@
         }, function(isjq){
             if(isjq){
                 // Doku https://flickity.metafizzy.co/
+                console.log('$(galID): ', $(galID));
                 $(galID).flickity({
                     // options
                     draggable: true,
@@ -71,48 +76,53 @@
 
         WATO.elem('.pds-cockpit__wrapper', function(mainContent){
             if(mainContent){
-                mainContent = mainContent[0];
+                try {
+                    mainContent = mainContent[0];
 
-                var mainContentWrapper = mainContent.parentNode;
-                
-                // falls die Galerie mit einer anderen Farbe schon vorhanden ist wird diese entfernt
-                removeObject(WATO.qs(".kk_slider", mainContentWrapper));
+                    var mainContentWrapper = mainContent.parentNode;
+                    
+                    // falls die Galerie mit einer anderen Farbe schon vorhanden ist wird diese entfernt
+                    removeObject(WATO.qs(".kk_slider", mainContentWrapper));
 
-                // Alle anderen Galerien der Seite werden ebenfalls entfernt da es sonst nach dem initalisieren zu fehlern kommt
-                removeObject(WATO.qs(".show-for-medium-only.column.small-12.medium-6", mainContentWrapper));
-                removeObject(WATO.qs(".pds-productImage__mzThumbsWrapper.js_magicZoomThumbWrapper", mainContentWrapper));
-                removeObject(WATO.qs(".js_magicZoomKeyVisualWrapper", mainContentWrapper));
-                removeObject(WATO.qs(".column.small-12.hide-for-medium.h-smallmediumOffset-bottom-outer.h-no-padding", mainContentWrapper));
+                    // Alle anderen Galerien der Seite werden ebenfalls entfernt da es sonst nach dem initalisieren zu fehlern kommt
+                    removeObject(WATO.qs(".show-for-medium-only.column.small-12.medium-6", mainContentWrapper));
+                    removeObject(WATO.qs(".pds-productImage__mzThumbsWrapper.js_magicZoomThumbWrapper", mainContentWrapper));
+                    removeObject(WATO.qs(".js_magicZoomKeyVisualWrapper", mainContentWrapper));
+                    removeObject(WATO.qs(".column.small-12.hide-for-medium.h-smallmediumOffset-bottom-outer.h-no-padding", mainContentWrapper));
 
-                // Markup der neuen Galerie
-                mainContent.insertAdjacentHTML('beforebegin', 
-                        '<div id="kk_slider'+farbID+'" class="h-largeOffset-bottom-outer kk_slider">'+
-                                bigPicture+
-                            '<div class="kk_sliderThumbs">'+
-                                markup+
-                            '</div>'+
-                        '</div>'
-                    );
-                
-                if(imgValue === 1){
-                    mainContent.parentNode.classList.add("kk_onlyone");
-                }
-                // Außer beim initialen laden, muss die Magiczoom funktion die neue Galerie initalisieren
-                if(farbID !== 0){
-                    WATO.elem(function(){
-                        // Falls noch nicht geladen
-                        return typeof window.MagicZoom !== "undefined";
+                    // Markup der neuen Galerie
+                    mainContent.insertAdjacentHTML('beforebegin', 
+                            '<div id="kk_slider'+farbID+'" class="h-largeOffset-bottom-outer kk_slider">'+
+                                    bigPicture+
+                                '<div class="kk_sliderThumbs">'+
+                                    markup+
+                                '</div>'+
+                            '</div>'
+                        );
+                    
+                    if(imgValue === 1){
+                        mainContent.parentNode.classList.add("kk_onlyone");
+                    }
+                    // Außer beim initialen laden, muss die Magiczoom funktion die neue Galerie initalisieren
+                    if(farbID !== 0){
+                        WATO.elem(function(){
+                            // Falls noch nicht geladen
+                            return typeof window.MagicZoom !== "undefined";
 
-                    }, function(){
-                        // init MagicZoom
+                        }, function(){
+                            // init MagicZoom
+                            window.MagicZoom.start();
+                        });
+                    }
+
+                    // Nur für Entwicklung
+                    setTimeout(function(){
                         window.MagicZoom.start();
-                    });
+                    }, 1000);
+                } catch (error) {
+                    console.log('Error: ', error);
                 }
-
-                // Nur für Entwicklung
-                setTimeout(function(){
-                    window.MagicZoom.start();
-                }, 1000);
+                
             }
         });
     }
@@ -179,31 +189,41 @@
 
                     WATO.elem('meta[property="og:image"]', function(initPic){
                         if(initPic){
+                            console.log('initPic: ', initPic);
                             var initPicLength = initPic.length;
                             
                             // Farben
                             WATO.elem('.pds-cockpit__colorSwitch li a', function(colorSwitch){
                                 if(colorSwitch){
+                                    console.log('colorSwitch: ', colorSwitch);
 
                                     var firstPic = initPic[0].getAttribute("content").replace("detail_zoom","detail_thumb");
+                                    console.log('firstPic: ', firstPic);
 
-                                    if(initPicLength === 1){
+                                    // if(initPicLength === 1){
 
-                                        colorSwitch[0].innerHTML = '<img src="'+firstPic+'">';
-                                        colorSwitch[0].addEventListener('click', changeColor);
+                                    //     colorSwitch[0].innerHTML = '<img src="'+firstPic+'">';
+                                    //     colorSwitch[0].addEventListener('click', changeColor);
 
-                                    }else{
-                                        var prodID = firstPic.match(/\d{5}/),
-                                            numberOfColors = colorSwitch.length;
+                                    // }else{
+                                        try {
+                                            var prodID = firstPic.match(/\d{5}/),
+                                                numberOfColors = colorSwitch.length;
+                                                console.log('prodID: ', prodID);
+                                                console.log('numberOfColors: ', numberOfColors);
 
-                                        for (var j = 0; j < numberOfColors; j++) {
-                                            var thisColorLink = colorSwitch[j];
+                                            for (var j = 0; j < numberOfColors; j++) {
+                                                var thisColorLink = colorSwitch[j];
 
-                                            thisColorLink.innerHTML = '<img src="'+firstPic.split(prodID)[0] + prodID + '_' + thisColorLink.parentNode.getAttribute('data-color') +'_7.jpg">'; //  + imgNumber +
+                                                thisColorLink.innerHTML = '<img src="'+firstPic.split(prodID)[0] + prodID + '_' + thisColorLink.parentNode.getAttribute('data-color') +'_7.jpg">'; //  + imgNumber +
 
-                                            thisColorLink.addEventListener('click', changeColor);
+                                                thisColorLink.addEventListener('click', changeColor);
+                                            }
+                                        } catch (error) {
+                                            console.log('Error: ', error);
                                         }
-                                    }
+                                       
+                                    // }
                                 }
                             });
                 
@@ -236,6 +256,8 @@
         });
     }
 
+    console.log(2);
+
     // Farbe gewächselt
     function changeColor(e) {
         var thisTarget = e.target.parentNode.getAttribute("data-color");
@@ -247,6 +269,9 @@
         // Ausgewählte Farbe an Galerie übergeben
         buildGalleryWrapper(parseInt(thisTarget));
     }
+
+
+    console.log(3);
 
     // Klick auf mehr Details
     WATO.elem('.js-pds-more-details', function(moreDetails){
@@ -261,18 +286,18 @@
                     } catch (error) {
                         // console.log('Error: ', error);
                     }
-                }, 700);
+                }, 500);
             });
         }
     });
 
-    function pushGoal(key, sendOnNextPageView){    
-        if(sendOnNextPageView){
-            window.iridion.push(['goal', key, '', true]);
-        }else{
-            window.iridion.push(['goal', key]);
-        }
-    }
+    // function pushGoal(key, sendOnNextPageView){    
+    //     if(sendOnNextPageView){
+    //         window.iridion.push(['goal', key, '', true]);
+    //     }else{
+    //         window.iridion.push(['goal', key]);
+    //     }
+    // }
 
     function addClass(elem, thisclassname) {
         if(elem){
@@ -285,6 +310,9 @@
         }
     }
 
+
+    console.log(4);
+
     // Zurück-Button
     WATO.elem('.breadcrumb--back a', function(breadcrumb){
         if(breadcrumb){
@@ -296,6 +324,9 @@
         }
     });
 
+
+    console.log(5);
+
     // Sterne und Bewertung unter das Haupt-Bild platzieren
     WATO.elem('.js-badges-container', function(badges){
         if(badges){
@@ -304,10 +335,16 @@
                     stars = stars[0];
                     WATO.qs("a + span", stars).innerHTML = WATO.qs("meta", stars).getAttribute('content').substring(0,4);
                     badges[0].insertAdjacentElement('afterbegin', stars);
+
+                    // Anker zum Scrollen
+                    WATO.qs(".starRatingWrapper", stars).setAttribute('data-open-accordion-css-selector', '.ang_detail_additional');
                 }
             });
         }
     });
+
+
+    console.log(6);
 
     // Größenberatung Fallback
     WATO.elem('#size_advisor', function(sizeAdvisor){
@@ -316,9 +353,14 @@
         }
     });
 
+
+    console.log(7);
+
     // Initaile Galerie erstellen
     buildGalleryWrapper();
 
+
+    console.log(8);
 
     // Produktdetails vom Akordion in einen Slider umbauen
     WATO.elem('.productInfoAccordion .accordion-item', function(productInfoAccordionItem){
@@ -359,18 +401,24 @@
                 });
             }
 
+            // Init der Tab-Gallery
             initGallery('#infoTabs');
 
             var articleNumber = WATO.qs(".pds-cockpit__articleNumber"),
                 articleNumberID = WATO.qs("span", articleNumber).textContent.trim(),
                 colorNumber = WATO.qs(".pds-cockpit__colorSwitch .active").getAttribute('data-color');
 
-            WATO.qs("#Produktbeschreibung .pds-productDescription__text", productInfoAccordionItem[0]).insertAdjacentElement('afterend', articleNumber);
+            // Artikelnummer wird nach unten in den Content-Bereich verschoben
+            var prodInfoContent = WATO.qs("#Produktbeschreibung .pds-productDescription__text", productInfoAccordionItem[0]);
+            console.log('articleNumber: ', articleNumber);
+            if(prodInfoContent && articleNumber){
+                prodInfoContent.insertAdjacentElement('afterend', articleNumber);
+            }
 
-            
+            // Infos zum Produkt laden (nicht immer vorhanden) um Infos zur Nachhaltigkeit anzuzeigen
             getXHR("GET","https://products.hessnatur.com/products/"+articleNumberID+colorNumber, function(callbackContent) {
                 var respText = callbackContent.responseText;
-                if(typeof respText !== "undefined"){
+                if(respText.length > 0){
                     try {
                         var responseJSON = JSON.parse(respText),
                             data = responseJSON.products[0].ecological_data,
@@ -385,20 +433,19 @@
                                         '<p>Im Einklang mit der Natur: Wir setzen durchweg auf wassersparende und -schonende Verfahren.</p>'+
                                     '</div>'+
                                     '<div class="kk_cloud">'+
-                                        '<h5>'+data.clean_earth_consumption_in_square_meter+' kg<b>CO<sub>2</sub>*</b></h5>'+
+                                        '<h5>'+data.clean_earth_consumption_in_square_meter.toFixed(1)+' kg<b>CO<sub>2</sub>*</b></h5>'+
                                         '<p>Ressourcenschonend: Wir nutzen so wenig Strom wie möglich und nur aus nachhaltigen Energiequellen.</p>'+
                                     '</div>'+
                                     '<div class="kk_earth">'+
                                         '<h5>'+data.carbon_dioxide_consumption_in_gram+' g<b>BODEN/ERDE*</b></h5>'+
                                         '<p>Für weniger Künstlichkeit: Wir verwenden ausschließlich Rohstoffe aus ökologischer Landwirtschaft.</p>'+
                                     '</div>'+
-                                    // '<a>mehr erfahren</a>'+
                                     '<small>*im Vergleich zur konventionellen Produktion</small>'+
                                 '</div>'
                             );
                         }
                     } catch (error) {
-                        // console.log('Error: ', error);
+                        console.log('getXHR Error: ', error);
                     }
                 }
             });
@@ -406,8 +453,9 @@
     });
 
 
-    console.log(7);
+    console.log(9);
 
+    // Complete the Look
     WATO.elem('.js-jump-complete-look', function(completeTheLookLink){
         if(completeTheLookLink){
             
@@ -422,8 +470,9 @@
 
                     completeTheLookLink.setAttribute('style', 'background-image: url('+CTLTeaserImgSrc+')');
                     
+                    // CTL wird umgebaut
                     CTLWrapper.insertAdjacentHTML('afterend', 
-                        '<div class="kk_ctl">'+
+                        '<div class="kk_ctl" id="look">'+
                             '<img src="'+CTLTeaserImgSrc+'">'+
                             '<div class="kk_subline">Complete the Look</div>'+
                             '<div class="kk_teaser">FÜR MEHR STIL: IHR<br>PerfekteS Outfit</div>'+
@@ -444,24 +493,21 @@
     });
 
 
-    console.log(8);
-
-    WATO.elem('#ecRecommendationsContainer', function(ecRecommendationsContainer){
+    WATO.elem('#ecRecommendationsContainer.flickity-enabled', function(ecRecommendationsContainer){
         if(ecRecommendationsContainer){
             initGallery('#ecRecommendationsContainer');
             ecRecommendationsContainer[0].parentNode.previousElementSibling.innerHTML = '<div class="h4 text-center recommendation-headline">Nachhaltige Produkte für Sie</div>';
         }
     });
 
-    console.log(9);
-
+    // Bewertung
     WATO.elem('.ratingAccordion', function(ratingAccordion){
         if(ratingAccordion){
             ratingAccordion = ratingAccordion[0];
 
             ratingAccordion.insertAdjacentHTML('beforebegin', 
                 '<div id="kk_rating">'+
-                    '<div>'+WATO.qs("#accordion-rating-label", ratingAccordion).innerHTML.replace("Bewertungen","Kundenbewertungen")+'</div>'+
+                    '<div></div>'+ // '+WATO.qs("#accordion-rating-label", ratingAccordion)+'
                     '<div id="kk_rating_gallery"></div>'+
                 '</div>'
             );
@@ -475,8 +521,65 @@
                 ratingGal.insertAdjacentElement('beforeend', allRatings[i]);
             }
             initGallery('#kk_rating_gallery', true);
+
+            // Headline
+            WATO.elem('#accordion-rating-label', function(accordionRatingLabel){
+                if(accordionRatingLabel){
+                    ratingGal.previousElementSibling.innerHTML = accordionRatingLabel[0].innerHTML.replace("Bewertungen","Kundenbewertungen");
+                }
+            });
             
         }
     });
+
+    // WATO.elem('#addToWishlistForm', function(addToWishlistForm){
+    //     if(addToWishlistForm){
+            
+    //         WATO.elem('#addToCartForm', function(addToCartForm){
+    //             if(addToCartForm){
+    //                 addToCartForm[0].parentNode.nextElementSibling.insertAdjacentElement('afterbegin', addToWishlistForm[0]);
+    //             }
+    //         });
+    //     }
+    // });
+
+    
+    // bind_shortenDomElement: function() {
+    //     $(".js_triggerShortenDomElement").each(function() {
+    //         $(this).on($(this).data("shorten-event"), function() {
+    //             ACC.global.shortenDomElement($(this).data("shorten-css-selector"))
+    //         })
+    //     })
+    // },
+    // shortenDomElement: function(e) {
+    //     $(e).each(function() {
+    //         if (Foundation.MediaQuery.atLeast("medium"))
+    //             var t = $(this).data("shortenheight");
+    //         else
+    //             var t = $(this).data("shortenheightsmall");
+    //         var i = "js_tmpselectorforDestroyShortenItem" + Math.floor(1e12 * Math.random() + 1);
+    //         $(this).addClass(i),
+    //         ACC.global.destroyShorten("." + i),
+    //         $(this).dotdotdot({
+    //             height: t,
+    //             after: ".js_triggerShortenDestroy",
+    //             callback: function(e) {
+    //                 e ? $(this).find(".js_triggerShortenDestroy").show() : $(this).find(".js_triggerShortenDestroy").hide()
+    //             }
+    //         }),
+    //         $(this).attr("class").indexOf("js_tmpselectorforShortenItem") > -1 && $(this).removeClass(e.substring(1)),
+    //         $(this).attr("class").indexOf(i) > -1 && $(this).removeClass(i)
+    //     })
+    // },
+    // bind_destroyShorten: function() {
+    //     $(".js_triggerShortenDestroy").each(function() {
+    //         var e = "js_tmpselectorforDestroyShortenItem" + Math.floor(1e12 * Math.random() + 1);
+    //         $(this).closest($(this).data("shorten-css-selector")).addClass(e),
+    //         $(this).on($(this).data("shorten-event"), function() {
+    //             ACC.global.destroyShorten("." + e)
+    //         })
+    //     })
+    // },
+
 
 })(new window.WATO(), window);
