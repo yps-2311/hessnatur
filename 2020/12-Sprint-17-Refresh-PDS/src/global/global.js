@@ -7,19 +7,19 @@
  */
 
 
-// (function(WATO, window){
-//     "use strict";
+(function(WATO, window){
+    "use strict";
 
     /*jshint loopfunc: true */
 
-    // function pushGoal(key, sendOnNextPageView){    
-    //     // console.log('key: ', key);
-    //     if(sendOnNextPageView){
-    //         window.iridion.push(['goal', key, '', true]);
-    //     }else{
-    //         window.iridion.push(['goal', key]);
-    //     }
-    // }
+    WATO.prototype.goalPush = function(key, sendOnNextPageView){    
+        // console.log('key: ', key);
+        if(sendOnNextPageView){
+            window.iridion.push(['goal', key, '', true]);
+        }else{
+            window.iridion.push(['goal', key]);
+        }
+    };
 
     // if (!Element.prototype.matches) {
     //     Element.prototype.matches = Element.prototype.msMatchesSelector || 
@@ -142,4 +142,4 @@
     // }
 
 	
-// })(window.WATO, window);
+})(window.WATO, window);

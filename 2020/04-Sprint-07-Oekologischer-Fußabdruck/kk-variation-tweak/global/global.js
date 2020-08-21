@@ -107,20 +107,43 @@
 						}
 					});
 
-					var headerElement = _self.qs('.kk07_header');
-					headerElement.addEventListener('click', function () {
-						pushGoal('kk07_click_element');
+
+					_self.elem('.kk07_header', function(headerElement){
+						if(headerElement){
+							headerElement = headerElement[0];
+							headerElement.addEventListener('click', function () {
+								pushGoal('kk07_click_element');
+							});
+		
+							_self.qs('a', headerElement).addEventListener('click', function (e) {
+								e.preventDefault();
+								pushGoal('kk07_click_more_info');
+								jQuery("html, body").animate({ scrollTop: jQuery('#kk07_ecological').offset().top - 75 });
+							});
+						}
+					});
+					// var headerElement = _self.qs('.kk07_header');
+					// headerElement.addEventListener('click', function () {
+					// 	pushGoal('kk07_click_element');
+					// });
+
+					// _self.qs('a', headerElement).addEventListener('click', function (e) {
+					// 	e.preventDefault();
+					// 	pushGoal('kk07_click_more_info');
+					// 	jQuery("html, body").animate({ scrollTop: jQuery('#kk07_ecological').offset().top - 75 });
+					// });
+
+					_self.elem('.js-pds-more-details', function(moreDet){
+						if(moreDet){
+							moreDet[0].addEventListener('click', function () {
+								pushGoal('kk07_click_more_details');
+							});
+						}
 					});
 
-					_self.qs('a', headerElement).addEventListener('click', function (e) {
-						e.preventDefault();
-						pushGoal('kk07_click_more_info');
-						jQuery("html, body").animate({ scrollTop: jQuery('#kk07_ecological').offset().top - 75 });
-					});
-
-					_self.qs('.js-pds-more-details').addEventListener('click', function () {
-						pushGoal('kk07_click_more_details');
-					});
+					// _self.qs('.js-pds-more-details').addEventListener('click', function () {
+					// 	pushGoal('kk07_click_more_details');
+					// });
 
 					_self.elem('#kk07_ecological', function (ecoElem) {
 						if (ecoElem) {

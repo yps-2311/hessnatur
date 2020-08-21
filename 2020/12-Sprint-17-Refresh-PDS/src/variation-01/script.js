@@ -17,7 +17,9 @@
     // window.iridion.econda.push(["Sprint13", "V1"]);
 
 
-    console.log(1);
+    /*jshint loopfunc: true */
+
+    var sendGoalScrollToEnd = false;
 
     // Element entfernen
     function removeObject(el) {
@@ -32,8 +34,11 @@
         }, function(isjq){
             if(isjq){
                 // Doku https://flickity.metafizzy.co/
-                console.log('$(galID): ', $(galID));
-                $(galID).flickity({
+                // console.log('$(galID): ', $(galID));
+                var thisGal = $(galID);
+
+                console.log('thisGal: ', thisGal);
+                thisGal.flickity({
                     // options
                     draggable: true,
                     cellAlign: 'left',
@@ -44,9 +49,19 @@
                     setGallerySize: true,
                     adaptiveHeight: !!adaptiveHeight
                 });
+
+                if(galID === '#infoTabs'){
+                    thisGal.on( 'scroll.flickity', function( event, progress ) {
+                        if(progress > 1 && !sendGoalScrollToEnd){
+                            WATO.goalPush("kk17_scrolltoend");
+                            sendGoalScrollToEnd = true;
+                        }
+                    });
+                }
             }
         });
     }
+
 
     // Send JSON data
     function getXHR(sendtype ,url, callback, data) {
@@ -120,6 +135,7 @@
                         window.MagicZoom.start();
                     }, 1000);
                 } catch (error) {
+                    WATO.goalPush("wa_setup_monitoring");
                     console.log('Error: ', error);
                 }
                 
@@ -220,6 +236,7 @@
                                                 thisColorLink.addEventListener('click', changeColor);
                                             }
                                         } catch (error) {
+                                            WATO.goalPush("wa_setup_monitoring");
                                             console.log('Error: ', error);
                                         }
                                        
@@ -268,6 +285,13 @@
         
         // Ausgewählte Farbe an Galerie übergeben
         buildGalleryWrapper(parseInt(thisTarget));
+
+        // var completeTheLook = WATO.qs(".js-jump-complete-look");
+        // if(completeTheLook){
+        //     completeTheLook.
+        // }
+        // kk_ctl
+        createCTL();
     }
 
 
@@ -278,7 +302,7 @@
         if(moreDetails){
             moreDetails[0].addEventListener('click', function(e){
                 e.preventDefault();
-                // WATO.goalPush("klick_produktdetails");
+                WATO.goalPush("klick_produktdetails");
 
                 setTimeout(function(){
                     try {
@@ -409,8 +433,8 @@
                 colorNumber = WATO.qs(".pds-cockpit__colorSwitch .active").getAttribute('data-color');
 
             // Artikelnummer wird nach unten in den Content-Bereich verschoben
-            var prodInfoContent = WATO.qs("#Produktbeschreibung .pds-productDescription__text", productInfoAccordionItem[0]);
-            console.log('articleNumber: ', articleNumber);
+            var prodInfoContent = WATO.qs("#Produktbeschreibung > .row", productInfoAccordionItem[0]);
+            
             if(prodInfoContent && articleNumber){
                 prodInfoContent.insertAdjacentElement('afterend', articleNumber);
             }
@@ -445,7 +469,7 @@
                             );
                         }
                     } catch (error) {
-                        console.log('getXHR Error: ', error);
+                        // console.log('getXHR Error: ', error);
                     }
                 }
             });
@@ -456,49 +480,45 @@
     console.log(9);
 
     // Complete the Look
-    WATO.elem('.js-jump-complete-look', function(completeTheLookLink){
-        if(completeTheLookLink){
-            
-            WATO.elem('.h-xxLargeOffset-bottom-inner-xLarge-up > img', function(completeTheLookImg){
-                if(completeTheLookImg){
-                    completeTheLookLink = completeTheLookLink[0];
-                    completeTheLookLink.innerHTML = "Complete the Look";
-
-                    var CTLTeaserImgSrc = completeTheLookImg[0].getAttribute('src'), // .replace("reco","detail") thumb
-                        CTLWrapper = WATO.qs(".js-completeTheLookWrapper"),
-                        CTLProducts = WATO.qsa(".item__image", CTLWrapper);
-
-                    completeTheLookLink.setAttribute('style', 'background-image: url('+CTLTeaserImgSrc+')');
-                    
-                    // CTL wird umgebaut
-                    CTLWrapper.insertAdjacentHTML('afterend', 
-                        '<div class="kk_ctl" id="look">'+
-                            '<img src="'+CTLTeaserImgSrc+'">'+
-                            '<div class="kk_subline">Complete the Look</div>'+
-                            '<div class="kk_teaser">FÜR MEHR STIL: IHR<br>PerfekteS Outfit</div>'+
-                            '<div id="kk_ctlwrapper"></div>'+
-                        '</div>'
-                    );
-
-                    var newCTLWrapper = WATO.qs("#kk_ctlwrapper", CTLWrapper.parentNode);
-                    
-                    for (var i = 0; i < CTLProducts.length; i++) {
-                        newCTLWrapper.insertAdjacentElement('beforeend', CTLProducts[i]);
+    function createCTL() {
+        console.log("createCTL");
+        WATO.elem('.js-jump-complete-look', function(completeTheLookLink){
+            if(completeTheLookLink){
+                
+                WATO.elem('.h-xxLargeOffset-bottom-inner-xLarge-up > img', function(completeTheLookImg){
+                    if(completeTheLookImg && !WATO.qs(".kk_ctl")){
+                        completeTheLookLink = completeTheLookLink[0];
+                        completeTheLookLink.innerHTML = "Complete the Look";
+    
+                        var CTLTeaserImgSrc = completeTheLookImg[0].getAttribute('src'), // .replace("reco","detail") thumb
+                            CTLWrapper = WATO.qs(".js-completeTheLookWrapper"),
+                            CTLProducts = WATO.qsa(".item__image", CTLWrapper);
+    
+                        completeTheLookLink.setAttribute('style', 'background-image: url('+CTLTeaserImgSrc+')');
+                        
+                        // CTL wird umgebaut
+                        CTLWrapper.insertAdjacentHTML('beforeend', 
+                            '<div class="kk_ctl" id="look">'+
+                                '<img src="'+CTLTeaserImgSrc+'">'+
+                                '<div class="kk_subline">Complete the Look</div>'+
+                                '<div class="kk_teaser">FÜR MEHR STIL: IHR<br>PerfekteS Outfit</div>'+
+                                '<div id="kk_ctlwrapper"></div>'+
+                            '</div>'
+                        );
+    
+                        var newCTLWrapper = WATO.qs("#kk_ctlwrapper", CTLWrapper.parentNode);
+                        
+                        for (var i = 0; i < CTLProducts.length; i++) {
+                            newCTLWrapper.insertAdjacentElement('beforeend', CTLProducts[i]);
+                        }
+                        
+                        initGallery('#kk_ctlwrapper');
                     }
-                    
-                    initGallery('#kk_ctlwrapper');
-                }
-            });
-        }
-    });
-
-
-    WATO.elem('#ecRecommendationsContainer.flickity-enabled', function(ecRecommendationsContainer){
-        if(ecRecommendationsContainer){
-            initGallery('#ecRecommendationsContainer');
-            ecRecommendationsContainer[0].parentNode.previousElementSibling.innerHTML = '<div class="h4 text-center recommendation-headline">Nachhaltige Produkte für Sie</div>';
-        }
-    });
+                });
+            }
+        });
+    }
+    createCTL();
 
     // Bewertung
     WATO.elem('.ratingAccordion', function(ratingAccordion){
@@ -528,8 +548,59 @@
                     ratingGal.previousElementSibling.innerHTML = accordionRatingLabel[0].innerHTML.replace("Bewertungen","Kundenbewertungen");
                 }
             });
+
+            // setTimeout(function(){
+            //     // Weiterlesen Buttons im Produkttext oder in den Kundenbewertungen werden aufgeklappt
+            //     WATO.elem(function(){
+            //         return typeof window.ACC !== "undefined" && typeof window.ACC.global !== "undefined";
+            //     }, function(accGloablIsAvaliable){
+            //         if(accGloablIsAvaliable){
+            //             window.ACC.global.destroyShorten(".js_triggerShortenDestroy");
+            //         }
+            //     });
+            // }, 3000);
+
+            
             
         }
+    });
+
+    WATO.ready(function(){
+
+        // Weiterlesen Buttons im Produkttext oder in den Kundenbewertungen werden aufgeklappt
+        setTimeout(function(){
+            WATO.elem(function(){
+                return typeof window.ACC !== "undefined" && typeof window.ACC.global !== "undefined";
+            }, function(accGloablIsAvaliable){
+                if(accGloablIsAvaliable){
+                    window.ACC.global.destroyShorten(".js_triggerShortenDestroy");
+
+                    initGallery('#kk_rating_gallery', true);
+                }
+            });
+        }, 1500);
+
+        // Reco Galerie neu initialisieren
+        // WATO.elem('#ecRecommendationsContainer.flickity-enabled .flickity-prev-next-button', function(ecRecommendationsContainer){
+        //     if(ecRecommendationsContainer){
+        //         WATO.qs("#ecRecommendationsContainer.flickity-enabled").parentNode.previousElementSibling.innerHTML = '<div class="h4 text-center recommendation-headline">Nachhaltige Produkte für Sie</div>';
+
+        //         WATO.qs("#ecRecommendationsContainer")
+        //         WATO.qs(".flickity-slider", ecRecommendationsContainer[0].parentNode).innerHTML
+        //         initGallery('#ecRecommendationsContainer');
+        //     }
+        // });
+        // WATO.elem('#ecRecommendationsContainer .productitem', function(ecRecommendationsContainer){
+        //     if(ecRecommendationsContainer){
+        //         // WATO.qs("#ecRecommendationsContainer.flickity-enabled").parentNode.previousElementSibling.innerHTML = '<div class="h4 text-center recommendation-headline">Nachhaltige Produkte für Sie</div>';
+
+
+        //         WATO.qs("#ecRecommendationsContainer").insertAdjacentHTML('afterend', 
+        //             '<div id="kk_reco">'+ecRecommendationsContainer[0].parentNode.innerHTML+'</div>'
+        //         );
+        //         initGallery('#kk_reco');
+        //     }
+        // });
     });
 
     // WATO.elem('#addToWishlistForm', function(addToWishlistForm){

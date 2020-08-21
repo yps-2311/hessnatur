@@ -66,6 +66,9 @@ body {
             display: block;
             box-shadow: none;
         }
+        .thumbnailContainer:nth-child(6) {
+            display: none;
+        }
     }
     .thumbnailContainer {
         margin-bottom: -4px;
@@ -91,13 +94,23 @@ body {
 //     display: none;
 // }
 .btn-simple-link.js-pds-more-details {
-    font-size: 0;
+    letter-spacing: 0.04em;
+    font-size: 13px;
     text-decoration: none;
-    &::before {
-        content: "Mehr erfahren";
-        font-size: 13px;
-        text-decoration: underline;
+    display: inline-block;
+    overflow: hidden;
+    &::after {
+        content: "";
+        border-top: 1px solid #b2b2b2;
+        display: block;
     }
+//     font-size: 0;
+//     text-decoration: none;
+//     &::before {
+//         content: "Mehr erfahren";
+//         font-size: 13px;
+//         text-decoration: underline;
+//     }
 }
 .mz-hint {
     top: 16px;
@@ -164,7 +177,7 @@ h1.pds-cockpit__productName {
         line-height: 18px;
         font-size: 13px;
         position: relative;
-        font-weight: 100;
+        font-weight: 400;
         padding-left: 28px;
         margin-bottom: 5px;
         background: #fff url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/check.svg") no-repeat left center;
@@ -251,6 +264,10 @@ h1.pds-cockpit__productName {
         max-width: 90%;
     }
 }
+.h-text-uppercase > strong {
+    font-family: "Roboto Condensed Bold";
+    font-weight: normal;
+}
 // .small-9.h-mediumOffset-bottom-outer.h-no-padding-right-large {
 //     margin-bottom: 13px;
 // }
@@ -262,6 +279,15 @@ h1.pds-cockpit__productName {
     padding-right: 14px;
     a {
         font-size: 13px;
+        color: #373939;
+        letter-spacing: 0.04em;
+        font-weight: normal;
+        text-decoration: none;
+        &::after {
+            content: "";
+            border-top: 1px solid #b2b2b2;
+            display: block;
+        }
     }
 }
 .h-no-padding-right-large.small-9 {
@@ -290,9 +316,15 @@ h1.pds-cockpit__productName {
     text-decoration: none;
     &::before {
         font-size: 13px;
-        text-decoration: underline;
+        // text-decoration: underline;
         content: "Fit-Finder";
         white-space: nowrap;
+    }
+    &::after {
+        content: "";
+        border-top: 1px solid #b2b2b2;
+        display: block;
+        margin-top: -4px;
     }
 }
 .availability-matrix.reveal{
@@ -583,6 +615,7 @@ button.mz-button.mz-button-close {
         font-family: "Roboto Condensed Bold";
         font-weight: normal;
         letter-spacing: 0.04em;
+        font-size: 16px;
     }
     
 }
@@ -661,14 +694,20 @@ button.mz-button.mz-button-close {
     // }
     
 }
-
+.js-completeTheLookWrapper {
+    padding: 0 !important;
+}
 .row.h-largeOffset-bottom-outer.hide-for-small-only,
 .pds-completeTheLookWrapper > div {
     display: block !important;
     margin-bottom: 0 !important;
 }
 .js-jump-complete-look {
+    // display: inline-block !important;
+    font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+    font-weight: normal !important;
     height: 72px;
+    font-size: 14px;
     margin-top: 31px;
     // min-width: 50%;
     background-size: contain;
@@ -748,6 +787,7 @@ button.mz-button.mz-button-close {
     .item__image {
         padding: 24px 0 0 24px;
         width: 43%;
+        min-height: 304px;
     }
 }
 .kk_ctl {
