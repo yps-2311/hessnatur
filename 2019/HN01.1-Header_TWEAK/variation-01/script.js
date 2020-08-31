@@ -82,14 +82,14 @@
         });
     }
 
-    if(window.document.location.href.indexOf("kk=preview") !== -1){
-        window.document.documentElement.classList.add('kk_preview');
-        WATO.elem('.logoContainer img', function(logo){
-            if(logo){
-                logo[0].setAttribute('src', 'https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/logo/hessnatur_logo.svg');
-            }
-        });
-    }
+    // if(window.document.location.href.indexOf("kk=preview") !== -1){
+    //     window.document.documentElement.classList.add('kk_preview');
+    WATO.elem('.logoContainer img', function(logo){
+        if(logo){
+            logo[0].setAttribute('src', 'https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/logo/hessnatur_logo.svg');
+        }
+    });
+    // }
 
 })(new window.WATO());
 

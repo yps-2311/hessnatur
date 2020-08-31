@@ -276,7 +276,7 @@ h1.pds-cockpit__productName {
     display: flex !important;
     position: absolute;
     right: 0;
-    padding-right: 14px;
+    padding-right: 24px;
     a {
         font-size: 13px;
         color: #373939;
@@ -295,6 +295,7 @@ h1.pds-cockpit__productName {
     flex: 0 0 55%;
     max-width: 55%;
     padding-left: 0;
+    padding-right: 24px;
 }
 .js-size-advisor-wrapper {
     -ms-flex: 0 0 20%;
@@ -302,7 +303,7 @@ h1.pds-cockpit__productName {
     max-width: 20%;
     justify-content: flex-end;
     display: flex !important;
-    padding-right: 0;
+    // padding-right: 0;
 }
 .column.small-9.large-10 {
     padding-left: 0;
@@ -559,7 +560,7 @@ h1.pds-cockpit__productName {
             width: 13px;
             height: 26px;
             position: absolute;
-            top: 7px;
+            top: 5.5px;
         }
         a {
             font-family: "Roboto Condensed Bold";
@@ -612,6 +613,7 @@ button.mz-button.mz-button-close {
     background-color: #373939;
     .pds-cockpit__addToCartButtonIconWrapper {
         background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/shoppingbag.svg");
+        background-position: 0 .7rem;
         font-family: "Roboto Condensed Bold";
         font-weight: normal;
         letter-spacing: 0.04em;
@@ -622,6 +624,9 @@ button.mz-button.mz-button-close {
 // .js-availability-info  {
 //     white-space: nowrap;
 // }
+.certificateTextWrapper {
+    line-height: 1.6;
+}
 
 .row.h-mediumOffset-bottom-outer,
 .pds-cockpit__sozialMediaShareWrapper {
@@ -692,7 +697,14 @@ button.mz-button.mz-button-close {
     // div[data="Pflege"] {
     //     width: 89px;
     // }
-    
+}
+#Material {
+    .h-no-padding-left {
+        padding-left: .76923rem;
+    }
+    .shrink + .h-no-padding-left {
+        padding-left: 0;
+    }
 }
 .js-completeTheLookWrapper {
     padding: 0 !important;
@@ -834,6 +846,7 @@ button.mz-button.mz-button-close {
         line-height: 130%;
         letter-spacing: 0.04em;
         text-align: left;
+        text-transform: none;
     }
     .price {
         font-size: 11px;

@@ -12,8 +12,7 @@
 
     /*jshint loopfunc: true */
 
-    WATO.prototype.goalPush = function(key, sendOnNextPageView){    
-        // console.log('key: ', key);
+    WATO.prototype.goalPush = function(key, sendOnNextPageView){
         if(sendOnNextPageView){
             window.iridion.push(['goal', key, '', true]);
         }else{
@@ -21,125 +20,51 @@
         }
     };
 
-    // if (!Element.prototype.matches) {
-    //     Element.prototype.matches = Element.prototype.msMatchesSelector || 
-    //                                 Element.prototype.webkitMatchesSelector;
-    // }
-    
-    // if (!Element.prototype.closest) {
-    // Element.prototype.closest = function(s) {
-    //     var el = this;
-    
-    //     do {
-    //     if (Element.prototype.matches.call(el, s)) return el;
-    //     el = el.parentElement || el.parentNode;
-    //     } while (el !== null && el.nodeType === 1);
-    //     return null;
-    // };
-    // }
+    WATO.prototype.sprint17goals = function(variante){
+        var _self = this;
 
-    // var windowHeight = (window.innerHeight || document.documentElement.clientHeight),
-    //     // windowWidth = (window.innerWidth || document.documentElement.clientWidth),
-    //     theRecoObj = false;
+        function clickgoal(queryparameter, goalname) {
+            _self.elem(queryparameter, function(element){
+                if(element){
+                    element[0].addEventListener('click', function(){
+                        _self.goalPush(goalname);
+                    });
+                }
+            });
+        }
 
-    // // Check if user scrolled to Product Description
-    // function checkScrollDepth() {
-    //     if(theRecoObj){
-    //         var recoWrapper = theRecoObj.getBoundingClientRect(),
-    //             vertInView = (recoWrapper.top <= windowHeight) && ((recoWrapper.top + recoWrapper.height) >= 0);
-    //         if (vertInView) {
+        clickgoal('div[data-share="Facebook"]', "kk17_facebook");
+        clickgoal('div[data-share="Twitter"]', "kk17_twitter");
+        clickgoal('div[data-share="Pinterest"]', "kk17_pinterest");
+        clickgoal('a.starRatingWrapper', "kk17_bewertungen_anker");
 
-    //             pushGoal('gesehen_orginal_reco');
+        clickgoal('#ecRecommendationsContainer', "kk17_reco");
 
-    //             window.removeEventListener('scroll', checkScrollDepth);
+        _self.elem('#addToCartButton', function(addToCartButton){
+            if(addToCartButton){
+                addToCartButton[0].addEventListener('click', function(){
+                    _self.elem('#sizeSelectReminder[aria-hidden="false"]', function(sizeSelectReminder){
+                        if(sizeSelectReminder){
+                            _self.goalPush('kk17_addtocart_withoutsize');
+                        }
+                    });
+                });
+            }
+        });
 
-    //             return true;
-    //         }
-    //         return false;
-    //     }
-    // }
+        
+        if(variante === 0){
+            clickgoal('#accordion-rating-label', "kk17_rating");
+            clickgoal('#accordion-rating .js_showAdditionalItems', "kk17_rating");
 
-    // function getProdID(fromString) {
-    //     try {
-    //         return parseInt(fromString.match(/\d{5,9}/)[0].substring(0,5));
-    //     } catch (error) {
-    //         // console.log('Error: ', error);
-    //         return 0;
-    //     }
-    // }
-
-    // WATO.prototype.sprint13goals = function(){
-    //     var _self = this,
-    //         isInDrag = false,
-    //         templs = window.localStorage.getItem("kk_recoproduct"),
-    //         lsReco = (templs ? templs.split(',') : false) || [];
-
-    //     _self.elem('#ecRecommendationsContainer .productitem', function(recoItem){
-    //         if(recoItem){
-    //             theRecoObj = recoItem[0].parentNode.parentNode;
-
-    //             // theRecoObj.addEventListener('click', function(){
-    //             //     pushGoal("click_reco_pds_orginal", true);
-    //             // });
-                
-    //             var arrowButton = _self.qs(".flickity-prev-next-button", theRecoObj.parentNode),
-    //                 goalKey = "click_recoarrow_pds_orginal";
-                
-    //             if(arrowButton){
-    //                 arrowButton.addEventListener('click', function(){
-    //                     pushGoal(goalKey);
-    //                 });
-    //                 arrowButton.nextElementSibling.addEventListener('click', function(){
-    //                     pushGoal(goalKey);
-    //                 });
-    //             }
-
-    //             _self.elem(function() {
-    //                 return typeof jQuery !== "undefined";
-    //             }, function(isJquery){
-    //                 if(isJquery){
-    //                     var oldReco = $("#ecRecommendationsContainer");
-
-    //                     oldReco.on('dragStart.flickity', function() {
-    //                         isInDrag = true;
-    //                     });
-    //                     oldReco.on('dragEnd.flickity', function() {
-    //                         isInDrag = false;
-    //                     });
-    //                 }
-    //             });
-
-
-    //             theRecoObj.addEventListener('mouseup', function(e){
-    //                 if(!isInDrag){
-    //                     pushGoal('click_reco_pds_orginal', true);
-
-    //                     try {
-    //                         var newID = getProdID(e.target.closest("a.item__image").getAttribute('href'));
-
-    //                         if(lsReco.indexOf(newID) === -1){
-    //                             lsReco.push(newID);
-    //                         }
-    //                         window.localStorage.setItem("kk_recoproduct", lsReco);
-    //                     } catch (error) {
-    //                     }
-    //                 }
-    //             });
-
-    //             // Scroll Goal 
-    //             if(!checkScrollDepth()){
-    //                 window.addEventListener('scroll', checkScrollDepth);
-    //             }
-    //         }
-    //     });
-
-    //     _self.ajax("/cart/add", function(){
-    //         if(lsReco.indexOf(getProdID(window.location.pathname)) !== -1){
-    //             pushGoal("addcart_recoprod");
-    //         }
-    //     });
-
-    // }
+            clickgoal('#Produktbeschreibung-label', "kk17_Produktbeschreibung");
+            clickgoal('#Ausgezeichnete_Qualitaet-label', "kk17_Ausgezeichnete_Qualitaet");
+            clickgoal('#Passform-label', "kk17_Passform");
+            clickgoal('#Made_In-label', "kk17_Made_In");
+            clickgoal('#Pflege-label', "kk17_Pflege");
+            clickgoal('#Material-label', "kk17_Pflege");
+        }
+    };
 
 	
 })(window.WATO, window);

@@ -1,6 +1,7 @@
 // load core and global js
 // @ codekit-prepend "../global/global.js";
 
+
 /**
  * @function
  * @author Denis Leno
@@ -12,8 +13,9 @@
     "use strict";
 
 
-    // window.iridion.econda.push(["Sprint13", "V1"]);
+    window.iridion.econda.push(["Sprint17", "V0"]);
 
+    WATO.sprint17goals(0);
 
     // Element entfernen
     function removeObject(el) {
@@ -235,6 +237,7 @@
                 }
             } catch (error) {
                 // console.log(error);
+                WATO.goalPush("wa_setup_monitoring");
             }
         }
     });
@@ -290,16 +293,18 @@
                             });
                         }
 
-                        var materialList = WATO.qs(".row > ul.no-bullet:last-child", material);
+                        var materialList = WATO.qs(".row > *:last-child", material);
                     
                         // Pflege in Materialliste verschieben
-                        if(pflege){
+                        if(pflege && materialList){
                             materialList.insertAdjacentElement('afterend', WATO.qs("ul.no-bullet", pflege));
                             pflege.style.display = "none";
                         }
             
                         // Neue Pflege HL erstellen
-                        materialList.insertAdjacentHTML('afterend', '<strong class="column small-12 h-text-uppercase kk_subline">Pflege</strong>');
+                        if(materialList){
+                            materialList.insertAdjacentHTML('afterend', '<strong class="column small-12 h-text-uppercase kk_subline">Pflege</strong>');
+                        }
             
                         // Akordion Link umbenennen
                         var materialPflege = WATO.qs("a", material);

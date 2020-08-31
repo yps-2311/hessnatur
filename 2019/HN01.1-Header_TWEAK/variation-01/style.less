@@ -125,35 +125,51 @@
 
 
 
-    .kk_preview {
-        .headerWrapper {
-            height: 84px;
-        }
-        #header {
-            > .h-largeOffset-left-inner-large > .row.align-middle {
-                height: 84px;
-                > .column.small-4.medium-2 {
-                    padding: 0;
-                    position: relative;
-                }
-            }
-        }
-        .logoContainer {
-            img {
-                height: 58px;
-                width: 212px;
-                position: absolute;
-                top: -28px;
-                left: 50%;
-                margin-left: -106px;
-                max-width: none;
-            }
-        }
-        #search_form {
-            top: 61px;
-        }
-    
+    // .kk_newlogo {
+    .headerWrapper {
+        height: 84px;
     }
+    #header {
+        > .h-largeOffset-left-inner-large > .row.align-middle {
+            height: 84px;
+            > .column.small-4.medium-2 {
+                padding: 0;
+                position: relative;
+            }
+        }
+    }
+    .logoContainer {
+        img {
+            height: 58px;
+            width: 212px;
+            position: absolute;
+            top: -28px;
+            left: 50%;
+            margin-left: -106px;
+            max-width: none;
+        }
+    }
+    #search_form {
+        top: 61px;
+    }
+    .marketingBarWrapper > .marketingBar > .yCmsComponent {
+        &.small-9 {
+            order: 2;
+        }
+        &.small-3 {
+            order: 1;
+        }
+        .rteContainer {
+            position: absolute;
+            left: 30px;
+            top: 9px;
+            > p {
+                margin-bottom: 0;
+                font-family: "Roboto Condensed Bold";
+            }
+        } 
+    }
+    // }
     
 
 }
