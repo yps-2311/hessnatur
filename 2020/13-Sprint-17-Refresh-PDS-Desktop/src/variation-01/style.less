@@ -1,0 +1,1138 @@
+/* IMPORT VAR LESS FILE */
+@import "../global/vars.less";
+
+/* IMPORT GLOBAL LESS FILES */
+// @import "../global/global.less";
+
+/* DEFINE VARIATION CSS */
+
+.pds-productImage__mzThumbsWrapper,
+.pds-productImage__mzKeyVisualWrapper  {
+    display: none;
+}
+
+.kk_slider {
+    padding: 0;
+    width: 100%;
+    overflow: hidden;
+
+    .flickity-slider {
+        position: relative !important;
+    }
+    .carousel-cell {
+        width: 50%;
+        padding: 0;
+        display: inline-block;
+        left: 0;
+        position: relative;
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            min-width: 100%;
+        }
+        a {
+            width: 100%;
+        }
+    }
+    .flickity-prev-next-button.previous {
+        cursor: pointer;
+        top: 49%;
+        left: 1.3%;
+        border: none;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    .flickity-prev-next-button.next {
+        cursor: pointer;
+        top: 49%;
+        right: 1.3%;
+        border: none;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    .flickity-prev-next-button .arrow {
+        fill: #fff;
+    }
+    .mz-loading {
+        display: none;
+    }
+}
+
+.carousel-nav .carousel-cell {
+    height: 80px;
+    width: 100px;
+}
+
+.carousel-nav .carousel-cell:before {
+    font-size: 50px;
+    line-height: 80px;
+}
+
+.carousel-nav .carousel-cell.is-nav-selected {
+    background: #ED2;
+}
+
+
+.pds__imageAndCockpitWrapper {
+    position: relative;
+    .pds-cockpit__shortDescription {
+        li:nth-child(4),
+        li:nth-child(5),
+        li:nth-child(6),
+        li:nth-child(7) {
+            display: none;
+        }
+        & + .h-smallOffset-top-outer {
+            text-align: left;
+            font-size: 12px;
+            margin-top: 18px !important;
+        }
+    }
+}
+.kk_carouselnav {
+    width: 430px;
+    padding: 31px 0 20px 72px;
+    .carousel-cell {
+        width: 50px;
+        height: 72px;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+}
+
+
+.kk_sliderWrapper {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 62%;
+    flex: 0 0 62%;
+    max-width: 62%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.pds-cockpit__shortDescription {
+    margin: 0;
+    li {
+        list-style: none;
+        text-align: left;
+        line-height: 18px;
+        font-size: 13px;
+        position: relative;
+        font-weight: 400;
+        padding-left: 28px;
+        margin-bottom: 5px;
+        background: #fff url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/check.svg") no-repeat left center;
+        &::before {
+            display: none !important;
+        }
+    }
+}
+
+
+.js_backstopWrapper {
+    .column.hide-for-large:first-child {
+        display: block !important;
+        &:not(.h-largeOffset-left-inner-large) {
+            max-width: 129px;
+        }
+    }
+    
+    .h-largeOffset-left-inner-large {
+        width: 70%;
+        padding-left: 15px;
+    }
+    .h-xsmallOffset-top-inner {
+        padding-bottom: 0.769rem;
+        padding-top: .6rem;
+        > nav {
+            max-width: 129px;
+        }
+    }
+    li[itemprop="itemListElement"] {
+        strong {
+            font-weight: normal;
+        }
+    }
+}
+.pds-cockpit__ratingSummaryWrapper {
+    display: inline-block;
+    padding: 0 20px 0 0;
+    order: 1;
+    .starRatingWrapper {
+        font-size: 12px;
+        span {
+            letter-spacing: 4px !important;
+        }
+    }
+}
+
+.breadcrumbs {
+    margin: 2px 0 0 4px;
+    position: relative;
+    li.breadcrumb--back {
+        margin-right: 0;
+        &::before {
+            font-family: "FontAwesome";
+            font-weight: normal;
+            content: "\f104";
+            font-size: 22px;
+            background-image: none;
+            width: 13px;
+            height: 26px;
+            position: absolute;
+            top: -0.5px;
+        }
+        a {
+            font-family: "Roboto Condensed Bold";
+            font-weight: normal;
+            font-size: 13px;
+            padding-left: 18px;
+            text-transform: uppercase;
+            b {
+                font-weight: bold;
+            }
+        }
+    }
+}
+
+.mz-hint {
+    top: 16px;
+    right: 15px;
+}
+.pds-cockpit__articleNumber {
+    text-align: left;
+    padding: 30px 0 0;
+}
+
+.js-advertising-medium-code {
+    position: absolute;
+    right: 0;
+}
+.pds-cockpit__wrapper {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 38%;
+    flex: 0 0 38%;
+    max-width: 38%;
+    padding: 10px 72px;
+
+    > .h-smallOffset-bottom-outer {
+        margin-top: 12px;
+        margin-bottom: 0 !important;
+        min-height: 30px;
+    }
+    .js-badges-container {
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+        text-align: left;
+        padding-right: 0;
+        display: flex;
+    }
+    > .row > .small-12 > .row.align-middle:first-child {
+        align-items: flex-start;
+        position: relative;
+    }
+    .align-justify.h-xsmallOffset-bottom-inner {
+        padding-bottom: 18px;
+    }
+    .align-middle.h-largeOffset-bottom-outer {
+        position: relative;
+        margin-bottom: 2.46rem;
+        .row.align-middle {
+            .shrink {
+                max-width: 36%;
+                -ms-flex: 0 0 36%;
+                flex: 0 0 36%;
+            }
+        }
+    }
+}
+h1.pds-cockpit__productName {
+    font-size: 24px;
+    font-weight: 300;
+    text-align: left;
+    margin: 21px 0 31px;
+    line-height: 22px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #373939;
+}
+.pds-cockpit__badge {
+    margin: -2px 3px -2px 0;
+    order: 2;
+}
+
+.pds-cockpit__headlineWrapper {
+    padding-bottom: 0;
+}
+.pds-cockpit__ratingSummaryWrapper {
+    display: inline-block;
+    padding: 0 20px 0 0;
+    order: 1;
+    .starRatingWrapper {
+        font-size: 12px;
+        span {
+            letter-spacing: 4px !important;
+        }
+    }
+}
+.menu.pds-cockpit__colorSwitch {
+    display: flex !important;
+    flex-wrap: wrap;
+    margin: 6px 0 0;
+    li {
+        max-width: none;
+        -ms-flex: inherit;
+        flex: inherit;
+        a {
+            width: 45px;
+            height: 60px;
+            border-color: #fff !important;
+            box-sizing: border-box;
+            padding: 5px;
+            margin-right: 8px;
+            img {
+                width: 35px;
+                height: 50px;
+                border: none;
+            }
+        }
+    }
+    li.active {
+        a {
+            border-color: #D0D2D2 !important;
+            border-radius: 3px;
+        }
+    }
+}
+.align-self-top-for-large:not(.text-right) {
+    position: absolute;
+    & + div {
+        margin-bottom: 27px;
+        -ms-flex: 0 0 90%;
+        flex: 0 0 90%;
+        max-width: 90%;
+    }
+}
+.h-text-uppercase > strong {
+    font-family: "Roboto Condensed Bold";
+    font-weight: normal;
+}
+
+.align-self-top-for-large.text-right {
+    display: flex !important;
+    position: absolute;
+    right: 0;
+    padding-right: 30px;
+    a {
+        font-size: 13px;
+        color: #373939;
+        letter-spacing: 0.04em;
+        font-weight: normal;
+        text-decoration: none;
+        &::after {
+            content: "";
+            border-top: 1px solid #b2b2b2;
+            display: block;
+        }
+    }
+}
+.h-no-padding-right-large.small-9 {
+    -ms-flex: 0 0 40%;
+    flex: 0 0 40%;
+    max-width: 40%;
+    padding-left: 0;
+    padding-right: 24px;
+}
+.js-size-advisor-wrapper {
+    position: absolute;
+    right: 42px;
+}
+.column.small-9.large-10 {
+    padding-left: 0;
+}
+
+
+#size_advisor {
+    font-size: 0;
+    height: 17px;
+    text-align: right;
+    text-decoration: none;
+    &::before {
+        font-size: 13px;
+        // text-decoration: underline;
+        content: "Fit-Finder";
+        white-space: nowrap;
+    }
+    &::after {
+        content: "";
+        border-top: 1px solid #b2b2b2;
+        display: block;
+        margin-top: -4px;
+    }
+}
+
+.availability-matrix.reveal{
+    max-width: 100%;
+}
+.availability__item--color {
+    width: 10rem;
+}
+.availability__title {
+    padding-left: 10rem;
+}
+.js-price-container {
+    .price span {
+        font-weight: normal;
+    }
+    .price-info {
+        color: #6D7273;
+        font-size: 11px;
+        letter-spacing: 0.04em;
+        line-height: 14px;
+        .js-discountable {
+            b {
+                color: #6D7273;
+                font-weight: normal;
+            }
+        }
+        a {
+            color: #6D7273;
+        }
+    }
+    .price.price {
+        display: flex;
+        align-items: center;
+    }
+}
+#write_reviews {
+    display: flex;
+    padding: 0 30px;
+    > .h3 {
+        min-width: 25%;
+        padding-right: 141px;
+        &::after {
+            font-family: "Roboto",Helvetica,Arial,"Archer A",sans-serif;
+            font-weight: normal;
+            display: block;
+            content: "*Pflichtfelder";
+            text-transform: none;
+            font-size: 13px;
+            color: #969A9C;
+            padding-top: 10px;
+        }
+    }
+}
+#ratingForm {
+    padding: 5px 72px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    > .small-12 {
+        -ms-flex: 0 0 50%;
+        flex: 0 0 50%;
+        max-width: 50%;
+        font-size: 0;
+        &:nth-child(2) {
+            order: 3;
+        }
+        &:nth-child(3) {
+            order: 5;
+        }
+        &:nth-child(4) {
+            order: 2;
+        }
+        &:nth-child(5) {
+            order: 4;
+        }
+    }
+    > .row {
+        order: 1;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 30px;
+        &::after {
+            content: "*";
+            font-size: 13px;
+            color: #969A9C;
+            margin-top: -8px;
+        }
+    }
+    .text-right {
+        text-align: left;
+        padding-left: 0;
+        #send_review {
+            background: #525556;
+            border-radius: 3px;
+            height: 38px;
+            width: 112px;
+            font-family: "Roboto Condensed Bold";
+            font-weight: normal;
+            font-size: 14px;
+            border: none;
+        }
+    }
+    .rating__label::before {
+        font-size: 19px;
+    }
+    .rating__label {
+        padding-right: 10px;
+    }
+    span.rating {
+        + .h-xsmallOffset-bottom-inner {
+            display: none;
+        }
+        > .rating__label::before {
+            color: #B6B8B9;
+        }
+        &:not(:checked) > .rating__label:hover, 
+        &:not(:checked) > .rating__label:hover ~ .rating__label, 
+        & > .rating__input:checked + .rating__label:hover, 
+        & > .rating__input:checked ~ .rating__label:hover, 
+        & > .rating__input:checked ~ .rating__label:hover ~ .rating__label, 
+        & > .rating__label:hover ~ .rating__input:checked ~ .rating__label {
+            opacity: 1;
+            &::before {
+                color: #525556 !important;
+            }
+        }
+        & > .rating__input:checked ~ .rating__label::before {
+            color: #525556 !important;
+        }
+    }
+    
+    
+    input,
+    #rating_text {
+        border: 1px solid #D0D2D2;
+        font-size: 13px;
+    }
+    #rating_text {
+        height: 101px;
+    }
+    label {
+        padding-left: 0;
+    }
+}
+#addToWishlistButton {
+    margin: 0;
+    background-color: #F5F5F5;
+    border-bottom: none;
+    position: relative;
+    padding: 0;
+    height: 44px;
+
+    &::before {
+        content: "";
+        background: no-repeat center center #F5F5F5 url("data:image/svg+xml;charset=utf-8,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.5 16c-4.289-4.047-6.5-4.783-7-7.5C1.06 5.172 3.557 2 6 2.5 7.6 2 9 2.7 10 5c1-2.3 2.4-3 4-2.5 2.443-.5 4.94 2.672 4.5 6-.5 2.717-2.66 3.445-7 7.5L10 17.5 8.5 16z' stroke='%23393939' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
+        position: absolute;
+        left: 0;
+        top: -1px;
+        width: 100%;
+        height: 44px;
+        border-radius: 2px;
+        z-index: 1;
+    }
+    span {
+        display: none;
+    }
+    &:hover,
+    &:focus,
+    &.kk_gemerkt {
+        color: #959493;
+        &::before{
+            background: no-repeat center center #60b60b url("data:image/svg+xml;charset=utf-8,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.5 16c-4.289-4.047-6.5-4.783-7-7.5C1.06 5.172 3.557 2 6 2.5 7.6 2 9 2.7 10 5c1-2.3 2.4-3 4-2.5 2.443-.5 4.94 2.672 4.5 6-.5 2.717-2.66 3.445-7 7.5L10 17.5 8.5 16z' stroke='%23ffffff' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+    }
+    &.kk_gemerkt {
+        width: 110%;
+    }
+}
+button.mz-button.mz-button-close {
+    top: 12px !important;
+    right: 12px !important;
+}
+.button.success,
+.pds-cockpit__addProductWrapper {
+    margin: 0 !important;
+}
+.pds-cockpit__addProductWrapper  {
+    .yCmsContentSlot {
+        padding: 0;
+        -ms-flex: 0 0 80%;
+        flex: 0 0 80%;
+        max-width: 80%;
+        order: 1;
+        & + div {
+            -ms-flex: 0 0 20%;
+            flex: 0 0 20%;
+            max-width: 20%;
+            padding: 0;
+            margin-left: 0;
+            order: 2;
+        }
+    }
+}
+.button.success {
+    height: 44px;
+    background-color: #373939;
+    .pds-cockpit__addToCartButtonIconWrapper {
+        background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/shoppingbag.svg");
+        background-position: 0 .7rem;
+        font-family: "Roboto Condensed Bold";
+        font-weight: normal;
+        letter-spacing: 0.04em;
+        font-size: 16px;
+    }
+}
+.certificateTextWrapper {
+    line-height: 1.6;
+}
+.row.h-mediumOffset-bottom-outer,
+.pds-cockpit__sozialMediaShareWrapper {
+    display: none;
+}
+#addToWishlistForm {
+    margin-left: 14px;
+}
+
+.productInfoAccordion {
+    display: block !important;
+    padding: 0 116px 70px;
+    h4 {
+        margin-bottom: 30px;
+    }
+}
+
+.accordion-item {
+    > a {
+        display: none;
+    }
+    > .accordion-content {
+        border: none;
+    }
+}
+.kk_show {
+    display: block !important;
+}
+.js-product-info {
+    padding-top: 0 !important;
+    > div:not(#kk07_ecological) {
+        display: none !important;
+    }
+}
+#kk07_ecological {
+    margin-bottom: 0 !important;
+}
+.productInfoTop {
+    background-color: #fff;
+}
+#infoTabs {
+    display: flex;
+    min-height: 54px;
+    // height: 100%;
+    margin: 10px 0 88px 16px;
+    .flickity-viewport {
+        min-height: 54px;
+    }
+    .kk_carousel {
+        cursor: pointer;
+        padding: 10px 6px 10px 24px;
+        font-family: "Roboto Condensed Bold";
+        font-size: 18px;
+        white-space: nowrap;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        color: #969A9C;
+        height: 100%;
+        width: auto;
+        transition: color .25s ease-out;
+        &::after {
+            transition: border .25s ease-out;
+        }
+        &.kk_active {
+            color: #373939;
+            // text-decoration: underline;
+            &::after {
+                content: "";
+                border-top: 1px solid #6D7273;
+                display: block;
+                margin-top: 3px;
+            }
+        }
+    }
+    // .flickity-slider {
+    //     min-width: 200%;
+    // }
+    // div[data="Produktbeschreibung"] {
+    //     width: 171px;
+    // }
+    // div[data="Ausgezeichnete_Qualitaet"] {
+    //     width: 253px;
+    // }
+    // div[data="Material"] {
+    //     width: 101px;
+    // }
+    // div[data="Made_In"] {
+    //     width: 98px;
+    // }
+    // div[data="Pflege"] {
+    //     width: 89px;
+    // }
+}
+#Material {
+    .h-no-padding-left {
+        padding-left: .76923rem;
+    }
+    .shrink + .h-no-padding-left {
+        padding-left: 0;
+    }
+}
+.js-completeTheLookWrapper {
+    padding: 0 !important;
+}
+.row.h-largeOffset-bottom-outer.hide-for-small-only,
+.pds-completeTheLookWrapper > div {
+    display: block !important;
+    margin-bottom: 0 !important;
+}
+.js-jump-complete-look {
+    font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+    font-weight: normal !important;
+    height: 72px;
+    font-size: 14px;
+    margin: 31px auto 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 29px 0 0 43px !important;
+    text-align: left;
+    text-decoration: none !important;
+    &::after {
+        content: "";
+        border-top: 1px solid #6D7273;
+        display: block;
+        margin-top: 2px;
+    }
+}
+
+.kk_nachhaltig {
+    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/bg.jpg") no-repeat center center;
+    background-size: cover;
+    padding: 32px 52px 30px;
+    h4 {
+        font-size: 24px;
+        line-height: 100%;
+        margin-bottom: 30px;
+        span {
+            font-family: "Roboto Condensed",Helvetica,Arial,"Archer A",sans-serif;
+            font-weight: 100;
+        }
+    }
+    div {
+        padding: 0 0 16px 86px;
+        h5 {
+            font-family: "Roboto",Helvetica,Arial,"Archer A",sans-serif;
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 0.03em;
+            line-height: 120%;
+            text-transform: none;
+            white-space: nowrap;
+            b {
+                font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+                font-size: 16px;
+                line-height: 100%;
+                text-transform: uppercase;
+                letter-spacing: 0.03em;
+                padding-left: 11px;
+            }
+        }
+        p {
+            font-size: 11px;
+            line-height: 130%;
+            letter-spacing: 0.04em;
+        }
+    }
+    small {
+        padding: 57px 0 13px;
+        display: block;
+        font-size: 11px;
+        line-height: 150%;
+        opacity: 0.7;
+    }
+}
+.kk_water {
+    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-Wasser.svg") no-repeat 0 0;
+}
+.kk_cloud {
+    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-CO2.svg") no-repeat 0 0;
+}
+.kk_earth {
+    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-Blatt.svg") no-repeat 0 0;
+}
+.pds-completeTheLookWrapper {
+    display: none;
+}
+
+#kk_ctlwrapper {
+    .item__image {
+        padding: 24px 0 0 24px;
+        width: 43%;
+        min-height: 100%;
+    }
+    .flickity-prev-next-button.next {
+        right: 0;
+    }
+}
+.kk_ctl {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    .kk_subline {
+        font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+        font-size: 18px;
+        line-height: 120%;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        margin: 24px 24px 8px;
+        color: #969A9C;
+    }
+    img {
+        width: 38%;
+    }
+    .desc-price {
+        text-align: left;
+    }
+    .kk_rightlook {
+        width: 60%;
+        margin-left: 48px;
+    }
+    .kk_teaser {
+        margin-bottom: 61px;
+    }
+}
+#ecRecommendationsContainer.flickity-productslider.flickity-productslider .productitem {
+    padding: 0 0 0 24px;
+    width: 43%;
+    .desc-price {
+        height: 15px;
+        text-align: left;
+        .price.full.hide {
+            & + .price + .price + .price {
+                margin-left: -6px;
+            }
+        }
+    }
+}
+.flickity-viewport {
+    .desc-name {
+        font-size: 13px;
+        line-height: 130%;
+        letter-spacing: 0.04em;
+        text-align: left;
+        text-transform: none;
+    }
+    .price {
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 130%;
+    }
+    img {
+        width: 100%;
+    }
+}
+.kk_teaser,
+.recommendation-headline {
+    font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+    font-size: 32px;
+    line-height: 100%;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin: 4px 24px 24px !important;
+    text-align: left;
+}
+.recommendation-headline {
+    margin: 60px 10px 40px !important;
+    font-size: 0;
+    line-height: 40px;
+    &::after {
+        content: "NACHHALTIGE Produkte FÜR SIE";
+        font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+        font-size: 40px;
+    }
+}
+
+
+#kk_rating {
+    overflow: hidden;
+    margin-top: 30px;
+    background: #FAFAFA;
+    padding: 60px 0 70px;
+    font-size: 18px;
+    > div:first-child {
+        font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+        font-size: 28px;
+        letter-spacing: 0.03em;
+        padding-left: 72px;
+        margin: 0 auto;
+        max-width: 147.69231rem;
+    }
+    .rating--stars,
+    .color-medium-gray {
+        font-size: 19px;
+        letter-spacing: 10px;
+    }
+    .column.shrink {
+        .rating--stars,
+        .color-medium-gray {
+            font-size: 12px;
+            letter-spacing: 4px;
+        }
+    }
+    .flickity-page-dots {
+        bottom: -18px;
+        padding-right: 72px;
+        width: 96%;
+    }
+    .flickity-prev-next-button.previous {
+        cursor: pointer;
+        top: 54%;
+        left: 1%;
+        border: none;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    .flickity-prev-next-button.next {
+        cursor: pointer;
+        top: 54%;
+        right: 1%;
+        border: none;
+        border-radius: 50%;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+    .flickity-prev-next-button .arrow {
+        fill: #fff;
+    }
+}
+
+
+.js-product-references-wrapper + .small-collapse {
+    background: #FAFAFA;
+}
+.rating {
+    padding: 0 !important;
+}
+#kk_rating_gallery {
+    padding-left: 72px;
+    max-width: 147.69231rem;
+    margin-right: auto;
+    margin-left: auto;
+    .flickity-viewport {
+        overflow: visible;
+        transition: height 0.8s;
+    }
+    .js_ratingItem {
+        background: #FFFFFF;
+        // box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08), 0px 4px 24px rgba(0, 0, 0, 0.12);
+        border: 1px solid #EAEBEB;
+        // border-radius: 3px;
+        width: 45%;
+        min-height: 319px;
+        margin: 62px -1px 12px 0;
+        display: flex !important;
+        padding: 60px 72px;
+        // height: 100%;
+        flex-direction: column;
+        > .rating__title {
+            order: 4;
+            padding-top: 16px;
+            p {
+                margin: 0;
+            }
+        }
+        > .rating__headline {
+            order: 1;
+            display: flex;
+            flex-direction: row;
+            padding-bottom: 16px;
+            justify-content: flex-start;
+            align-items: flex-start;
+            // padding-left: 2.30769rem;
+            margin: 0;
+            .shrink {
+                order: 2;
+                margin-top: -2px;
+            }
+            .expanded {
+                order: 1;
+                font-size: 18px;
+                font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+            }
+        }
+        > .rating__text {
+            order: 2;
+            font-size: 13px;
+            line-height: 160%;
+            letter-spacing: 0.04em;
+            font-weight: normal;
+        }
+        > .rating__comment {
+            order: 3;
+            font-size: 13px;
+            line-height: 160%;
+            letter-spacing: 0.04em;
+
+        }
+        strong.title__name {
+            font-size: 13px;
+            line-height: 160%;
+            font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+            font-weight: normal;
+            padding-left: 24px;
+            background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/account.svg") no-repeat left center;
+        }
+        .title__date {
+            margin-left: 20px;
+            color: #969A9C;
+            font-size: 13px;
+            line-height: 160%;
+            letter-spacing: 0.04em;
+        }
+    }
+}
+
+.ratingAccordion {
+    margin-left: 0;
+    margin-right: 0;
+    background-color: #FAFAFA;
+    max-width: none;
+    .accordion-item {
+        &:first-child {
+            display: none !important;
+        }
+        &:last-child {
+            display: block !important;
+            -ms-flex: 0 0 100%;
+            flex: 0 0 100%;
+            // max-width: 100%;
+            padding-left: 72px;
+            // margin-left: 0;
+            background-color: #FAFAFA;
+
+            max-width: 147.69231rem;
+            margin: auto;
+        }
+    }
+}
+#mainNavPrgRedirectionForm {
+    background-color: #fff;
+}
+// #accordion-review-label {
+//     background-color: #FAFAFA;
+//     display: block !important;
+//     border-color: #EAEBEB;
+//     font-size: 18px;
+//     font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+//     line-height: 100%;
+//     letter-spacing: 0.03em;
+//     padding: 22px 24px 23px;
+//     text-transform: uppercase;
+//     margin: 0;
+//     &::before {
+//         display: none;
+//     }
+//     &::after {
+//         background: transparent url(https://www.hessnatur.com/_ui/responsive/common/images/icons/icon_arrow-bottom.png) 50% 50% no-repeat;
+//         content: "";
+//         width: 10px;
+//         height: 10px;
+//         display: inline-block;
+//         margin-left: 18px;
+//     }
+// }
+// .is-active #accordion-review-label::after {
+//     background-image: url(https://www.hessnatur.com/_ui/responsive/common/images/icons/icon_arrow-top.png);
+// }
+#accordion-review {
+    background-color: #FAFAFA;
+    padding-bottom: 100px;
+    border: none;
+}
+.js-color-name {
+    margin-left: 50px;
+    font-size: 13px;
+    text-transform: capitalize;
+}
+#Material {
+    .h-no-padding-left {
+        padding-left: .76923rem;
+    }
+    .shrink + .h-no-padding-left {
+        padding-left: 0;
+    }
+}
+#Ausgezeichnete_Qualitaet {
+    > .row {
+        flex-direction: column;
+        > .columns {
+            margin-bottom: 15px;
+        }
+    }
+}
+.footerWrapper:not(.h-offset-top-inner) {
+    // background: #FAFAFA;
+    & + .hide-for-print hr {
+        display: none;
+    }
+}
+.footerBenefitWrapper {
+    padding-top: 2.61538rem;
+}
+#Produktbeschreibung {
+    > .row {
+        align-items: flex-start;
+    }
+    .js_shortenDomElement {
+        display: flex;
+        flex-direction: column;
+        -ms-flex: 0 0 40%;
+        flex: 0 0 40%;
+        max-width: 40%;
+        margin-right: 10%;
+    }
+    img {
+        width: 50%;
+        margin: -140px 0 -95px;
+        max-width: 500px;
+    }
+    .pds-productDescription__text {
+        margin-bottom: 30px;
+    }
+    .cockpit__shortDescription li {
+        line-height: 21px;
+        margin-bottom: 6px;
+    }
+}
+#Pflege {
+    border: none;
+}
+.large-2.columns.h-text-uppercase {
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%;
+    & + .column.small-9.large-10 {
+        padding-left: 0;
+        -ms-flex: 0 0 75%;
+        flex: 0 0 75%;
+        max-width: 75%;
+    }
+}
+.kk_moreinfos {
+    font-size: 13px;
+    & + .js-pds-more-details {
+        display: none;
+    }
+}
+.kk07_header {
+    display: none !important;
+}
