@@ -216,7 +216,8 @@
     padding: 10px 72px;
 
     > .h-smallOffset-bottom-outer {
-        margin-top: 12px;
+        // margin-top: 12px;
+        margin-top: 4px;
         margin-bottom: 0 !important;
         min-height: 30px;
     }
@@ -861,14 +862,32 @@ button.mz-button.mz-button-close {
         font-size: 40px;
     }
 }
-
+.kk_form_headline{
+    display: block;
+    width: 100%;
+    text-align: center;
+}
 
 #kk_rating {
     overflow: hidden;
     margin-top: 30px;
-    background: #FAFAFA;
+    // background: #FAFAFA;
+    background: #FFFFFF;
     padding: 60px 0 70px;
     font-size: 18px;
+    position: relative;
+
+
+    &::before {
+        content: "";
+        position: absolute;
+        height: 50%;
+        width: 100%;
+        background-color:#F5F5F5;
+        top: 50%;
+        left: 0px;
+    }
+
     > div:first-child {
         font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
         font-size: 28px;
@@ -876,6 +895,8 @@ button.mz-button.mz-button-close {
         padding-left: 72px;
         margin: 0 auto;
         max-width: 147.69231rem;
+        text-align: center;
+        margin-bottom: 40px;
     }
     .rating--stars,
     .color-medium-gray {
@@ -927,6 +948,7 @@ button.mz-button.mz-button-close {
     max-width: 147.69231rem;
     margin-right: auto;
     margin-left: auto;
+
     .flickity-viewport {
         overflow: visible;
         transition: height 0.8s;
@@ -936,13 +958,20 @@ button.mz-button.mz-button-close {
         // box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08), 0px 4px 24px rgba(0, 0, 0, 0.12);
         border: 1px solid #EAEBEB;
         // border-radius: 3px;
-        width: 45%;
+        //width: 45%;
+        width: 360px;
         min-height: 319px;
-        margin: 62px -1px 12px 0;
+        // margin: 62px -1px 12px 0;
+        margin: 12px 15px 12px 15px;
+        box-shadow: 0px 0px 5px 4px #EFEFEF;
         display: flex !important;
-        padding: 60px 72px;
+        padding: 30px 30px;
         // height: 100%;
         flex-direction: column;
+
+        max-height: 320px;
+        overflow-y: auto;
+
         > .rating__title {
             order: 4;
             padding-top: 16px;
@@ -1004,7 +1033,8 @@ button.mz-button.mz-button-close {
 .ratingAccordion {
     margin-left: 0;
     margin-right: 0;
-    background-color: #FAFAFA;
+    // background-color: #FAFAFA;
+    background-color: #F5F5F5;
     max-width: none;
     .accordion-item {
         &:first-child {
@@ -1017,7 +1047,7 @@ button.mz-button.mz-button-close {
             // max-width: 100%;
             padding-left: 72px;
             // margin-left: 0;
-            background-color: #FAFAFA;
+            background-color: #F5F5F5;
 
             max-width: 147.69231rem;
             margin: auto;
@@ -1054,7 +1084,7 @@ button.mz-button.mz-button-close {
 //     background-image: url(https://www.hessnatur.com/_ui/responsive/common/images/icons/icon_arrow-top.png);
 // }
 #accordion-review {
-    background-color: #FAFAFA;
+    background-color: #F5F5F5;
     padding-bottom: 100px;
     border: none;
 }
@@ -1107,10 +1137,15 @@ button.mz-button.mz-button-close {
     }
     .pds-productDescription__text {
         margin-bottom: 30px;
+        letter-spacing: 0.5px;
     }
     .cockpit__shortDescription li {
         line-height: 21px;
         margin-bottom: 6px;
+    }
+    ul.pds-cockpit__shortDescription li{
+        letter-spacing: 0.5px;
+        margin-bottom: 14px;
     }
 }
 #Pflege {

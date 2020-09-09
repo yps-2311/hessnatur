@@ -694,7 +694,7 @@
                 ratingGal.insertAdjacentElement('beforeend', thisComment);
             }
 
-            initGallery('#kk_rating_gallery', true, ratingLenght > 2, 0, ratingLenght > 2);
+            initGallery('#kk_rating_gallery', true, ratingLenght > 2, 0, false); //ratingLenght > 2
 
             // Headline
             WATO.elem('#accordion-rating-label', function(accordionRatingLabel){
@@ -734,6 +734,18 @@
                     // console.log('Error: ', error);
                 }
             });
+        }
+    });
+
+    // Bewertungsformular
+    WATO.elem('#write_reviews > div.h3', function(ratingFormHeadline){
+        if(ratingFormHeadline){
+
+            ratingFormHeadline = ratingFormHeadline[0];
+
+            addClass(ratingFormHeadline, 'kk_form_headline');
+            
+            WATO.qs('#write_reviews').insertAdjacentElement('beforebegin', ratingFormHeadline);
         }
     });
 
