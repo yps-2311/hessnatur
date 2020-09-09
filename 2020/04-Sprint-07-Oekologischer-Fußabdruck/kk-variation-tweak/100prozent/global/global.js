@@ -1,6 +1,6 @@
 /*
  * !LOAD WATO OBJECT
- * @codekit-prepend "../vendor/WATO.js";
+ * @codekit-prepend "../../vendor/WATO.js";
  * 
  * OPTIONAL
  * @ codekit-append "pds.js"; 
@@ -10,7 +10,7 @@
 (function (WATO, _w) {
 	"use strict";
 
-	WATO.prototype.KK_AB07_BOX = function (ecoData, pds) {
+	WATO.prototype.KK_AB07_BOX = function (ecoData) {
 
 		function formatValue(value) {
 			var toRound = value > 999 ? 10 : 100,
@@ -27,33 +27,8 @@
 				['earth', earthValue + ' m²', 'mehr <br/>gesunde Erde', earthValue + ' m² mehr gesunde Erde durch <br/>Vermeidung von Pestiziden, <br/>künstlichen Düngemitteln und <br/>Entlaubungsmitteln.']
 			];
 
-		var savingsMarkup = '';
-
-		for (var i = 0; i < savings.length; i++) {
-			savingsMarkup += '<li><i class="kk07_eco__icon ' + savings[i][0] + '"></i><strong>' + savings[i][1] + '</strong>' + savings[i][2] + '</li>';
-		}
-
 		return {
 			savings: savings,
-			markup: '<div class="row kk07_header">' +
-				'<div class="column">' +
-				'<div>' +
-				'<div class="kk07_headline">' +
-				'<span>' +
-				'Ökologische Ersparnis' +
-				(pds ? '' : '<br/>durch diesen Einkauf') +
-				'</span>' +
-				(pds ? 'bei der Herstellung dieses Artikels.' : 'Durch Ihren Einkauf helfen Sie uns die Welt ein Stück besser zu machen.') +
-				'</div>' +
-				'<div>' +
-				'<ul>' +
-				savingsMarkup +
-				'</ul>' +
-				(pds ? '<a href="#kk07_ecological">mehr Infos</a>' : '') +
-				'</div>' +
-				'</div>' +
-				'</div>' +
-				'</div>'
 		};
 	};
 
@@ -101,27 +76,27 @@
 					window.localStorage.setItem('kk_eco_products', JSON.stringify(productInfo));
 
 
-					_self.elem('.pds-cockpit__wrapper .align-justify', function (headerElem) {
-						if (headerElem) {
-							headerElem[0].insertAdjacentHTML('afterend', boxInfos.markup);
-						}
-					});
+					// _self.elem('.pds-cockpit__wrapper .align-justify', function (headerElem) {
+					// 	if (headerElem) {
+					// 		headerElem[0].insertAdjacentHTML('afterend', boxInfos.markup);
+					// 	}
+					// });
 
 
-					_self.elem('.kk07_header', function (headerElement) {
-						if (headerElement) {
-							headerElement = headerElement[0];
-							headerElement.addEventListener('click', function () {
-								pushGoal('kk07_click_element');
-							});
+					// _self.elem('.kk07_header', function(headerElement){
+					// 	if(headerElement){
+					// 		headerElement = headerElement[0];
+					// 		headerElement.addEventListener('click', function () {
+					// 			pushGoal('kk07_click_element');
+					// 		});
 
-							_self.qs('a', headerElement).addEventListener('click', function (e) {
-								e.preventDefault();
-								pushGoal('kk07_click_more_info');
-								jQuery("html, body").animate({ scrollTop: jQuery('#kk07_ecological').offset().top - 75 });
-							});
-						}
-					});
+					// 		_self.qs('a', headerElement).addEventListener('click', function (e) {
+					// 			e.preventDefault();
+					// 			pushGoal('kk07_click_more_info');
+					// 			jQuery("html, body").animate({ scrollTop: jQuery('#kk07_ecological').offset().top - 75 });
+					// 		});
+					// 	}
+					// });
 					// var headerElement = _self.qs('.kk07_header');
 					// headerElement.addEventListener('click', function () {
 					// 	pushGoal('kk07_click_element');

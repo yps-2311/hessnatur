@@ -19,6 +19,7 @@
         if (eco_data[id] && new Date().getTime() - eco_data[id].timestamp < 86400000) {
             window.kk07_ecoData = eco_data[id];
             window.iridion.push(['run', '945287385013']);
+            window.iridion.push(['run', '975787791526']);
         } else {
             WATO.xhr_get('https://products.hessnatur.com/products/' + id, function (data) {
                 if (data) {
@@ -30,7 +31,7 @@
                             window.kk07_ecoData = eco_data[id] = Object.assign(ecoData, { timestamp: new Date().getTime() });
                             window.localStorage.setItem('kk_ecological', JSON.stringify(eco_data));
                             window.iridion.push(['run', '945287385013']);
-                            // window.iridion.push(['run', '952572184314']);
+                            window.iridion.push(['run', '975787791526']);
                         }
                     }
                 }
