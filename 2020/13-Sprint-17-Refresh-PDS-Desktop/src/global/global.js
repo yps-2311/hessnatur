@@ -18,6 +18,8 @@
         }else{
             window.iridion.push(['goal', key]);
         }
+
+        console.log('goalPush', key, sendOnNextPageView);
     };
 
     WATO.prototype.sprint17goals = function(variante){

@@ -6,6 +6,13 @@
 
 /* DEFINE VARIATION CSS */
 
+
+
+/* Bugfix Vortest*/
+.kk07B #kk07_ecological{
+    margin-bottom: 72px !important;
+}
+
 .pds-productImage__mzThumbsWrapper,
 .pds-productImage__mzKeyVisualWrapper  {
     display: none;
@@ -16,8 +23,14 @@
     width: 100%;
     overflow: hidden;
 
+    &:not(.flickity-enabled){
+        max-height: 570px;
+        opacity: 0.2;
+    }
+
     .flickity-slider {
         position: relative !important;
+        // overflow: hidden;
     }
     .carousel-cell {
         width: 50%;
@@ -217,7 +230,7 @@
 
     > .h-smallOffset-bottom-outer {
         // margin-top: 12px;
-        margin-top: 4px;
+        margin-top: 0px;
         margin-bottom: 0 !important;
         min-height: 30px;
     }
@@ -425,43 +438,71 @@ h1.pds-cockpit__productName {
     }
 }
 #ratingForm {
-    padding: 5px 72px 0 0;
+    padding: 19px 0px 0 0;
     display: flex;
     flex-wrap: wrap;
+    max-width: 75%;
+    margin: 0 auto;
+
     > .small-12 {
         -ms-flex: 0 0 50%;
         flex: 0 0 50%;
         max-width: 50%;
         font-size: 0;
+        &:nth-child(1) {
+            order: 1;
+        }
         &:nth-child(2) {
             order: 3;
+
+            > .row {
+                max-width: 100%;
+                // margin-bottom: 30px;
+                // padding-top: 30px;
+                position: relative;
+                margin-top: 32px;
+
+                &::after{
+                    content: "* Pflichtfelder";
+                    font-size: 13px;
+                    color: #969A9C;
+                    margin-top: -8px;
+                    position: absolute;
+                    right: 0px;
+                    top: 7px;
+                }
+                > span{
+                    display: flex;
+
+                    &::after {
+                        content: "*";
+                        font-size: 13px;
+                        color: #969A9C;
+                        margin-top: -8px;
+                    }
+                }
+                    
+            }
         }
         &:nth-child(3) {
-            order: 5;
-        }
-        &:nth-child(4) {
             order: 2;
         }
-        &:nth-child(5) {
+        &:nth-child(4) {
             order: 4;
         }
-    }
-    > .row {
-        order: 1;
-        -ms-flex: 0 0 100%;
-        flex: 0 0 100%;
-        max-width: 100%;
-        margin-bottom: 30px;
-        &::after {
-            content: "*";
-            font-size: 13px;
-            color: #969A9C;
-            margin-top: -8px;
+        &:nth-child(5) {
+            order: 5;
+            flex: 0 0 100%;
+            max-width: 100%;
+            text-align: center;
+            padding-top: 30px;
         }
     }
+
     .text-right {
         text-align: left;
         padding-left: 0;
+
         #send_review {
             background: #525556;
             border-radius: 3px;
@@ -513,6 +554,21 @@ h1.pds-cockpit__productName {
     }
     label {
         padding-left: 0;
+    }
+
+   input[type="text"]:focus,
+   textarea:focus {
+        outline: none;
+        border: 1px solid #525556 !important;
+        background-color: #FFFFFF;
+        box-shadow: none;
+        transition: all 0s ease 0s;
+
+        &::-webkit-input-placeholder,
+        &::-moz-placeholder,
+        &::placeholder{
+            color: #525556 !important;
+        }
     }
 }
 #addToWishlistButton {
@@ -688,6 +744,10 @@ button.mz-button.mz-button-close {
     .shrink + .h-no-padding-left {
         padding-left: 0;
     }
+
+    > h4:nth-child(3){
+        margin-top: 60px;
+    }
 }
 .js-completeTheLookWrapper {
     padding: 0 !important;
@@ -776,6 +836,7 @@ button.mz-button.mz-button-close {
 }
 
 #kk_ctlwrapper {
+    
     .item__image {
         padding: 24px 0 0 24px;
         width: 43%;
@@ -783,6 +844,11 @@ button.mz-button.mz-button-close {
     }
     .flickity-prev-next-button.next {
         right: 0;
+    }
+    &:not(.flickity-enabled){
+        max-height: 530px;
+        opacity: 0.2;
+        overflow-y: hidden;
     }
 }
 .kk_ctl {
@@ -866,6 +932,7 @@ button.mz-button.mz-button-close {
     display: block;
     width: 100%;
     text-align: center;
+    font-size: 28px;
 }
 
 #kk_rating {
@@ -891,12 +958,14 @@ button.mz-button.mz-button-close {
     > div:first-child {
         font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
         font-size: 28px;
-        letter-spacing: 0.03em;
+        letter-spacing: .03em;
         padding-left: 72px;
         margin: 0 auto;
         max-width: 147.69231rem;
         text-align: center;
         margin-bottom: 40px;
+        line-height: 38px;
+        text-transform: uppercase;
     }
     .rating--stars,
     .color-medium-gray {
@@ -948,6 +1017,11 @@ button.mz-button.mz-button-close {
     max-width: 147.69231rem;
     margin-right: auto;
     margin-left: auto;
+
+    &:not(.flickity-enabled){
+        max-height: 350px;
+        opacity: 0.2;
+    }
 
     .flickity-viewport {
         overflow: visible;
@@ -1137,14 +1211,14 @@ button.mz-button.mz-button-close {
     }
     .pds-productDescription__text {
         margin-bottom: 30px;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.04em;
     }
     .cockpit__shortDescription li {
         line-height: 21px;
         margin-bottom: 6px;
     }
     ul.pds-cockpit__shortDescription li{
-        letter-spacing: 0.5px;
+        letter-spacing: 0.04em;
         margin-bottom: 14px;
     }
 }

@@ -41,6 +41,13 @@
         }
     }
 
+    function setErrorTracking(key, error){
+        if(document.cookie.indexOf('kk=testpreview') !== -1){
+            console.log(error);
+        }
+        WATO.goalPush(key);
+    }
+
     WATO.sprint17goals(1);
 
     WATO.elem(function(){
@@ -209,8 +216,9 @@
                 '</div>';
     }
 
+    // todo: Prüfen auf colorID bei Farbwechsel: colorID === neue Farbe?
     function buildHeader(colorID) {
-        
+       
         // Gallerie und Buybox
         WATO.elem('.pds__imageAndCockpitWrapper', function(mainWrapper){
             if(mainWrapper){
@@ -230,54 +238,147 @@
                             removeItem(WATO.qs(".kk_slider", mainWrapper));
                             removeItem(WATO.qs(".kk_carouselnav", mainWrapper));
 
-                            var thumbnails = WATO.qsa(".show-for-medium-only .thumbnailContainer.js_thumbnailContainer", mainWrapper),
+                            var thumbnails = WATO.qsa(".show-for-medium-only .thumbnailContainer.js_thumbnailContainer:not(.kk-thumb)", mainWrapper),
                                 markupHTML = "",
-                                markupHTMLNavi = "";
+                                markupHTMLNavi = "",
+                                initFlickity = function(){
+                                    // Auf jQuery und Gallerie Funktion warten
+                                    WATO.elem(function(){
+                                        return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
+                                    }, function(){
+                                        try {
 
+                                            // Slider Options
+                                            var sliderOptions = {
+                                                cellAlign: 'left',
+                                                cellSelector: '.carousel-cell',
+                                                draggable: false,
+                                                wrapAround: true,
+                                                pageDots: false
+                                            },
+                                            thumbPics = thumbnails.length;
+                                                    
+                                            if(thumbPics <= 2){
+                                                // Bei einem oder zwei Produktbilder die
+                                                // Interaktion mit der Gallerie deaktivieren
+                                                sliderOptions.prevNextButtons = false;
+                                                sliderOptions.pageDots = false;
+
+                                                if(thumbPics === 1){
+                                                    sliderOptions.cellAlign = 'center';
+                                                }
+                                            }
+
+                                            // Init Main-Slider
+                                            jQuery('.kk_slider').flickity(sliderOptions);
+
+                                            // Fix für Chrome
+                                            setTimeout(function(){
+                                                jQuery(".kk_slider .flickity-viewport").css("height", sliderHeight(0.4398)+"px");
+                                            }, 300);
+
+                                            // Thumb-Navigation init
+                                            var sliderNavi = jQuery('.kk_carouselnav');
+                                            if(thumbPics > 2){
+                                                sliderNavi.flickity({
+                                                    asNavFor: '.kk_slider',
+                                                    cellAlign: 'left',
+                                                    contain: true,
+                                                    pageDots: false,
+                                                    prevNextButtons: false
+                                                });
+                                            }else{
+                                                sliderNavi.hide();
+                                            }
+
+                                        } catch (error) {
+                                            setErrorTracking("wa_setup_monitoring1", error);
+                                        }
+                                    });
+                                };
+
+                                // Timing Problem. Thumbnails werden nachgeladen. Daher helper-Klasse kk-thumb setzen und wenn diese null ist wurden neue Slider-Elemente eingefügt.
                             if(colorID){
-                                // Wird aus window.ACC.productDetail.galleryImages gebaut
-                                colorID = parseInt(colorID);
 
-                                var galleryImgs = window.ACC.productDetail.galleryImages;
-
-                                for (var j = 0; j < galleryImgs.length; j++) {
-                                    var thisProduct = galleryImgs[j];
-
-                                    if(parseInt(thisProduct.product.color) === colorID){
-
-                                        var picURL = thisProduct.zoom.url;
-
-                                        markupHTML += 
+                                WATO.elem(function(){
+                                    thumbnails = WATO.qsa(".show-for-medium-only .thumbnailContainer.js_thumbnailContainer:not(.kk-thumb)", mainWrapper);
+    
+                                    return thumbnails.length > 0 && typeof window.ACC !== "undefined" && typeof window.ACC.productDetail !== "undefined" && typeof window.ACC.productDetail.galleryImages !== "undefined" && window.ACC.productDetail.galleryImages.length > 0;
+    
+                                }, function(fnCallback){
+                                    if(fnCallback){
+                                        
+                                        for (var i = 0; i < thumbnails.length; i++) {
+                                            var productPicURL = thumbnails[i].getAttribute("data-image");
+        
+                                            addClass(thumbnails[i], 'kk-thumb');
+        
+                                            markupHTML += 
                                             '<div class="carousel-cell">'+
-                                                '<a href="'+picURL+'" data-options="zoomPosition: right" class="MagicZoom">'+
-                                                    '<img src="'+picURL.replace("_zoom/","_reco/")+'">'+
+                                                '<a href="'+productPicURL.replace("_main/","_zoom/")+'" data-options="zoomPosition: right;" class="MagicZoom">'+ //zoomWidth:600px; zoomHeight:1000px; 
+                                                    '<img src="'+productPicURL+'">'+ // .replace("_main/","_reco/")
                                                 '</a>'+
                                             '</div>';
-
-                                        markupHTMLNavi += 
+        
+                                            markupHTMLNavi += 
                                             '<div class="carousel-cell">'+
-                                                '<img src="'+picURL.replace("_zoom/","_thumb/")+'">'+
+                                                '<img src="'+productPicURL.replace("_main/","_thumb/")+'">'+
                                             '</div>';
-
-                                        // Produktbild in den Produktbeschreibungen wird beim Farbwechsel angepasst
-                                        if(picURL.indexOf("_7") !== -1){
-                                            var existingProdinfoImg = WATO.qs("#Produktbeschreibung > .row > img");
-                                            if(existingProdinfoImg){
-                                                existingProdinfoImg.setAttribute('src', picURL.replace("_zoom/","_main/"));
-                                            }
                                         }
+
+                                        // Wird aus window.ACC.productDetail.galleryImages gebaut
+                                        // colorID = parseInt(colorID);
+
+                                        // var galleryImgs = window.ACC.productDetail.galleryImages;
+
+                                        // for (var j = 0; j < galleryImgs.length; j++) {
+                                        //     var thisProduct = galleryImgs[j];
+
+                                        //     // addClass(thumbnails[i], 'kk-thumb');
+
+                                        //     console.log('thisProduct', thisProduct);
+
+                                        //     if(parseInt(thisProduct.product.color) === colorID){
+
+                                        //         var picURL = thisProduct.zoom.url;
+
+                                        //         markupHTML += 
+                                        //             '<div class="carousel-cell">'+
+                                        //                 '<a href="'+picURL+'" data-options="zoomPosition: right" class="MagicZoom">'+
+                                        //                     '<img src="'+picURL.replace("_zoom/","_reco/")+'">'+
+                                        //                 '</a>'+
+                                        //             '</div>';
+
+                                        //         markupHTMLNavi += 
+                                        //             '<div class="carousel-cell">'+
+                                        //                 '<img src="'+picURL.replace("_zoom/","_thumb/")+'">'+
+                                        //             '</div>';
+
+                                        //         // Produktbild in den Produktbeschreibungen wird beim Farbwechsel angepasst
+                                        //         if(picURL.indexOf("_7") !== -1){
+                                        //             var existingProdinfoImg = WATO.qs("#Produktbeschreibung > .row > img");
+                                        //             if(existingProdinfoImg){
+                                        //                 existingProdinfoImg.setAttribute('src', picURL.replace("_zoom/","_main/"));
+                                        //             }
+                                        //         }
+                                        //     }
+                                        // }
+                                        
+                                        // Die Main-Galerie neu erstellen
+                                        WATO.qs(".kk_sliderWrapper").insertAdjacentHTML('afterbegin', getNewCarousel(markupHTML, markupHTMLNavi));
+
+                                        initFlickity();
                                     }
-                                }
-                                
-                                // Die Main-Galerie neu erstellen
-                                WATO.qs(".kk_sliderWrapper").insertAdjacentHTML('afterbegin', getNewCarousel(markupHTML, markupHTMLNavi));
+                                });
 
-                            }else{
+                            } else {
+
                                 // wird aus Original-Slider gebaut
-
                                 // Neue Galerie Markup wird initial gebaut
                                 for (var i = 0; i < thumbnails.length; i++) {
                                     var productPicURL = thumbnails[i].getAttribute("data-image");
+
+                                    addClass(thumbnails[i], 'kk-thumb');
 
                                     markupHTML += 
                                     '<div class="carousel-cell">'+
@@ -298,68 +399,14 @@
                                         getNewCarousel(markupHTML, markupHTMLNavi)+
                                     '</div>'
                                 );
+                                
+                                initFlickity();
                             }
-
-                            // Auf jQuery und Gallerie Funktion warten
-                            WATO.elem(function(){
-                                return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
-                            }, function(){
-                                try {
-                                    // Slider Options
-                                    var sliderOptions = {
-                                        cellAlign: 'left',
-                                        cellSelector: '.carousel-cell',
-                                        draggable: false,
-                                        wrapAround: true,
-                                        pageDots: false
-                                    },
-                                    thumbPics = thumbnails.length;
-                                    
-                                    if(thumbPics <= 2){
-                                        // Bei einem oder zwei Produktbilder die
-                                        // Interaktion mit der Gallerie deaktivieren
-                                        sliderOptions.prevNextButtons = false;
-                                        sliderOptions.pageDots = false;
-        
-                                        if(thumbPics === 1){
-                                            sliderOptions.cellAlign = 'center';
-                                        }
-                                    }
-
-                                    // Init Main-Slider
-                                    jQuery('.kk_slider').flickity(sliderOptions);
-
-                                    // Fix für Chrome
-                                    setTimeout(function(){
-                                        jQuery(".kk_slider .flickity-viewport").css("height", sliderHeight(0.4398)+"px");
-                                    }, 300);
-
-                                    // Thumb-Navigation init
-                                    var sliderNavi = jQuery('.kk_carouselnav');
-                                    if(thumbPics > 2){
-                                        sliderNavi.flickity({
-                                            asNavFor: '.kk_slider',
-                                            cellAlign: 'left',
-                                            contain: true,
-                                            pageDots: false,
-                                            prevNextButtons: false
-                                        });
-                                    }else{
-                                        sliderNavi.hide();
-                                    }
-        
-                                } catch (error) {
-                                    // console.log(error);
-                                    WATO.goalPush("wa_setup_monitoring");
-                                }
-                            });
-
                         }
                     });
 
                 } catch (error) {
-                    // console.log(error);
-                    WATO.goalPush("wa_setup_monitoring");
+                    setErrorTracking("wa_setup_monitoring", error);
                 }
             }
         });
@@ -430,12 +477,31 @@
                     WATO.qs(".kk_carousel:first-child", infoTabs).insertAdjacentHTML('afterend', 
                         '<div class="kk_carousel'+(i===0 ? " kk_active":'')+'" data-index="'+i+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
                     );
-                }else{
+                } else {
                     // Alle Tabs werden eingebaut nur bei Pflege kann es sein dass es keine Inhalte gibt, in dem Fall wird es nicht eingebaut
                     if(!(prodContent.getAttribute('id') === "Pflege" && WATO.qsa("#Pflege li").length === 0)){
-                        infoTabs.insertAdjacentHTML('beforeend', 
-                            '<div class="kk_carousel'+(i===0 ? " kk_active":'')+'" data-index="'+i+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
-                        );
+
+                        // Material und Pflege sollen zusammengefasst dargestellt werden
+                        if(prodContent.getAttribute('id') === "Pflege"){
+                            var tabMaterial = WATO.qs('.kk_carousel[data="Material"]'),
+                                contentMaterial = WATO.qs('#Material');
+
+                            if(tabMaterial && contentMaterial){
+                                tabMaterial.innerHTML = 'Material und Pflege';
+
+                                contentMaterial.insertAdjacentHTML('beforeend', prodContent.innerHTML);
+
+                            } else {
+                                infoTabs.insertAdjacentHTML('beforeend', 
+                                    '<div class="kk_carousel'+(i===0 ? " kk_active":'')+'" data-index="'+i+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
+                                );
+                            }
+                        } else {
+
+                            infoTabs.insertAdjacentHTML('beforeend', 
+                                '<div class="kk_carousel'+(i===0 ? " kk_active":'')+'" data-index="'+i+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
+                            );
+                        }
                     }
                 }
                 
@@ -520,8 +586,7 @@
                             thisColorLink.addEventListener('click', changeColor);
                         }
                     } catch (error) {
-                        // WATO.goalPush("wa_setup_monitoring");
-                        console.log('Error: ', error);
+                        setErrorTracking("wa_setup_monitoring", error);
                     }
                 }
             });
@@ -529,7 +594,7 @@
     });
 
     function initGallery(galID, adaptiveHeight, prevNextButn, factorForHeight, dots) {
-        
+      
         WATO.elem(function(){
             return typeof $ !== "undefined";
         }, function(isjq){
@@ -540,7 +605,7 @@
                     console.log('galID: ', galID);
                     console.log('!!factorForHeight: ', !!factorForHeight);
 
-                    $(galID).flickity({
+                    var settingsRatingGallery = {
                         // options
                         draggable: true,
                         cellAlign: 'left',
@@ -550,7 +615,21 @@
                         percentPosition: true,
                         setGallerySize: true,
                         adaptiveHeight: !!adaptiveHeight
-                    });
+                    };
+
+                    // Wenn zu wenig Elemente vorhanden sind, wird die Darstellung zentriert
+                    if(galID === "#kk_rating_gallery" && prevNextButn === false){
+                        settingsRatingGallery.cellAlign = 'center';
+                    }
+                    // Complete the look muss ein Index bekommen, da sonst ein Problem entsteht
+                    if(galID === "#kk_ctlwrapper" && prevNextButn){
+                        settingsRatingGallery.initialIndex = 0;
+                        settingsRatingGallery.pageDots = true;
+                        settingsRatingGallery.groupCells = 2;
+                    }
+                    
+
+                    $(galID).flickity(settingsRatingGallery);
 
                     if(galID === "#kk_ctlwrapper"){
                         // Fix für Chrome
@@ -560,7 +639,7 @@
                     }
                     
                 } catch (error) {
-                    console.log('Error: ', error);
+                    setErrorTracking("wa_setup_monitoring1", error);
                 }
                 
             }
@@ -651,8 +730,7 @@
                             }
                         }
                     } catch (error) {
-                        WATO.goalPush("wa_setup_monitoring");
-                        // console.log('Error: ', error);
+                        setErrorTracking("wa_setup_monitoring", error);
                     }
                 });
             }
@@ -689,7 +767,10 @@
                 });
 
                 var author = WATO.qs(".title__name", thisComment);
-                author.innerHTML = author.innerHTML.replace(",", "");
+
+                if(author){
+                    author.innerHTML = author.innerHTML.replace(",", "");
+                }
 
                 ratingGal.insertAdjacentElement('beforeend', thisComment);
             }
@@ -708,10 +789,10 @@
             setPlaceholder('#rating_text', 'Bewertungstext');
             setPlaceholder('#rating_name', 'Ihr Name');
 
-
+            // Bewertung (Sterne) hinter #rating_name verschieben
             WATO.elem('#rating_name', function(rating_name){
                 if(rating_name){
-                    rating_name[0].insertAdjacentElement('afterend', WATO.qs("#send_review").parentNode);
+                    rating_name[0].insertAdjacentElement('afterend', WATO.qs('.row.column.small-12'));
                 }
             });
         }
@@ -729,9 +810,15 @@
                 WATO.goalPush("klick_produktdetails");
 
                 try {
-                    window.ACC.global.scrollToElement($("#infoTabs"));
+                    // window.ACC.global.scrollToElement();
+
+                    $('html, body').animate(
+                    {
+                        scrollTop: $("#infoTabs").offset().top - 154
+                    }, 500);
+
                 } catch (error) {
-                    // console.log('Error: ', error);
+                    setErrorTracking("wa_setup_monitoring", error);
                 }
             });
         }
