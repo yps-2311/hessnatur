@@ -1,8 +1,3 @@
-# Prototyp Versandkostenfreigrenze
-- Gutscheinseite ausschließen (https://www.hessnatur.com/de/geschenkgutschein)
-- Gutscheine werden noch geliefert
-- WK Wert über den WK Layer beziehen
-
 ## cartData
 ```javascript
 var origOpenSearch = XMLHttpRequest.prototype.open;
