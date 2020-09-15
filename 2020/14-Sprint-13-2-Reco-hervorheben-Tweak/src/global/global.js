@@ -29,12 +29,13 @@
     if (!Element.prototype.closest) {
     Element.prototype.closest = function(s) {
         var el = this;
+    
         do {
-            if (Element.prototype.matches.call(el, s)) return el;
-                el = el.parentElement || el.parentNode;
-            } while (el !== null && el.nodeType === 1);
-            return null;
-        };
+        if (Element.prototype.matches.call(el, s)) return el;
+        el = el.parentElement || el.parentNode;
+        } while (el !== null && el.nodeType === 1);
+        return null;
+    };
     }
 
     var windowHeight = (window.innerHeight || document.documentElement.clientHeight),
@@ -57,7 +58,6 @@
             return false;
         }
     }
-    
 
     function getProdID(fromString) {
         try {
@@ -73,7 +73,6 @@
             isInDrag = false,
             templs = window.localStorage.getItem("kk_recoproduct"),
             lsReco = (templs ? templs.split(',') : false) || [];
-            console.log('lsReco: ', lsReco);
 
         _self.elem('#ecRecommendationsContainer .productitem', function(recoItem){
             if(recoItem){
@@ -135,11 +134,10 @@
         });
 
         _self.ajax("/cart/add", function(){
-            if(lsReco.indexOf(String(getProdID(window.location.pathname))) !== -1){
+            if(lsReco.indexOf(getProdID(window.location.pathname)) !== -1){
                 pushGoal("addcart_recoprod");
             }
         });
-
 
     }
 
