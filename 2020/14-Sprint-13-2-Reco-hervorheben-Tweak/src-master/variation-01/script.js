@@ -8,34 +8,39 @@
  * @name Variation 01
  * @description
  */
-
-
 (function(WATO, window) {
     "use strict";
 
-    window.iridion.econda.push(["Sprint13", "V1"]);
+    console.log("Hessnatur Reco Tweak - QS");
+
+    // window.iridion.econda.push(["Sprint13", "V1"]);
 
     if (!Element.prototype.matches) {
-        Element.prototype.matches = Element.prototype.msMatchesSelector || 
-                                    Element.prototype.webkitMatchesSelector;
+        Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
     }
     
     if (!Element.prototype.closest) {
-    Element.prototype.closest = function(s) {
-        var el = this;
-    
-        do {
-        if (Element.prototype.matches.call(el, s)) return el;
-        el = el.parentElement || el.parentNode;
-        } while (el !== null && el.nodeType === 1);
-        return null;
-    };
+
+        Element.prototype.closest = function(s) {
+
+            var el = this;
+        
+            do {
+                if (Element.prototype.matches.call(el, s)) return el;
+                el = el.parentElement || el.parentNode;
+            } while (el !== null && el.nodeType === 1);
+
+            return null;
+        };
     }
 
     function pushGoal(key, sendOnNextPageView){    
+
         if(sendOnNextPageView){
+
             window.iridion.push(['goal', key, '', true]);
-        }else{
+        } else {
+
             window.iridion.push(['goal', key]);
         }
     }
@@ -48,8 +53,6 @@
             return 0;
         }
     }
-
-    WATO.sprint13goals();
 
     function createNewReco() {
 
@@ -78,6 +81,7 @@
             }
         });
 
+        
         // Warten bis min ein Produkt geladen ist
         WATO.elem('.js-productSliderWrapper .productitem', function(recoSliderItems){
             if(recoSliderItems){
@@ -103,8 +107,9 @@
                         return typeof jQuery !== "undefined" && typeof jQuery.fn.flickity !== "undefined";
                     }, function(isJquery){
                         if(isJquery){
-                            // console.log('isJquery: ', isJquery);
+
                             try {
+
                                 // Doku des Sliders: https://flickity.metafizzy.co/
                                 var newjQReco = jQuery('#kk_reco');
                                 newjQReco.flickity({
@@ -149,23 +154,94 @@
 
                                 // Pfeile austauschen
                                 var leftButton = WATO.qs(".flickity-prev-next-button", newReco),
-                                    rightButton = leftButton.nextElementSibling,
+                                    rightButton,
                                     orginalReco = WATO.qs("#ecRecommendationsContainer"),
                                     orgonalLeftButton = WATO.qs(".flickity-prev-next-button", orginalReco);
                                 
-                                leftButton.innerHTML = orgonalLeftButton.innerHTML;
-                                rightButton.innerHTML = orgonalLeftButton.nextElementSibling.innerHTML;
+                                if(leftButton){
 
-                                // Slider Buttons genutzt
-                                leftButton.addEventListener('click', function(){
-                                    pushGoal('click_recoarrow_pds_top');
-                                });
-                                rightButton.addEventListener('click', function(){
-                                    pushGoal('click_recoarrow_pds_top');
-                                });
+                                    rightButton = leftButton.nextElementSibling;
+                                    leftButton.innerHTML = orgonalLeftButton.innerHTML;
 
+                                    // Slider Buttons genutzt
+                                    leftButton.addEventListener('click', function(){
+                                        pushGoal('click_recoarrow_pds_top');
+                                    });
+
+                                    if(rightButton){
+
+                                        rightButton.innerHTML = orgonalLeftButton.nextElementSibling.innerHTML;
+
+                                        rightButton.addEventListener('click', function(){
+                                            pushGoal('click_recoarrow_pds_top');
+                                        });
+                                    }
+                                }
+
+
+                                /**
+                                 * TWEAK
+                                 */
+                                var matchingProducts = {
+                                        "weeks":[43309,47936,43319,50571,43311,43372,39996,47796,50042,45683,49151,45672,46361,39939,43309,50285,40745,47900,45671,45682,50463,49148,50231,49634,50472,43319,43449,40745,50036,47454,49975,50305,49146,43444,39996,50532,51288,32767,35092,44622],
+                                        "month":[43309,47936,43309,49269,43319,48252,49579,45683,48251,50571,50181,43372,49577,39996,43311,48555,50042,49239,47796,49261,49146,46361,49355,49712,49148,49232,43311,50866,49578,49233,46594,40745,49625,50532,49148,49235,43311,39996,32767,32767]
+                                    },
+                                    productitems = WATO.qsa('#kk_newreco .productitem');
+
+                                for(var i = 0; i < productitems.length; i++) {
+
+                                    var img = WATO.qs('img', productitems[i]),
+                                        src = img.getAttribute('src'),
+                                        id  = 0;
+
+                                    // wrap image for kk badges
+                                    jQuery(img).wrap('<span class="kk-wrapper"/>');
+
+                                    if(src){
+
+                                        id = parseInt(src.replace(/.*\-([0-9]{5})\_.*/, '$1'));
+
+                                        if(id !== 0){
+                                            
+                                            var matching      = "",
+                                                matchingWeeks = matchingProducts.weeks.indexOf(id) !== -1,
+                                                matchingMonth = matchingProducts.month.indexOf(id) !== -1,
+                                                templateWeeks = '<div class="kk-badge kk-badge-fav">Kundenfavorit</div>',
+                                                templateMonth = '<div class="kk-badge kk-badge-asked">Aktuell sehr gefragt</div>';
+                                        
+                                            // random badge?
+                                            if(matchingWeeks && matchingMonth){
+
+                                                if(Math.random() < 0.5){
+
+                                                    matching = "weeks";
+                                                } else {
+                                                    
+                                                    matching = "month";
+                                                }
+                                            } else if(matchingWeeks) {
+
+                                                matching = "weeks";
+                                            } else if(matchingMonth) {
+
+                                                matching = "month";
+                                            }
+
+                                            if(matching !== ""){
+
+                                                jQuery(productitems[i]).find('.kk-wrapper').prepend(
+                                                    matching === 'weeks' ? templateWeeks : templateMonth
+                                                );
+                                                // productitems[i].childNodes[0].insertAdjacentHTML('afterbegin',
+                                                //     matching === 'weeks' ? templateWeeks : templateMonth
+                                                // );
+                                            }
+                                        }
+                                    }
+                                }
                             } catch (error) {
-                                // console.log('Error: ', error);
+
+                                console.log('Error: ', error);
                                 pushGoal("wa_setup_monitoring");
                                 pushGoal("wa_setup_monitoring1");
                             }
@@ -173,12 +249,15 @@
                     });
 
                 } catch (error) {
-                    // console.log('Error: ', error);
+                    
+                    console.log('Error: ', error);
                     pushGoal("wa_setup_monitoring");
                 }
             }
         });
     }
+
+    WATO.sprint13goals();
 
     createNewReco();
 
@@ -186,70 +265,4 @@
     WATO.ajax("reload?", function() {
         createNewReco();
     });
-    
-
 })(new window.WATO(), window);
-
-
-
-
-// // Send JSON data
-// function getXHR(sendtype ,url, callback, data) {
-        
-//     var XHR = new XMLHttpRequest();
-
-//     // Set up our request
-//     XHR.open(sendtype, url);
-    
-//     // Add the required HTTP header for form data POST requests
-//     // XHR.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-//     XHR.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-//     XHR.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-
-//     XHR.onreadystatechange = function() { // Call a function when the state changes.
-//         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-//             // Request finished. Do processing here.
-//             callback(this);
-//         }
-//     };
-
-//     // Finally, send our data.
-//     XHR.send(data||true);
-// }
-
-
-// // Bsp.:
-// getXHR("POST",'https://www.hessnatur.com/de/cart/updateVoucher', function(callbackContent) {
-//     // var responseJSON = callbackContent.responseText;
-//     // console.log('responseJSON: ', responseJSON);
-// }, JSON.stringify(
-//     {
-//         "voucherCode":"ES15PF072020",
-//         "CSRFToken":"f6b49b63-3b19-4169-b61c-1af026ead834"
-//     }
-// ));
-
-// window.fetch('https://www.hessnatur.com/de/cart/updateVoucher').then (function (response) {
-//     return response.json();
-// }).then(function(data){
-//     callback(data);
-// }).catch(function(error){
-//     console.error('Error:', error);
-// });
-
-// fetch('https://www.hessnatur.com/de/cart/updateVoucher',
-// {
-//     headers: {
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/x-www-form-urlencoded'
-//     },
-//     method: "POST",
-//     body: JSON.stringify(
-//         {
-//             "voucherCode":"ES15PF072020",
-//             "CSRFToken":"f6b49b63-3b19-4169-b61c-1af026ead834"
-//         }
-//     )
-// })
-// .then(function(res){ console.log(res) })
-// .catch(function(res){ console.log(res) })

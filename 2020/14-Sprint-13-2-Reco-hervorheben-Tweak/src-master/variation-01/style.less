@@ -2,7 +2,7 @@
 @import "../global/vars.less";
 
 /* IMPORT GLOBAL LESS FILES */
-// @import "../global/global.less";
+@import "../global/global.less";
 
 /* DEFINE VARIATION CSS */
 
@@ -29,5 +29,31 @@
         margin-bottom: 0;
         padding: 2rem 0 3rem;
     }
+}
 
+// MV Anpassung Tweak
+#kk_newreco .productitem {
+    position: relative;
+}
+
+.kk-badge {
+    position: absolute;
+    padding: 0 10px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 10px;
+    left: 25px;
+    top: 475px;
+    letter-spacing: 0.5px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.kk-badge-fav {
+    padding-left: 30px;
+    background: #F9DC02 url(https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB13-2/thumb-up.svg) no-repeat 10px 5px;
+}
+
+.kk-badge-asked {
+    background: #F1F1F1;
 }
