@@ -9,11 +9,15 @@
  * @name Variation 00
  * @description
  */
-(function(WATO, window) {
+(function(WATO) {
     "use strict";
 
-    // window.iridion.econda.push(["Sprint17desktop", "V0"]);
+    if(document.cookie.indexOf("kksp17desk_exclude=true") === -1){
 
-    WATO.sprint17goals(0);
+        // window.iridion.econda.push(["Sprint17desktop", "V0"]);
 
-})(new window.WATO(), window);
+        WATO.sprint17goals(0);
+
+    }
+
+})(new window.WATO());
