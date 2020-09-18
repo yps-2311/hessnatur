@@ -13,7 +13,8 @@
 (function(WATO, window) {
     "use strict";
 
-    // window.iridion.econda.push(["Sprint17desktop", "V1"]);
+
+    var hasNotExcludeCookie = document.cookie.indexOf("kksp17desk_exclude=true") === -1;
 
     /*jshint loopfunc: true */
 
@@ -48,165 +49,6 @@
         WATO.goalPush(key);
     }
 
-    WATO.sprint17goals(1);
-
-    WATO.elem(function(){
-        return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
-    }, function(){
-        /*
-        * Flickity asNavFor v2.0.2
-        * enable asNavFor for Flickity
-        */
-
-        /*jshint browser: true, undef: true, unused: true, strict: true*/
-
-        ( function( window, factory ) {
-            // universal module definition
-            /*jshint strict: false */ /*globals define, module, require */
-            if ( typeof define === 'function' && define.amd ) {
-            // AMD
-            define( [
-                'flickity/js/index',
-                'fizzy-ui-utils/utils'
-            ], factory );
-            } else if ( typeof module === 'object' && module.exports ) {
-                // CommonJS
-                module.exports = factory(
-                    require('flickity'),
-                    require('fizzy-ui-utils')
-                );
-            } else {
-                // browser global
-                window.Flickity = factory(
-                    window.Flickity,
-                    window.fizzyUIUtils
-                );
-            }
-        
-        }( window, function factory( Flickity, utils ) {
-        
-        // 'use strict';
-        
-        // -------------------------- asNavFor prototype -------------------------- //
-        
-        // Flickity.defaults.asNavFor = null;
-        
-        Flickity.createMethods.push('_createAsNavFor');
-        
-            var proto = Flickity.prototype;
-            
-            proto._createAsNavFor = function() {
-                this.on( 'activate', this.activateAsNavFor );
-                this.on( 'deactivate', this.deactivateAsNavFor );
-                this.on( 'destroy', this.destroyAsNavFor );
-            
-                var asNavForOption = this.options.asNavFor;
-                if ( !asNavForOption ) {
-                return;
-                }
-                // HACK do async, give time for other flickity to be initalized
-                var _this = this;
-                setTimeout( function initNavCompanion() {
-                _this.setNavCompanion( asNavForOption );
-                });
-            };
-            
-            proto.setNavCompanion = function( elem ) {
-                elem = utils.getQueryElement( elem );
-                var companion = Flickity.data( elem );
-                // stop if no companion or companion is self
-                if ( !companion || companion === this ) {
-                return;
-                }
-            
-                this.navCompanion = companion;
-                // companion select
-                var _this = this;
-                this.onNavCompanionSelect = function() {
-                _this.navCompanionSelect();
-                };
-                companion.on( 'select', this.onNavCompanionSelect );
-                // click
-                this.on( 'staticClick', this.onNavStaticClick );
-            
-                this.navCompanionSelect( true );
-            };
-            
-            proto.navCompanionSelect = function( isInstant ) {
-                // wait for companion & selectedCells first. #8
-                var companionCells = this.navCompanion && this.navCompanion.selectedCells;
-                if ( !companionCells ) {
-                return;
-                }
-                // select slide that matches first cell of slide
-                var selectedCell = companionCells[0];
-                var firstIndex = this.navCompanion.cells.indexOf( selectedCell );
-                var lastIndex = firstIndex + companionCells.length - 1;
-                var selectIndex = Math.floor( lerp( firstIndex, lastIndex,
-                this.navCompanion.cellAlign ) );
-                this.selectCell( selectIndex, false, isInstant );
-                // set nav selected class
-                this.removeNavSelectedElements();
-                // stop if companion has more cells than this one
-                if ( selectIndex >= this.cells.length ) {
-                return;
-                }
-            
-                var selectedCells = this.cells.slice( firstIndex, lastIndex + 1 );
-                this.navSelectedElements = selectedCells.map( function( cell ) {
-                return cell.element;
-                });
-                this.changeNavSelectedClass('add');
-            };
-            
-            function lerp( a, b, t ) {
-                return ( b - a ) * t + a;
-            }
-            
-            proto.changeNavSelectedClass = function( method ) {
-                this.navSelectedElements.forEach( function( navElem ) {
-                navElem.classList[ method ]('is-nav-selected');
-                });
-            };
-            
-            proto.activateAsNavFor = function() {
-                this.navCompanionSelect( true );
-            };
-            
-            proto.removeNavSelectedElements = function() {
-                if ( !this.navSelectedElements ) {
-                return;
-                }
-                this.changeNavSelectedClass('remove');
-                delete this.navSelectedElements;
-            };
-            
-            proto.onNavStaticClick = function( event, pointer, cellElement, cellIndex ) {
-                if ( typeof cellIndex === 'number' ) {
-                this.navCompanion.selectCell( cellIndex );
-                }
-            };
-            
-            proto.deactivateAsNavFor = function() {
-                this.removeNavSelectedElements();
-            };
-            
-            proto.destroyAsNavFor = function() {
-                if ( !this.navCompanion ) {
-                return;
-                }
-                this.navCompanion.off( 'select', this.onNavCompanionSelect );
-                this.off( 'staticClick', this.onNavStaticClick );
-                delete this.navCompanion;
-            };
-            
-            // -----  ----- //
-            
-            return Flickity;
-        
-        }));
-    });
-    
     function getNewCarousel(markupHTML, markupHTMLNavi) {
         return '<div class="kk_slider main-carousel">'+ // style="height: '+sliderHeight(0.4398)+'px"
                     markupHTML+
@@ -224,6 +66,13 @@
             if(mainWrapper){
                 try {
                     mainWrapper = mainWrapper[0];
+
+                    // Initialisierung ganz zu Beginn, da sonst ein Timing-Issue auffällt
+                    if(WATO.qs('.kk_sliderWrapper', mainWrapper) === null){
+                        mainWrapper.insertAdjacentHTML('afterbegin', 
+                            '<div class="kk_sliderWrapper">'+
+                            '</div>');
+                    }
 
                     WATO.elem(function() {
                         if(colorID){
@@ -297,7 +146,7 @@
                                     });
                                 };
 
-                                // Timing Problem. Thumbnails werden nachgeladen. Daher helper-Klasse kk-thumb setzen und wenn diese null ist wurden neue Slider-Elemente eingefügt.
+                            // Timing Problem. Thumbnails werden nachgeladen. Daher helper-Klasse kk-thumb setzen und wenn diese null ist wurden neue Slider-Elemente eingefügt.
                             if(colorID){
 
                                 WATO.elem(function(){
@@ -308,6 +157,7 @@
                                 }, function(fnCallback){
                                     if(fnCallback){
                                         
+
                                         for (var i = 0; i < thumbnails.length; i++) {
                                             var productPicURL = thumbnails[i].getAttribute("data-image");
         
@@ -394,11 +244,14 @@
                                 }
         
                                 // Markup und Statische Felder für "Complete the Look" und "Titel" werden eingebaut
-                                mainWrapper.insertAdjacentHTML('afterbegin', 
-                                    '<div class="kk_sliderWrapper">'+
-                                        getNewCarousel(markupHTML, markupHTMLNavi)+
-                                    '</div>'
-                                );
+
+                                WATO.qs('.kk_sliderWrapper', mainWrapper).innerHTML = getNewCarousel(markupHTML, markupHTMLNavi);
+
+                                // mainWrapper.insertAdjacentHTML('afterbegin', 
+                                //     '<div class="kk_sliderWrapper">'+
+                                //         getNewCarousel(markupHTML, markupHTMLNavi)+
+                                //     '</div>'
+                                // );
                                 
                                 initFlickity();
                             }
@@ -412,118 +265,6 @@
         });
     }
 
-    buildHeader(false);
-
-    // Zurück-Button
-    WATO.elem('.breadcrumb--back a', function(breadcrumb){
-        if(breadcrumb){
-            breadcrumb = breadcrumb[0];
-            breadcrumb.innerHTML = 'zurück';
-            breadcrumb.addEventListener('click', function(){
-                WATO.goalPush("kategorie_back", true);
-            });
-        }
-    });
-
-    // Sterne und Bewertung unter das Haupt-Bild platzieren
-    WATO.elem('.js-badges-container', function(badges){
-        if(badges){
-            WATO.elem('.pds-cockpit__ratingSummaryWrapper', function(stars){
-                if(stars){
-                    stars = stars[0];
-                    WATO.qs("a + span", stars).innerHTML = WATO.qs("meta", stars).getAttribute('content').substring(0,4);
-                    badges[0].insertAdjacentElement('afterbegin', stars);
-
-                    // Anker zum Scrollen
-                    WATO.qs(".starRatingWrapper", stars).setAttribute('data-open-accordion-css-selector', '.ang_detail_additional');
-                }
-            });
-        }
-    });
-
-    WATO.elem('.productInfoAccordion .accordion-item', function(productInfoAccordionItem){
-        if(productInfoAccordionItem){
-
-            var prodInfoAccordion = productInfoAccordionItem[0].parentNode;
-
-            // Tabs
-            prodInfoAccordion.insertAdjacentHTML('beforebegin', '<div id="infoTabs"></div>');
-
-            // Erstes Tab einblenden
-            WATO.qs("div", productInfoAccordionItem[0]).classList.add('kk_show');
-            
-            var infoTabs = WATO.qs("#infoTabs", prodInfoAccordion.parentNode);
-
-            // if(originalProductInfos){
-            //     prodInfoAccordion.insertAdjacentElement('beforebegin', originalProductInfos);
-            // }
-
-            for (var i = 0; i < productInfoAccordionItem.length; i++) {
-                var prodContent = WATO.qs("div", productInfoAccordionItem[i]),
-                    tabText = prodContent.previousElementSibling.textContent;
-
-                // Umtexten
-                if(tabText === "Produktbeschreibung") {
-                    tabText = "Produktdetails";
-                }
-
-                prodContent.insertAdjacentHTML('afterbegin', 
-                    '<h4>'+tabText+'</h4>'
-                );
-
-                // Markup der Tabs setzen
-                if(prodContent.getAttribute('id') === "Passform"){
-                    // Passform soll wenn vorhanden, als zweiter Tab erscheinen
-                    WATO.qs(".kk_carousel:first-child", infoTabs).insertAdjacentHTML('afterend', 
-                        '<div class="kk_carousel'+(i===0 ? " kk_active":'')+'" data-index="'+i+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
-                    );
-                } else {
-                    // Alle Tabs werden eingebaut nur bei Pflege kann es sein dass es keine Inhalte gibt, in dem Fall wird es nicht eingebaut
-                    if(!(prodContent.getAttribute('id') === "Pflege" && WATO.qsa("#Pflege li").length === 0)){
-
-                        // Material und Pflege sollen zusammengefasst dargestellt werden
-                        if(prodContent.getAttribute('id') === "Pflege"){
-                            var tabMaterial = WATO.qs('.kk_carousel[data="Material"]'),
-                                contentMaterial = WATO.qs('#Material');
-
-                            if(tabMaterial && contentMaterial){
-                                tabMaterial.innerHTML = 'Material und Pflege';
-
-                                contentMaterial.insertAdjacentHTML('beforeend', prodContent.innerHTML);
-
-                            } else {
-                                infoTabs.insertAdjacentHTML('beforeend', 
-                                    '<div class="kk_carousel'+(i===0 ? " kk_active":'')+'" data-index="'+i+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
-                                );
-                            }
-                        } else {
-
-                            infoTabs.insertAdjacentHTML('beforeend', 
-                                '<div class="kk_carousel'+(i===0 ? " kk_active":'')+'" data-index="'+i+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
-                            );
-                        }
-                    }
-                }
-                
-                // Interaktion mit Tabs
-                var thisTab = WATO.qs(".kk_carousel[data-index='"+i+"']", infoTabs);
-                if(thisTab){
-                    thisTab.addEventListener('click', function(e){
-                        var thisTarget = e.target,
-                            thisKey = thisTarget.getAttribute('data');
-    
-                        removeClass(WATO.qs(".kk_show"), 'kk_show');
-                        removeClass(WATO.qs(".kk_active"), 'kk_active');
-    
-                        addClass(WATO.qs("#"+thisKey), 'kk_show');
-                        addClass(thisTarget, 'kk_active');
-    
-                        WATO.goalPush('kk17_'+thisKey);
-                    });
-                }
-            }
-        }
-    });
 
     // Farbe gewächselt
     function changeColor(e) {
@@ -539,60 +280,6 @@
         createCTL();
     }
 
-    // Hauptbild-URL aus Metainfo
-    WATO.elem('meta[property="og:image"]', function(initPic){
-        if(initPic){
-
-            var firstPicUrl = initPic[0].getAttribute("content");
-
-            // Produktinfos
-            WATO.elem('#Produktbeschreibung .column', function(Produktbeschreibung){
-                if(Produktbeschreibung){
-                    Produktbeschreibung = Produktbeschreibung[0];
-
-                    var articleNumber = WATO.qs(".pds-cockpit__articleNumber");
-
-                    // Produkt UVPs in die Produktinfos kopieren
-                    Produktbeschreibung.insertAdjacentHTML('beforeend', 
-                        '<ul class="pds-cockpit__shortDescription">'+WATO.qs(".pds-cockpit__shortDescription").innerHTML+'</ul>'
-                    );
-                    
-                    // Artikelnummer in die Produktinfos verschieben
-                    if(articleNumber){
-                        Produktbeschreibung.insertAdjacentElement('beforeend', articleNumber);
-                    }
-
-                    // Bild in die Produktinfos einbauen
-                    Produktbeschreibung.insertAdjacentHTML('afterend', 
-                        '<img src="'+firstPicUrl.replace("detail_zoom","detail_main").replace("_1.jpg","_7.jpg")+'">'
-                    );
-                }
-            });
-
-            // Farben
-            WATO.elem('.pds-cockpit__colorSwitch li a', function(colorSwitch){
-                if(colorSwitch){
-                    try {
-                        var firstPic = firstPicUrl.replace("detail_zoom","detail_thumb"),
-                            prodID = firstPic.match(/\d{5}/),
-                            numberOfColors = colorSwitch.length;
-
-                        // Produktfarben mit Listeners
-                        for (var j = 0; j < numberOfColors; j++) {
-                            var thisColorLink = colorSwitch[j];
-
-                            thisColorLink.innerHTML = '<img src="'+firstPic.split(prodID)[0] + prodID + '_' + thisColorLink.parentNode.getAttribute('data-color') +'_7.jpg">'; //  + imgNumber +
-
-                            thisColorLink.addEventListener('click', changeColor);
-                        }
-                    } catch (error) {
-                        setErrorTracking("wa_setup_monitoring", error);
-                    }
-                }
-            });
-        }
-    });
-
     function initGallery(galID, adaptiveHeight, prevNextButn, factorForHeight, dots) {
       
         WATO.elem(function(){
@@ -602,8 +289,6 @@
                 // Doku https://flickity.metafizzy.co/
 
                 try {
-                    console.log('galID: ', galID);
-                    console.log('!!factorForHeight: ', !!factorForHeight);
 
                     var settingsRatingGallery = {
                         // options
@@ -645,7 +330,6 @@
             }
         });
     }
-
 
     function setPlaceholder(id, text) {
         WATO.elem(id, function(placeholder){
@@ -736,118 +420,466 @@
             }
         });
     }
-    createCTL();
 
-    // Bewertung
-    WATO.elem('.ratingAccordion', function(ratingAccordion){
-        if(ratingAccordion){
-            ratingAccordion = ratingAccordion[0];
 
-            WATO.qs(".js_backstopWrapper").insertAdjacentHTML('beforeend', 
-                '<div id="kk_rating">'+
-                    '<div></div>'+ // Headline
-                    '<div id="kk_rating_gallery"></div>'+ // Galerie
-                '</div>'
-            );
+    if(hasNotExcludeCookie){
 
-            WATO.qs(".js_backstopWrapper").insertAdjacentElement('beforeend', ratingAccordion);
+        // window.iridion.econda.push(["Sprint17desktop", "V1"]);
 
-            // ratingAccordion.parentNode.parentNode.parentNode.parentNode.insertAdjacentElement('afterend', ratingAccordion);
+        WATO.sprint17goals(1);
 
-            // Bewertungen werden in eine Galerie eingebaut
-            var ratingGal = WATO.qs("#kk_rating_gallery"),
-                allRatings = WATO.qsa(".js_ratingItem"),
-                ratingLenght = allRatings.length;
+        WATO.elem(function(){
+            return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
+        }, function(){
+            /*
+            * Flickity asNavFor v2.0.2
+            * enable asNavFor for Flickity
+            */
+    
+            /*jshint browser: true, undef: true, unused: true, strict: true*/
+    
+            ( function( window, factory ) {
+                // universal module definition
+                /*jshint strict: false */ /*globals define, module, require */
+                if ( typeof define === 'function' && define.amd ) {
+                // AMD
+                define( [
+                    'flickity/js/index',
+                    'fizzy-ui-utils/utils'
+                ], factory );
+                } else if ( typeof module === 'object' && module.exports ) {
+                    // CommonJS
+                    module.exports = factory(
+                        require('flickity'),
+                        require('fizzy-ui-utils')
+                    );
+                } else {
+                    // browser global
+                    window.Flickity = factory(
+                        window.Flickity,
+                        window.fizzyUIUtils
+                    );
+                }
+            
+            }( window, function factory( Flickity, utils ) {
+            
+            // 'use strict';
+            
+            // -------------------------- asNavFor prototype -------------------------- //
+            
+            // Flickity.defaults.asNavFor = null;
+            
+            Flickity.createMethods.push('_createAsNavFor');
+            
+                var proto = Flickity.prototype;
+                
+                proto._createAsNavFor = function() {
+                    this.on( 'activate', this.activateAsNavFor );
+                    this.on( 'deactivate', this.deactivateAsNavFor );
+                    this.on( 'destroy', this.destroyAsNavFor );
+                
+                    var asNavForOption = this.options.asNavFor;
+                    if ( !asNavForOption ) {
+                    return;
+                    }
+                    // HACK do async, give time for other flickity to be initalized
+                    var _this = this;
+                    setTimeout( function initNavCompanion() {
+                    _this.setNavCompanion( asNavForOption );
+                    });
+                };
+                
+                proto.setNavCompanion = function( elem ) {
+                    elem = utils.getQueryElement( elem );
+                    var companion = Flickity.data( elem );
+                    // stop if no companion or companion is self
+                    if ( !companion || companion === this ) {
+                    return;
+                    }
+                
+                    this.navCompanion = companion;
+                    // companion select
+                    var _this = this;
+                    this.onNavCompanionSelect = function() {
+                    _this.navCompanionSelect();
+                    };
+                    companion.on( 'select', this.onNavCompanionSelect );
+                    // click
+                    this.on( 'staticClick', this.onNavStaticClick );
+                
+                    this.navCompanionSelect( true );
+                };
+                
+                proto.navCompanionSelect = function( isInstant ) {
+                    // wait for companion & selectedCells first. #8
+                    var companionCells = this.navCompanion && this.navCompanion.selectedCells;
+                    if ( !companionCells ) {
+                    return;
+                    }
+                    // select slide that matches first cell of slide
+                    var selectedCell = companionCells[0];
+                    var firstIndex = this.navCompanion.cells.indexOf( selectedCell );
+                    var lastIndex = firstIndex + companionCells.length - 1;
+                    var selectIndex = Math.floor( lerp( firstIndex, lastIndex,
+                    this.navCompanion.cellAlign ) );
+                    this.selectCell( selectIndex, false, isInstant );
+                    // set nav selected class
+                    this.removeNavSelectedElements();
+                    // stop if companion has more cells than this one
+                    if ( selectIndex >= this.cells.length ) {
+                    return;
+                    }
+                
+                    var selectedCells = this.cells.slice( firstIndex, lastIndex + 1 );
+                    this.navSelectedElements = selectedCells.map( function( cell ) {
+                    return cell.element;
+                    });
+                    this.changeNavSelectedClass('add');
+                };
+                
+                function lerp( a, b, t ) {
+                    return ( b - a ) * t + a;
+                }
+                
+                proto.changeNavSelectedClass = function( method ) {
 
-            for (var i = 0; i < ratingLenght; i++) {
-                var thisComment = allRatings[i];
+                    var hArray = this.navSelectedElements;
 
-                thisComment.addEventListener('touchstart', function(){
-                    WATO.goalPush("kk17_rating");
+                    for (var i = 0; i < hArray.length; i++) {
+                        var navElem = hArray[i];
+
+                        navElem.classList[ method ]('is-nav-selected');
+                        
+                    }
+                    // Fehler im EDGE!!!
+                    // this.navSelectedElements.forEach( function( navElem ) {
+                    // navElem.classList[ method ]('is-nav-selected');
+                    // });
+                };
+                
+                proto.activateAsNavFor = function() {
+                    this.navCompanionSelect( true );
+                };
+                
+                proto.removeNavSelectedElements = function() {
+                    if ( !this.navSelectedElements ) {
+                    return;
+                    }
+                    this.changeNavSelectedClass('remove');
+                    delete this.navSelectedElements;
+                };
+                
+                proto.onNavStaticClick = function( event, pointer, cellElement, cellIndex ) {
+                    if ( typeof cellIndex === 'number' ) {
+                    this.navCompanion.selectCell( cellIndex );
+                    }
+                };
+                
+                proto.deactivateAsNavFor = function() {
+                    this.removeNavSelectedElements();
+                };
+                
+                proto.destroyAsNavFor = function() {
+                    if ( !this.navCompanion ) {
+                    return;
+                    }
+                    this.navCompanion.off( 'select', this.onNavCompanionSelect );
+                    this.off( 'staticClick', this.onNavStaticClick );
+                    delete this.navCompanion;
+                };
+                
+                // -----  ----- //
+                
+                return Flickity;
+            
+            }));
+        });
+
+        buildHeader(false);
+
+        // Zurück-Button
+        WATO.elem('.breadcrumb--back a', function(breadcrumb){
+            if(breadcrumb){
+                breadcrumb = breadcrumb[0];
+                breadcrumb.innerHTML = 'zurück';
+                breadcrumb.addEventListener('click', function(){
+                    WATO.goalPush("kategorie_back", true);
+                });
+            }
+        });
+    
+        // Sterne und Bewertung unter das Haupt-Bild platzieren
+        WATO.elem('.js-badges-container', function(badges){
+            if(badges){
+                WATO.elem('.pds-cockpit__ratingSummaryWrapper', function(stars){
+                    if(stars){
+                        stars = stars[0];
+                        WATO.qs("a + span", stars).innerHTML = WATO.qs("meta", stars).getAttribute('content').substring(0,4);
+                        badges[0].insertAdjacentElement('afterbegin', stars);
+    
+                        // Anker zum Scrollen
+                        WATO.qs(".starRatingWrapper", stars).setAttribute('data-open-accordion-css-selector', '.ang_detail_additional');
+                    }
+                });
+            }
+        });
+    
+        WATO.elem('.productInfoAccordion .accordion-item', function(productInfoAccordionItem){
+            if(productInfoAccordionItem){
+    
+                var prodInfoAccordion = productInfoAccordionItem[0].parentNode;
+    
+                // Tabs
+                prodInfoAccordion.insertAdjacentHTML('beforebegin', '<div id="infoTabs"></div>');
+    
+                // Erstes Tab einblenden
+                WATO.qs("div", productInfoAccordionItem[0]).classList.add('kk_show');
+                
+                var infoTabs = WATO.qs("#infoTabs", prodInfoAccordion.parentNode);
+    
+                // if(originalProductInfos){
+                //     prodInfoAccordion.insertAdjacentElement('beforebegin', originalProductInfos);
+                // }
+    
+                for (var i = 0; i < productInfoAccordionItem.length; i++) {
+                    var prodContent = WATO.qs("div", productInfoAccordionItem[i]),
+                        tabText = prodContent.previousElementSibling.textContent;
+    
+                    // Umtexten
+                    if(tabText === "Produktbeschreibung") {
+                        tabText = "Produktdetails";
+                    }
+    
+                    prodContent.insertAdjacentHTML('afterbegin', 
+                        '<h4>'+tabText+'</h4>'
+                    );
+    
+                    // Markup der Tabs setzen
+                    if(prodContent.getAttribute('id') === "Passform"){
+                        // Passform soll wenn vorhanden, als zweiter Tab erscheinen
+                        WATO.qs(".kk_carousel:first-child", infoTabs).insertAdjacentHTML('afterend', 
+                            '<div class="kk_carousel'+(i===0 ? " kk_active":'')+'" data-index="'+i+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
+                        );
+                    } else {
+                        // Alle Tabs werden eingebaut nur bei Pflege kann es sein dass es keine Inhalte gibt, in dem Fall wird es nicht eingebaut
+                        if(!(prodContent.getAttribute('id') === "Pflege" && WATO.qsa("#Pflege li").length === 0)){
+    
+                            // Material und Pflege sollen zusammengefasst dargestellt werden
+                            if(prodContent.getAttribute('id') === "Pflege"){
+                                var tabMaterial = WATO.qs('.kk_carousel[data="Material"]'),
+                                    contentMaterial = WATO.qs('#Material');
+    
+                                if(tabMaterial && contentMaterial){
+                                    tabMaterial.innerHTML = 'Material und Pflege';
+    
+                                    contentMaterial.insertAdjacentHTML('beforeend', prodContent.innerHTML);
+    
+                                } else {
+                                    infoTabs.insertAdjacentHTML('beforeend', 
+                                        '<div class="kk_carousel'+(i===0 ? " kk_active":'')+'" data-index="'+i+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
+                                    );
+                                }
+                            } else {
+    
+                                infoTabs.insertAdjacentHTML('beforeend', 
+                                    '<div class="kk_carousel'+(i===0 ? " kk_active":'')+'" data-index="'+i+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
+                                );
+                            }
+                        }
+                    }
+                    
+                    // Interaktion mit Tabs
+                    var thisTab = WATO.qs(".kk_carousel[data-index='"+i+"']", infoTabs);
+                    if(thisTab){
+                        thisTab.addEventListener('click', function(e){
+                            var thisTarget = e.target,
+                                thisKey = thisTarget.getAttribute('data');
+        
+                            removeClass(WATO.qs(".kk_show"), 'kk_show');
+                            removeClass(WATO.qs(".kk_active"), 'kk_active');
+        
+                            addClass(WATO.qs("#"+thisKey), 'kk_show');
+                            addClass(thisTarget, 'kk_active');
+        
+                            WATO.goalPush('kk17_'+thisKey);
+                        });
+                    }
+                }
+            }
+        });
+
+        // Hauptbild-URL aus Metainfo
+        WATO.elem('meta[property="og:image"]', function(initPic){
+            if(initPic){
+
+                var firstPicUrl = initPic[0].getAttribute("content");
+
+                // Produktinfos
+                WATO.elem('#Produktbeschreibung .column', function(Produktbeschreibung){
+                    if(Produktbeschreibung){
+                        Produktbeschreibung = Produktbeschreibung[0];
+
+                        var articleNumber = WATO.qs(".pds-cockpit__articleNumber");
+
+                        // Produkt UVPs in die Produktinfos kopieren
+                        Produktbeschreibung.insertAdjacentHTML('beforeend', 
+                            '<ul class="pds-cockpit__shortDescription">'+WATO.qs(".pds-cockpit__shortDescription").innerHTML+'</ul>'
+                        );
+                        
+                        // Artikelnummer in die Produktinfos verschieben
+                        if(articleNumber){
+                            Produktbeschreibung.insertAdjacentElement('beforeend', articleNumber);
+                        }
+
+                        // Bild in die Produktinfos einbauen
+                        Produktbeschreibung.insertAdjacentHTML('afterend', 
+                            '<img src="'+firstPicUrl.replace("detail_zoom","detail_main").replace("_1.jpg","_7.jpg")+'">'
+                        );
+                    }
                 });
 
-                var author = WATO.qs(".title__name", thisComment);
+                // Farben
+                WATO.elem('.pds-cockpit__colorSwitch li a', function(colorSwitch){
+                    if(colorSwitch){
 
-                if(author){
-                    author.innerHTML = author.innerHTML.replace(",", "");
-                }
+                        try {
+                            var firstPic = firstPicUrl.replace("detail_zoom","detail_thumb"),
+                                prodID = firstPic.match(/\d{5}/),
+                                numberOfColors = colorSwitch.length;
 
-                ratingGal.insertAdjacentElement('beforeend', thisComment);
+                            // Produktfarben mit Listeners
+                            for (var j = 0; j < numberOfColors; j++) {
+                                var thisColorLink = colorSwitch[j];
+
+                                thisColorLink.innerHTML = '<img src="'+firstPic.split(prodID)[0] + prodID + '_' + thisColorLink.parentNode.getAttribute('data-color') +'_7.jpg">'; //  + imgNumber +
+
+                                addClass(thisColorLink, 'kk-img-switch');
+
+                                thisColorLink.addEventListener('click', changeColor);
+                            }
+                        } catch (error) {
+                            setErrorTracking("wa_setup_monitoring", error);
+                        }
+                    }
+                });
             }
+        });
 
-            initGallery('#kk_rating_gallery', true, ratingLenght > 2, 0, false); //ratingLenght > 2
 
-            // Headline
-            WATO.elem('#accordion-rating-label', function(accordionRatingLabel){
-                if(accordionRatingLabel){
-                    ratingGal.previousElementSibling.innerHTML = accordionRatingLabel[0].innerHTML.replace("Bewertungen","Kundenbewertungen");
+        createCTL();
+
+        // Bewertung
+        WATO.elem('.ratingAccordion', function(ratingAccordion){
+            if(ratingAccordion){
+                ratingAccordion = ratingAccordion[0];
+    
+                WATO.qs(".js_backstopWrapper").insertAdjacentHTML('beforeend', 
+                    '<div id="kk_rating">'+
+                        '<div></div>'+ // Headline
+                        '<div id="kk_rating_gallery"></div>'+ // Galerie
+                    '</div>'
+                );
+    
+                WATO.qs(".js_backstopWrapper").insertAdjacentElement('beforeend', ratingAccordion);
+    
+                // ratingAccordion.parentNode.parentNode.parentNode.parentNode.insertAdjacentElement('afterend', ratingAccordion);
+    
+                // Bewertungen werden in eine Galerie eingebaut
+                var ratingGal = WATO.qs("#kk_rating_gallery"),
+                    allRatings = WATO.qsa(".js_ratingItem"),
+                    ratingLenght = allRatings.length;
+    
+                for (var i = 0; i < ratingLenght; i++) {
+                    var thisComment = allRatings[i];
+    
+                    thisComment.addEventListener('touchstart', function(){
+                        WATO.goalPush("kk17_rating");
+                    });
+    
+                    var author = WATO.qs(".title__name", thisComment);
+    
+                    if(author){
+                        author.innerHTML = author.innerHTML.replace(",", "");
+                    }
+    
+                    ratingGal.insertAdjacentElement('beforeend', thisComment);
                 }
-            });
+    
+                initGallery('#kk_rating_gallery', true, ratingLenght > 2, 0, false); //ratingLenght > 2
+    
+                // Headline
+                WATO.elem('#accordion-rating-label', function(accordionRatingLabel){
+                    if(accordionRatingLabel){
+                        ratingGal.previousElementSibling.innerHTML = accordionRatingLabel[0].innerHTML.replace("Bewertungen","Kundenbewertungen");
+                    }
+                });
+    
+                setPlaceholder('#rating_title', 'Titel Ihrer Bewertung');
+                setPlaceholder('#rating_email', 'Ihre E-Mail Adresse*');
+                setPlaceholder('#rating_text', 'Bewertungstext');
+                setPlaceholder('#rating_name', 'Ihr Name');
+    
+                // Bewertung (Sterne) hinter #rating_name verschieben
+                WATO.elem('#rating_name', function(rating_name){
+                    if(rating_name){
+                        rating_name[0].insertAdjacentElement('afterend', WATO.qs('.row.column.small-12'));
+                    }
+                });
+            }
+        });
+    
+        // Klick auf mehr Details
+        WATO.elem('.js-pds-more-details', function(moreDetails){
+            if(moreDetails){
+                moreDetails = moreDetails[0];
+                moreDetails.insertAdjacentHTML('beforebegin', 
+                    '<a class="btn-simple-link kk_moreinfos" href="#">Mehr Produktdetails</a>'
+                );
+                WATO.qs(".kk_moreinfos", moreDetails.parentNode).addEventListener('click', function(e){
+                    e.preventDefault();
+                    WATO.goalPush("klick_produktdetails");
+    
+                    try {
+                        // window.ACC.global.scrollToElement();
+    
+                        $('html, body').animate(
+                        {
+                            scrollTop: $("#infoTabs").offset().top - 154
+                        }, 500);
+    
+                    } catch (error) {
+                        setErrorTracking("wa_setup_monitoring", error);
+                    }
+                });
+            }
+        });
+    
+        // Bewertungsformular
+        WATO.elem('#write_reviews > div.h3', function(ratingFormHeadline){
+            if(ratingFormHeadline){
+    
+                ratingFormHeadline = ratingFormHeadline[0];
+    
+                addClass(ratingFormHeadline, 'kk_form_headline');
+                
+                WATO.qs('#write_reviews').insertAdjacentElement('beforebegin', ratingFormHeadline);
+            }
+        });
+    
+        WATO.ready(function(){
+            // Weiterlesen Buttons im Produkttext oder in den Kundenbewertungen werden aufgeklappt
+            setTimeout(function(){
+                WATO.elem(function(){
+                    return typeof window.ACC !== "undefined" && typeof window.ACC.global !== "undefined";
+                }, function(accGloablIsAvaliable){
+                    if(accGloablIsAvaliable){
+                        window.ACC.global.destroyShorten(".js_triggerShortenDestroy");
+                        // initGallery('#kk_rating_gallery', true, true, 0, true);
+                    }
+                });
+            }, 1500);
+        });
 
-            setPlaceholder('#rating_title', 'Titel Ihrer Bewertung');
-            setPlaceholder('#rating_email', 'Ihre E-Mail Adresse*');
-            setPlaceholder('#rating_text', 'Bewertungstext');
-            setPlaceholder('#rating_name', 'Ihr Name');
-
-            // Bewertung (Sterne) hinter #rating_name verschieben
-            WATO.elem('#rating_name', function(rating_name){
-                if(rating_name){
-                    rating_name[0].insertAdjacentElement('afterend', WATO.qs('.row.column.small-12'));
-                }
-            });
-        }
-    });
-
-    // Klick auf mehr Details
-    WATO.elem('.js-pds-more-details', function(moreDetails){
-        if(moreDetails){
-            moreDetails = moreDetails[0];
-            moreDetails.insertAdjacentHTML('beforebegin', 
-                '<a class="btn-simple-link kk_moreinfos" href="#">Mehr Produktdetails</a>'
-            );
-            WATO.qs(".kk_moreinfos", moreDetails.parentNode).addEventListener('click', function(e){
-                e.preventDefault();
-                WATO.goalPush("klick_produktdetails");
-
-                try {
-                    // window.ACC.global.scrollToElement();
-
-                    $('html, body').animate(
-                    {
-                        scrollTop: $("#infoTabs").offset().top - 154
-                    }, 500);
-
-                } catch (error) {
-                    setErrorTracking("wa_setup_monitoring", error);
-                }
-            });
-        }
-    });
-
-    // Bewertungsformular
-    WATO.elem('#write_reviews > div.h3', function(ratingFormHeadline){
-        if(ratingFormHeadline){
-
-            ratingFormHeadline = ratingFormHeadline[0];
-
-            addClass(ratingFormHeadline, 'kk_form_headline');
-            
-            WATO.qs('#write_reviews').insertAdjacentElement('beforebegin', ratingFormHeadline);
-        }
-    });
-
-    WATO.ready(function(){
-        // Weiterlesen Buttons im Produkttext oder in den Kundenbewertungen werden aufgeklappt
-        setTimeout(function(){
-            WATO.elem(function(){
-                return typeof window.ACC !== "undefined" && typeof window.ACC.global !== "undefined";
-            }, function(accGloablIsAvaliable){
-                if(accGloablIsAvaliable){
-                    window.ACC.global.destroyShorten(".js_triggerShortenDestroy");
-                    // initGallery('#kk_rating_gallery', true, true, 0, true);
-                }
-            });
-        }, 1500);
-    });
+    } 
 
 })(new window.WATO(), window);

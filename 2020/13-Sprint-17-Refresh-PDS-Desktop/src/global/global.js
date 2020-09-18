@@ -25,6 +25,16 @@
     WATO.prototype.sprint17goals = function(variante){
         var _self = this;
 
+
+        _self.exclude(1023, function(){
+
+            _self.setCookie('kksp17desk_exclude', 'true', ".hessnatur.com", false);
+
+            _self.reload();
+
+        });
+
+
         function clickgoal(queryparameter, goalname, sendOnNextPageView) {
             _self.elem(queryparameter, function(element){
                 if(element){
