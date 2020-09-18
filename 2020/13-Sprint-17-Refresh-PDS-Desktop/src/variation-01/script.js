@@ -700,6 +700,11 @@
         
                             addClass(WATO.qs("#"+thisKey), 'kk_show');
                             addClass(thisTarget, 'kk_active');
+
+                            // Tabs wurden zusammengefasst, daher lösen wir beide aus
+                            // if(thisKey === "Material"){
+                            //     WATO.goalPush('kk17_Pflege');
+                            // }
         
                             WATO.goalPush('kk17_'+thisKey);
                         });
@@ -792,7 +797,7 @@
                 for (var i = 0; i < ratingLenght; i++) {
                     var thisComment = allRatings[i];
     
-                    thisComment.addEventListener('touchstart', function(){
+                    thisComment.addEventListener('click', function(){
                         WATO.goalPush("kk17_rating");
                     });
     
