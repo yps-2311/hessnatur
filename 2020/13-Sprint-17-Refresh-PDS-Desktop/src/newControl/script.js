@@ -14,7 +14,7 @@
 
     if(document.cookie.indexOf("kksp17desk_exclude=true") === -1){
 
-        // window.iridion.econda.push(["Sprint17desktop", "V0"]);
+        window.iridion.econda.push(["Sprint17desktop", "V0"]);
 
         WATO.sprint17goals(0);
 
@@ -53,7 +53,7 @@
                     for (var r = 0; r < ratings.length; r++) {
 
                         ratings[r].addEventListener('click', function(){
-                            WATO.goalPush("kk17_product_ctl", true);
+                            WATO.goalPush("kk17_rating", true);
                         });                       
                     }
                 }

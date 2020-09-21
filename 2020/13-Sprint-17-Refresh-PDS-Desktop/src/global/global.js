@@ -18,8 +18,6 @@
         }else{
             window.iridion.push(['goal', key]);
         }
-
-        console.log('goalPush', key, sendOnNextPageView);
     };
 
     WATO.prototype.sprint17goals = function(variante){
@@ -66,7 +64,10 @@
             }
         });
         
+
         if(variante === 0){
+            clickgoal('.breadcrumb--back a', "kategorie_back");
+
             clickgoal('#read_reviews .h-text-uppercase', "kk17_rating");
             
             clickgoal('#send_review', "kk17_rating");
