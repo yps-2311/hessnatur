@@ -11,7 +11,7 @@
 	"use strict";
 
 	WATO.prototype.AB09_checkPATH = function (value) {
-		return window.location.pathname.indexOf("/de/checkout/multi/" + value) !== -1;
+		return window.location.pathname.indexOf("/checkout/multi/" + value) !== -1;
 
 	};
 
@@ -57,7 +57,7 @@
 		 * ROUTING
 		 */
 		// PAGE: LOGIN
-		if (window.location.pathname === "/de/login/checkout") {
+		if (window.location.pathname.indexOf("/login/checkout") !== -1) {
 
 			_self.AB09_sendGoal('kk_ab09_pv_anmeldung');
 			_self.AB09_clickGoalSelector('#guestRegisterForm .button', 'kk_ab09_click_konto');

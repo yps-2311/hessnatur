@@ -68,11 +68,18 @@
         
         if(variante === 0){
             clickgoal('#read_reviews .h-text-uppercase', "kk17_rating");
+            
             clickgoal('#send_review', "kk17_rating");
 
             clickgoal('.pds-productDescription__text .h-text-uppercase', "kk17_Produktbeschreibung");
+            
             clickgoal('.certificateWrapper a', "kk17_Ausgezeichnete_Qualitaet", true);
+            
             clickgoal('.productInfosItem a', "kk17_Made_In");
+            
+            clickgoal('.js-jump-complete-look', "kk17_shopthelook_anker");
+
+            clickgoal('.js-pds-more-details', "klick_produktdetails");
         }
     };
 

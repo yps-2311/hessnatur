@@ -208,7 +208,7 @@
      * ROUTING
      */
     // PAGE: LOGIN
-    if (PATH === "/de/login/checkout") {
+    if (PATH.indexOf("/login/checkout") !== -1) {
         removeStorage(STORAGE);
 
         // add css prefix
@@ -544,7 +544,7 @@
 
                         jQuery.ajax({
                             type: "POST",
-                            url: "https://www.hessnatur.com/de/cart/update",
+                            url: "https://www.hessnatur.com" + PATH.substr(0, 3) + "/cart/update", //"https://www.hessnatur.com/de/cart/update",
                             data: {
                                 "entryNumber": e.target.closest('.button').getAttribute('data-entryNumber'),
                                 "quantity": "0",
