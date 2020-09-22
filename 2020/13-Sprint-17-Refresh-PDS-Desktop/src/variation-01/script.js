@@ -424,7 +424,7 @@
 
     if(hasNotExcludeCookie){
 
-        // window.iridion.econda.push(["Sprint17desktop", "V1"]);
+        window.iridion.econda.push(["Sprint17desktop", "V1"]);
 
         WATO.sprint17goals(1);
 
@@ -797,9 +797,9 @@
                 for (var i = 0; i < ratingLenght; i++) {
                     var thisComment = allRatings[i];
     
-                    thisComment.addEventListener('click', function(){
-                        WATO.goalPush("kk17_rating");
-                    });
+                    // thisComment.addEventListener('click', function(){
+                    //     WATO.goalPush("kk17_rating");
+                    // });
     
                     var author = WATO.qs(".title__name", thisComment);
     
@@ -811,6 +811,14 @@
                 }
     
                 initGallery('#kk_rating_gallery', true, ratingLenght > 2, 0, false); //ratingLenght > 2
+
+                WATO.elem('#kk_rating_gallery.flickity-enabled button.flickity-prev-next-button.next', function(nextButton){
+                    if(nextButton){
+                        nextButton[0].addEventListener('click', function(){
+                            WATO.goalPush("kk17_rating");
+                        });
+                    }
+                }); 
     
                 // Headline
                 WATO.elem('#accordion-rating-label', function(accordionRatingLabel){
