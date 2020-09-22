@@ -229,7 +229,9 @@
 
                                             if(matching !== ""){
 
-                                                jQuery(productitems[i]).find('.kk-wrapper').prepend(
+                                                jQuery(productitems[i]).click(function(){
+                                                    window.iridion.push(['segment', '32817']);
+                                                }).find('.kk-wrapper').prepend(
                                                     matching === 'weeks' ? templateWeeks : templateMonth
                                                 );
                                                 // productitems[i].childNodes[0].insertAdjacentHTML('afterbegin',
