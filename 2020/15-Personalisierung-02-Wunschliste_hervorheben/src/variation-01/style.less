@@ -5,16 +5,417 @@
 @import "../global/global.less";
 
 /* DEFINE VARIATION CSS */
-.productPrgWrapper .whishList {
-    display: none;
+// .productPrgWrapper .whishList {
+//     display: none !important;
+// }
+.showFirstImg:hover .whishList, 
+.showSecondImg:hover .whishList {
+    display: none !important;
 }
 
-.kk-wishlist {
+.kk_wishlist {
     position: absolute;
     top: 0;
     right: 0;
-    width: 25px;
-    height: 25px;
-    border: 1px solid red;
+    width: 45px;
+    height: 45px;
+    // border: 1px solid red;
     cursor: pointer;
+    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/heart_empty.svg") no-repeat center center;
+
+    &.kk_first {
+        background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/heart_full.svg");
+        -webkit-animation: bounce-in-fwd 1.3s 4 both;
+                animation: bounce-in-fwd 1.3s 4 both;
+    }
 }
+.kk_nudge {
+    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/bubblebox.png") no-repeat 0 0;
+    width: 227px;
+    height: 131px;
+    padding: 36px 0 0 46px;
+    text-align: left;
+    position: absolute;
+    top: 33px;
+    right: -146px;
+    z-index: 100000;
+    cursor: default;
+    b {
+        font-family: "Roboto Condensed Bold";
+        font-weight: normal;
+        // font-weight: bold;
+        font-size: 13px;
+        color: #F58454;
+        letter-spacing: 0.22px;
+        margin-bottom: 9px;
+    }
+    p {
+        font-size: 11px;
+        margin-bottom: 3px
+    }
+    ul {
+        margin-left: 10px;
+    }
+    li {
+        font-size: 11px;
+        line-height: 15px;
+    }
+    &::before {
+        background-color: #F58454;
+        width: 30px;
+        height: 30px;
+        display: block;
+        border-radius: 50%;
+        content: "NEU";
+        font-family: "Roboto Condensed Bold";
+        font-size: 9px;
+        position: absolute;
+        left: 8px;
+        top: 30px;
+        line-height: 30px;
+        color: #fff;
+        text-align: center;
+        letter-spacing: 1.5px;
+    }
+    .close-button {
+        cursor: pointer;
+        top: 27px;
+        span {
+            font-weight: lighter;
+        }
+    }
+}
+.gridviewProductItemWrapper:nth-child(2) {
+    z-index: 2;
+}
+.gridviewProductItemWrapper:nth-child(3) {
+    z-index: 1;
+}
+#kk_wishlist_overlay {
+    &.kk_open,
+    &.kk_open > .reveal {
+        display: block !important;
+    }
+}
+#kk_wishlist_overlay {
+    .reveal {
+        width: 742px;
+        // min-height: 585px;
+        // background-color: #F9F8F5;
+    }
+    .kk_info {
+        background-color: #F5FFEB;
+        padding: 30px 21px 26px 21px;
+        position: relative;
+        .kk_checkbox {
+            font-size: 13px;
+            color: #000000;
+            line-height: 17.64px;
+            margin-bottom: 16px;
+            background: url(https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/haken.svg) no-repeat 0 2px;
+            padding-left: 37px;
+        }
+        &::after {
+            content: "";
+            background: url(https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/pfeil.svg) no-repeat 0 0;
+            width: 50px;
+            height: 23px;
+            display: block;
+            position: absolute;
+            top: 40%;
+            right: -34px;
+        }
+    }
+    .kk_selectors {
+        background-color: #F9F8F5;
+        padding: 40px 33px 10px 41px;
+        h4 {
+            font-family: "Roboto Condensed";
+            font-weight: normal;
+            font-size: 22px;
+            line-height: 24px;
+            margin-bottom: 43px;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+        h5 {
+            font-family: "Roboto",Helvetica,Arial,Archer A,sans-serif;
+            letter-spacing: normal;
+            font-weight: normal;
+            font-size: 15.2px;
+            line-height: 15.2px;
+            margin-bottom: 2px;
+        }
+        small {
+            font-size: 11.4px;
+            line-height: 13.3px;
+            margin-bottom: 15px;
+        }
+    }
+    .row > .row {
+        background-color: #FFFFFF;
+        padding: 0; //40px 51px;
+        margin: 0;
+
+        .large-4,
+        .large-8 {
+            padding: 30px 21px 16px 21px;
+        }
+        a {
+            font-family: "Roboto Condensed Bold";
+            font-weight: normal;
+            border-radius: 2px;
+            font-size: 16px;
+            color: #FFFFFF;
+            display: block;
+            width: 100%;
+            text-decoration: none;
+            padding: 10px 20px 11px 40px;
+            text-align: center;
+            letter-spacing: 0.12px;
+            background: #373939 url(https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/button_heart.svg) no-repeat 32px center;
+            &:hover {
+                background-color: #1d1f1f;
+            }
+        }
+        button {
+            cursor: pointer;
+            background-color: #373939;
+            font-family: "Roboto Condensed Bold";
+            font-weight: normal;
+            border-radius: 2x;
+            width: 338px;
+            text-align: center;
+            font-size: 16px;
+            color: #FFFFFF;
+            letter-spacing: 0.12px;
+            padding: 10px 20px 11px;
+            margin-right: 14px;
+            float: right;
+            &:hover {
+                background-color: #1d1f1f;
+            }
+        }
+        span {
+            cursor: pointer;
+            padding: 5px 23px 5px 56px;
+            float: right;
+            width: 338px;
+            font-size: 12px;
+            background: transparent url(https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/linkarrow.svg) no-repeat 35px center;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+.kk_hidden {
+    display: none;
+}
+.kk_service {
+    h4 {
+        font-family: "Roboto Condensed";
+        font-weight: normal;
+        font-size: 22px;
+        line-height: 24px;
+        margin: 35px 0 28px;
+        text-transform: none;
+        letter-spacing: normal;
+    }
+    .kk_orangebox {
+        background: #FFFBF2;
+        border-radius: 2px;
+        font-weight: 500;
+        font-size: 14px;
+        padding: 17px 5px 9px 58px;
+        color: #F0AE18;
+        height: 50px;
+        margin-bottom: 16px;
+        background: #FFFBF2 url(https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/infoi_orange.svg) no-repeat 12px center;
+    }
+    p {
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+    a {
+        font-family: "Roboto Condensed Bold";
+        font-weight: normal;
+        border-radius: 2px;
+        font-size: 16px;
+        color: #FFFFFF;
+        float: right;
+        width: 212px;
+        display: block;
+        text-decoration: none;
+        padding: 10px 20px 11px 40px;
+        text-align: center;
+        letter-spacing: 0.12px;
+        margin: 0 0 18px 470px;
+        background: #373939 url(https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/button_heart.svg) no-repeat 32px center;
+        &:hover {
+            background-color: #1d1f1f;
+        }
+    }
+    .kk_code {
+        line-height: 34px;
+        border: 1px dashed #848181;
+        border-radius: 1px;
+        margin-bottom: 21px;
+        padding: 4px;
+        text-align: center;
+        height: 46px;
+        // text-transform: uppercase;
+        font-size: 16px;
+        letter-spacing: 0.12px;
+        button {
+            float: right;
+            text-transform: uppercase;
+            font-family: "Roboto Condensed Bold";
+            font-weight: normal;
+            // background-color: #60B70A;
+            background: #60B70A url(https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/cut.svg) no-repeat 12px center;
+            border-radius: 2px;
+            font-size: 13px;
+            color: #FFFFFF;
+            letter-spacing: 0.1px;
+            width: 163px;
+            cursor: pointer;
+            text-align: center;
+            padding: 11px 10px 12px 31px;
+        }
+    }
+    small {
+        font-size: 10px;
+        text-align: center;
+        display: block;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+}
+#kk_title {
+    font-weight: bold;
+    font-size: 13px;
+    margin: 13px 0 15px;
+}
+#kk_price {
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 0;
+    text-align: right;
+}
+.kk_infoi {
+    background: url(https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/infoi.svg) no-repeat 0 center;
+    font-size: 15.2px;
+    line-height: 16.2px;
+    margin-bottom: 24px;
+    padding-left: 47px;
+}
+.kk_whitebox {
+    background-color: #FFFFFF;
+    border: 1px solid #ECEFF2;
+    border-radius: 1px;
+    position: relative;
+    padding: 17px 79px 20px 67px;
+    margin-bottom: 10px;
+}
+#kk_menge {
+    background: #FFFFFF url(https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/menge.svg) no-repeat 377px center;
+}
+#kk_sale {
+    background: #FFFFFF url(https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/prozent.svg) no-repeat 372px center;
+}
+#kk_aktion {
+    background: #FFFFFF url(https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/preisschild.svg) no-repeat 364px center;
+}
+.kk_check {
+    cursor: pointer;
+    border: 1px solid #DBD5D5;
+    border-radius: 4.75px;  
+    display: block;
+    position: absolute;
+    left: 21px;
+    top: 18px;
+    width: 28px;
+    height: 28px;
+    &.kk_selected {
+        background: url(https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/check.svg) no-repeat center center;
+    }
+}
+
+
+
+@-webkit-keyframes bounce-in-fwd {
+    0% {
+        transform: scale(1);
+		-webkit-animation-timing-function: ease-out;
+        animation-timing-function: ease-out;
+        opacity: 1;
+	}
+	50% {
+		transform: scale(0.3);
+		-webkit-animation-timing-function: ease-in;
+        animation-timing-function: ease-in;
+        opacity: 0;
+	}
+	100% {
+		transform: scale(1);
+		-webkit-animation-timing-function: ease-out;
+        animation-timing-function: ease-out;
+        opacity: 1;
+	}
+}
+
+//   @keyframes bounce-in-fwd {
+//     0% {
+//       -webkit-transform: scale(0);
+//               transform: scale(0);
+//       -webkit-animation-timing-function: ease-in;
+//               animation-timing-function: ease-in;
+//       opacity: 0;
+//     }
+//     38% {
+//       -webkit-transform: scale(1);
+//               transform: scale(1);
+//       -webkit-animation-timing-function: ease-out;
+//               animation-timing-function: ease-out;
+//       opacity: 1;
+//     }
+//     55% {
+//       -webkit-transform: scale(0.7);
+//               transform: scale(0.7);
+//       -webkit-animation-timing-function: ease-in;
+//               animation-timing-function: ease-in;
+//     }
+//     72% {
+//       -webkit-transform: scale(1);
+//               transform: scale(1);
+//       -webkit-animation-timing-function: ease-out;
+//               animation-timing-function: ease-out;
+//     }
+//     81% {
+//       -webkit-transform: scale(0.84);
+//               transform: scale(0.84);
+//       -webkit-animation-timing-function: ease-in;
+//               animation-timing-function: ease-in;
+//     }
+//     89% {
+//       -webkit-transform: scale(1);
+//               transform: scale(1);
+//       -webkit-animation-timing-function: ease-out;
+//               animation-timing-function: ease-out;
+//     }
+//     95% {
+//       -webkit-transform: scale(0.95);
+//               transform: scale(0.95);
+//       -webkit-animation-timing-function: ease-in;
+//               animation-timing-function: ease-in;
+//     }
+//     100% {
+//       -webkit-transform: scale(1);
+//               transform: scale(1);
+//       -webkit-animation-timing-function: ease-out;
+//               animation-timing-function: ease-out;
+//     }
+//   }
+  
