@@ -132,8 +132,6 @@
 #kk_wishlist_overlay {
     .reveal {
         width: 742px;
-        // min-height: 585px;
-        // background-color: #F9F8F5;
     }
     .kk_info {
         background-color: #F5FFEB;
@@ -178,7 +176,7 @@
     }
     .row > .row {
         background-color: #FFFFFF;
-        padding: 0; //40px 51px;
+        padding: 0;
         margin: 0;
 
         .large-4,
@@ -319,9 +317,6 @@
             padding: 11px 10px 12px 31px;
             height: 36px;
             transition: all 0.2s;
-            // &:hover {
-                // font-size: 16px;
-            // }
             &:active {
                 font-size: 16px;
             }
@@ -475,9 +470,6 @@
     .kk_darkbutton {
         margin: 15px auto 24px;
     }
-    // input {
-    //     margin-left: 46px;
-    // }
 }
 #kk_skip {
     margin: 0 auto;
@@ -499,28 +491,25 @@
     }
 }
 
-@-webkit-keyframes bounce-in-fwd {
+@keyframes bounce-in-fwd {
     0% {
         transform: scale(1);
 		-webkit-animation-timing-function: ease-out;
         animation-timing-function: ease-out;
-        // opacity: 1;
 	}
 	50% {
 		transform: scale(1.3);
 		-webkit-animation-timing-function: ease-in;
         animation-timing-function: ease-in;
-        // opacity: 0;
 	}
 	100% {
 		transform: scale(1);
 		-webkit-animation-timing-function: ease-out;
         animation-timing-function: ease-out;
-        // opacity: 1;
 	}
 }
 
-@-webkit-keyframes swipe-up {
+@keyframes swipe-up {
     0% {
         height: 0;
         opacity: 0;
