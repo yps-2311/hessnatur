@@ -284,12 +284,12 @@
      *
      * @author Lukas Dziambor
      */
-    /*
+    
 	window.WATO.prototype.reload = function(){
         location.reload();
         location.href=location.href.split('#')[0];
 	};
-    */
+    
 
     /**
      * @function offsetY
