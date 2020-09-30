@@ -128,81 +128,6 @@
         });
     }
 
-    function resetValueOnFocus(input) {
-        input.addEventListener('click', function () {
-            if (!this.classList.contains('kk-filled')) {
-                addClass(this, 'filled');
-                this.value = '';
-            }
-        });
-    }
-
-    function prefillInput(elemToFill, filledElemSelector) {
-        WATO.elem(elemToFill, function (elem) {
-            if (elem) {
-                if (elem[0].value === '') {
-                    elem[0].value = WATO.qs(filledElemSelector).value;
-                    resetValueOnFocus(elem[0]);
-                }
-            }
-        });
-    }
-
-    function editAddressPage() {
-        // add css prefix
-        addClass(document.documentElement, "address-modified");
-        adjustProgressBar();
-
-        WATO.elem('.h1', function (headline) {
-            if (headline) {
-                headline[0].innerHTML = 'Abweichende Lieferadresse';
-            }
-        });
-
-        // toggle delivery address form
-        WATO.ready(function () {
-            WATO.elem('label[for="additional_address_trigger"]', function (deliveryAddressLabel) {
-                if (deliveryAddressLabel[0]) {
-                    deliveryAddressLabel = deliveryAddressLabel[0];
-
-                    deliveryAddressLabel.click();
-                    WATO.elem('#additional--address.hide', function (input) {
-                        if (input) {
-
-                            if (WATO.qs('#additional_address_trigger:checked')) {
-                                window.setTimeout(function () {
-                                    deliveryAddressLabel.click();
-                                }, 550);
-                            }
-                            window.setTimeout(function () {
-                                deliveryAddressLabel.click();
-                            }, 500);
-                        }
-                    });
-
-                    // just to be safe...
-                    window.setTimeout(function () {
-                        if (!WATO.qs('#additional_address_trigger:checked')) {
-                            deliveryAddressLabel.click();
-                        }
-                    }, 750);
-                }
-            });
-        });
-
-        // prefill zip, city, street with invoice data
-        prefillInput('#zipAlternative', '#zip');
-        prefillInput('#cityAlternative', '#city');
-        prefillInput('[name="line1Alternative"]', '[name="line1"]');
-
-        WATO.elem('[name="firstNameAlternative"]', function (firstNameAlternative) {
-            if (firstNameAlternative) {
-                resetValueOnFocus(firstNameAlternative[0]);
-                resetValueOnFocus(WATO.qs('[name="lastNameAlternative"]'));
-            }
-        });
-    }
-
 
     /**
      * ROUTING
@@ -357,14 +282,6 @@
                     setStorage(STORAGE, true);
                 }
 
-                // WATO.qs('input', newsletterBox[0].previousElementSibling).addEventListener('change', function () {
-                //     setStorage(STORAGE, !this.checked);
-                //     WATO.AB09_sendGoal('kk_ab09_click_delivery_checkbox');
-                //     // Change button text depending on checkbox value
-                //     changeButtonText(this.checked ? 'Adresseingabe' : 'Zahlungsart');
-                // });
-
-
                 // Ja - Meine Lieferadresse und Rechnungsadresse sind identisch.
                 WATO.qs('#kk09_address_option', newsletterBox[0].previousElementSibling).addEventListener('click', function () {
                     setStorage(STORAGE, true);
@@ -429,27 +346,13 @@
                 window.setTimeout(function () {
                     WATO.qs('#kk-loader').remove();
                     removeClass(document.documentElement, "address-hide");
-                    editAddressPage();
+                    adjustProgressBar();
                 }, 4000);
             }, 500);
         } else {
 
             setStorage(STORAGE, false);
-            editAddressPage();
-
-            WATO.ready(function () {
-
-                if (document.URL.indexOf('show-invoice') !== -1) {
-                    window.setTimeout(function () {
-
-                        WATO.elem(function () {
-                            return typeof jQuery !== 'undefined';
-                        }, function () {
-                            jQuery("html, body").animate({ scrollTop: jQuery('#addressId').prev().offset().top - 100 });
-                        });
-                    }, 800);
-                }
-            });
+            adjustProgressBar();
         }
 
 
@@ -490,33 +393,6 @@
         // add css prefix
         addClass(document.documentElement, "summary");
         adjustProgressBar();
-
-        WATO.elem('#checkoutContentPanel', function (contentPanel) {
-            if (contentPanel) {
-                contentPanel = contentPanel[0];
-
-                // if delivery and invoice addresses are equal, only display invoice address as "Liefer- & Rechnungsadresse"
-                // var addresses = WATO.qsa('.columns.small-12.h-xLargeOffset-bottom-outer:not(.h4)', contentPanel),
-                // deliveryAddressWrapper = addresses[1].closest('.align-top');
-                // if (addresses[0].textContent === addresses[1].textContent) {
-                //     addresses[0].previousElementSibling.innerHTML = 'Liefer- & Rechnungsadresse';
-                //     addClass(deliveryAddressWrapper, 'hide');
-                // } else {
-                //     WATO.qs('.button.hollow', addresses[0].closest('.align-top')).href = WATO.qs('.button.hollow', addresses[0].closest('.align-top')).href + '?show-invoice';
-                // }
-
-                var invoiceBtn = WATO.qs('a.button.hollow[href*="add-delivery-address"]');
-                invoiceBtn.href = invoiceBtn.href + '?show-invoice';
-
-                // var paymentOption = getStorage('KK09PAYMENT').split('|'),
-                //     paymentWrapper = WATO.qs('.columns.small-12.h-smallOffset-bottom-inner', deliveryAddressWrapper.nextElementSibling);
-
-                // addClass(paymentWrapper, 'payment-option');
-                // addClass(paymentWrapper, paymentOption[1]);
-                // paymentWrapper.innerHTML = paymentOption[0];
-
-            }
-        });
 
         WATO.elem('.cart__productname', function (productNames) {
             if (productNames) {
