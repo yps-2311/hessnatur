@@ -420,8 +420,11 @@
     
                                     newCTLWrapper.insertAdjacentElement('beforeend', CTLProducts[i]);
                                 }
+                                // 02.10.2020: Sicherheitsabfrage
+                                if(CTLProducts.length > 0){
+                                    initGallery('#kk_ctlwrapper', false, CTLProducts.length > 2, 0.41);
+                                }
                                 
-                                initGallery('#kk_ctlwrapper', false, CTLProducts.length > 2, 0.41);
 
                                 WATO.elem(function(){
                                     // Falls noch nicht geladen
