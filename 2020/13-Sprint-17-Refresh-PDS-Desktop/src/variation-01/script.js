@@ -260,6 +260,7 @@
 
                 } catch (error) {
                     setErrorTracking("wa_setup_monitoring", error);
+                    WATO.goalPush("catchMonitoring");
                 }
             }
         });
@@ -268,7 +269,10 @@
 
     // Farbe gewächselt
     function changeColor(e) {
-        var thisTarget = e.target.parentNode.getAttribute("data-color");
+
+        var thisTarget = e.target.parentNode.getAttribute("data-color"),
+            newColorImage = WATO.qs('img', e.currentTarget),
+            prodDescImg = WATO.qs('#kk-prod-desc-img');
 
         if(!thisTarget){
             thisTarget = e.target.parentNode.parentNode.getAttribute("data-color");
@@ -277,7 +281,13 @@
         // // Ausgewählte Farbe an Galerie übergeben
         buildHeader(parseInt(thisTarget));
 
-        createCTL();
+        createCTL(false);
+
+        // Bild in der Produktbeschreibung auswechseln
+        if(prodDescImg && newColorImage && newColorImage.getAttribute('src')){
+
+            prodDescImg.setAttribute('src', newColorImage.getAttribute('src').replace(/hyb_redes_detail_thumb/, 'hyb_redes_detail_main'));
+        }
     }
 
     function initGallery(galID, adaptiveHeight, prevNextButn, factorForHeight, dots) {
@@ -340,12 +350,14 @@
     }
 
     // Complete the Look
-    function createCTL() {
+    function createCTL(init) {
         WATO.elem('.js-jump-complete-look', function(completeTheLookLink){
             if(completeTheLookLink){
                 
                 WATO.elem(function(){
+
                     return WATO.qsa('.h-xxLargeOffset-bottom-inner-xLarge-up > img').length > 0 && !WATO.qs(".kk_ctl");
+
                 }, function(){
                     var completeTheLookImg = WATO.qs('.h-xxLargeOffset-bottom-inner-xLarge-up > img');
 
@@ -363,9 +375,12 @@
                             // Anker zu CTL wird mit dem Hauptbild als Hintergrund versehen
                             completeTheLookLink.setAttribute('style', 'background-image: url('+CTLTeaserImgSrc+')');
 
-                            completeTheLookLink.addEventListener('click', function(){
-                                WATO.goalPush("kk17_shopthelook_anker");
-                            });
+                            // Nur initial das Tracking berücksichtigen: 30.09.2020
+                            if(init){
+                                completeTheLookLink.addEventListener('click', function(){
+                                    WATO.goalPush("kk17_shopthelook_anker");
+                                });
+                            }
 
                             // CTL-Anker unter die Hauptgalerie verschoben
                             WATO.elem('.kk_sliderWrapper', function(sliderWrapper){
@@ -397,24 +412,31 @@
                                     });
 
                                     var img = WATO.qs("img", CTLProducts[i]);
-                                    img.setAttribute('src', img.getAttribute('src').replace("hyb_redes_reco","hyb_redes_detail_main"));
+                                    
+                                    // 30.09.2020: Abfrage ob img überhaupt vorhanden
+                                    if(img){
+                                        img.setAttribute('src', img.getAttribute('src').replace("hyb_redes_reco","hyb_redes_detail_main"));
+                                    }
     
                                     newCTLWrapper.insertAdjacentElement('beforeend', CTLProducts[i]);
                                 }
-                                
-                                initGallery('#kk_ctlwrapper', false, CTLProducts.length > 2, 0.41);
+
+                                initGallery('#kk_ctlwrapper', false, CTLProducts.length > 2, 0.41);                               
 
                                 WATO.elem(function(){
                                     // Falls noch nicht geladen
-                                    return typeof window.MagicZoom !== "undefined";
-                                }, function(){
-                                    // init MagicZoom
-                                    window.MagicZoom.start();
+                                    return typeof window.MagicZoom !== "undefined" && typeof window.MagicZoom.start !== "undefined";
+
+                                }, function(fnCallback){
+                                    if(fnCallback){
+                                        // init MagicZoom
+                                        window.MagicZoom.start();
+                                    }
                                 });
                             }
                         }
                     } catch (error) {
-                        setErrorTracking("wa_setup_monitoring", error);
+                        setErrorTracking("kk17_setup_ctl_monitor", error);
                     }
                 });
             }
@@ -724,46 +746,97 @@
                     if(Produktbeschreibung){
                         Produktbeschreibung = Produktbeschreibung[0];
 
-                        var articleNumber = WATO.qs(".pds-cockpit__articleNumber");
-
+                        var articleNumber = WATO.qs(".pds-cockpit__articleNumber"),
+                            prodUvp = WATO.qs(".pds-cockpit__shortDescription") !== null ? WATO.qs(".pds-cockpit__shortDescription").innerHTML : "";
                         // Produkt UVPs in die Produktinfos kopieren
                         Produktbeschreibung.insertAdjacentHTML('beforeend', 
-                            '<ul class="pds-cockpit__shortDescription">'+WATO.qs(".pds-cockpit__shortDescription").innerHTML+'</ul>'
+                            '<ul class="pds-cockpit__shortDescription kk-prod-uvp">'+prodUvp+'</ul>' 
                         );
                         
+                        //pds-cockpit__shortDescription
+
+                        WATO.elem('#Produktbeschreibung .pds-cockpit__shortDescription', function(elemUvp){
+                            if(elemUvp){
+                                WATO.elem(function(){
+
+                                    return WATO.qs('#Produktbeschreibung .pds-cockpit__shortDescription') === null;
+
+                                }, function(fnCallback){
+                                    if(fnCallback){
+                                        Produktbeschreibung.insertAdjacentHTML('beforeend', 
+                                            '<ul class="pds-cockpit__shortDescription kk-prod-uvp">'+prodUvp+'</ul>' 
+                                        );
+                                    }
+                                });
+                            }
+                        });
+
                         // Artikelnummer in die Produktinfos verschieben
                         if(articleNumber){
                             Produktbeschreibung.insertAdjacentElement('beforeend', articleNumber);
+
+                            WATO.elem('#Produktbeschreibung .pds-cockpit__articleNumber', function(elemArticleNumber){
+                                if(elemArticleNumber){
+                                    WATO.elem(function(){
+    
+                                        return WATO.qs('#Produktbeschreibung .pds-cockpit__articleNumber') === null;
+    
+                                    }, function(fnCallback){
+                                        if(fnCallback){
+                                            Produktbeschreibung.insertAdjacentElement('beforeend', articleNumber);
+                                        }
+                                    });
+                                }
+                            });
                         }
 
                         // Bild in die Produktinfos einbauen
                         Produktbeschreibung.insertAdjacentHTML('afterend', 
-                            '<img src="'+firstPicUrl.replace("detail_zoom","detail_main").replace("_1.jpg","_7.jpg")+'">'
+                            '<img id="kk-prod-desc-img" src="'+firstPicUrl.replace("detail_zoom","detail_main").replace("_1.jpg","_7.jpg")+'">'
                         );
                     }
                 });
 
                 // Farben
+                // 30.09.2020: Workaround bei Klick auf gleiche Farbe
                 WATO.elem('.pds-cockpit__colorSwitch li a', function(colorSwitch){
                     if(colorSwitch){
 
                         try {
                             var firstPic = firstPicUrl.replace("detail_zoom","detail_thumb"),
                                 prodID = firstPic.match(/\d{5}/),
-                                numberOfColors = colorSwitch.length;
+                                numberOfColors = colorSwitch.length,
+                                selectedColor = -1;
 
                             // Produktfarben mit Listeners
                             for (var j = 0; j < numberOfColors; j++) {
-                                var thisColorLink = colorSwitch[j];
+                                var thisColorLink = colorSwitch[j],
+                                    colorParent = thisColorLink.parentNode;
+
+                                if(colorParent.classList.contains('active') && colorParent.getAttribute('data-color')){
+                                    selectedColor = colorParent.getAttribute('data-color');
+                                }
 
                                 thisColorLink.innerHTML = '<img src="'+firstPic.split(prodID)[0] + prodID + '_' + thisColorLink.parentNode.getAttribute('data-color') +'_7.jpg">'; //  + imgNumber +
 
                                 addClass(thisColorLink, 'kk-img-switch');
 
-                                thisColorLink.addEventListener('click', changeColor);
+                                thisColorLink.addEventListener('click', function(eClick){
+
+                                    var newActiveColor = eClick.currentTarget,
+                                        newColorParent = newActiveColor.parentNode,
+                                        newColorID = newColorParent.getAttribute('data-color');
+
+                                    if(newColorID !== null && newColorID !== selectedColor){
+                                        
+                                        selectedColor = newColorID;
+                                        
+                                        changeColor(eClick);
+                                    }
+                                });
                             }
                         } catch (error) {
-                            setErrorTracking("wa_setup_monitoring", error);
+                            setErrorTracking("kk17_setup_colorswitch_monitor", error);
                         }
                     }
                 });
@@ -771,7 +844,7 @@
         });
 
 
-        createCTL();
+        createCTL(true);
 
         // Bewertung
         WATO.elem('.ratingAccordion', function(ratingAccordion){
@@ -861,7 +934,7 @@
                         }, 500);
     
                     } catch (error) {
-                        setErrorTracking("wa_setup_monitoring", error);
+                        setErrorTracking("wa_setup_monitoring3", error);
                     }
                 });
             }
