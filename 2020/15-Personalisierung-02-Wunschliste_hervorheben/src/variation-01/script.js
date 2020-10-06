@@ -3,13 +3,16 @@
 
 /**
  * @function
- * @author Max Vith
+ * @author Denis Leno
  * @namespace V1
  * @name Variation 01
  * @description
  */
 (function(WATO, window) {
     "use strict";
+
+
+    /*jshint loopfunc: true */
 
     if (!Element.prototype.matches) {
         Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
@@ -28,21 +31,17 @@
     }
 
     function getLS(key) {
-        var ls = window.localStorage.getItem(key);
-        if(ls){
-            return ls.split(",");
-        }else{
-            return [];
-        }
+        return !!window.localStorage.getItem(key);
     }
     function setLS(key, body) {
         window.localStorage.setItem(key, body);
     }
 
     var gutscheincode = "Versandkostenfrei",
-        isModalClosed = getLS("kk_modalClosed").length > 0,
+        isModalClosed = getLS("kk_modalClosed"),
         productsOnWishlist = [],
-        pageIsCart = window.location.pathname.indexOf("cart") !== -1;
+        winPath = window.location.pathname,
+        pageIsCart = winPath.indexOf("cart") !== -1;
 
     function markModalAsClosed() {
         setLS("kk_modalClosed", true);
@@ -60,16 +59,17 @@
     }
 
     function fetchSend(urlPath, sendParameter) {
-        fetch('https://www.hessnatur.com/de/'+urlPath, {
+        window.fetch('https://www.hessnatur.com/de/'+urlPath, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             body: sendParameter + '&CSRFToken=' + window.ACC.config.CSRFToken
         }).then(function() {
-            console.log(">>> kk: product " + productId);
+            console.log(">>> KK: done");
         }).catch(function(error) {
             console.log(">>> KK: error", error.toString());
+            WATO.goalPush("error_setup");
         });
     }
 
@@ -79,24 +79,43 @@
 
 
     // Wenn auf der Warenkorbseite der Optin gewählt wurde kommt hier kein Umbau mehr, auf der Produktliste jedoch weiterhin
-    if(pageIsCart ? getLS("kk_cartmodalClosed").length === 0 : true){
+    console.log('pageIsCart: ', pageIsCart);
+    console.log('getLS("kk_cartmodalClosed"): ', getLS("kk_cartmodalClosed"));
+
+
+    if(winPath.indexOf("merkzettel") !== -1) {
+        // Merkzettel, Wunschliste
+        
+        WATO.elem('.h1', function(h1){
+            if(h1){
+                h1[0].innerHTML = "Ihre Wunschliste";
+            }
+        });
+
+    }else if(pageIsCart ? !getLS("kk_cartmodalClosed") : true){
 
         // Sobald der Minidropdown mit den Produkten auf der Wunschliste geladen ist kann eine Liste erstellt werden, 
         // damit die Produkte auf der Produktliste ein volles Herz bekommen
         WATO.elem('#miniWishListDropdown li.flyout-image a', function(miniWishlistProducts){
             if(miniWishlistProducts){
                 for (var k = 0; k < miniWishlistProducts.length; k++) {
-                    var productID = miniWishlistProducts[k].getAttribute("href").split("/p/")[1].substring(0,7);
+                    try {
+                        var productID = miniWishlistProducts[k].getAttribute("href").split("/p/")[1].substring(0,7);
 
-                    // Liste befüllen
-                    productsOnWishlist.push(productID);
-                    
-                    // Timing: Falls das folgende Polling schneller ist als dieses sind die Produkte bereits mit neuen Herzen ausgestattet,
-                    // in diesem Fall werden die Produkte nachträglich mit vollen Herzen per Klasse ausgestattet
-                    addClass(WATO.qs('div[id="'+productID+'"] .kk_wishlist'), 'kk_added');
+                        // Liste befüllen
+                        productsOnWishlist.push(productID);
+                        
+                        // Timing: Falls das folgende Polling schneller ist als dieses sind die Produkte bereits mit neuen Herzen ausgestattet,
+                        // in diesem Fall werden die Produkte nachträglich mit vollen Herzen per Klasse ausgestattet
+                        addClass(WATO.qs('div[id="'+productID+'"] .kk_wishlist'), 'kk_added');
+                    } catch (error) {
+                        console.log('Error: ', error);
+                    }
                 }
             }
         });
+
+        console.log(123);
 
         // Produktliste und Warenkorb
         WATO.elem('.gridviewProductItemWrapper, .item__form', function(gridviewProductItemWrapper){
@@ -109,9 +128,13 @@
                 for(var i = 0; i < gridviewProductItemWrapper.length; i++){
 
                     var wishlistOrTrashButton = document.createElement("button"),
-                        thisProductID = pageIsCart ? 
-                            WATO.qs(".js-update-entry-form", gridviewProductItemWrapper[i]).getAttribute('data-product-json-url').replace("/de/p/","").replace("/json","").substring(0,9) : 
-                            WATO.qs('.dropdown-pane', gridviewProductItemWrapper[i]).getAttribute('id').substring(0,9);
+                        thisProductID;
+
+                    if(pageIsCart){
+                        thisProductID = WATO.qs(".js-update-entry-form", gridviewProductItemWrapper[i]).getAttribute('data-product-json-url').replace("/de/p/","").replace("/json","").substring(0,9);
+                    }else{
+                        thisProductID = WATO.qs('.dropdown-pane', gridviewProductItemWrapper[i]).getAttribute('id').substring(0,9);
+                    }
 
                     // Je nach Seitentyp bekommt der neue Button eine andere Klasse
                     addClass(wishlistOrTrashButton, (pageIsCart ? 'kk_remove' : 'kk_wishlist'));
@@ -136,7 +159,7 @@
 
                         if(!pageIsCart){
                             // Produktliste
-                            var thisNudge = WATO.qs(".kk_nudge")
+                            var thisNudge = WATO.qs(".kk_nudge");
                             if(thisNudge){
                                 thisNudge.parentNode.removeChild(thisNudge);
                             }
@@ -157,6 +180,9 @@
                         WATO.qs("#kk_prodinfo").innerHTML = 
                             '<img src="'+WATO.qs(".productImage-1, .small-4 a img", productTop).getAttribute('src').replace("hyb_redes_cart_overview","hyb_redes_list_main")+'">'+
                             '<div id="kk_title">'+WATO.qs(".js-prgLink a, .cart__productname", productWrapper).innerHTML+'</div>'+
+                            // '<div id="kk_color">Farbe: <span>'+WATO.qs(".productPrgWrapper > span.h-text-decoration-none, .value--color", productWrapper).innerHTML+'</span></div>'+
+                            '<div id="kk_size">Größe: <span>'+WATO.qs(".productItemSizes div:first-child span, .value--size", productWrapper).innerHTML+'</span></div>'+
+                            '<div>Menge: <span>1</span></div>'+
                             '<div id="kk_price">'+WATO.qs(".productPrgWrapper > span.h-text-decoration-none, .price", productWrapper).innerHTML+'</div>';
 
                         modaloverlay.dataset.id = productId;
@@ -201,9 +227,9 @@
                                     '<span aria-hidden="true">×</span>'+
                                 '</button>'+
                                 '<b>Wunschliste beobachten</b>'+
-                                '<p>Sie erfahren wenn der Artikel</p>'+
+                                '<p>Sie erfahren wenn, der Artikel</p>'+
                                 '<ul>'+
-                                    '<li>in geringer Stückzahl verfügbar</li>'+
+                                    '<li>in geringer Stückzahl verfügbar,</li>'+
                                     '<li>im Sale</li>'+
                                     '<li>in einer Aktion ist </li>'+
                                 '</ul>'+
@@ -239,9 +265,9 @@
                             '<div class="columns large-8 kk_selectors">'+
                                 '<h4>Wunschliste beobachten</h4>'+
                                 '<div class="kk_infoi">Sie erhalten auf Wunsch <b>nützliche Infos zu<br>Artikeln</b> auf Ihrem Merkzettel</div>'+
-                                '<div id="kk_menge" class="kk_whitebox"><div class="kk_check kk_selected"></div><h5>Geringe Stückzahl</h5><small>Sobald ein Artikel in geringer Stückzahl verfügbar ist</small></div>'+
-                                '<div id="kk_sale" class="kk_whitebox"><div class="kk_check kk_selected"></div><h5>Sale</h5><small>Sobald der Artikel günstiger wird</small></div>'+
-                                '<div id="kk_aktion" class="kk_whitebox"><div class="kk_check kk_selected"></div><h5>Aktion</h5><small>Sobald ein Artikel in einer Aktion gelistet wird (z.B.SSV)</small></div>'+
+                                '<div id="kk_menge" class="kk_whitebox kk_selected"><h5>Geringe Stückzahl</h5><small>Sobald ein Artikel in geringer Stückzahl verfügbar ist</small><div class="kk_check"></div></div>'+
+                                '<div id="kk_sale" class="kk_whitebox kk_selected"><h5>Sale</h5><small>Sobald der Artikel günstiger wird</small><div class="kk_check"></div></div>'+
+                                '<div id="kk_aktion" class="kk_whitebox kk_selected"><h5>Aktion</h5><small>Sobald ein Artikel in einer Aktion gelistet wird (z.B.SSV)</small><div class="kk_check"></div></div>'+
                             '</div>' +
                             '<div class="columns large-8 kk_onlybuttons">'+
                                 '<button class="kk_gotowish">Auf Ihre Wunschliste legen</button>'+
@@ -253,19 +279,19 @@
                                     '<a class="kk_gotowish" href="/merkzettel">Zur Wunschliste</a>'+
                                 '</div>' +
                                 '<div class="columns large-8">'+
-                                    '<button>Wunschliste Info-Service Nutzen</button>'+
+                                    '<button>Jetzt Wunschliste beobachten</button>'+
                                     '<span>Nein Danke, das interessiert micht nicht</span>'+
                                 '</div>' +
                             '</div>' +
                         '</div>' +
                         '<div class="row kk_service kk_hidden">' +
                             '<div class="columns large-12">'+
-                                '<h4>Danke, dass Sie unseren Wunschliste-Service nutzen wollen.</h4>'+
-                                '<div class="kk_orangebox">Der Service befindet sich momentan in Entwicklung und ist noch nicht verfügbar</div>'+
-                                '<p>Um Ihnen die Wartezeit zu verkürzen erhalten Sie einen Versandkostenfrei-Gutschein, den Sie für Ihre nächste Bestellung einlösen können.</p>'+
+                                '<h4>Danke, dass Sie unseren Wunschliste-Service<br>nutzen wollen.</h4>'+
+                                '<div class="kk_atwork">Aufgrund von technischen Herausforderungen, können wir den Service momentan leider nicht anbieten.</div>'+
+                                '<p>Um Ihnen die Wartezeit zu verkürzen erhalten Sie einen Versandkostenfrei-<br>Gutschein, den Sie für Ihre nächste Bestellung einlösen können.</p>'+
                                 '<div class="kk_code"><input readonly id="kk_copytext" type="text" value="'+gutscheincode+'"><button>Code kopieren</button></div>'+
                                 '<a href="/merkzettel">Zur Wunschliste</a>'+
-                                '<small>Einmalig einlösbar für Ihre nächste Bestellung und nur in Verbindung mit Ihrem Aktionscode. Nicht kombinierbar mit anderen Aktionen. Keine Auszahlung möglich. Gültig bis xxx.</small>'+
+                                '<small>Einmalig einlösbar für Ihre nächste Bestellung und nur in Verbindung mit Ihrem Aktionscode. Nicht kombinierbar mit anderen<br>Aktionen. Keine Auszahlung möglich. Gültig bis xxx.</small>'+
                             '</div>' +
                         '</div>' +
                         '<button class="close-button" data-close="" aria-label="Close reveal" type="button">' +
@@ -276,52 +302,56 @@
             );
 
             var theModal = WATO.qs("#kk_wishlist_overlay", offCanvasWrapperInner),
-                checkboxes = WATO.qsa(".kk_check", theModal),
-                closeModal = function(theModal) {
+                checkboxes = WATO.qsa(".kk_whitebox", theModal),
+                closeModal = function() {
                     removeClass(theModal, 'kk_open');
                     markModalAsClosed();
                     if(pageIsCart){
                         WATO.reload();
                     }
                 };
-
             
-            WATO.qs(".close-button",theModal).addEventListener('click', function(){
-                closeModal(theModal);
-            });
-            WATO.qs(".large-8 span",theModal).addEventListener('click', function(){
-                closeModal(theModal);
-            });
+            // Schließen-X Button Modal
+            WATO.qs(".close-button",theModal).addEventListener('click', closeModal);
+            // Modal schließen mit dem Link "Nein Danke, das interessiert micht nicht"
+            WATO.qs(".large-8 span",theModal).addEventListener('click', closeModal);
+            // Blurry-Background schließt Modal
             theModal.addEventListener('click', function(e){
-                e.preventDefault();
                 if(e.target.classList.contains('reveal-overlay')) {
                     closeModal(theModal);
                 }
             });
 
+            // "Jetzt Wunschliste beobachten" Button - öffnet die Folgeseite mit dem Gutschein
             WATO.qs(".large-12 .large-8 button",theModal).addEventListener('click', function(e){
                 e.preventDefault();
 
-                var modal =  WATO.qs(".kk_wishlist_modal", theModal);
-
-                addClass(modal,'kk_hidden');
+                addClass(WATO.qs(".kk_wishlist_modal", theModal),'kk_hidden');
                 removeClass(WATO.qs(".kk_service", theModal), 'kk_hidden');
 
                 if(pageIsCart){
+                    // Auf dem Warenkorb fügt erst dieser Link das Produkt zur Wunschliste hinzu
                     addToWishlist(theModal.dataset.id);
                 }
             });
 
+            // Der Gutscheincode
             WATO.qs(".kk_code",theModal).addEventListener('click', function(e){
                 e.preventDefault();
-                WATO.qs("#kk_copytext").select();
-                document.execCommand('copy');
+                try {
+                    WATO.qs("#kk_copytext").select();
+                    window.document.execCommand('copy');
+                } catch (error) {
+                    console.log('Error: ', error);
+                }
             });
 
+            // Die drei Checkboxen zum an- und abwählen
             for (var i = 0; i < checkboxes.length; i++) {
                 checkboxes[i].addEventListener('click', function(e){
-                    e.preventDefault();
-                    var thisCheck = e.target;
+                    var thisTarget = e.target,
+                        thisCheck = thisTarget.classList.contains('kk_whitebox') ? thisTarget : thisTarget.closest(".kk_whitebox");
+                    
                     if(thisCheck.classList.contains('kk_selected')){
                         removeClass(thisCheck, 'kk_selected');
                     }else{
@@ -329,23 +359,31 @@
                     }
                 });
             }
-            WATO.qs(".kk_onlybuttons .kk_gotowish",theModal).addEventListener('click', function(){
-                addToWishlist(theModal.dataset.id);
-                WATO.reload();
-            });
+            
+            // Alternativ-Modal auf dem Warenkorb wenn man das vorherige Modal schon einmal gesehen hat
+            if(pageIsCart){
+                // Zur Wunschliste hinzufügen
+                WATO.qs(".kk_onlybuttons .kk_gotowish",theModal).addEventListener('click', function(){
+                    addToWishlist(theModal.dataset.id);
+                    WATO.reload();
+                });
+    
+                // Seite neu Laden
+                WATO.qs(".kk_onlybuttons .kk_darkbutton",theModal).addEventListener('click', WATO.reload);
 
-            WATO.qs(".kk_onlybuttons .kk_darkbutton",theModal).addEventListener('click', WATO.reload);
+                // Localstorage schreiben dass dieses Fenster nicht mehr gezeigt werden soll
+                WATO.qs("#kk_skip",theModal).addEventListener('click', function(e){
+                    var thisCheckbox = e.target;
 
-            WATO.qs("#kk_skip",theModal).addEventListener('click', function(e){
-                var thisCheckbox = e.target;
-                if(thisCheckbox.classList.contains('kk_checked')) {
-                    removeClass(thisCheckbox, "kk_checked");
-                    window.localStorage.removeItem("kk_cartmodalClosed");
-                }else{
-                    addClass(thisCheckbox, "kk_checked");
-                    setLS("kk_cartmodalClosed", true);
-                }
-            });
+                    if(thisCheckbox.classList.contains('kk_checked')) {
+                        removeClass(thisCheckbox, "kk_checked");
+                        window.localStorage.removeItem("kk_cartmodalClosed");
+                    }else{
+                        addClass(thisCheckbox, "kk_checked");
+                        setLS("kk_cartmodalClosed", true);
+                    }
+                });
+            }
         }
     });
 
