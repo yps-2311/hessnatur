@@ -33,18 +33,14 @@
         window.iridion.push(['goal', key]);
     }
 
-	WATO.prototype.s12 = function(variant){
+	WATO.prototype.sp12n = function(variant){
 
 		var _self = this;
 		variant = variant || 0;
 
 
 		_self.exclude(1023, _self.reload);
-
-
-		if(variant === 0 || window.iridion.push(['profile', 'getValue', 'hadStrikePrice'])) {
-			return false;
-		}
+		
 
 		function price2Float(str) {
 			return parseFloat(str.replace('€ ', '').replace('.', '').replace(',', '.'));
@@ -78,23 +74,31 @@
 		_self.elem('.h-mediumOffset-bottom-inner .button.success', function(bottomCTA) {
 			if(bottomCTA) {
 				var _products = _self.qsa('.listing__table--item'), 
-					_productCount = _products.length;
-	
+					_productCount = _products.length,
+					varianteSale = !!_self.qs(".item__form .strikeValue"),
+					_youSaved = 0;
+					
+				console.log('varianteSale: ', varianteSale);
+
 				// iterate all products and find savings
 				for(var i=0; i < _productCount; i++) {
 					var _thisProduct = _products[i],
 					_oldPrice = _self.qs('.strikeValue', _thisProduct);
 	
-					if(_oldPrice) {
+					if(_oldPrice && varianteSale) {
 						var _newPrice = _self.qs('.price', _thisProduct),
 						_oldPriceWrapper = _oldPrice.parentElement,
 						_save = price2Float(_oldPrice.textContent) - price2Float(_newPrice.textContent);
 	
+						// sum savings
+						if(_save > 0) {
+							_youSaved += _save;
+						}
 	
 						_oldPriceWrapper.classList.add('kk_price');
 						
 						_oldPriceWrapper.parentElement.insertAdjacentHTML('beforeend', ''+
-							'<div class="kk_save">€ '+float2Price(_save)+' Ersparnis</div>'
+							'<div class="kk_save">'+float2Price(_save)+' € Ersparnis</div>'
 						);
 	
 						_self.qs('img', _thisProduct).insertAdjacentHTML('afterend', ''+
@@ -109,6 +113,17 @@
 					kk_sum = sumPrices[0],
 					kk_total = sumPrices[1];
 
+				if(varianteSale){
+					kk_sum.classList.add('discountPrice');
+					kk_sum.insertAdjacentHTML('afterend', ''+
+						'<div class="column shrink price strikeValue h-no-padding-left h-xsmallOffset-bottom-inner h-smallOffset-left-outer kk_sums">'+float2Price(price2Float(kk_sum.textContent) + _youSaved)+' €*</div>'
+					);
+					
+					_self.qs('.btn-deliverycosts').insertAdjacentHTML('afterend', ''+
+						'<br/>'+
+						'<div class="kk_save" style="display: inline-block; color: #393939"><span style="font-weight:300">Sie sparen mit dieser Bestellung</span> '+float2Price(_youSaved)+' €</div>'
+					);
+				}
 
 				_self.elem('#hessnaturVoucherForm', function(hessnaturVoucherForm){
 					if(hessnaturVoucherForm) {
@@ -119,42 +134,80 @@
 					}
 				});
 
-				if(!localStorage.getItem('kk_upsell_hide') && localStorage.getItem('kk_cats')) { // variant === 2
+				if(!localStorage.getItem('kk_upsell_hide') && localStorage.getItem('kk_cats')) {
 					// get localstorage category from add to cart (PDS 100%)
 					var _ls = JSON.parse(localStorage.getItem('kk_cats')),
-					_cats = Object.keys(_ls),
-					_cat = '',
-					_catCount = 0,
-					upsellProds = 
-					{ // V1
-						'herren': [
-							// Warenkorbwert <= 40
-							'4266889',
-							// Warenkorbwert > 40
-							'4238409',
-						],
-						'damen': [
-							// Warenkorbwert <= 40
-							'4266889',
-							// Warenkorbwert > 40
-							'4260009',
-						],
-						'baby': [
-							// Warenkorbwert <= 40
-							'42683',
-							// Warenkorbwert > 40
-							'4568785',
-						],
-						'kids': [
-							'3606218',
-						],
-						'home': [
-							'4793601',
-						],
-						'sonstiges': [
-							'4266889',
-						]
-					};
+						_cats = Object.keys(_ls),
+						_cat = '',
+						_catCount = 0,
+						upsellProds,
+						upsellPreselect = {
+							'4793601': '479360151',
+						}
+
+					if(varianteSale) {
+						// Sale Produkte
+						upsellProds = {
+							'herren': [
+								// Ersparniss >= 20
+								'4238409',
+								// Ersparniss >= 10
+								'4266889',
+							],
+							'damen': [
+								// Ersparniss >= 20
+								'4260009',
+								// Ersparniss >= 10
+								'4266889',
+							],
+							'baby': [
+								// Ersparniss >= 20
+								'4568785',
+								// Ersparniss >= 10
+								'36581',
+							],
+							'kids': [
+								// Ersparniss >= 20
+								'3606218',
+							],
+							'home': [
+								// Ersparniss >= 20
+								'4793601',
+							],
+						};
+					}else{
+						// No Sale Produkte
+						upsellProds = 
+						{
+							'herren': [
+								// Warenkorbwert <= 40
+								'4266889',
+								// Warenkorbwert > 40
+								'4238409',
+							],
+							'damen': [
+								// Warenkorbwert <= 40
+								'4266889',
+								// Warenkorbwert > 40
+								'4260009',
+							],
+							'baby': [
+								// Warenkorbwert <= 40
+								'42683',
+								// Warenkorbwert > 40
+								'4568785',
+							],
+							'kids': [
+								'3606218',
+							],
+							'home': [
+								'4793601',
+							],
+							'sonstiges': [
+								'4266889',
+							]
+						};
+					}
 
 					// find category with highest product add2cart
 					for(var c = 0; c < _cats.length; c++) {
@@ -172,15 +225,22 @@
 					// decide which product will be shown
 					var upsellIndex = 2;
 
-					if(_cat === "kids" || _cat === "home" || _cat === "sonstiges" || parseFloat(_self.qs(".h-xLargeOffset-bottom-outer .price").textContent.replace("€","").replace("*","").replace(".","").replace(",",".")) <= 40){
-						// Warenkorbwert <= 40
-						upsellIndex = 0;
+					if(varianteSale) {
+						if(_youSaved >= 20) {
+							upsellIndex = 0;
+						}
+						else if(_youSaved >= 10) {
+							upsellIndex = 1;
+						}
 					}else{
-						// Warenkorbwert > 40
-						upsellIndex = 1;
+						if(_cat === "kids" || _cat === "home" || _cat === "sonstiges" || parseFloat(_self.qs(".h-xLargeOffset-bottom-outer .price").textContent.replace("€","").replace("*","").replace(".","").replace(",",".")) <= 40){
+							// Warenkorbwert <= 40
+							upsellIndex = 0;
+						}else{
+							// Warenkorbwert > 40
+							upsellIndex = 1;
+						}
 					}
-					
-					// }
 					
 					var promo = promoProd[upsellIndex];
 
@@ -251,9 +311,13 @@
 										'<div id="kk_upsell_inner" class="row" style="border: 5px solid #CBF1A5; padding:10px">'+
 											'<div class="medium-5" style="padding-right:67px;display:flex">'+
 												'<div id="kk_upsell_left">'+
-													'<div id="kk_highbadge">Highlight</div>'+
-													'<p>Glückwunsch zu Ihrer Produktauswahl!</p>'+
-													'<p>Wie wäre es mit einem weiteren Kundenliebling aus unserem Sortiment? Jetzt für nur <b>€&nbsp;'+float2Price(init_price)+'</b> hinzufügen.</p>'+
+													'<div id="kk_highbadge" '+(varianteSale ? 'style="display:none"' : '')+'>Highlight</div>'+
+													'<p>'+ (varianteSale ? 'Glückwunsch, <br/>Sie sparen '+float2Price(_youSaved).replace(",00", "")+' €!' : 
+														'Glückwunsch zu Ihrer Produktauswahl!') +
+													'</p>'+
+													'<p>'+ (varianteSale ? 'Warum nicht einfach die Ersparnis nutzen und <br/>ein '+((promo === '4266889') ? 'Paar '+name.replace('Socke', 'Socken') : name )+' für nur <b id="kk_price_left">€&nbsp;'+float2Price(init_price)+'</b> hinzufügen?' : 
+														'Wie wäre es mit einem weiteren Kundenliebling aus unserem Sortiment? Jetzt für nur <b>'+float2Price(init_price)+' €</b> hinzufügen.')+
+													'</p>'+
 												'</div>'+
 											'</div>'+
 											'<div id="kk_upsell_right" class="medium-7">'+
@@ -267,7 +331,7 @@
 														'</div>'+
 														'<div style="flex-shrink:0;margin-top: 9px;margin-left:25px">'+
 															'<div class="row align-right-for-medium">'+
-																'<div class="column shrink price h-xsmallOffset-bottom-inner">€ <span id="kk_price">'+float2Price(init_price)+'</span>*</div>'+
+																'<div class="column shrink price h-xsmallOffset-bottom-inner"><span id="kk_price">'+float2Price(init_price)+'</span> €*</div>'+
 															'</div>'+
 															'<p class="h-text-muted">inkl. MwSt.</p>'+
 														'</div>'+
@@ -345,7 +409,7 @@
 									}
 								}
 								catch(err) {
-									// console.log('err: ', err);
+									console.log('err: ', err);
 								}
 
 								return false;
@@ -362,7 +426,7 @@
 
 									// update price
 									_self.qs('#kk_price').innerHTML = float2Price(_price);
-									_self.qs("#kk_upsell_left p b").innerHTML = '€&nbsp;'+float2Price(_price);
+									_self.qs("#kk_upsell_left p b").innerHTML = float2Price(_price) + ' €';
 
 								}
 								catch(err) {
@@ -419,6 +483,13 @@
 							});
 						});
 					}
+				}
+
+				if(varianteSale){
+					kk_total.classList.add('discountPrice');
+					kk_total.insertAdjacentHTML('afterend', ''+
+						'<div class="column shrink price strikeValue h-no-padding-left h-xsmallOffset-bottom-inner h-smallOffset-left-outer kk_sums">'+float2Price(price2Float(kk_total.textContent) + _youSaved)+' €*</div>'
+					);
 				}
 
 				kk_total.closest('.h-xsmallOffset-bottom-outer:not(.column)').insertAdjacentHTML('afterbegin', '<div class="column small-12 large-10 large-offset-1"><hr></div>');

@@ -69,6 +69,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    font-weight: bold;
 
     &:after {
         content: "";
@@ -81,13 +82,17 @@
         background-size: 41px 100%;
     }
     p:nth-child(2) {
+        font-family: "Roboto Condensed Bold";
+        font-style: normal;
+        font-weight: normal;
         font-size:26px;
         line-height: normal;
         text-transform: uppercase;
         margin-bottom:23px
     }
     p:nth-child(3) {
-        font-size:15px;
+        font-size: 15px;
+        font-weight: normal;
         line-height: normal
     }
 }
@@ -112,6 +117,13 @@
 #kk_upsell_right {
     display: flex;
     padding: 31px 31px 31px 0;
+    .cart__productname {
+        font-size: 21px;
+        font-family: "Roboto Condensed Bold";
+        font-style: normal;
+        font-weight: normal;
+        letter-spacing: 0;
+    }
 }
 
 #kk_upsell_img {

@@ -11,6 +11,6 @@
 (function(WATO) {
     "use strict";
 
-    WATO.s12(1);
+    WATO.sp12n(1);
 
 })(new window.WATO());
