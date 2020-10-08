@@ -128,7 +128,7 @@
      * @param {string} url -
      * @param {function} callback -
      */
-    /*
+    
     window.WATO.prototype.ajax = function(url, callback) {
 
         var request = XMLHttpRequest.prototype.open;
@@ -149,7 +149,7 @@
             request.call(this, method, uri, async, user, pass);
         };
     };
-    */
+    
 
     /**
      * @function getCookie

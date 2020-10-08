@@ -314,21 +314,20 @@
         }
     });
 
-    // Sterne und Bewertung unter das Haupt-Bild platzieren
-    WATO.elem('.js-badges-container', function(badges){
-        if(badges){
-            WATO.elem('.pds-cockpit__ratingSummaryWrapper', function(stars){
-                if(stars){
-                    stars = stars[0];
-                    WATO.qs("a + span", stars).innerHTML = WATO.qs("meta", stars).getAttribute('content').substring(0,4);
-                    badges[0].insertAdjacentElement('afterbegin', stars);
+    function tabInteraction(i) {
+        WATO.qs(".kk_carousel[data-index='"+i+"']").addEventListener('click', function(e){
+            var thisTarget = e.target,
+                thisKey = thisTarget.getAttribute('data');
 
-                    // Anker zum Scrollen
-                    WATO.qs(".starRatingWrapper", stars).setAttribute('data-open-accordion-css-selector', '.ang_detail_additional');
-                }
-            });
-        }
-    });
+            removeClass(WATO.qs(".kk_show"), 'kk_show');
+            removeClass(WATO.qs(".kk_active"), 'kk_active');
+
+            addClass(WATO.qs("#"+thisKey), 'kk_show');
+            addClass(thisTarget, 'kk_active');
+
+            WATO.goalPush('kk17_'+thisKey);
+        });
+    }
 
     // Größenberatung Fallback
     WATO.elem('#size_advisor', function(sizeAdvisor){
@@ -347,12 +346,13 @@
             var prodInfoAccordion = productInfoAccordionItem[0].parentNode;
 
             // Tabs
-            prodInfoAccordion.insertAdjacentHTML('beforebegin', '<div id="infoTabs"></div>');
+            prodInfoAccordion.insertAdjacentHTML('beforebegin', '<div id="kk_infoTabs"></div><div id="kk_infoContent"></div>');
 
             // Erstes Tab einblenden
             WATO.qs("div", productInfoAccordionItem[0]).classList.add('kk_show');
             
-            var infoTabs = WATO.qs("#infoTabs", prodInfoAccordion.parentNode);
+            var infoTabs = WATO.qs("#kk_infoTabs", prodInfoAccordion.parentNode),
+                infoContent = WATO.qs("#kk_infoContent", prodInfoAccordion.parentNode);
 
             for (var i = 0; i < productInfoAccordionItem.length; i++) {
                 var prodContent = WATO.qs("div", productInfoAccordionItem[i]),
@@ -361,36 +361,36 @@
                 // Umtexten
                 if(tabText === "Produktbeschreibung") {
                     tabText = "Produktdetails";
-                }
 
-                // Markup der Tabs setzen
-                if(prodContent.getAttribute('id') === "Passform"){
-                    WATO.qs(".kk_carousel:first-child", infoTabs).insertAdjacentHTML('afterend', 
-                        '<div class="kk_carousel'+(i===0 ? " kk_active":'')+'" data-index="'+i+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
-                    );
-                }else{
                     infoTabs.insertAdjacentHTML('beforeend', 
-                        '<div class="kk_carousel'+(i===0 ? " kk_active":'')+'" data-index="'+i+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
+                        '<div class="kk_carousel kk_active" data-index="'+i+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
                     );
+
+                    addClass(prodContent.parentNode, "kk_hide");
+
+                    infoContent.insertAdjacentElement('afterbegin', prodContent);
+
+                    // Interaktion mit Tabs
+                    tabInteraction(i);
+                    
+                    WATO.qs(".pds-productDescription__text", prodContent).parentNode.insertAdjacentHTML('afterend', 
+                        WATO.qs(".pds-cockpit__shortDescription").outerHTML+
+                        WATO.qs(".pds-cockpit__articleNumber").outerHTML
+                    );
+
+                }else if(tabText === "Passform") {
+                    infoTabs.insertAdjacentHTML('beforeend', 
+                        '<div class="kk_carousel" data-index="'+i+'" data="'+prodContent.getAttribute('id')+'">'+tabText+'</div>'
+                    );
+
+                    addClass(prodContent.parentNode, "kk_hide");
+
+                    infoContent.insertAdjacentElement('afterbegin', prodContent);
+
+                    // Interaktion mit Tabs
+                    tabInteraction(i);
                 }
-                
-                // Interaktion mit Tabs
-                WATO.qs(".kk_carousel[data-index='"+i+"']", infoTabs).addEventListener('click', function(e){
-                    var thisTarget = e.target,
-                        thisKey = thisTarget.getAttribute('data');
-
-                    removeClass(WATO.qs(".kk_show"), 'kk_show');
-                    removeClass(WATO.qs(".kk_active"), 'kk_active');
-
-                    addClass(WATO.qs("#"+thisKey), 'kk_show');
-                    addClass(thisTarget, 'kk_active');
-
-                    WATO.goalPush('kk17_'+thisKey);
-                });
             }
-
-            // Init der Tab-Gallery
-            initGallery('#infoTabs');
 
             var articleNumber = WATO.qs(".pds-cockpit__articleNumber"),
                 articleNumberID = WATO.qs("span", articleNumber).textContent.trim(),
@@ -398,9 +398,9 @@
 
             // Artikelnummer wird nach unten in den Content-Bereich verschoben
             var prodInfoContent = WATO.qs("#Produktbeschreibung > .row", productInfoAccordionItem[0]);
-            
+
             if(prodInfoContent && articleNumber){
-                prodInfoContent.insertAdjacentElement('afterend', articleNumber);
+                prodInfoContent.insertAdjacentElement('afterend', articleNumber.cloneNode(true));
             }
 
             // Infos zum Produkt laden (nicht immer vorhanden) um Infos zur Nachhaltigkeit anzuzeigen
@@ -410,23 +410,26 @@
                     try {
                         var responseJSON = JSON.parse(respText),
                             data = responseJSON.products[0].ecological_data,
-                            savingWater = data.water_savings_in_liter;
+                            savingWater = data.water_savings_in_liter,
+                            savingMeter = data.clean_earth_consumption_in_square_meter.toFixed(1);
     
+                        console.log('savingWater: ', savingWater);
+                        console.log('prodInfoAccordion: ', prodInfoAccordion);
                         if(savingWater !== 0){
                             prodInfoAccordion.parentNode.insertAdjacentHTML('afterend', 
                                 '<div class="kk_nachhaltig">'+
-                                    '<h4>Für Weniger Kurzlebigkeit, FÜR mehr Zukunft: <span>Wir haben dieses Produkt nachhaltig für Sie produziert.</span></h4>'+
+                                    '<h4>Ökologische Ersparnis: <span>Im Vergleich zum konventionellen Baumwollanbau</span></h4>'+
                                     '<div class="kk_water">'+
-                                        '<h5>'+Math.round(savingWater)+' l<b>Wasser*</b></h5>'+
-                                        '<p>Im Einklang mit der Natur: Wir setzen durchweg auf wassersparende und -schonende Verfahren.</p>'+
+                                        '<h5>'+Math.round(savingWater)+' l<b>weniger<br>Wasserverbrauch</b></h5>'+
+                                        '<p>91% Einsparung von Wasser durch Verwendung von Regenwasser, im Boden gespeicherte Feuchtigkeit und Anwendung verbrauchsarmer Bewässerungsmethoden.</p>'+
                                     '</div>'+
                                     '<div class="kk_cloud">'+
-                                        '<h5>'+data.clean_earth_consumption_in_square_meter.toFixed(1)+' kg<b>CO<sub>2</sub>*</b></h5>'+
-                                        '<p>Ressourcenschonend: Wir nutzen so wenig Strom wie möglich und nur aus nachhaltigen Energiequellen.</p>'+
+                                        '<h5>46% <b>weniger<br>CO<sub>2</sub>-Ausstoß</b></h5>'+
+                                        '<p>46% CO<sub>2</sub> Einsparung durch weniger energieintensive Arbeitsmethoden im Bio-Anbau und den Verzicht auf Mineraldünger und Pestizide.</p>'+
                                     '</div>'+
                                     '<div class="kk_earth">'+
-                                        '<h5>'+data.carbon_dioxide_consumption_in_gram+' g<b>BODEN/ERDE*</b></h5>'+
-                                        '<p>Für weniger Künstlichkeit: Wir verwenden ausschließlich Rohstoffe aus ökologischer Landwirtschaft.</p>'+
+                                        '<h5>'+savingMeter+'m<sup>2</sup><b>mehr<br>gesunde Erde</b></h5>'+
+                                        '<p>'+savingMeter+'m² mehr gesunde Erde durch Vermeidung von Pestiziden, künstlichen Düngemitteln und Entlaubungsmitteln. </p>'+
                                     '</div>'+
                                     '<small>*im Vergleich zur konventionellen Produktion</small>'+
                                 '</div>'
@@ -504,40 +507,90 @@
     createCTL();
 
     // Bewertung
-    WATO.elem('.ratingAccordion', function(ratingAccordion){
-        if(ratingAccordion){
-            ratingAccordion = ratingAccordion[0];
+    WATO.elem('#accordion-rating', function(ratingBody){
+        if(ratingBody){
+            ratingBody = ratingBody[0];
 
-            ratingAccordion.insertAdjacentHTML('beforebegin', 
-                '<div id="kk_rating">'+
-                    '<div></div>'+ // '+WATO.qs("#accordion-rating-label", ratingAccordion)+'
-                    '<div id="kk_rating_gallery"></div>'+
+            var nachkommastelle = Math.pow(10, 2);
+            ratingBody.insertAdjacentHTML('afterbegin', 
+                '<div id="kk_ratingnew">'+
+                    '<div>'+(Math.round(WATO.qs('.starRatingWrapper meta[itemprop="ratingValue"]').getAttribute('content')*nachkommastelle)/nachkommastelle)+'<span class="kk_grey">/5</span></div> <u>alle anzeigen</u>'+
+                '</div>'+
+                '<div id="kk_ratingbox">'+
                 '</div>'
             );
 
-            var ratingGal = WATO.qs("#kk_rating_gallery", ratingAccordion.parentNode),
-                allRatings = WATO.qsa(".js_ratingItem", ratingAccordion);
+            var ratingTop = WATO.qs("#accordion-rating-label", ratingBody.parentNode),
+                newRating = WATO.qs("#kk_ratingnew", ratingBody),
+                ratingbox = WATO.qs("#kk_ratingbox", ratingBody),
+                ratingScores = [0,0,0,0,0],
+                commitsOfAllUsers = [];
 
-            for (var i = 0; i < allRatings.length; i++) {
+            ratingTop.click();
+            
+            newRating.insertAdjacentElement('beforeend', WATO.qs(".rating--stars", ratingTop));
 
-                allRatings[i].addEventListener('touchstart', function(){
-                    WATO.goalPush("kk17_rating");
-                });
+            WATO.elem('#read_reviews meta[itemprop="ratingValue"]', function(allRatings){
+                if(allRatings){
+                    var ratingLength = allRatings.length,
+                        showMoreRatingsButton = WATO.qs(".js_showAdditionalItems");
 
-                var author = WATO.qs(".title__name", allRatings[i]);
-                author.innerHTML = author.innerHTML.replace(",", "");
-                ratingGal.insertAdjacentElement('beforeend', allRatings[i]);
-            }
-            initGallery('#kk_rating_gallery', true);
+                    for (var k = 0; k < ratingLength; k++) {
+                        var thisScore = parseInt(allRatings[k].getAttribute('content')),
+                            ratingCommit = allRatings[k].closest(".js_ratingItem");
+                        
+                        ratingScores[thisScore-1]++;
 
-            // Headline
-            WATO.elem('#accordion-rating-label', function(accordionRatingLabel){
-                if(accordionRatingLabel){
-                    ratingGal.previousElementSibling.innerHTML = accordionRatingLabel[0].innerHTML.replace("Bewertungen","Kundenbewertungen");
+                        commitsOfAllUsers.push(ratingCommit);
+
+                        ratingCommit.setAttribute('data-score', thisScore);
+                    }
+
+                    for (var i = 4; i >= 0; i--) {
+                        
+                        ratingbox.insertAdjacentHTML('beforeend', 
+                            '<div class="kk_ratingrow" data-index="'+(i+1)+'"><div>'+(i+1)+'</div>'+
+                                '<div class="kk_bar"><span style="width: '+(ratingScores[i]/ratingLength*100)+'%"></span></div>'+
+                            '</div>'
+                        );
+
+                        WATO.qs(".kk_ratingrow:last-child", ratingbox).addEventListener('click', function(e){
+                            var thisTarget = e.target.classList.contains('kk_ratingrow') ? e.target : e.target.closest(".kk_ratingrow");
+                            
+                            removeClass(WATO.qs(".kk_showgreen"), "kk_showgreen");
+                            addClass(thisTarget, "kk_showgreen");
+                            addClass(showMoreRatingsButton, "hide");
+                            
+                            for (var j = 0; j < commitsOfAllUsers.length; j++) {
+                                var thisCommit = commitsOfAllUsers[j];
+                                if(thisCommit.getAttribute('data-score') === thisTarget.getAttribute('data-index')){
+                                    addClass(thisCommit, "show");
+                                    removeClass(thisCommit, "hide");
+                                }else{
+                                    addClass(thisCommit, "hide");
+                                    removeClass(thisCommit, "show");
+                                }
+                            }
+                        });
+                    }
+
+                    newRating.addEventListener('click', function(){
+                        for (var l = 0; l < commitsOfAllUsers.length; l++) {
+                            var thisCommit = commitsOfAllUsers[l];
+                            addClass(thisCommit, "show");
+                            removeClass(thisCommit, "hide");
+                        }
+                        removeClass(WATO.qs(".kk_showgreen"), "kk_showgreen");
+                    });
                 }
             });
+            
+            ratingTop.innerHTML = 'Kundenbewertungen ('+ratingTop.textContent.match(/\d+/g)+')';
+
         }
     });
+    
+
 
     WATO.ready(function(){
 
@@ -548,8 +601,6 @@
             }, function(accGloablIsAvaliable){
                 if(accGloablIsAvaliable){
                     window.ACC.global.destroyShorten(".js_triggerShortenDestroy");
-
-                    initGallery('#kk_rating_gallery', true);
                 }
             });
         }, 1500);

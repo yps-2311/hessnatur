@@ -116,10 +116,10 @@ body {
     top: 16px;
     right: 15px;
 }
-.pds-cockpit__articleNumber {
-    text-align: left;
-    padding: 30px 0 0;
-}
+// .pds-cockpit__articleNumber {
+//     text-align: left;
+//     padding: 30px 0 0;
+// }
 .pds-cockpit__wrapper {
     padding: 0 24px;
 
@@ -129,14 +129,14 @@ body {
         // padding: 0 23% 0 6%;
         min-height: 30px;
     }
-    .js-badges-container {
-        -ms-flex: 0 0 100%;
-        flex: 0 0 100%;
-        max-width: 100%;
-        text-align: left;
-        padding-right: 0;
-        display: flex;
-    }
+    // .js-badges-container {
+    //     -ms-flex: 0 0 100%;
+    //     flex: 0 0 100%;
+    //     max-width: 100%;
+    //     text-align: left;
+    //     padding-right: 0;
+    //     display: flex;
+    // }
     > .row > .small-12 > .row.align-middle:first-child {
         align-items: flex-start;
     }
@@ -197,35 +197,38 @@ h1.pds-cockpit__productName {
             // top: 3px;
         }
     }
-    li:nth-child(4),
-    li:nth-child(5),
-    li:nth-child(6),
-    li:nth-child(7) {
-        display: none;
-    }
     & + .h-smallOffset-top-outer {
         text-align: left;
         font-size: 12px;
         margin-top: 18px !important;
     }
 }
+.pds-cockpit__wrapper .pds-cockpit__shortDescription {
+    li:nth-child(4),
+    li:nth-child(5),
+    li:nth-child(6),
+    li:nth-child(7) {
+        display: none;
+    }
+}
 .pds-cockpit__headlineWrapper {
     padding-bottom: 0;
 }
-.pds-cockpit__ratingSummaryWrapper {
-    display: inline-block;
-    padding: 0 20px 0 0;
-    order: 1;
-    .starRatingWrapper {
-        font-size: 12px;
-        span {
-            letter-spacing: 4px !important;
-        }
-        // & + span {
-        //     padding-left: 4px;
-        // }
-    }
-}
+
+// .pds-cockpit__ratingSummaryWrapper {
+//     display: inline-block;
+//     padding: 0 20px 0 0;
+//     order: 1;
+//     .starRatingWrapper {
+//         font-size: 12px;
+//         span {
+//             letter-spacing: 4px !important;
+//         }
+//         // & + span {
+//         //     padding-left: 4px;
+//         // }
+//     }
+// }
 .menu.pds-cockpit__colorSwitch {
     display: flex !important;
     flex-wrap: wrap;
@@ -341,21 +344,21 @@ h1.pds-cockpit__productName {
     .price span {
         font-weight: normal;
     }
-    .price-info {
-        color: #6D7273;
-        font-size: 11px;
-        letter-spacing: 0.04em;
-        line-height: 14px;
-        .js-discountable {
-            b {
-                color: #6D7273;
-                font-weight: normal;
-            }
-        }
-        a {
-            color: #6D7273;
-        }
-    }
+    // .price-info {
+    //     color: #6D7273;
+    //     font-size: 11px;
+    //     letter-spacing: 0.04em;
+    //     line-height: 14px;
+    //     .js-discountable {
+    //         b {
+    //             color: #6D7273;
+    //             font-weight: normal;
+    //         }
+    //     }
+    //     a {
+    //         color: #6D7273;
+    //     }
+    // }
     .price.price {
         display: flex;
         align-items: center;
@@ -637,21 +640,35 @@ button.mz-button.mz-button-close {
 }
 
 .productInfoAccordion {
-    padding: 0 14px 25px;
+    padding: 0;
+    a.accordion-title {
+        padding-right: 24px;
+        padding-left: 24px;
+        &::before {
+            right: 2rem;
+        }
+    }
+    .accordion-content {
+        padding-right: 24px;
+        padding-left: 24px;
+    }
 }
 
-.accordion-item {
-    > a {
-        display: none;
-    }
-    > .accordion-content {
-        border: none;
-    }
-}
+// .accordion-item {
+//     > a {
+//         display: none;
+//     }
+//     > .accordion-content {
+//         border: none;
+//     }
+// }
 .kk_show {
     display: block !important;
 }
-#infoTabs {
+.kk_hide {
+    display: none !important;
+}
+#kk_infoTabs {
     min-height: 54px;
     // height: 100%;
     margin-top: 50px;
@@ -659,6 +676,7 @@ button.mz-button.mz-button-close {
         min-height: 54px;
     }
     .kk_carousel {
+        display: inline-block;
         padding: 10px 6px 10px 24px;
         font-family: "Roboto Condensed Bold";
         font-size: 18px;
@@ -697,6 +715,24 @@ button.mz-button.mz-button-close {
     // div[data="Pflege"] {
     //     width: 89px;
     // }
+}
+#kk_infoContent > div {
+    border: none;
+    padding: 0 24px 25px
+}
+#Produktbeschreibung {
+    .pds-productDescription__text {
+        margin-bottom: 35px;
+    }
+    .pds-cockpit__shortDescription {
+        margin-bottom: 35px;
+        padding-right: .76923rem;
+        padding-left: .76923rem;
+    }
+    .pds-cockpit__articleNumber {
+        text-align: left;
+        padding-left: .76923rem;
+    }
 }
 #Material {
     .h-no-padding-left {
@@ -737,20 +773,21 @@ button.mz-button.mz-button-close {
 }
 
 .kk_nachhaltig {
-    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/bg.jpg") no-repeat center center;
+    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/background.jpg") no-repeat center center;
     background-size: cover;
-    padding: 32px 52px 30px;
+    padding: 56px 24px 31px;
     h4 {
         font-size: 24px;
         line-height: 100%;
-        margin-bottom: 30px;
+        margin-bottom: 53px;
         span {
             font-family: "Roboto Condensed",Helvetica,Arial,"Archer A",sans-serif;
             font-weight: 100;
         }
     }
     div {
-        padding: 0 0 16px 86px;
+        // padding: 0 0 16px 86px;
+        padding-bottom: 23px;
         h5 {
             font-family: "Roboto",Helvetica,Arial,"Archer A",sans-serif;
             font-size: 32px;
@@ -759,6 +796,10 @@ button.mz-button.mz-button-close {
             line-height: 120%;
             text-transform: none;
             white-space: nowrap;
+            padding: 15px 0 0 73px;
+            margin: 0;
+            min-height: 74px;
+            position: relative;
             b {
                 font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
                 font-size: 16px;
@@ -766,6 +807,11 @@ button.mz-button.mz-button-close {
                 text-transform: uppercase;
                 letter-spacing: 0.03em;
                 padding-left: 11px;
+                position: absolute;
+                display: block;
+                top: 17px;
+                right: 0;
+                width: 46%;
             }
         }
         p {
@@ -774,8 +820,13 @@ button.mz-button.mz-button-close {
             letter-spacing: 0.04em;
         }
     }
+    sup {
+        font-size: 16px;
+        top: -13px;
+    }
     small {
-        padding: 57px 0 13px;
+        padding: 7px 0 0;
+        text-align: center;
         display: block;
         font-size: 11px;
         line-height: 150%;
@@ -783,13 +834,16 @@ button.mz-button.mz-button-close {
     }
 }
 .kk_water {
-    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-Wasser.svg") no-repeat 0 0;
+    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-Wasser.svg") no-repeat -10px 6px;
+    background-size: auto 51px;
 }
 .kk_cloud {
-    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-CO2.svg") no-repeat 0 0;
+    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-CO2.svg") no-repeat 0 8px;
+    background-size: 60px auto;
 }
 .kk_earth {
-    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-Blatt.svg") no-repeat 0 0;
+    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-Blatt.svg") no-repeat -7px 6px;
+    background-size: auto 55px;
 }
 .pds-completeTheLookWrapper {
     display: none;
@@ -872,104 +926,171 @@ button.mz-button.mz-button-close {
 }
 
 
-#kk_rating {
-    overflow: hidden;
-    background: #FAFAFA;
-    padding: 43px 0 24px;
-    font-size: 18px;
-    > div:first-child {
-        font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
-        font-size: 18px;
-        letter-spacing: 0.03em;
-        margin: 0 24px;
+// #kk_rating {
+//     overflow: hidden;
+//     background: #FAFAFA;
+//     padding: 43px 0 24px;
+//     font-size: 18px;
+//     > div:first-child {
+//         font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+//         font-size: 18px;
+//         letter-spacing: 0.03em;
+//         margin: 0 24px;
+//     }
+//     .rating--stars,
+//     .color-medium-gray {
+//         font-size: 12px;
+//         letter-spacing: 4px;
+//     }    
+// }
+// #kk_rating_gallery {
+//     padding-left: 24px;
+//     .flickity-viewport {
+//         overflow: visible;
+//         transition: height 0.8s;
+//     }
+//     .js_ratingItem {
+//         background: #FFFFFF;
+//         box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08), 0px 4px 24px rgba(0, 0, 0, 0.12);
+//         border-radius: 3px;
+//         width: 80%;
+//         margin: 24px 12px 12px 0;
+//         display: flex !important;
+//         padding: 24px;
+//         // height: 100%;
+//         flex-direction: column;
+//         > .rating__title {
+//             order: 4;
+//             padding-top: 16px;
+//             p {
+//                 margin: 0;
+//             }
+//         }
+//         > .rating__headline {
+//             order: 1;
+//             display: flex;
+//             flex-direction: row;
+//             padding-bottom: 18px;
+//             justify-content: flex-start;
+//             align-items: flex-start;
+//             .shrink {
+//                 order: 2;
+//             }
+//             .expanded {
+//                 order: 1;
+//                 font-size: 16px;
+//                 font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+//             }
+//         }
+//         > .rating__text {
+//             order: 2;
+//             font-size: 13px;
+//             line-height: 160%;
+//             letter-spacing: 0.04em;
+//             font-weight: normal;
+//         }
+//         > .rating__comment {
+//             order: 3;
+//             font-size: 13px;
+//             line-height: 160%;
+//             letter-spacing: 0.04em;
+
+//         }
+//         strong.title__name {
+//             font-size: 13px;
+//             line-height: 160%;
+//             font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+//             font-weight: normal;
+//             padding-left: 24px;
+//             background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/account.svg") no-repeat left center;
+//         }
+//         .title__date {
+//             margin-left: 20px;
+//             color: #969A9C;
+//             font-size: 13px;
+//             line-height: 160%;
+//             letter-spacing: 0.04em;
+//         }
+//     }
+// }
+
+
+// .ratingAccordion {
+//     .accordion-item {
+//         &:first-child {
+//             display: none !important;
+//         }
+//         &:last-child {
+//             display: block !important;
+//         }
+//     }
+// }
+
+#kk_ratingnew {
+    // font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+    // font-weight: normal;
+    font-size: 20px;
+    color: #353939;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    .kk_grey {
+        color: #ABABB1;
     }
-    .rating--stars,
-    .color-medium-gray {
-        font-size: 12px;
-        letter-spacing: 4px;
-    }    
+    u {
+        font-size: 14px;
+        padding: 0 20px;
+    }
+    .rating--stars {
+        float: right;
+    }
 }
-#kk_rating_gallery {
+.kk_bar {
+    height: 5px;
+    width: 90%;
+    background-color: #D8D8D8;
+    span {
+        display: block;
+        height: 5px;
+        background-color: #393939;
+    }
+}
+#kk_ratingbox {
+    margin-bottom: 30px;
+}
+.kk_ratingrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 20px;
+    div:first-child {
+        width: 10%;
+    }
+    &.kk_showgreen {
+        div {
+            color: #60b60b;
+        }
+        span {
+            background-color: #60b60b;
+        }
+    }
+}
+
+
+#accordion-rating {
     padding-left: 24px;
-    .flickity-viewport {
-        overflow: visible;
-        transition: height 0.8s;
-    }
-    .js_ratingItem {
-        background: #FFFFFF;
-        box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08), 0px 4px 24px rgba(0, 0, 0, 0.12);
-        border-radius: 3px;
-        width: 80%;
-        margin: 24px 12px 12px 0;
-        display: flex !important;
-        padding: 24px;
-        // height: 100%;
-        flex-direction: column;
-        > .rating__title {
-            order: 4;
-            padding-top: 16px;
-            p {
-                margin: 0;
-            }
-        }
-        > .rating__headline {
-            order: 1;
-            display: flex;
-            flex-direction: row;
-            padding-bottom: 18px;
-            justify-content: flex-start;
-            align-items: flex-start;
-            .shrink {
-                order: 2;
-            }
-            .expanded {
-                order: 1;
-                font-size: 16px;
-                font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
-            }
-        }
-        > .rating__text {
-            order: 2;
-            font-size: 13px;
-            line-height: 160%;
-            letter-spacing: 0.04em;
-            font-weight: normal;
-        }
-        > .rating__comment {
-            order: 3;
-            font-size: 13px;
-            line-height: 160%;
-            letter-spacing: 0.04em;
-
-        }
-        strong.title__name {
-            font-size: 13px;
-            line-height: 160%;
-            font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
-            font-weight: normal;
-            padding-left: 24px;
-            background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/account.svg") no-repeat left center;
-        }
-        .title__date {
-            margin-left: 20px;
-            color: #969A9C;
-            font-size: 13px;
-            line-height: 160%;
-            letter-spacing: 0.04em;
-        }
-    }
+    padding-right: 24px;
 }
-
-
-.ratingAccordion {
-    .accordion-item {
-        &:first-child {
-            display: none !important;
-        }
-        &:last-child {
-            display: block !important;
-        }
-    }
+#accordion-rating-label {
+    padding-left: 24px;
+    padding-right: 24px;
+    font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+    font-weight: normal;
+    font-size: 18px;
+    color: #353939;
+    letter-spacing: 0.8px;
+    line-height: 25px;
 }
 
 #accordion-review-label {

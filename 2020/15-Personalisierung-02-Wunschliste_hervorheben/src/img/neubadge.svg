@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Group 3</title>
-    <g id="PDÜ" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="02_Merken_Layer_Schritt1" transform="translate(-605.000000, -530.000000)">
-            <g id="Group-3" transform="translate(605.000000, 530.000000)">
-                <circle id="Oval" fill="#F58454" cx="15" cy="15" r="15"></circle>
-                <text id="NEU" font-family="RobotoCondensed-Bold, Roboto Condensed" font-size="9" font-style="condensed" font-weight="bold" letter-spacing="1.5" fill="#FFFFFF">
-                    <tspan x="6" y="17">NEU</tspan>
-                </text>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" xmlns:v="https://vecta.io/nano"><defs><path d="M9.272 8V3.803L11.16 8h1.292V1.602h-1.288v4.2l-1.894-4.2H7.98V8h1.292zm7.893 0V6.928h-2.382V5.23h2.013V4.2h-2.013V2.678h2.373V1.602H13.5V8h3.674zm2.804.088c.674 0 1.19-.177 1.55-.53s.543-.862.55-1.527h0v-4.43h-1.292v4.425c-.003.352-.062.604-.176.758s-.325.23-.633.23-.52-.078-.637-.233-.176-.415-.176-.778h0V1.602h-1.3V6c0 .677.18 1.194.543 1.55s.885.536 1.57.536z" id="A"/></defs><g fill="none"><circle fill="#f58454" cx="15" cy="15" r="15"/><g transform="translate(0 10)"><use fill="#000" xlink:href="#A"/><use fill="#fff" xlink:href="#A"/></g></g></svg>

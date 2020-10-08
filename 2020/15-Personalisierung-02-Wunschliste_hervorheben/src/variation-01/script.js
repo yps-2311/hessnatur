@@ -30,6 +30,7 @@
         };
     }
 
+
     function getLS(key) {
         return !!window.localStorage.getItem(key);
     }
@@ -59,6 +60,9 @@
     }
 
     function fetchSend(urlPath, sendParameter) {
+        console.log('urlPath: ', urlPath);
+        console.log('sendParameter: ', sendParameter);
+
         window.fetch('https://www.hessnatur.com/de/'+urlPath, {
             method: 'post',
             headers: {
@@ -74,8 +78,154 @@
     }
 
     function addToWishlist(productId) {
+        console.log('addToWishlist productId: ', productId);
+
+        WATO.goalPush("kk02_button_beobachten"+(pageIsCart ? "_cart" : '_cat'));
+
         fetchSend("wishlist/add", 'productCodePost=' + productId + '&qty=1');
     }
+
+    function createNewButtons() {
+        var newButtons = WATO.qsa(".gridviewProductItemWrapper:not(.kk_isrebuilt), .item__form:not(.kk_isrebuilt)");
+
+        console.log(">>> kk: found " + newButtons.length + " products");
+
+        // Produkte auf Produktliste und Warenkorb
+        for(var i = 0; i < newButtons.length; i++){
+
+            var thisButton = newButtons[i],
+                wishlistOrTrashButton = document.createElement("button"),
+                thisProductID;
+                
+            addClass(thisButton, "kk_isrebuilt");
+
+            if(pageIsCart){
+                thisProductID = WATO.qs(".js-update-entry-form", thisButton).getAttribute('data-product-json-url').replace("/de/p/","").replace("/json","").substring(0,9);
+            }else{
+                thisProductID = WATO.qs('.dropdown-pane', thisButton).getAttribute('id').substring(0,9);
+            }
+
+            // Je nach Seitentyp bekommt der neue Button eine andere Klasse
+            addClass(wishlistOrTrashButton, (pageIsCart ? 'kk_remove' : 'kk_wishlist'));
+
+            // Der erste bekommt eine Sonderklasse für die Nudge
+            if(i === 0 && !pageIsCart && !isModalClosed){
+                addClass(wishlistOrTrashButton, 'kk_first');
+            }
+            
+            wishlistOrTrashButton.type = "button";
+            wishlistOrTrashButton.dataset.id = thisProductID;
+            
+            // Alle Herzen werden befüllt die bereits auf der Wunschliste Liegen (Timing)
+            if(productsOnWishlist.length > 0 && productsOnWishlist.indexOf(thisProductID) !== -1){
+                addClass(wishlistOrTrashButton, 'kk_added');
+            }
+
+            // Interaktion
+            wishlistOrTrashButton.addEventListener('click', function(){
+
+                var productId = this.dataset.id;
+
+                if(!pageIsCart){
+                    // Produktliste
+                    var thisNudge = WATO.qs(".kk_nudge");
+                    if(thisNudge){
+                        thisNudge.parentNode.removeChild(thisNudge);
+                    }
+
+                    // Herz voll ausgefüllt
+                    addClass(this, 'kk_added');
+                    addToWishlist(productId);
+
+                    WATO.goalPush("kk02_herz_cat");
+                    WATO.goalPush("kk02_see_modal");
+                }else{
+                    // Warenkorb
+                    fetchSend("cart/update", 'entryNumber='+this.closest(".js-update-entry-form").getAttribute('id').substring(14,16)+'&variantCode=' + productId + '&quantity=0');
+
+                    WATO.goalPush("kk02_löschen_warenkorb");
+                }
+
+                var productTop = WATO.qs('div[id="'+productId+'"], .js-update-entry-form[data-product-json-url*="'+productId+'"]').parentNode,
+                    productWrapper = pageIsCart ? productTop : productTop.closest(".gridviewProductItemWrapper"),
+                    modaloverlay = WATO.qs("#kk_wishlist_overlay");
+
+                // Links im Modal sind 
+                WATO.qs("#kk_prodinfo").innerHTML = 
+                    '<img src="'+WATO.qs(".productImage-1, .small-4 a img", productTop).getAttribute('src').replace("hyb_redes_cart_overview","hyb_redes_list_main")+'">'+
+                    '<div id="kk_title">'+WATO.qs(".js-prgLink a, .cart__productname", productWrapper).innerHTML+'</div>'+
+                    // '<div id="kk_color">Farbe: <span>'+WATO.qs(".productPrgWrapper > span.h-text-decoration-none, .value--color", productWrapper).innerHTML+'</span></div>'+
+                    '<div id="kk_size">Größe: <span>'+WATO.qs(".productItemSizes div:first-child span, .value--size", productWrapper).innerHTML+'</span></div>'+
+                    '<div>Menge: <span>1</span></div>'+
+                    '<div id="kk_price">'+WATO.qs(".productPrgWrapper > span.h-text-decoration-none, .price", productWrapper).innerHTML+'</div>';
+
+                modaloverlay.dataset.id = productId;
+                
+                // Open Modal
+                if(!isModalClosed){
+                    // Modal öffnen
+                    addClass(modaloverlay, 'kk_open');
+                    // Modal als gesehen markiert
+                    markModalAsClosed();
+                }else{
+                    // Wenn Modal noch nicht gesehen und geschlossen wurde
+                    if(pageIsCart) {
+                        // Warenkorb
+                        addClass(modaloverlay, 'kk_open');
+                        addClass(modaloverlay, 'kk_showbuttons');
+                    }else{
+                        // Produktliste
+
+                        // Swipe up infobox
+                        productTop.insertAdjacentHTML('beforeend', 
+                            '<div class="kk_swipeinfo">'+
+                                '<div class="kk_checkbox">Der Artikel wurde auf Ihrer Wunschliste gespeichert</div>'+
+                                '<a class="kk_gotowish" href="/merkzettel">Zur Wunschliste</a>'+
+                            '</div>'
+                        );
+                        WATO.qs(".kk_swipeinfo .kk_gotowish", productTop).addEventListener('click', function(){
+                            WATO.goalPush("kk02_button_towunschliste_cart");
+                        });
+                    }
+                }
+            });
+        
+            // Der Originalbutton ist auf der Produktliste das herz und auf der Warenkorbseite der Mülleimer
+            var originalButton = WATO.qs('.whishList, .js-entry-remove', thisButton);
+
+            originalButton.insertAdjacentElement('beforebegin', wishlistOrTrashButton);
+
+            // Nur auf der Produktliste, nur beim ersten Produkt und nur wenn das Modal noch nicht schoneinmal geschlossen wurde
+            if(!pageIsCart && i === 0 && !isModalClosed && !getLS("kk_nudgeClosed")){
+                // Nudge
+                originalButton.insertAdjacentHTML('afterend', 
+                    '<div class="kk_nudge">'+
+                        '<button class="close-button" data-close="" aria-label="Close reveal" type="button">'+
+                            '<span aria-hidden="true">×</span>'+
+                        '</button>'+
+                        '<b>Wunschliste beobachten</b>'+
+                        '<p>Sie erfahren, wenn der Artikel</p>'+
+                        '<ul>'+
+                            '<li>in geringer Stückzahl verfügbar,</li>'+
+                            '<li>im Sale oder</li>'+
+                            '<li>in einer Aktion ist.</li>'+
+                        '</ul>'+
+                    '</div>'
+                );
+
+                var thisNudge = WATO.qs(".kk_nudge", originalButton.parentNode);
+
+                WATO.qs(".close-button", thisNudge).addEventListener('click', function(e){
+                    e.preventDefault();
+                    thisNudge.parentNode.removeChild(thisNudge);
+                    setLS("kk_nudgeClosed");
+                    WATO.goalPush("kk02_close_nudge");
+                });
+            }
+        }
+    }
+
+    WATO.ps02goals(1);
 
 
     // Wenn auf der Warenkorbseite der Optin gewählt wurde kommt hier kein Umbau mehr, auf der Produktliste jedoch weiterhin
@@ -89,6 +239,12 @@
         WATO.elem('.h1', function(h1){
             if(h1){
                 h1[0].innerHTML = "Ihre Wunschliste";
+            }
+        });
+
+        WATO.elem('.h-mediumOffset-bottom-inner .rteContainer', function(subline){
+            if(subline){
+                subline[0].innerHTML = subline[0].innerHTML.replace("ihre Merkliste","Ihre Wunschliste");
             }
         });
 
@@ -118,132 +274,9 @@
         console.log(123);
 
         // Produktliste und Warenkorb
-        WATO.elem('.gridviewProductItemWrapper, .item__form', function(gridviewProductItemWrapper){
-
-            if(gridviewProductItemWrapper){
-
-                console.log(">>> kk: found " + gridviewProductItemWrapper.length + " products");
-
-                // Produkte auf Produktliste und Warenkorb
-                for(var i = 0; i < gridviewProductItemWrapper.length; i++){
-
-                    var wishlistOrTrashButton = document.createElement("button"),
-                        thisProductID;
-
-                    if(pageIsCart){
-                        thisProductID = WATO.qs(".js-update-entry-form", gridviewProductItemWrapper[i]).getAttribute('data-product-json-url').replace("/de/p/","").replace("/json","").substring(0,9);
-                    }else{
-                        thisProductID = WATO.qs('.dropdown-pane', gridviewProductItemWrapper[i]).getAttribute('id').substring(0,9);
-                    }
-
-                    // Je nach Seitentyp bekommt der neue Button eine andere Klasse
-                    addClass(wishlistOrTrashButton, (pageIsCart ? 'kk_remove' : 'kk_wishlist'));
-
-                    // Der erste bekommt eine Sonderklasse für die Nudge
-                    if(i === 0 && !pageIsCart){
-                        addClass(wishlistOrTrashButton, 'kk_first');
-                    }
-                    
-                    wishlistOrTrashButton.type = "button";
-                    wishlistOrTrashButton.dataset.id = thisProductID;
-                    
-                    // Alle Herzen werden befüllt die bereits auf der Wunschliste Liegen (Timing)
-                    if(productsOnWishlist.length > 0 && productsOnWishlist.indexOf(thisProductID) !== -1){
-                        addClass(wishlistOrTrashButton, 'kk_added');
-                    }
-
-                    // Interaktion
-                    wishlistOrTrashButton.addEventListener('click', function(){
-
-                        var productId = this.dataset.id;
-
-                        if(!pageIsCart){
-                            // Produktliste
-                            var thisNudge = WATO.qs(".kk_nudge");
-                            if(thisNudge){
-                                thisNudge.parentNode.removeChild(thisNudge);
-                            }
-
-                            // Herz voll ausgefüllt
-                            addClass(this, 'kk_added');
-                            addToWishlist(productId);
-                        }else{
-                            // Warenkorb
-                            fetchSend("cart/update", 'entryNumber='+this.closest(".js-update-entry-form").getAttribute('id').substring(14,16)+'&variantCode=' + productId + '&quantity=0');
-                        }
-
-                        var productTop = WATO.qs('div[id="'+productId+'"], .js-update-entry-form[data-product-json-url*="'+productId+'"]').parentNode,
-                            productWrapper = pageIsCart ? productTop : productTop.closest(".gridviewProductItemWrapper"),
-                            modaloverlay = WATO.qs("#kk_wishlist_overlay");
-
-                        // Links im Modal sind 
-                        WATO.qs("#kk_prodinfo").innerHTML = 
-                            '<img src="'+WATO.qs(".productImage-1, .small-4 a img", productTop).getAttribute('src').replace("hyb_redes_cart_overview","hyb_redes_list_main")+'">'+
-                            '<div id="kk_title">'+WATO.qs(".js-prgLink a, .cart__productname", productWrapper).innerHTML+'</div>'+
-                            // '<div id="kk_color">Farbe: <span>'+WATO.qs(".productPrgWrapper > span.h-text-decoration-none, .value--color", productWrapper).innerHTML+'</span></div>'+
-                            '<div id="kk_size">Größe: <span>'+WATO.qs(".productItemSizes div:first-child span, .value--size", productWrapper).innerHTML+'</span></div>'+
-                            '<div>Menge: <span>1</span></div>'+
-                            '<div id="kk_price">'+WATO.qs(".productPrgWrapper > span.h-text-decoration-none, .price", productWrapper).innerHTML+'</div>';
-
-                        modaloverlay.dataset.id = productId;
-                        
-                        // Open Modal
-                        if(!isModalClosed){
-                            // Modal öffnen
-                            addClass(modaloverlay, 'kk_open');
-                            // Modal als gesehen markiert
-                            markModalAsClosed();
-                        }else{
-                            // Wenn Modal noch nicht gesehen und geschlossen wurde
-                            if(pageIsCart) {
-                                // Warenkorb
-                                addClass(modaloverlay, 'kk_open');
-                                addClass(modaloverlay, 'kk_showbuttons');
-                            }else{
-                                // Produktliste
-
-                                // Swipe up infobox
-                                    productTop.insertAdjacentHTML('beforeend', 
-                                    '<div class="kk_swipeinfo">'+
-                                        '<div class="kk_checkbox">Der Artikel wurde auf Ihrer Wunschliste gespeichert</div>'+
-                                        '<a class="kk_gotowish" href="/merkzettel">Zur Wunschliste</a>'+
-                                    '</div>'
-                                );
-                            }
-                        }
-                    });
-                
-                    // Der Originalbutton ist auf der Produktliste das herz und auf der Warenkorbseite der Mülleimer
-                    var originalButton = WATO.qs('.whishList, .js-entry-remove', gridviewProductItemWrapper[i]);
-
-                    originalButton.insertAdjacentElement('beforebegin', wishlistOrTrashButton);
-
-                    // Nur auf der Produktliste, nur beim ersten Produkt und nur wenn das Modal noch nicht schoneinmal geschlossen wurde
-                    if(!pageIsCart && i === 0 && !isModalClosed){
-                        // Nudge
-                        originalButton.insertAdjacentHTML('afterend', 
-                            '<div class="kk_nudge">'+
-                                '<button class="close-button" data-close="" aria-label="Close reveal" type="button">'+
-                                    '<span aria-hidden="true">×</span>'+
-                                '</button>'+
-                                '<b>Wunschliste beobachten</b>'+
-                                '<p>Sie erfahren wenn, der Artikel</p>'+
-                                '<ul>'+
-                                    '<li>in geringer Stückzahl verfügbar,</li>'+
-                                    '<li>im Sale</li>'+
-                                    '<li>in einer Aktion ist </li>'+
-                                '</ul>'+
-                            '</div>'
-                        );
-
-                        var thisNudge = WATO.qs(".kk_nudge", originalButton.parentNode);
-
-                        WATO.qs(".close-button", thisNudge).addEventListener('click', function(e){
-                            e.preventDefault();
-                            thisNudge.parentNode.removeChild(thisNudge);
-                        });
-                    }
-                }
+        WATO.elem('.footerWrapper', function(footer){
+            if(footer){
+                createNewButtons();
             }
         });
     }
@@ -287,8 +320,8 @@
                         '<div class="row kk_service kk_hidden">' +
                             '<div class="columns large-12">'+
                                 '<h4>Danke, dass Sie unseren Wunschliste-Service<br>nutzen wollen.</h4>'+
-                                '<div class="kk_atwork">Aufgrund von technischen Herausforderungen, können wir den Service momentan leider nicht anbieten.</div>'+
-                                '<p>Um Ihnen die Wartezeit zu verkürzen erhalten Sie einen Versandkostenfrei-<br>Gutschein, den Sie für Ihre nächste Bestellung einlösen können.</p>'+
+                                '<div class="kk_atwork">Aufgrund von technischen Herausforderungen können wir den Service momentan leider nicht anbieten.</div>'+
+                                '<p>Um Ihnen die Wartezeit zu verkürzen, erhalten Sie einen Versandkostenfrei-<br>Gutschein, den Sie für Ihre nächste Bestellung einlösen können.</p>'+
                                 '<div class="kk_code"><input readonly id="kk_copytext" type="text" value="'+gutscheincode+'"><button>Code kopieren</button></div>'+
                                 '<a href="/merkzettel">Zur Wunschliste</a>'+
                                 '<small>Einmalig einlösbar für Ihre nächste Bestellung und nur in Verbindung mit Ihrem Aktionscode. Nicht kombinierbar mit anderen<br>Aktionen. Keine Auszahlung möglich. Gültig bis xxx.</small>'+
@@ -322,9 +355,17 @@
                 }
             });
 
+            if(!pageIsCart) {
+                WATO.qs(".kk_wishlist_modal .kk_gotowish").addEventListener('click', function(){
+                    WATO.goalPush("kk02_button_towunschliste");
+                });
+            }
+
             // "Jetzt Wunschliste beobachten" Button - öffnet die Folgeseite mit dem Gutschein
             WATO.qs(".large-12 .large-8 button",theModal).addEventListener('click', function(e){
                 e.preventDefault();
+
+                WATO.goalPush("kk02_button_beobachten_cat");
 
                 addClass(WATO.qs(".kk_wishlist_modal", theModal),'kk_hidden');
                 removeClass(WATO.qs(".kk_service", theModal), 'kk_hidden');
@@ -365,7 +406,10 @@
                 // Zur Wunschliste hinzufügen
                 WATO.qs(".kk_onlybuttons .kk_gotowish",theModal).addEventListener('click', function(){
                     addToWishlist(theModal.dataset.id);
-                    WATO.reload();
+
+                    setTimeout(function(){
+                        WATO.reload();
+                    }, 1500);
                 });
     
                 // Seite neu Laden
@@ -374,6 +418,8 @@
                 // Localstorage schreiben dass dieses Fenster nicht mehr gezeigt werden soll
                 WATO.qs("#kk_skip",theModal).addEventListener('click', function(e){
                     var thisCheckbox = e.target;
+
+                    WATO.goalPush("kk02_button_skip");
 
                     if(thisCheckbox.classList.contains('kk_checked')) {
                         removeClass(thisCheckbox, "kk_checked");
@@ -385,6 +431,10 @@
                 });
             }
         }
+    });
+
+    WATO.ajax("productListJSON",function(){
+        createNewButtons();
     });
 
 })(new window.WATO(), window);

@@ -385,6 +385,9 @@
     font-size: 18px;
     letter-spacing: 0;
     text-align: right;
+    .priceOld {
+        text-decoration: line-through;
+    }
 }
 .kk_infoi {
     // background: url(https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps02/infoi.svg) no-repeat 0 center;
@@ -480,7 +483,7 @@
         // padding-left: 23px;
         text-align: center;
         margin-bottom: 8px;
-        font-size: 10px;
+        font-size: 12px;
         padding-left: 18px;
     }
     .kk_gotowish {
@@ -542,6 +545,8 @@
     .kk_selectors,
     .row.large-12,
     #kk_title,
+    #kk_size,
+    #kk_size + div,
     #kk_price {
         display: none;
     }
@@ -554,6 +559,12 @@
     }
     .kk_darkbutton {
         margin: 15px auto 24px;
+    }
+    #kk_prodinfo img {
+        margin-bottom: 25px;
+    }
+    .kk_info {
+        background-color: #F9F8F5 !important;
     }
 }
 #kk_skip {
