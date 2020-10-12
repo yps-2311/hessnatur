@@ -141,7 +141,8 @@
                                             }
 
                                         } catch (error) {
-                                            setErrorTracking("wa_setup_monitoring1", error);
+                                            // setErrorTracking("wa_setup_monitoring1", error);
+                                            window.iridion.push(['goal', 'wa_setup_monitoring1', error.toString()]);
                                         }
                                     });
                                 };
@@ -260,7 +261,6 @@
 
                 } catch (error) {
                     setErrorTracking("wa_setup_monitoring", error);
-                    WATO.goalPush("catchMonitoring");
                 }
             }
         });
@@ -334,7 +334,8 @@
                     }
                     
                 } catch (error) {
-                    setErrorTracking("wa_setup_monitoring1", error);
+                    // setErrorTracking("wa_setup_monitoring1", error);
+                    window.iridion.push(['goal', 'wa_setup_monitoring1', error.toString()]);
                 }
                 
             }
@@ -376,16 +377,34 @@
                             completeTheLookLink.setAttribute('style', 'background-image: url('+CTLTeaserImgSrc+')');
 
                             // Nur initial das Tracking berücksichtigen: 30.09.2020
-                            if(init){
-                                completeTheLookLink.addEventListener('click', function(){
-                                    WATO.goalPush("kk17_shopthelook_anker");
-                                });
-                            }
+                            // Auskommentiert wegen Umbau: 06.10.2020
+                            // if(init){
+                            //     completeTheLookLink.addEventListener('click', function(){
+                            //         WATO.goalPush("kk17_shopthelook_anker");
+                            //     });
+                            // }
 
                             // CTL-Anker unter die Hauptgalerie verschoben
+                            // Umbau 06.10.2020
                             WATO.elem('.kk_sliderWrapper', function(sliderWrapper){
                                 if(sliderWrapper){
-                                    sliderWrapper[0].insertAdjacentElement('beforeend', completeTheLookLink);
+                                    var newCompleteTheLookLink = completeTheLookLink.cloneNode(true);
+
+                                    sliderWrapper = sliderWrapper[0];
+
+                                    // Nur initial das Tracking berücksichtigen: 30.09.2020
+                                    if(init){
+                                        newCompleteTheLookLink.addEventListener('click', function(){
+                                            WATO.goalPush("kk17_shopthelook_anker");                                      
+                                        }); 
+                                    }
+
+                                    if(WATO.qs('.js-jump-complete-look', sliderWrapper)){
+
+                                        sliderWrapper.removeChild(WATO.qs('.js-jump-complete-look', sliderWrapper));
+                                    }
+
+                                    sliderWrapper.insertAdjacentElement('beforeend', newCompleteTheLookLink);
                                 }
                             });
 
@@ -406,19 +425,23 @@
             
                                 var newCTLWrapper = WATO.qs("#kk_ctlwrapper", CTLWrapper.parentNode);
                                 
+                                // Umbau ohne Umpositionierung des Original-Elements: 06.10.2020
                                 for (var i = 0; i < CTLProducts.length; i++) {
-                                    CTLProducts[i].addEventListener('click', function(){
+
+                                    var newCTLProduct = CTLProducts[i].cloneNode(true);
+
+                                    newCTLProduct.addEventListener('click', function(){
                                         WATO.goalPush("kk17_product_ctl", true);
                                     });
 
-                                    var img = WATO.qs("img", CTLProducts[i]);
+                                    var img = WATO.qs("img", newCTLProduct);
                                     
                                     // 30.09.2020: Abfrage ob img überhaupt vorhanden
                                     if(img){
                                         img.setAttribute('src', img.getAttribute('src').replace("hyb_redes_reco","hyb_redes_detail_main"));
                                     }
     
-                                    newCTLWrapper.insertAdjacentElement('beforeend', CTLProducts[i]);
+                                    newCTLWrapper.insertAdjacentElement('beforeend', newCTLProduct);
                                 }
 
                                 initGallery('#kk_ctlwrapper', false, CTLProducts.length > 2, 0.41);                               
@@ -436,7 +459,10 @@
                             }
                         }
                     } catch (error) {
-                        setErrorTracking("kk17_setup_ctl_monitor", error);
+                        // setErrorTracking("kk17_setup_ctl_monitor", error);
+
+                        window.iridion.push(['goal', 'kk17_setup_ctl_monitor', document.URL]);
+                        window.iridion.push(['goal', 'catchMonitoring', error.toString()]);
                     }
                 });
             }
