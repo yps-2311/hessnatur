@@ -13,7 +13,8 @@
     .pds__imageAndCockpitWrapper {
         margin-bottom: 0;
     }
-    .color-white {
+    .color-white,
+    #Pflege-label {
         display: none;
     }
     .column.small-12.hide-for-medium.h-smallmediumOffset-bottom-outer.h-no-padding,
@@ -88,6 +89,7 @@
     }
     .pds-cockpit__shortDescription {
         margin: 0;
+        width: 100%;
         li {
             list-style: none;
             text-align: left;
@@ -563,15 +565,14 @@
         background-color: #FAFAFA;
     }
 
-   
-    
-
-
-
-
+    .recommendation-headline {
+        font-size: 0;
+        &::before {
+            content: "Nachhaltige Produkte für Sie";
+            font-size: 24px;
+        }
+    }
 }
-
-
 
 .kk_slider {
     display: flex;

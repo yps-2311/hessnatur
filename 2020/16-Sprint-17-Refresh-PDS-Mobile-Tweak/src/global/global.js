@@ -441,6 +441,16 @@
 
                         // Interaktion mit Tabs
                         tabInteraction(i);
+                    }else if(tabText === "Pflege") {
+
+                        var material = _self.qs("#Material", productInfoAccordionItem[0].parentNode);
+
+                        material.previousElementSibling.innerHTML = "Material & Pflege";
+
+                        material.insertAdjacentHTML('beforeend', 
+                            prodContent.innerHTML
+                        );
+                        
                     }
                     // else{
 

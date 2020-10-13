@@ -1,5 +1,5 @@
 // load core and global js
-// @ codekit-prepend "../global/global.js";
+// @codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -8,9 +8,9 @@
  * @name Variation 01
  * @description
  */
-// (function(WATO) {
-//     "use strict";
+(function(WATO) {
+    "use strict";
 
-//     WATO.s8(0);
+    WATO.sp12n(0);
 
-// })(new window.WATO());
+})(new window.WATO());
