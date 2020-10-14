@@ -15,6 +15,10 @@
 (function(WATO) {
     "use strict";
 
+    if(window.location.pathname.indexOf("/ch/") !== -1){
+        window.document.documentElement.classList.add('kk_land_ch');
+    }
+
     // hide badges when 0 count
     function checkIcons() {
         var _badges = WATO.qsa('.meta-navigation .badge--hollow'),
