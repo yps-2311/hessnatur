@@ -66,6 +66,15 @@
         // Markup für Wrapper der geklonten Reco
         WATO.elem('.pds__imageAndCockpitWrapper', function(topContent){
             if(topContent){
+
+                // var recoAlreadyExist = WATO.qs('#kk_newreco');
+
+                // if(recoAlreadyExist){
+
+                //     // remove reco
+                //     recoAlreadyExist.parentNode.removeChild(recoAlreadyExist);
+                // }
+
                 topContent[0].insertAdjacentHTML('afterend', 
                     '<div id="kk_newreco" class="row js-productSliderWrapper h-xxLargeOffset-bottom-outer">'+
                         '<div class="column small-12 h-mediumOffset-bottom-outer">'+
@@ -85,9 +94,12 @@
         // Warten bis min ein Produkt geladen ist
         WATO.elem('.js-productSliderWrapper .productitem', function(recoSliderItems){
             if(recoSliderItems){
+
                 // console.log('recoSliderItems: ', recoSliderItems);
+                console.log('recoSliderItems:');
 
                 try {
+
                     var recoClone = recoSliderItems[0].parentNode.cloneNode(true),
                         allItems = WATO.qsa(".productitem", recoClone),
                         newReco =  WATO.qs("#kk_reco"),
@@ -112,6 +124,7 @@
 
                                 // Doku des Sliders: https://flickity.metafizzy.co/
                                 var newjQReco = jQuery('#kk_reco');
+
                                 newjQReco.flickity({
                                     initialIndex: 0,
                                     cellAlign: 'left',
