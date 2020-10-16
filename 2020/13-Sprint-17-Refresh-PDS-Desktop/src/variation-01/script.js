@@ -14,7 +14,8 @@
     "use strict";
 
 
-    var hasNotExcludeCookie = document.cookie.indexOf("kksp17desk_exclude=true") === -1;
+    var hasNotExcludeCookie = document.cookie.indexOf("kksp17desk_exclude=true") === -1,
+        isColorChange = false;
 
     /*jshint loopfunc: true */
 
@@ -139,6 +140,8 @@
                                             }else{
                                                 sliderNavi.hide();
                                             }
+
+                                            isColorChange = false;
 
                                         } catch (error) {
                                             // setErrorTracking("wa_setup_monitoring1", error);
@@ -332,7 +335,7 @@
                             jQuery(galID+" .flickity-viewport").css("height", sliderHeight(factorForHeight)+"px");
                         }, 300);
                     }
-                    
+
                 } catch (error) {
                     // setErrorTracking("wa_setup_monitoring1", error);
                     window.iridion.push(['goal', 'wa_setup_monitoring1', error.toString()]);
@@ -853,8 +856,15 @@
                                         newColorParent = newActiveColor.parentNode,
                                         newColorID = newColorParent.getAttribute('data-color');
 
-                                    if(newColorID !== null && newColorID !== selectedColor){
+                                    // Workaround für doppelte Darstellung der Image Galerie, CTL, wenn der Ladeprozess zu lange braucht (viele Klicks auf andere Farbauswahl)
+                                    if(isColorChange === true){
+
+                                        eClick.stopPropagation();
+
+                                    } else if(newColorID !== null && newColorID !== selectedColor && isColorChange === false){
                                         
+                                        isColorChange = true;
+
                                         selectedColor = newColorID;
                                         
                                         changeColor(eClick);
