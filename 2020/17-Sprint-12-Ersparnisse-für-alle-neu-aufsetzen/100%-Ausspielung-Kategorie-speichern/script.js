@@ -1,5 +1,6 @@
 // load core and global js
 // @ codekit-prepend "../global/global.js";
+// @codekit-prepend "../src/vendor/WATO.js";
 
 /**
  * @function

@@ -68,6 +68,7 @@
 
 
     WATO.prototype.sprint17 = function(variante){
+        console.log('variante: ', variante);
         /*jshint loopfunc: true */
 
         window.document.documentElement.classList.add('kk_sp17');
@@ -79,6 +80,17 @@
         function removeObject(el) {
             if(el){
                 el.parentNode.removeChild(el);
+            }
+        }
+
+        function addClass(elem, thisclassname) {
+            if(elem){
+                elem.classList.add(thisclassname);
+            }
+        }
+        function removeClass(elem, thisclassname) {
+            if(elem){
+                elem.classList.remove(thisclassname);
             }
         }
 
@@ -325,6 +337,21 @@
             createCTL();
         }
 
+        function tabInteraction(i) {
+            _self.qs(".kk_carousel[data-index='"+i+"']").addEventListener('click', function(e){
+                var thisTarget = e.target,
+                    thisKey = thisTarget.getAttribute('data');
+
+                removeClass(_self.qs(".kk_show"), 'kk_show');
+                removeClass(_self.qs(".kk_active"), 'kk_active');
+
+                addClass(_self.qs("#"+thisKey), 'kk_show');
+                addClass(thisTarget, 'kk_active');
+
+                _self.goalPush('kk17_'+thisKey);
+            });
+        }
+
         // Klick auf mehr Details
         _self.elem('.js-pds-more-details', function(moreDetails){
             if(moreDetails){
@@ -343,18 +370,6 @@
             }
         });
 
-
-        function addClass(elem, thisclassname) {
-            if(elem){
-                elem.classList.add(thisclassname);
-            }
-        }
-        function removeClass(elem, thisclassname) {
-            if(elem){
-                elem.classList.remove(thisclassname);
-            }
-        }
-
         // Zurück-Button
         _self.elem('.breadcrumb--back a', function(breadcrumb){
             if(breadcrumb){
@@ -365,21 +380,6 @@
                 });
             }
         });
-
-        function tabInteraction(i) {
-            _self.qs(".kk_carousel[data-index='"+i+"']").addEventListener('click', function(e){
-                var thisTarget = e.target,
-                    thisKey = thisTarget.getAttribute('data');
-
-                removeClass(_self.qs(".kk_show"), 'kk_show');
-                removeClass(_self.qs(".kk_active"), 'kk_active');
-
-                addClass(_self.qs("#"+thisKey), 'kk_show');
-                addClass(thisTarget, 'kk_active');
-
-                _self.goalPush('kk17_'+thisKey);
-            });
-        }
 
         // Größenberatung Fallback
         _self.elem('#size_advisor', function(sizeAdvisor){
@@ -419,8 +419,9 @@
                         );
 
                         addClass(prodContent.parentNode, "kk_hide");
-
-                        infoContent.insertAdjacentElement('afterbegin', prodContent);
+                        
+                        console.log('prodContent: ', prodContent);
+                        infoContent.insertAdjacentElement('afterbegin', prodContent.cloneNode(true));
 
                         // Interaktion mit Tabs
                         tabInteraction(i);
@@ -437,7 +438,7 @@
 
                         addClass(prodContent.parentNode, "kk_hide");
 
-                        infoContent.insertAdjacentElement('afterbegin', prodContent);
+                        infoContent.insertAdjacentElement('afterbegin', prodContent.cloneNode(true));
 
                         // Interaktion mit Tabs
                         tabInteraction(i);
@@ -452,6 +453,8 @@
                         );
                         
                     }
+
+
                     // else{
 
                     //     // Fallback
@@ -677,8 +680,6 @@
             }
         });
 
-
-
         _self.ready(function(){
 
             // Weiterlesen Buttons im Produkttext oder in den Kundenbewertungen werden aufgeklappt
@@ -687,6 +688,7 @@
                     return typeof window.ACC !== "undefined" && typeof window.ACC.global !== "undefined";
                 }, function(accGloablIsAvaliable){
                     if(accGloablIsAvaliable){
+                        console.log(12);
                         window.ACC.global.destroyShorten(".js_triggerShortenDestroy");
                     }
                 });
@@ -701,7 +703,7 @@
                 }
             });
         });
-    }
+    };
 
 	
 })(window.WATO, window);
