@@ -49,7 +49,8 @@
 	function pushEconda(key, noBuy) {
 		if(typeof window.emos3 !== "undefined"){
 			console.log('pushEconda: ', key);
-			window.emos3.send({Target : ['kk_AB_12', key, noBuy]});
+			console.log('noBuy: ', noBuy);
+			// window.emos3.send({Target : ['kk_AB_12', key, noBuy]});
 		}
 	}
 
@@ -355,7 +356,7 @@
 										prod_variations = data.colors,
 										prod_variation_count = prod_variations.length,
 
-										firstItemSize = _self.qs(".value--size").textContent,
+										firstItemSize = _self.qs("#item__size_passive_1") ? _self.qs("#item__size_passive_1").textContent : 0,
 
 									buildSizesHTML = function(_sizes){
 										var _sizeCount = _sizes.length,
@@ -371,7 +372,7 @@
 												thisSelected = ((sizesHTML === '' && firstItemSize === thisSize.code.substring(7,9)) ? 'selected="selected"' : '' );
 											}
 
-											_sizesHTML += '<option value="'+thisSize.code+'" '+thisSelected+'>'+thisSize.size+'</option>';
+											_sizesHTML += '<option '+(thisSize.available ? '' : 'disabled="disabled"')+' value="'+thisSize.code+'" '+thisSelected+'>'+thisSize.size+'</option>';
 										}
 
 										return _sizesHTML;
@@ -413,7 +414,7 @@
 															'<p>'+ (varianteSale ? 'Glückwunsch, <br/>Sie sparen '+float2Price(_youSaved).replace(",00", "")+' €!' : 
 																'Glückwunsch zu Ihrer Produktauswahl!') +
 															'</p>'+
-															'<p>'+ (varianteSale ? 'Warum nicht einfach die Ersparnis nutzen und ein '+((promo === '4266889') ? 'Paar '+name.replace('Socke', 'Socken') : name )+' für nur <b id="kk_price_left">€&nbsp;'+float2Price(init_price)+'</b> hinzufügen?' : 
+															'<p>'+ (varianteSale ? 'Warum nicht einfach die Ersparnis nutzen und ein '+((promo === '4266889') ? 'Paar '+name.replace('Socke', 'Socken') : name )+' für nur <b id="kk_price_left">'+float2Price(init_price)+' €</b> hinzufügen?' : 
 																'Wie wäre es mit einem weiteren Kundenliebling aus unserem Sortiment? Jetzt für nur <b>'+float2Price(init_price)+' €</b> hinzufügen.')+
 															'</p>'+
 														'</div>'+
