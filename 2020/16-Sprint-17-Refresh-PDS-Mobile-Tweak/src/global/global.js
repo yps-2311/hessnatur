@@ -499,15 +499,15 @@
                                     '<div class="kk_nachhaltig">'+
                                         '<h4>Ökologische Ersparnis: <span>Im Vergleich zum konventionellen Baumwollanbau</span></h4>'+
                                         '<div class="kk_water">'+
-                                            '<h5>'+Math.round(savingWater)+' l<b>weniger<br>Wasserverbrauch</b></h5>'+
+                                            '<h5>'+Math.round(savingWater)+' l<b>weniger<br>Wasserverbrauch*</b></h5>'+
                                             '<p>91% Einsparung von Wasser durch Verwendung von Regenwasser, im Boden gespeicherte Feuchtigkeit und Anwendung verbrauchsarmer Bewässerungsmethoden.</p>'+
                                         '</div>'+
                                         '<div class="kk_cloud">'+
-                                            '<h5>46% <b>weniger<br>CO<sub>2</sub>-Ausstoß</b></h5>'+
+                                            '<h5>46% <b>weniger<br>CO<sub>2</sub>-Ausstoß*</b></h5>'+
                                             '<p>46% CO<sub>2</sub> Einsparung durch weniger energieintensive Arbeitsmethoden im Bio-Anbau und den Verzicht auf Mineraldünger und Pestizide.</p>'+
                                         '</div>'+
                                         '<div class="kk_earth">'+
-                                            '<h5>'+savingMeter+'m<sup>2</sup><b>mehr<br>gesunde Erde</b></h5>'+
+                                            '<h5>'+savingMeter+'m<sup>2</sup><b>mehr<br>gesunde Erde*</b></h5>'+
                                             '<p>'+savingMeter+'m² mehr gesunde Erde durch Vermeidung von Pestiziden, künstlichen Düngemitteln und Entlaubungsmitteln. </p>'+
                                         '</div>'+
                                         '<small>*im Vergleich zur konventionellen Produktion</small>'+
