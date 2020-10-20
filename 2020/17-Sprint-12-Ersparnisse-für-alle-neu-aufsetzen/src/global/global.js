@@ -46,23 +46,28 @@
 			console.log('......... removeSegment: ', segmentID);
 		}
 	}
-	function pushEconda(key, noBuy) {
-		if(typeof window.emos3 !== "undefined"){
-			console.log('pushEconda: ', key);
-			console.log('noBuy: ', noBuy);
-			// window.emos3.send({Target : ['kk_AB_12', key, noBuy]});
-		}
-	}
 
 	WATO.prototype.sp12n = function(variant){
 
 		var _self = this,
 			pageURL = window.location.pathname;
 
-
 		_self.exclude(1023, _self.reload);
-		
 
+		function pushEconda(key, noBuy) {
+			_self.elem(function(){
+				return typeof window.emos3 !== "undefined";
+			}, function(econdaIsLoaded){
+				if(econdaIsLoaded){
+					console.log('pushEconda: ', key);
+					console.log('noBuy: ', noBuy);
+					if(noBuy === 1 || (noBuy === 0 && !_self.getCookie("kk_econdapush"))) {
+						window.emos3.send({Target : ['kk_AB_12', key, noBuy]});
+						_self.setCookie("kk_econdapush", true, ".hessnatur.com", true);
+					}
+				}
+			});
+		}
 		function price2Float(str) {
 			return parseFloat(str.replace('€ ', '').replace('.', '').replace(',', '.'));
 		}
@@ -323,8 +328,7 @@
 							if(varianteSale) {
 								if(_youSaved >= 20) {
 									upsellIndex = 0;
-								}
-								else if(_youSaved >= 10) {
+								}else if(_youSaved >= 10) {
 									upsellIndex = 1;
 								}
 							}else{
@@ -336,7 +340,14 @@
 									upsellIndex = 1;
 								}
 							}
-							
+
+							// Wenn das Produkt bereits im Warenkorb existiert soll genau das jeweise andere reingelegt werden
+							if(_self.qs('.small-12 > .cart__productname[href*="'+promoProd[0].substring(0,5)+'"]')){
+								upsellIndex = 1;
+							}else if(_self.qs('.small-12 > .cart__productname[href*="'+promoProd[1].substring(0,5)+'"]')){
+								upsellIndex = 0;
+							}
+
 							var promo = promoProd[upsellIndex];
 
 							// if product found get product info from API

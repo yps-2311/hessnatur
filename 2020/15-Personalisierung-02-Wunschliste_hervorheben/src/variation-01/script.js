@@ -60,8 +60,8 @@
     }
 
     function fetchSend(urlPath, sendParameter) {
-        console.log('urlPath: ', urlPath);
-        console.log('sendParameter: ', sendParameter);
+        // console.log('urlPath: ', urlPath);
+        // console.log('sendParameter: ', sendParameter);
 
         window.fetch('https://www.hessnatur.com/de/'+urlPath, {
             method: 'post',
@@ -70,15 +70,15 @@
             },
             body: sendParameter + '&CSRFToken=' + window.ACC.config.CSRFToken
         }).then(function() {
-            console.log(">>> KK: done");
+            // console.log(">>> KK: done");
         }).catch(function(error) {
-            console.log(">>> KK: error", error.toString());
+            // console.log(">>> KK: error", error.toString());
             WATO.goalPush("error_setup");
         });
     }
 
     function addToWishlist(productId) {
-        console.log('addToWishlist productId: ', productId);
+        // console.log('addToWishlist productId: ', productId);
 
         WATO.goalPush("kk02_button_beobachten"+(pageIsCart ? "_cart" : '_cat'));
 
@@ -88,7 +88,7 @@
     function createNewButtons() {
         var newButtons = WATO.qsa(".gridviewProductItemWrapper:not(.kk_isrebuilt), .item__form:not(.kk_isrebuilt)");
 
-        console.log(">>> kk: found " + newButtons.length + " products");
+        // console.log(">>> kk: found " + newButtons.length + " products");
 
         // Produkte auf Produktliste und Warenkorb
         for(var i = 0; i < newButtons.length; i++){
@@ -229,8 +229,8 @@
 
 
     // Wenn auf der Warenkorbseite der Optin gewählt wurde kommt hier kein Umbau mehr, auf der Produktliste jedoch weiterhin
-    console.log('pageIsCart: ', pageIsCart);
-    console.log('getLS("kk_cartmodalClosed"): ', getLS("kk_cartmodalClosed"));
+    // console.log('pageIsCart: ', pageIsCart);
+    // console.log('getLS("kk_cartmodalClosed"): ', getLS("kk_cartmodalClosed"));
 
 
     if(winPath.indexOf("merkzettel") !== -1) {
@@ -271,7 +271,7 @@
             }
         });
 
-        console.log(123);
+        // console.log(123);
 
         // Produktliste und Warenkorb
         WATO.elem('.footerWrapper', function(footer){

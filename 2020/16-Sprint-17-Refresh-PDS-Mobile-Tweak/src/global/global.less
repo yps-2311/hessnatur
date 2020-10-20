@@ -204,6 +204,7 @@
         height: 17px;
         text-align: right;
         text-decoration: none;
+        position: relative;
         &::before {
             font-size: 13px;
             content: "Fit-Finder";
@@ -226,9 +227,9 @@
         padding-left: 10rem;
     }
     .js-price-container {
-        .price span {
-            font-weight: normal;
-        }
+        // .price span {
+        //     font-weight: normal;
+        // }
         .price.price {
             display: flex;
             align-items: center;
@@ -667,7 +668,14 @@
 }
 #kk_infoContent > div {
     border: none;
-    padding: 0 24px 25px
+    padding: 0 24px 25px;
+    &.pds-cockpit__articleNumber {
+        text-align: left;
+        margin-top: -20px;
+    }
+}
+.h-smallOffset-bottom-outer > .pds-cockpit__articleNumber {
+    display: none;
 }
 
 

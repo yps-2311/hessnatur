@@ -476,10 +476,10 @@
                     colorNumber = _self.qs(".pds-cockpit__colorSwitch .active").getAttribute('data-color');
 
                 // Artikelnummer wird nach unten in den Content-Bereich verschoben
-                var prodInfoContent = _self.qs("#Produktbeschreibung > .row", productInfoAccordionItem[0]);
+                // var prodInfoContent = _self.qs("#Produktbeschreibung > .row", productInfoAccordionItem[0]);
 
-                if(prodInfoContent && articleNumber){
-                    prodInfoContent.insertAdjacentElement('afterend', articleNumber.cloneNode(true));
+                if(infoContent && articleNumber){
+                    infoContent.insertAdjacentElement('beforeend', articleNumber.cloneNode(true));
                 }
 
                 // Infos zum Produkt laden (nicht immer vorhanden) um Infos zur Nachhaltigkeit anzuzeigen
@@ -490,7 +490,7 @@
                             var responseJSON = JSON.parse(respText),
                                 data = responseJSON.products[0].ecological_data,
                                 savingWater = data.water_savings_in_liter,
-                                savingMeter = data.clean_earth_consumption_in_square_meter.toFixed(1);
+                                savingMeter = data.clean_earth_consumption_in_square_meter.toFixed(1).replace(".",",");
 
                             console.log('savingWater: ', savingWater);
                             console.log('prodInfoAccordion: ', prodInfoAccordion);

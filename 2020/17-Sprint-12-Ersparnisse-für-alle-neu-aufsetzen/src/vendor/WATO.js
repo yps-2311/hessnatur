@@ -288,7 +288,7 @@
      *
      * @param {string} name - Cookie name
      */
-    /*
+    
 	window.WATO.prototype.getCookie = function(name){
 		
 		var cookies = document.cookie.split(";");
@@ -303,7 +303,7 @@
 		
 		return false;
 	};
-	*/
+	
 
     /**
      * @function setCookie
@@ -316,7 +316,7 @@
      * @param {string} domain - Domain like .exaple.com
      * @param {Boolean} session - true = session cookie, false = permanent cookie
      */
-    /*
+    
 	window.WATO.prototype.setCookie = function(name, value, domain, session){
 		
 		var exdate = new Date();
@@ -324,8 +324,10 @@
 		exdate.setDate(exdate.getDate() + 365);
 		
 		document.cookie = name + "=" + encodeURIComponent(value) + ";" + (!session ? "expires=" + exdate.toUTCString() + ";" : "") + "domain=" + domain + ";path=/";
-	};
-	*/
+    };
+    
+    
+    
 
     /**
      * @function removeCookie
