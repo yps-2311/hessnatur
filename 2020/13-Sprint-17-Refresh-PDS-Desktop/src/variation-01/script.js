@@ -84,10 +84,6 @@
                     }, function(avalibeColorImages){
                         if(avalibeColorImages){
 
-                            // alte Galerie entfernen
-                            removeItem(WATO.qs(".kk_slider", mainWrapper));
-                            removeItem(WATO.qs(".kk_carouselnav", mainWrapper));
-
                             var thumbnails = WATO.qsa(".show-for-medium-only .thumbnailContainer.js_thumbnailContainer:not(.kk-thumb)", mainWrapper),
                                 markupHTML = "",
                                 markupHTMLNavi = "",
@@ -217,6 +213,11 @@
                                         //         }
                                         //     }
                                         // }
+
+
+                                        // alte Galerie entfernen
+                                        removeItem(WATO.qs(".kk_slider", mainWrapper));
+                                        removeItem(WATO.qs(".kk_carouselnav", mainWrapper));
                                         
                                         // Die Main-Galerie neu erstellen
                                         WATO.qs(".kk_sliderWrapper").insertAdjacentHTML('afterbegin', getNewCarousel(markupHTML, markupHTMLNavi));
@@ -246,9 +247,12 @@
                                         '<img src="'+productPicURL.replace("_main/","_thumb/")+'">'+
                                     '</div>';
                                 }
+
+                                // alte Galerie entfernen
+                                removeItem(WATO.qs(".kk_slider", mainWrapper));
+                                removeItem(WATO.qs(".kk_carouselnav", mainWrapper));
         
                                 // Markup und Statische Felder für "Complete the Look" und "Titel" werden eingebaut
-
                                 WATO.qs('.kk_sliderWrapper', mainWrapper).innerHTML = getNewCarousel(markupHTML, markupHTMLNavi);
 
                                 // mainWrapper.insertAdjacentHTML('afterbegin', 
@@ -414,6 +418,8 @@
                             if(CTLWrapper){
                                 var CTLProducts = WATO.qsa(".item__image", CTLWrapper);
                             
+                                removeItem(WATO.qs("#look"));
+
                                 // CTL wird umgebaut
                                 CTLWrapper.insertAdjacentHTML('beforeend', 
                                     '<div class="kk_ctl" id="look">'+
