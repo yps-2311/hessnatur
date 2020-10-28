@@ -12,8 +12,7 @@
 (function(WATO, window) {
     "use strict";
 
-
-    // window.iridion.econda.push(["Sprint17", "V0"]);
+    window.iridion.econda.push(["Sprint17mobtw", "V0"]);
 
     WATO.sprint17goals(0);
 

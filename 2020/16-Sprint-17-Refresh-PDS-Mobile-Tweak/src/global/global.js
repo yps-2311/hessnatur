@@ -6,7 +6,6 @@
  * @ codekit-append "pds.js"; 
  */
 
-
 (function(WATO, window){
     "use strict";
 
@@ -54,21 +53,23 @@
 
         
         if(variante === 0){
-            clickgoal('#accordion-rating-label', "kk17_rating");
-            clickgoal('#accordion-rating .js_showAdditionalItems', "kk17_rating");
-
-            clickgoal('#Produktbeschreibung-label', "kk17_Produktbeschreibung");
-            clickgoal('#Ausgezeichnete_Qualitaet-label', "kk17_Ausgezeichnete_Qualitaet");
-            clickgoal('#Passform-label', "kk17_Passform");
-            clickgoal('#Made_In-label', "kk17_Made_In");
-            clickgoal('#Pflege-label', "kk17_Pflege");
-            clickgoal('#Material-label', "kk17_Pflege");
+            clickgoal('.breadcrumb--back a', "kategorie_back");
         }
+        clickgoal('#accordion-rating-label', "kk17_rating");
+        clickgoal('#accordion-rating .js_showAdditionalItems', "kk17_rating");
+
+        clickgoal('#Produktbeschreibung-label', "kk17_Produktbeschreibung");
+        clickgoal('#Ausgezeichnete_Qualitaet-label', "kk17_Ausgezeichnete_Qualitaet");
+        clickgoal('#Passform-label', "kk17_Passform");
+        clickgoal('#Made_In-label', "kk17_Made_In");
+        clickgoal('#Pflege-label', "kk17_Pflege");
+        clickgoal('#Material-label', "kk17_Pflege");
+        
     };
 
 
     WATO.prototype.sprint17 = function(variante){
-        console.log('variante: ', variante);
+        // console.log('variante: ', variante);
         /*jshint loopfunc: true */
 
         window.document.documentElement.classList.add('kk_sp17');
@@ -420,7 +421,7 @@
 
                         addClass(prodContent.parentNode, "kk_hide");
                         
-                        console.log('prodContent: ', prodContent);
+                        // console.log('prodContent: ', prodContent);
                         infoContent.insertAdjacentElement('afterbegin', prodContent.cloneNode(true));
 
                         // Interaktion mit Tabs
@@ -492,8 +493,6 @@
                                 savingWater = data.water_savings_in_liter,
                                 savingMeter = data.clean_earth_consumption_in_square_meter.toFixed(1).replace(".",",");
 
-                            console.log('savingWater: ', savingWater);
-                            console.log('prodInfoAccordion: ', prodInfoAccordion);
                             if(savingWater !== 0){
                                 prodInfoAccordion.parentNode.insertAdjacentHTML('afterend', 
                                     '<div class="kk_nachhaltig">'+
@@ -514,6 +513,11 @@
                                     '</div>'
                                 );
                             }
+                            if (!window.iridion.push(['hasSegment', "32831"])) {
+                                window.iridion.push(["segment", "32831"]);
+                            }
+
+                            
                         } catch (error) {
                             // console.log('getXHR Error: ', error);
                         }
@@ -611,7 +615,7 @@
                         if(ratingTop){
                             ratingTop = ratingTop[0];
 
-                            console.log('ratingTop: ', ratingTop);
+                            // console.log('ratingTop: ', ratingTop);
                             if(ratingTop){
                                 ratingTop.click();
                             }
@@ -673,6 +677,8 @@
                                     removeClass(thisCommit, "hide");
                                 }
                                 removeClass(_self.qs(".kk_showgreen"), "kk_showgreen");
+
+                                _self.goalPush("kk17_rating");
                             });
                         }
                     });
@@ -688,7 +694,6 @@
                     return typeof window.ACC !== "undefined" && typeof window.ACC.global !== "undefined";
                 }, function(accGloablIsAvaliable){
                     if(accGloablIsAvaliable){
-                        console.log(12);
                         window.ACC.global.destroyShorten(".js_triggerShortenDestroy");
                     }
                 });

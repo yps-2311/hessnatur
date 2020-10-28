@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -14,7 +14,7 @@
     "use strict";
 
 
-    // window.iridion.econda.push(["Sprint17", "V1"]);
+    window.iridion.econda.push(["Sprint17mobtw", "V2"]);
 
 
     WATO.sprint17goals(1);
@@ -41,12 +41,7 @@
     WATO.elem('.pds-cockpit__wrapper', function(cockpitWrapper){
         if(cockpitWrapper){
             cockpitWrapper = cockpitWrapper[0];
-            
-            
-            console.log('WATO.qs(".show-for-large", cockpitWrapper): ', WATO.qs(".show-for-large", cockpitWrapper));
-            console.log(' WATO.qs(".align-justify", cockpitWrapper): ',  WATO.qs(".align-justify", cockpitWrapper));
             WATO.qs(".show-for-large", cockpitWrapper).insertAdjacentElement('afterend', WATO.qs(".align-justify", cockpitWrapper));
-
         }
     });
     
