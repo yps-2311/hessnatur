@@ -68,7 +68,7 @@
             isInDrag = false,
             templs = window.localStorage.getItem("kk_recoproduct"),
             lsReco = (templs ? templs.split(',') : false) || [];
-            console.log('lsReco: ', lsReco);
+            // console.log('lsReco: ', lsReco);
 
         _self.elem('#ecRecommendationsContainer .productitem', function(recoItem){
             if(recoItem){

@@ -11,8 +11,6 @@
 (function(WATO, window) {
     "use strict";
 
-    console.log("Hessnatur Reco Tweak - QS");
-
     window.iridion.econda.push(["Sprint13_2", "V1"]);
 
     if (!Element.prototype.matches) {
@@ -116,7 +114,6 @@
                         removeItem(WATO.qs("#kk_reco"));
 
                         // Geklonte Reco einfügen
-                        console.log('placeForNewReco: ', placeForNewReco);
                         placeForNewReco.innerHTML = 
                             '<div id="kk_reco" class="flickity-productslider js-ecReco" data-wid="91" data-accountid="00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1"data-product="sku:4238489"data-count="20">'+
                                 recoClone.innerHTML+
@@ -124,8 +121,6 @@
 
                         // Doku des Sliders: https://flickity.metafizzy.co/
                         var newjQReco = jQuery('#kk_reco');
-                        
-                        console.log('newjQReco: ', newjQReco);
 
                         newjQReco.flickity({
                             initialIndex: 0,
@@ -195,7 +190,6 @@
                         WATO.elem('#kk_reco .flickity-prev-next-button', function(leftButton){
                             if(leftButton){
                                 leftButton = leftButton[0];
-                                console.log('leftButton: ', leftButton);
 
                                 var rightButton,
                                     orgonalLeftButton = WATO.qs("#ecRecommendationsContainer .flickity-prev-next-button");
@@ -237,7 +231,6 @@
                             firstSlideWithBadge = false;
 
                         for(var i = 0; i < productitems.length; i++) {
-                            console.log('i: ', i);
 
                             var img = WATO.qs('img', productitems[i]),
                                 src = img.getAttribute('src'),
@@ -304,7 +297,7 @@
                         }
                     } catch (error) {
 
-                        console.log('Error: ', error);
+                        // console.log('Error: ', error);
                         pushGoal("wa_setup_monitoring");
                         pushGoal("wa_setup_monitoring1");
                     }
@@ -312,7 +305,7 @@
 
                 } catch (error) {
                     
-                    console.log('Error: ', error);
+                    // console.log('Error: ', error);
                     pushGoal("wa_setup_monitoring");
                 }
             }
