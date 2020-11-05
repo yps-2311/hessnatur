@@ -362,18 +362,18 @@ h1.pds-cockpit__productName {
     display: flex !important;
     position: absolute;
     right: 0;
-    padding-right: 30px;
+    // padding-right: 30px;
     a {
         font-size: 13px;
         color: #373939;
-        letter-spacing: 0.04em;
+        // letter-spacing: 0.04em;
         font-weight: normal;
-        text-decoration: none;
-        &::after {
-            content: "";
-            border-top: 1px solid #b2b2b2;
-            display: block;
-        }
+        // text-decoration: none;
+        // &::after {
+        //     content: "";
+        //     border-top: 1px solid #b2b2b2;
+        //     display: block;
+        // }
     }
 }
 .h-no-padding-right-large.small-9 {
@@ -384,32 +384,37 @@ h1.pds-cockpit__productName {
     padding-right: 24px;
 }
 .js-size-advisor-wrapper {
-    position: absolute;
-    right: 42px;
+    // position: absolute;
+    // right: 42px;
+    -ms-flex: 0 0 35%;
+    flex: 0 0 35%;
+    max-width: 35%;
 }
 .column.small-9.large-10 {
     padding-left: 0;
 }
-
-
-#size_advisor {
-    font-size: 0;
-    height: 17px;
-    text-align: right;
-    text-decoration: none;
-    &::before {
-        font-size: 13px;
-        // text-decoration: underline;
-        content: "Fit-Finder";
-        white-space: nowrap;
-    }
-    &::after {
-        content: "";
-        border-top: 1px solid #b2b2b2;
-        display: block;
-        margin-top: -4px;
-    }
+.kk_hinweis {
+    margin-bottom: 30px;
 }
+
+// #size_advisor {
+//     font-size: 0;
+//     height: 17px;
+//     text-align: right;
+//     text-decoration: none;
+//     &::before {
+//         font-size: 13px;
+//         // text-decoration: underline;
+//         content: "Fit-Finder";
+//         white-space: nowrap;
+//     }
+//     &::after {
+//         content: "";
+//         border-top: 1px solid #b2b2b2;
+//         display: block;
+//         margin-top: -4px;
+//     }
+// }
 
 .availability-matrix.reveal{
     max-width: 100%;

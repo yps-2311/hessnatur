@@ -11,13 +11,15 @@
  * Save Category of product added to cart on PDP 
  * Hide early + activate Sprint 12 on cart 
  */
-(function (WATO) {
+(function (WATO, window) {
     "use strict";
 
     // if (document.URL.indexOf('/p/') !== -1) {
     //     // Productpage
 
         // console.log('PDS');
+
+        window.localStorage.removeItem('kk_upsell_hide');
 
         var kk_pi_cat = false,
             getCat = function (so_id) {
@@ -156,7 +158,7 @@
     //     }, 5000);
     // }
 
-})(new window.WATO());
+})(new window.WATO(), window);
 
 
 // BKP

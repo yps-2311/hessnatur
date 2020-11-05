@@ -84,8 +84,12 @@
 
         fetchSend("wishlist/add", 'productCodePost=' + productId + '&qty=1');
     }
+    function removeFromWishlist(productId) {
 
-    function createNewButtons() {
+        fetchSend("merkzettel/update", 'wishlistTopic=&entryNumber=0&variantCode=' + productId + '&quantity=0');
+    }
+
+    function createNewButtons(clickedLoadMoreProducts) {
         var newButtons = WATO.qsa(".gridviewProductItemWrapper:not(.kk_isrebuilt), .item__form:not(.kk_isrebuilt)");
 
         // console.log(">>> kk: found " + newButtons.length + " products");
@@ -109,7 +113,7 @@
             addClass(wishlistOrTrashButton, (pageIsCart ? 'kk_remove' : 'kk_wishlist'));
 
             // Der erste bekommt eine Sonderklasse für die Nudge
-            if(i === 0 && !pageIsCart && !isModalClosed){
+            if(i === 0 && !pageIsCart && !isModalClosed && !clickedLoadMoreProducts){
                 addClass(wishlistOrTrashButton, 'kk_first');
             }
             
@@ -122,26 +126,37 @@
             }
 
             // Interaktion
-            wishlistOrTrashButton.addEventListener('click', function(){
+            wishlistOrTrashButton.addEventListener('click', function(e){
 
-                var productId = this.dataset.id;
+                var productId = this.dataset.id,
+                    thistarget = e.target;
 
                 if(!pageIsCart){
                     // Produktliste
-                    var thisNudge = WATO.qs(".kk_nudge");
-                    if(thisNudge){
-                        thisNudge.parentNode.removeChild(thisNudge);
+
+                    if(thistarget.classList.contains('kk_added')){
+                        // Herz entfernen
+                        removeClass(thistarget, 'kk_added');
+                        
+                        // WATO.qs(".js-quick-remove-entry", WATO.qs('#miniWishListDropdown a[href*="/p/'+productId+'"]').parentNode.parentNode).click();
+                        removeFromWishlist(productId);
+                    }else{
+                        // Herz hinzufügen
+                        var thisNudge = WATO.qs(".kk_nudge");
+                        if(thisNudge){
+                            thisNudge.parentNode.removeChild(thisNudge);
+                        }
+    
+                        // Herz voll ausgefüllt
+                        addClass(thistarget, 'kk_added');
+                        addToWishlist(productId);
+    
+                        WATO.goalPush("kk02_herz_cat");
+                        WATO.goalPush("kk02_see_modal");
                     }
-
-                    // Herz voll ausgefüllt
-                    addClass(this, 'kk_added');
-                    addToWishlist(productId);
-
-                    WATO.goalPush("kk02_herz_cat");
-                    WATO.goalPush("kk02_see_modal");
                 }else{
                     // Warenkorb
-                    fetchSend("cart/update", 'entryNumber='+this.closest(".js-update-entry-form").getAttribute('id').substring(14,16)+'&variantCode=' + productId + '&quantity=0');
+                    fetchSend("cart/update", 'entryNumber='+thistarget.closest(".js-update-entry-form").getAttribute('id').substring(14,16)+'&variantCode=' + productId + '&quantity=0');
 
                     WATO.goalPush("kk02_löschen_warenkorb");
                 }
@@ -173,8 +188,14 @@
                         // Warenkorb
                         addClass(modaloverlay, 'kk_open');
                         addClass(modaloverlay, 'kk_showbuttons');
-                    }else{
+
+                    }else if(thistarget.classList.contains('kk_added')){
                         // Produktliste
+
+                        var isExistsSwipeinfo = WATO.qs(".kk_swipeinfo", productTop);
+                        if(isExistsSwipeinfo){
+                            isExistsSwipeinfo.parentNode.removeChild(isExistsSwipeinfo);
+                        }
 
                         // Swipe up infobox
                         productTop.insertAdjacentHTML('beforeend', 
@@ -196,7 +217,7 @@
             originalButton.insertAdjacentElement('beforebegin', wishlistOrTrashButton);
 
             // Nur auf der Produktliste, nur beim ersten Produkt und nur wenn das Modal noch nicht schoneinmal geschlossen wurde
-            if(!pageIsCart && i === 0 && !isModalClosed && !getLS("kk_nudgeClosed")){
+            if(!pageIsCart && i === 0 && !isModalClosed && !getLS("kk_nudgeClosed") && !clickedLoadMoreProducts){
                 // Nudge
                 originalButton.insertAdjacentHTML('afterend', 
                     '<div class="kk_nudge">'+
@@ -244,7 +265,7 @@
 
         WATO.elem('.h-mediumOffset-bottom-inner .rteContainer', function(subline){
             if(subline){
-                subline[0].innerHTML = subline[0].innerHTML.replace("ihre Merkliste","Ihre Wunschliste");
+                subline[0].innerHTML = subline[0].innerHTML.replace("ihre Merkliste","Ihre Wunschliste").replace("Ihre Merkliste","Ihre Wunschliste");
             }
         });
 
@@ -276,7 +297,7 @@
         // Produktliste und Warenkorb
         WATO.elem('.footerWrapper', function(footer){
             if(footer){
-                createNewButtons();
+                createNewButtons(false);
             }
         });
     }
@@ -434,7 +455,7 @@
     });
 
     WATO.ajax("productListJSON",function(){
-        createNewButtons();
+        createNewButtons(true);
     });
 
 })(new window.WATO(), window);

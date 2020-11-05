@@ -783,6 +783,7 @@
 
                         var articleNumber = WATO.qs(".pds-cockpit__articleNumber"),
                             prodUvp = WATO.qs(".pds-cockpit__shortDescription") !== null ? WATO.qs(".pds-cockpit__shortDescription").innerHTML : "";
+                        
                         // Produkt UVPs in die Produktinfos kopieren
                         Produktbeschreibung.insertAdjacentHTML('beforeend', 
                             '<ul class="pds-cockpit__shortDescription kk-prod-uvp">'+prodUvp+'</ul>' 
@@ -824,6 +825,31 @@
                                 }
                             });
                         }
+
+                        // Gefahrenhinweis Link in Produktinfos verschoben
+                        WATO.elem('.productInfosItem a[href*=".pdf"]', function(gefahrenhinweis){
+                            var infos = WATO.qs("p", Produktbeschreibung);
+                            if(gefahrenhinweis && infos){
+                                gefahrenhinweis = gefahrenhinweis[0].cloneNode(true);
+
+                                infos.insertAdjacentElement('afterend', gefahrenhinweis);
+                                addClass(gefahrenhinweis, "kk_hinweis");
+                                gefahrenhinweis.setAttribute('target', '_blank');
+
+                                WATO.elem(function(){
+                                    return WATO.qs('#Produktbeschreibung a[href*=".pdf"]') === null;
+
+                                }, function(fnCallback){
+                                    if(fnCallback){
+                                        gefahrenhinweis = WATO.qs('.productInfosItem a[href*=".pdf"]').cloneNode(true);
+
+                                        WATO.qs("p", Produktbeschreibung).insertAdjacentElement('afterend', gefahrenhinweis);
+                                        addClass(gefahrenhinweis, "kk_hinweis");
+                                        gefahrenhinweis.setAttribute('target', '_blank');
+                                    }
+                                });
+                            }
+                        });
 
                         // Bild in die Produktinfos einbauen
                         Produktbeschreibung.insertAdjacentHTML('afterend', 

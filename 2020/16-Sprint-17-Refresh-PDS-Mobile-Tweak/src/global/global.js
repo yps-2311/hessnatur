@@ -483,46 +483,60 @@
                     infoContent.insertAdjacentElement('beforeend', articleNumber.cloneNode(true));
                 }
 
-                // Infos zum Produkt laden (nicht immer vorhanden) um Infos zur Nachhaltigkeit anzuzeigen
-                getXHR("GET","https://products.hessnatur.com/products/"+articleNumberID+colorNumber, function(callbackContent) {
-                    var respText = callbackContent.responseText;
-                    if(respText.length > 0){
-                        try {
-                            var responseJSON = JSON.parse(respText),
-                                data = responseJSON.products[0].ecological_data,
-                                savingWater = data.water_savings_in_liter,
-                                savingMeter = data.clean_earth_consumption_in_square_meter.toFixed(1).replace(".",",");
 
-                            if(savingWater !== 0){
-                                prodInfoAccordion.parentNode.insertAdjacentHTML('afterend', 
-                                    '<div class="kk_nachhaltig">'+
-                                        '<h4>Ökologische Ersparnis: <span>Im Vergleich zum konventionellen Baumwollanbau</span></h4>'+
-                                        '<div class="kk_water">'+
-                                            '<h5>'+Math.round(savingWater)+' l<b>weniger<br>Wasserverbrauch*</b></h5>'+
-                                            '<p>91% Einsparung von Wasser durch Verwendung von Regenwasser, im Boden gespeicherte Feuchtigkeit und Anwendung verbrauchsarmer Bewässerungsmethoden.</p>'+
-                                        '</div>'+
-                                        '<div class="kk_cloud">'+
-                                            '<h5>46% <b>weniger<br>CO<sub>2</sub>-Ausstoß*</b></h5>'+
-                                            '<p>46% CO<sub>2</sub> Einsparung durch weniger energieintensive Arbeitsmethoden im Bio-Anbau und den Verzicht auf Mineraldünger und Pestizide.</p>'+
-                                        '</div>'+
-                                        '<div class="kk_earth">'+
-                                            '<h5>'+savingMeter+'m<sup>2</sup><b>mehr<br>gesunde Erde*</b></h5>'+
-                                            '<p>'+savingMeter+'m² mehr gesunde Erde durch Vermeidung von Pestiziden, künstlichen Düngemitteln und Entlaubungsmitteln. </p>'+
-                                        '</div>'+
-                                        '<small>*im Vergleich zur konventionellen Produktion</small>'+
-                                    '</div>'
-                                );
-                            }
-                            if (!window.iridion.push(['hasSegment', "32831"])) {
-                                window.iridion.push(["segment", "32831"]);
-                            }
+                var oekologischerFussabdruckAnzeigen = true,
+                    allProductsThatDontShowOekologischerFussabdruck = [47822, 47824, 47826, 47826, 47828, 47828, 47835, 47835, 47837, 47837];
 
-                            
-                        } catch (error) {
-                            // console.log('getXHR Error: ', error);
-                        }
+                try {
+                    if(allProductsThatDontShowOekologischerFussabdruck.indexOf(parseInt(window.document.location.pathname.split("/p/")[1])) !== -1){
+                        oekologischerFussabdruckAnzeigen = false;
                     }
-                });
+                } catch (error) {
+                    // console.log('Error: ', error);
+                }
+                
+                if(oekologischerFussabdruckAnzeigen){
+                    // Infos zum Produkt laden (nicht immer vorhanden) um Infos zur Nachhaltigkeit anzuzeigen
+                    getXHR("GET","https://products.hessnatur.com/products/"+articleNumberID+colorNumber, function(callbackContent) {
+                        var respText = callbackContent.responseText;
+                        if(respText.length > 0){
+                            try {
+                                var responseJSON = JSON.parse(respText),
+                                    data = responseJSON.products[0].ecological_data,
+                                    savingWater = data.water_savings_in_liter,
+                                    savingMeter = data.clean_earth_consumption_in_square_meter.toFixed(1).replace(".",",");
+
+                                if(savingWater !== 0){
+                                    prodInfoAccordion.parentNode.insertAdjacentHTML('afterend', 
+                                        '<div class="kk_nachhaltig">'+
+                                            '<h4>Ökologische Ersparnis: <span>Im Vergleich zum konventionellen Baumwollanbau</span></h4>'+
+                                            '<div class="kk_water">'+
+                                                '<h5>'+Math.round(savingWater)+' l<b>weniger<br>Wasserverbrauch*</b></h5>'+
+                                                '<p>91% Einsparung von Wasser durch Verwendung von Regenwasser, im Boden gespeicherte Feuchtigkeit und Anwendung verbrauchsarmer Bewässerungsmethoden.</p>'+
+                                            '</div>'+
+                                            '<div class="kk_cloud">'+
+                                                '<h5>46% <b>weniger<br>CO<sub>2</sub>-Ausstoß*</b></h5>'+
+                                                '<p>46% CO<sub>2</sub> Einsparung durch weniger energieintensive Arbeitsmethoden im Bio-Anbau und den Verzicht auf Mineraldünger und Pestizide.</p>'+
+                                            '</div>'+
+                                            '<div class="kk_earth">'+
+                                                '<h5>'+savingMeter+'m<sup>2</sup><b>mehr<br>gesunde Erde*</b></h5>'+
+                                                '<p>'+savingMeter+'m² mehr gesunde Erde durch Vermeidung von Pestiziden, künstlichen Düngemitteln und Entlaubungsmitteln. </p>'+
+                                            '</div>'+
+                                            '<small>*im Vergleich zur konventionellen Produktion</small>'+
+                                        '</div>'
+                                    );
+                                }
+                                if (!window.iridion.push(['hasSegment', "32831"])) {
+                                    window.iridion.push(["segment", "32831"]);
+                                }
+
+                                
+                            } catch (error) {
+                                // console.log('getXHR Error: ', error);
+                            }
+                        }
+                    });
+                }
             }
         });
 
