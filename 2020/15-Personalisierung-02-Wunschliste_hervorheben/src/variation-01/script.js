@@ -14,6 +14,8 @@
 
     /*jshint loopfunc: true */
 
+    var highestWishlistEntryNumber = 0;
+
     if (!Element.prototype.matches) {
         Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
     }
@@ -77,16 +79,25 @@
         });
     }
 
-    function addToWishlist(productId) {
+    function addToWishlist(product) {
         // console.log('addToWishlist productId: ', productId);
 
         WATO.goalPush("kk02_button_beobachten"+(pageIsCart ? "_cart" : '_cat'));
 
-        fetchSend("wishlist/add", 'productCodePost=' + productId + '&qty=1');
-    }
-    function removeFromWishlist(productId) {
+        fetchSend("wishlist/add", 'productCodePost=' + product.getAttribute('data-id') + '&qty=1');
 
-        fetchSend("merkzettel/update", 'wishlistTopic=&entryNumber=0&variantCode=' + productId + '&quantity=0');
+        highestWishlistEntryNumber++;
+        console.log('highestWishlistEntryNumber: ', highestWishlistEntryNumber);
+
+        product.setAttribute('data-entry-number', highestWishlistEntryNumber);
+    }
+    function removeFromWishlist(entryNumber) {
+        console.log('entryNumber: ', entryNumber);
+
+        // fetchSend("merkzettel/update", 'wishlistTopic=&entryNumber=0&variantCode=' + productId + '&quantity=0&redirectUrl=');
+
+        fetchSend("wishlist/quickUpdate", 'entryNumber='+entryNumber+'&quantity=0');
+
     }
 
     function createNewButtons(clickedLoadMoreProducts) {
@@ -128,8 +139,10 @@
             // Interaktion
             wishlistOrTrashButton.addEventListener('click', function(e){
 
-                var productId = this.dataset.id,
-                    thistarget = e.target;
+                var thistarget = e.target,
+                    productId = thistarget.dataset.id;
+
+                console.log('productId: ', productId);
 
                 if(!pageIsCart){
                     // Produktliste
@@ -139,7 +152,7 @@
                         removeClass(thistarget, 'kk_added');
                         
                         // WATO.qs(".js-quick-remove-entry", WATO.qs('#miniWishListDropdown a[href*="/p/'+productId+'"]').parentNode.parentNode).click();
-                        removeFromWishlist(productId);
+                        removeFromWishlist(thistarget.getAttribute("data-entry-number"));
                     }else{
                         // Herz hinzufügen
                         var thisNudge = WATO.qs(".kk_nudge");
@@ -149,7 +162,7 @@
     
                         // Herz voll ausgefüllt
                         addClass(thistarget, 'kk_added');
-                        addToWishlist(productId);
+                        addToWishlist(thistarget);
     
                         WATO.goalPush("kk02_herz_cat");
                         WATO.goalPush("kk02_see_modal");
@@ -277,14 +290,22 @@
             if(miniWishlistProducts){
                 for (var k = 0; k < miniWishlistProducts.length; k++) {
                     try {
-                        var productID = miniWishlistProducts[k].getAttribute("href").split("/p/")[1].substring(0,7);
+                        var productID = miniWishlistProducts[k].getAttribute("href").split("/p/")[1].substring(0,7),
+                            entryNumber = WATO.qs(".js-quick-remove-entry", miniWishlistProducts[k].parentNode.parentNode).getAttribute('data-entry-number');
+
+                        highestWishlistEntryNumber = parseInt(entryNumber) > highestWishlistEntryNumber ? parseInt(entryNumber) : highestWishlistEntryNumber;
 
                         // Liste befüllen
                         productsOnWishlist.push(productID);
                         
                         // Timing: Falls das folgende Polling schneller ist als dieses sind die Produkte bereits mit neuen Herzen ausgestattet,
                         // in diesem Fall werden die Produkte nachträglich mit vollen Herzen per Klasse ausgestattet
-                        addClass(WATO.qs('div[id="'+productID+'"] .kk_wishlist'), 'kk_added');
+                        var isProductWithThisIDOnThisSite = WATO.qs('div[id="'+productID+'"] .kk_wishlist');
+                        if(isProductWithThisIDOnThisSite && entryNumber){
+                            addClass(isProductWithThisIDOnThisSite, 'kk_added');
+                            isProductWithThisIDOnThisSite.setAttribute('data-entry-number', entryNumber);
+                        }
+
                     } catch (error) {
                         console.log('Error: ', error);
                     }
