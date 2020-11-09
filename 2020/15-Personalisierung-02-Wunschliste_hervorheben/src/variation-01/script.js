@@ -339,7 +339,7 @@
                             '</div>' +
                             '<div class="columns large-8 kk_selectors">'+
                                 '<h4>Wunschliste beobachten</h4>'+
-                                '<div class="kk_infoi">Sie erhalten auf Wunsch <b>nützliche Infos zu<br>Artikeln</b> auf Ihrem Merkzettel</div>'+
+                                '<div class="kk_infoi">Sie erhalten auf Wunsch <b>nützliche Infos zu<br>Artikeln</b> auf Ihrem Liste</div>'+
                                 '<div id="kk_menge" class="kk_whitebox kk_selected"><h5>Geringe Stückzahl</h5><small>Sobald ein Artikel in geringer Stückzahl verfügbar ist</small><div class="kk_check"></div></div>'+
                                 '<div id="kk_sale" class="kk_whitebox kk_selected"><h5>Sale</h5><small>Sobald der Artikel günstiger wird</small><div class="kk_check"></div></div>'+
                                 '<div id="kk_aktion" class="kk_whitebox kk_selected"><h5>Aktion</h5><small>Sobald ein Artikel in einer Aktion gelistet wird (z.B.SSV)</small><div class="kk_check"></div></div>'+

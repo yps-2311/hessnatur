@@ -915,72 +915,72 @@
         createCTL(true);
 
         // Bewertung
-        WATO.elem('.ratingAccordion', function(ratingAccordion){
-            if(ratingAccordion){
-                ratingAccordion = ratingAccordion[0];
+        // WATO.elem('.ratingAccordion', function(ratingAccordion){
+        //     if(ratingAccordion){
+        //         ratingAccordion = ratingAccordion[0];
     
-                WATO.qs(".js_backstopWrapper").insertAdjacentHTML('beforeend', 
-                    '<div id="kk_rating">'+
-                        '<div></div>'+ // Headline
-                        '<div id="kk_rating_gallery"></div>'+ // Galerie
-                    '</div>'
-                );
+        //         WATO.qs(".js_backstopWrapper").insertAdjacentHTML('beforeend', 
+        //             '<div id="kk_rating">'+
+        //                 '<div></div>'+ // Headline
+        //                 '<div id="kk_rating_gallery"></div>'+ // Galerie
+        //             '</div>'
+        //         );
     
-                WATO.qs(".js_backstopWrapper").insertAdjacentElement('beforeend', ratingAccordion);
+        //         WATO.qs(".js_backstopWrapper").insertAdjacentElement('beforeend', ratingAccordion);
     
-                // ratingAccordion.parentNode.parentNode.parentNode.parentNode.insertAdjacentElement('afterend', ratingAccordion);
+        //         // ratingAccordion.parentNode.parentNode.parentNode.parentNode.insertAdjacentElement('afterend', ratingAccordion);
     
-                // Bewertungen werden in eine Galerie eingebaut
-                var ratingGal = WATO.qs("#kk_rating_gallery"),
-                    allRatings = WATO.qsa(".js_ratingItem"),
-                    ratingLenght = allRatings.length;
+        //         // Bewertungen werden in eine Galerie eingebaut
+        //         var ratingGal = WATO.qs("#kk_rating_gallery"),
+        //             allRatings = WATO.qsa(".js_ratingItem"),
+        //             ratingLenght = allRatings.length;
     
-                for (var i = 0; i < ratingLenght; i++) {
-                    var thisComment = allRatings[i];
+        //         for (var i = 0; i < ratingLenght; i++) {
+        //             var thisComment = allRatings[i];
     
-                    // thisComment.addEventListener('click', function(){
-                    //     WATO.goalPush("kk17_rating");
-                    // });
+        //             // thisComment.addEventListener('click', function(){
+        //             //     WATO.goalPush("kk17_rating");
+        //             // });
     
-                    var author = WATO.qs(".title__name", thisComment);
+        //             var author = WATO.qs(".title__name", thisComment);
     
-                    if(author){
-                        author.innerHTML = author.innerHTML.replace(",", "");
-                    }
+        //             if(author){
+        //                 author.innerHTML = author.innerHTML.replace(",", "");
+        //             }
     
-                    ratingGal.insertAdjacentElement('beforeend', thisComment);
-                }
+        //             ratingGal.insertAdjacentElement('beforeend', thisComment);
+        //         }
     
-                initGallery('#kk_rating_gallery', true, ratingLenght > 2, 0, false); //ratingLenght > 2
+        //         initGallery('#kk_rating_gallery', true, ratingLenght > 2, 0, false); //ratingLenght > 2
 
-                WATO.elem('#kk_rating_gallery.flickity-enabled button.flickity-prev-next-button.next', function(nextButton){
-                    if(nextButton){
-                        nextButton[0].addEventListener('click', function(){
-                            WATO.goalPush("kk17_rating");
-                        });
-                    }
-                }); 
+        //         WATO.elem('#kk_rating_gallery.flickity-enabled button.flickity-prev-next-button.next', function(nextButton){
+        //             if(nextButton){
+        //                 nextButton[0].addEventListener('click', function(){
+        //                     WATO.goalPush("kk17_rating");
+        //                 });
+        //             }
+        //         }); 
     
-                // Headline
-                WATO.elem('#accordion-rating-label', function(accordionRatingLabel){
-                    if(accordionRatingLabel){
-                        ratingGal.previousElementSibling.innerHTML = accordionRatingLabel[0].innerHTML.replace("Bewertungen","Kundenbewertungen");
-                    }
-                });
+        //         // Headline
+        //         WATO.elem('#accordion-rating-label', function(accordionRatingLabel){
+        //             if(accordionRatingLabel){
+        //                 ratingGal.previousElementSibling.innerHTML = accordionRatingLabel[0].innerHTML.replace("Bewertungen","Kundenbewertungen");
+        //             }
+        //         });
     
-                setPlaceholder('#rating_title', 'Titel Ihrer Bewertung');
-                setPlaceholder('#rating_email', 'Ihre E-Mail Adresse*');
-                setPlaceholder('#rating_text', 'Bewertungstext');
-                setPlaceholder('#rating_name', 'Ihr Name');
+        //         setPlaceholder('#rating_title', 'Titel Ihrer Bewertung');
+        //         setPlaceholder('#rating_email', 'Ihre E-Mail Adresse*');
+        //         setPlaceholder('#rating_text', 'Bewertungstext');
+        //         setPlaceholder('#rating_name', 'Ihr Name');
     
-                // Bewertung (Sterne) hinter #rating_name verschieben
-                WATO.elem('#rating_name', function(rating_name){
-                    if(rating_name){
-                        rating_name[0].insertAdjacentElement('afterend', WATO.qs('.row.column.small-12'));
-                    }
-                });
-            }
-        });
+        //         // Bewertung (Sterne) hinter #rating_name verschieben
+        //         WATO.elem('#rating_name', function(rating_name){
+        //             if(rating_name){
+        //                 rating_name[0].insertAdjacentElement('afterend', WATO.qs('.row.column.small-12'));
+        //             }
+        //         });
+        //     }
+        // });
     
         // Klick auf mehr Details
         WATO.elem('.js-pds-more-details', function(moreDetails){
@@ -1009,16 +1009,16 @@
         });
     
         // Bewertungsformular
-        WATO.elem('#write_reviews > div.h3', function(ratingFormHeadline){
-            if(ratingFormHeadline){
+        // WATO.elem('#write_reviews > div.h3', function(ratingFormHeadline){
+        //     if(ratingFormHeadline){
     
-                ratingFormHeadline = ratingFormHeadline[0];
+        //         ratingFormHeadline = ratingFormHeadline[0];
     
-                addClass(ratingFormHeadline, 'kk_form_headline');
+        //         addClass(ratingFormHeadline, 'kk_form_headline');
                 
-                WATO.qs('#write_reviews').insertAdjacentElement('beforebegin', ratingFormHeadline);
-            }
-        });
+        //         WATO.qs('#write_reviews').insertAdjacentElement('beforebegin', ratingFormHeadline);
+        //     }
+        // });
     
         WATO.ready(function(){
             // Weiterlesen Buttons im Produkttext oder in den Kundenbewertungen werden aufgeklappt

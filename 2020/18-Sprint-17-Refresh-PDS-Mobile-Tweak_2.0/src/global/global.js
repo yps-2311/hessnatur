@@ -33,6 +33,11 @@
                 }
             });
         }
+        function pushSegment(segmentID) {
+            if (typeof window.iridion !== "undefined" && !window.iridion.push(['hasSegment', segmentID])) {
+                window.iridion.push(['segment', segmentID]);
+            }
+        }
 
         clickgoal('div[data-share="Facebook"]', "kk17_facebook");
         clickgoal('div[data-share="Twitter"]', "kk17_twitter");
@@ -49,6 +54,31 @@
                             _self.goalPush('kk17_addtocart_withoutsize');
                         }
                     });
+
+                    try {
+                        var ratingMeta = _self.qs('.js_triggerOpenAccordion meta[itemprop="ratingValue"]'),
+                            ratingValue = ratingMeta ? parseFloat(ratingMeta.getAttribute('content')) : 0;
+                        
+                        console.log('ratingValue: ', ratingValue);
+                        if(ratingValue < 3){
+                            // Produkt hat < 3 Sternen
+                            pushSegment("32833");
+
+                        }else if(ratingValue >= 3 && ratingValue < 4){
+                            // Produkt hat 3 - 4 Sterne
+                            pushSegment("32834");
+
+                        }else if(ratingValue >= 4){
+                            // Produkt hat > 4 Sterne
+                            pushSegment("32835");
+
+                        }else{
+                            // Produkt ohne Bewertungen
+                            pushSegment("32832");
+                        }
+                    } catch (error) {
+                        // console.log('Error: ', error);
+                    }
                 });
             }
         });
@@ -66,6 +96,8 @@
         clickgoal('#Made_In-label', "kk17_Made_In");
         clickgoal('#Pflege-label', "kk17_Pflege");
         clickgoal('#Material-label', "kk17_Pflege");
+
+
         
     };
 

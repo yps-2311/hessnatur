@@ -50,7 +50,8 @@
 	WATO.prototype.sp12n = function(variant){
 
 		var _self = this,
-			pageURL = window.location.pathname;
+			pageURL = window.location.pathname,
+			productSwitch = false;
 
 		_self.exclude(1023, _self.reload);
 
@@ -344,8 +345,10 @@
 							// Wenn das Produkt bereits im Warenkorb existiert soll genau das jeweise andere reingelegt werden
 							if(_self.qs('.small-12 > .cart__productname[href*="'+promoProd[0].substring(0,5)+'"]')){
 								upsellIndex = 1;
+								productSwitch = true;
 							}else if(_self.qs('.small-12 > .cart__productname[href*="'+promoProd[1].substring(0,5)+'"]')){
 								upsellIndex = 0;
+								productSwitch = true;
 							}
 
 							var promo = promoProd[upsellIndex];
@@ -422,8 +425,11 @@
 													'<div class="medium-5" style="padding-right:67px;display:flex">'+
 														'<div id="kk_upsell_left">'+
 															'<div id="kk_highbadge" '+(varianteSale ? 'style="display:none"' : '')+'>Highlight</div>'+
-															'<p>'+ (varianteSale ? 'Glückwunsch, <br/>Sie sparen '+float2Price(_youSaved).replace(",00", "")+' €!' : 
-																'Glückwunsch zu Ihrer Produktauswahl!') +
+															'<p>'+
+																(productSwitch ? 'Wäre das auch noch was für Sie?' : 
+																	(varianteSale ? 'Glückwunsch, <br/>Sie sparen '+float2Price(_youSaved).replace(",00", "")+' €!' : 
+																	'Glückwunsch zu Ihrer Produktauswahl!')
+																)+
 															'</p>'+
 															'<p>'+ (varianteSale ? 'Warum nicht einfach die Ersparnis nutzen und ein '+((promo === '4266889') ? 'Paar '+name.replace('Socke', 'Socken') : name )+' für nur <b id="kk_price_left">'+float2Price(init_price)+' €</b> hinzufügen?' : 
 																'Wie wäre es mit einem weiteren Kundenliebling aus unserem Sortiment? Jetzt für nur <b>'+float2Price(init_price)+' €</b> hinzufügen.')+
