@@ -165,13 +165,17 @@
                         addToWishlist(thistarget);
     
                         WATO.goalPush("kk02_herz_cat");
-                        WATO.goalPush("kk02_see_modal");
+                        WATO.goalPush("kk02_see_modal_cat");
                     }
                 }else{
                     // Warenkorb
                     fetchSend("cart/update", 'entryNumber='+thistarget.closest(".js-update-entry-form").getAttribute('id').substring(14,16)+'&variantCode=' + productId + '&quantity=0');
 
-                    WATO.goalPush("kk02_löschen_warenkorb");
+                    WATO.goalPush("kk02_delite_cart");
+
+                    if(!isModalClosed){
+                        WATO.goalPush("kk02_see_modal_cart");
+                    }
                 }
 
                 var productTop = WATO.qs('div[id="'+productId+'"], .js-update-entry-form[data-product-json-url*="'+productId+'"]').parentNode,
@@ -217,9 +221,9 @@
                                 '<a class="kk_gotowish" href="/merkzettel">Zur Wunschliste</a>'+
                             '</div>'
                         );
-                        WATO.qs(".kk_swipeinfo .kk_gotowish", productTop).addEventListener('click', function(){
-                            WATO.goalPush("kk02_button_towunschliste_cart");
-                        });
+                        // WATO.qs(".kk_swipeinfo .kk_gotowish", productTop).addEventListener('click', function(){
+                        //     WATO.goalPush("");
+                        // });
                     }
                 }
             });
@@ -382,32 +386,51 @@
                     removeClass(theModal, 'kk_open');
                     markModalAsClosed();
                     if(pageIsCart){
+                        // Page Warenkorb
                         WATO.reload();
                     }
                 };
             
             // Schließen-X Button Modal
-            WATO.qs(".close-button",theModal).addEventListener('click', closeModal);
+            WATO.qs(".close-button",theModal).addEventListener('click', function(){
+                closeModal();
+                var onPage1 = WATO.qs(".kk_service.kk_hidden", theModal);
+                if(!pageIsCart){
+                    // Kategorieseite
+                    WATO.goalPush("kk02_button_closemodal_cat"+(onPage1 ? 1 : 2));
+                }else{
+                    // Warenkorb
+                    WATO.goalPush("kk02_button_closemodal_cart"+(onPage1 ? 1 : 2));
+                }
+            });
             // Modal schließen mit dem Link "Nein Danke, das interessiert micht nicht"
-            WATO.qs(".large-8 span",theModal).addEventListener('click', closeModal);
+            WATO.qs(".large-8 span",theModal).addEventListener('click', function(){
+                closeModal();
+                if(!pageIsCart){
+                    // Kategorieseite
+                    WATO.goalPush("kk02_button_nothanks_cat");
+                }else{
+                    // Warenkorb
+                    WATO.goalPush("kk02_button_nothanks_cart");
+                }
+            });
             // Blurry-Background schließt Modal
             theModal.addEventListener('click', function(e){
                 if(e.target.classList.contains('reveal-overlay')) {
-                    closeModal(theModal);
+                    closeModal();
                 }
             });
 
-            if(!pageIsCart) {
-                WATO.qs(".kk_wishlist_modal .kk_gotowish").addEventListener('click', function(){
-                    WATO.goalPush("kk02_button_towunschliste");
-                });
-            }
+            WATO.qs(".kk_wishlist_modal .large-12 .kk_gotowish").addEventListener('click', function(){
+                WATO.goalPush("kk02_button_to_wishlist_ca"+(pageIsCart ? 'r' : '')+"t1");
+            });
+            WATO.qs(".kk_service a").addEventListener('click', function(){
+                WATO.goalPush("kk02_button_to_wishlist_ca"+(pageIsCart ? 'r' : '')+"t2");
+            });
 
             // "Jetzt Wunschliste beobachten" Button - öffnet die Folgeseite mit dem Gutschein
             WATO.qs(".large-12 .large-8 button",theModal).addEventListener('click', function(e){
                 e.preventDefault();
-
-                WATO.goalPush("kk02_button_beobachten_cat");
 
                 addClass(WATO.qs(".kk_wishlist_modal", theModal),'kk_hidden');
                 removeClass(WATO.qs(".kk_service", theModal), 'kk_hidden');
@@ -415,12 +438,24 @@
                 if(pageIsCart){
                     // Auf dem Warenkorb fügt erst dieser Link das Produkt zur Wunschliste hinzu
                     addToWishlist(theModal.dataset.id);
+
+                    WATO.goalPush("kk02_button_beobachten_cart1");
+
+                }else{
+                    WATO.goalPush("kk02_button_beobachten_cat");
                 }
             });
 
             // Der Gutscheincode
             WATO.qs(".kk_code",theModal).addEventListener('click', function(e){
                 e.preventDefault();
+
+                if(pageIsCart){
+                    WATO.goalPush("kk02_copy_code_cart");
+                }else{
+                    WATO.goalPush("kk02_copy_code_cat");
+                }
+
                 try {
                     WATO.qs("#kk_copytext").select();
                     window.document.execCommand('copy');
@@ -439,6 +474,8 @@
                         removeClass(thisCheck, 'kk_selected');
                     }else{
                         addClass(thisCheck, 'kk_selected');
+
+                        WATO.goalPush("kk02_service_cart");
                     }
                 });
             }
@@ -449,13 +486,18 @@
                 WATO.qs(".kk_onlybuttons .kk_gotowish",theModal).addEventListener('click', function(){
                     addToWishlist(theModal.dataset.id);
 
+                    WATO.goalPush("kk02_button_beobachten_cart2");
+
                     setTimeout(function(){
                         WATO.reload();
                     }, 1500);
                 });
     
                 // Seite neu Laden
-                WATO.qs(".kk_onlybuttons .kk_darkbutton",theModal).addEventListener('click', WATO.reload);
+                WATO.qs(".kk_onlybuttons .kk_darkbutton",theModal).addEventListener('click', function(){
+                    WATO.goalPush("kk02_back_to_cart", true);
+                    WATO.reload();
+                });
 
                 // Localstorage schreiben dass dieses Fenster nicht mehr gezeigt werden soll
                 WATO.qs("#kk_skip",theModal).addEventListener('click', function(e){

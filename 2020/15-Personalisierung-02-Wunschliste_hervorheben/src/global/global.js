@@ -24,12 +24,12 @@
         var _self = this;
 
 
-        _self.exclude(1023, function(){
+        // _self.exclude(1023, function(){
 
-            _self.setCookie('kkps02desk_exclude', 'true', ".hessnatur.com", false);
-            _self.reload();
+        //     _self.setCookie('kkps02desk_exclude', 'true', ".hessnatur.com", false);
+        //     _self.reload();
 
-        });
+        // });
 
 
         function clickgoal(queryparameter, goalname, sendOnNextPageView) {
@@ -47,7 +47,7 @@
         if(!variante){
             // V0
             clickgoal('.whishList', "kk02_herz_cat");
-            clickgoal('.js-entry-remove', "kk02_löschen_warenkorb");
+            clickgoal('.js-entry-remove', "kk02_delite_cart");
         }
     };
 

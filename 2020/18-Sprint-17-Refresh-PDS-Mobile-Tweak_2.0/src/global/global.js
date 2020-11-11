@@ -457,10 +457,11 @@
                         addClass(prodContent.parentNode, "kk_hide");
                         
                         var clone = prodContent.cloneNode(true),
-                            uvps = _self.qs(".checkmark-bullet.pds-cockpit__shortDescription");
+                            uvps = _self.qs(".checkmark-bullet.pds-cockpit__shortDescription"),
+                            row = _self.qs(".row", clone);
 
-                        if(uvps){
-                            _self.qs(".row", clone).insertAdjacentHTML('beforeend', 
+                        if(uvps && row){
+                            row.insertAdjacentHTML('beforeend', 
                                 uvps.outerHTML
                             );
                         }
