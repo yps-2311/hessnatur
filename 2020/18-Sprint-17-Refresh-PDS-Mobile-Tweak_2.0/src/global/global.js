@@ -33,7 +33,9 @@
                 }
             });
         }
+
         function pushSegment(segmentID) {
+            console.log('segmentID: ', segmentID);
             if (typeof window.iridion !== "undefined" && !window.iridion.push(['hasSegment', segmentID])) {
                 window.iridion.push(['segment', segmentID]);
             }
@@ -72,7 +74,36 @@
         clickgoal('#Pflege-label', "kk17_Pflege");
         clickgoal('#Material-label', "kk17_Pflege");
 
+        _self.ajax("https://www.hessnatur.com/de/cart/add", function(){
+            console.log("add to cart");
 
+            try {
+                var ratingMeta = _self.qs('.js_triggerOpenAccordion meta[itemprop="ratingValue"]'),
+                    ratingValue = ratingMeta ? parseFloat(ratingMeta.getAttribute('content')) : 0;
+                    
+                console.log('ratingMeta: ', ratingMeta);
+                console.log('ratingValue: ', ratingValue);
+
+                if(ratingValue > 0 && ratingValue < 3){
+                    // Produkt hat < 3 Sternen
+                    pushSegment("32833");
+
+                }else if(ratingValue >= 3 && ratingValue < 4){
+                    // Produkt hat 3 - 4 Sterne
+                    pushSegment("32834");
+
+                }else if(ratingValue >= 4){
+                    // Produkt hat > 4 Sterne
+                    pushSegment("32835");
+
+                }else{
+                    // Produkt ohne Bewertungen
+                    pushSegment("32832");
+                }
+            } catch (error) {
+                console.log('Error: ', error);
+            }
+        });
         
     };
 
@@ -446,12 +477,14 @@
                         // Interaktion mit Tabs
                         tabInteraction(i);
 
-                        console.log(1);
+                        var prodText = _self.qs(".pds-productDescription__text", prodContent);
+                        if(prodText){
+                            prodText.parentNode.insertAdjacentHTML('afterend', 
+                                _self.qs(".pds-cockpit__shortDescription").outerHTML
+                                // _self.qs(".pds-cockpit__articleNumber").outerHTML
+                            );
+                        }
                         
-                        _self.qs(".pds-productDescription__text", prodContent).parentNode.insertAdjacentHTML('afterend', 
-                            _self.qs(".pds-cockpit__shortDescription").outerHTML
-                            // _self.qs(".pds-cockpit__articleNumber").outerHTML
-                        );
 
                     }else if(tabText === "Passform") {
                         infoTabs.insertAdjacentHTML('beforeend', 
@@ -744,33 +777,6 @@
                     initGallery('#ecRecommendationsContainer');
                 }
             });
-
-            try {
-                var ratingMeta = _self.qs('.js_triggerOpenAccordion meta[itemprop="ratingValue"]'),
-                    ratingValue = ratingMeta ? parseFloat(ratingMeta.getAttribute('content')) : 0;
-                
-                console.log('ratingValue: ', ratingValue);
-
-                if(ratingValue === 0) {
-                    // Produkt ohne Bewertungen
-                    pushSegment("32832");
-                
-                }else if(ratingValue < 3){
-                    // Produkt hat < 3 Sternen
-                    pushSegment("32833");
-
-                }else if(ratingValue >= 3 && ratingValue < 4){
-                    // Produkt hat 3 - 4 Sterne
-                    pushSegment("32834");
-
-                }else if(ratingValue >= 4){
-                    // Produkt hat > 4 Sterne
-                    pushSegment("32835");
-
-                }
-            } catch (error) {
-                // console.log('Error: ', error);
-            }
         });
     };
 
