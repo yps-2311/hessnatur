@@ -35,7 +35,7 @@
         }
 
         function pushSegment(segmentID) {
-            console.log('segmentID: ', segmentID);
+            // console.log('segmentID: ', segmentID);
             if (typeof window.iridion !== "undefined" && !window.iridion.push(['hasSegment', segmentID])) {
                 window.iridion.push(['segment', segmentID]);
             }
@@ -75,14 +75,14 @@
         clickgoal('#Material-label', "kk17_Pflege");
 
         _self.ajax("https://www.hessnatur.com/de/cart/add", function(){
-            console.log("add to cart");
+            // console.log("add to cart");
 
             try {
                 var ratingMeta = _self.qs('.js_triggerOpenAccordion meta[itemprop="ratingValue"]'),
                     ratingValue = ratingMeta ? parseFloat(ratingMeta.getAttribute('content')) : 0;
                     
-                console.log('ratingMeta: ', ratingMeta);
-                console.log('ratingValue: ', ratingValue);
+                // console.log('ratingMeta: ', ratingMeta);
+                // console.log('ratingValue: ', ratingValue);
 
                 if(ratingValue > 0 && ratingValue < 3){
                     // Produkt hat < 3 Sternen
@@ -101,7 +101,8 @@
                     pushSegment("32832");
                 }
             } catch (error) {
-                console.log('Error: ', error);
+                _self.goalPush("wa_setup_monitoring");
+                // console.log('Error: ', error);
             }
         });
         
