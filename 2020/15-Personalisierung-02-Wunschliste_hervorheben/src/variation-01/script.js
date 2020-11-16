@@ -61,7 +61,7 @@
         }
     }
 
-    function fetchSend(urlPath, sendParameter) {
+    function fetchSend(urlPath, sendParameter, callback) {
         // console.log('urlPath: ', urlPath);
         // console.log('sendParameter: ', sendParameter);
 
@@ -73,18 +73,27 @@
             body: sendParameter + '&CSRFToken=' + window.ACC.config.CSRFToken
         }).then(function() {
             // console.log(">>> KK: done");
+            callback();
         }).catch(function(error) {
-            // console.log(">>> KK: error", error.toString());
-            WATO.goalPush("error_setup");
+            console.log(">>> KK: error", error.toString());
+            // WATO.goalPush("error_setup");
         });
     }
 
     function addToWishlist(product) {
-        // console.log('addToWishlist productId: ', productId);
+        console.log('addToWishlist product: ', product);
+        console.log('product.getAttribute(data-id): ', product.getAttribute('data-id'));
 
-        WATO.goalPush("kk02_button_beobachten"+(pageIsCart ? "_cart" : '_cat'));
+        // WATO.goalPush("kk02_button_beobachten"+(pageIsCart ? "_cart" : '_cat'));
 
-        fetchSend("wishlist/add", 'productCodePost=' + product.getAttribute('data-id') + '&qty=1');
+        fetchSend("wishlist/add", 'productCodePost=' + product.getAttribute('data-id').substring(0,7) + '&qty=1', function(){
+            // Callback - erfolgreich der Wishlist hinzugefügt
+            
+            if(pageIsCart){
+                console.log('WATO.qs(".kk_onlybuttons", product): ', WATO.qs(".kk_onlybuttons .kk_gotowish", product));
+                addClass(WATO.qs(".kk_onlybuttons .kk_gotowish", product), "kk_added");
+            }
+        });
 
         highestWishlistEntryNumber++;
         console.log('highestWishlistEntryNumber: ', highestWishlistEntryNumber);
@@ -165,7 +174,6 @@
                         addToWishlist(thistarget);
     
                         WATO.goalPush("kk02_herz_cat");
-                        WATO.goalPush("kk02_see_modal_cat");
                     }
                 }else{
                     // Warenkorb
@@ -199,6 +207,10 @@
                     addClass(modaloverlay, 'kk_open');
                     // Modal als gesehen markiert
                     markModalAsClosed();
+                    
+                    if(!pageIsCart) {
+                        WATO.goalPush("kk02_see_modal_cat");
+                    }
                 }else{
                     // Wenn Modal noch nicht gesehen und geschlossen wurde
                     if(pageIsCart) {
@@ -343,7 +355,7 @@
                             '</div>' +
                             '<div class="columns large-8 kk_selectors">'+
                                 '<h4>Wunschliste beobachten</h4>'+
-                                '<div class="kk_infoi">Sie erhalten auf Wunsch <b>nützliche Infos zu<br>Artikeln</b> auf Ihrem Liste</div>'+
+                                '<div class="kk_infoi">Sie erhalten auf Wunsch <b>nützliche Infos zu<br>Artikeln</b> auf Ihrer Liste</div>'+
                                 '<div id="kk_menge" class="kk_whitebox kk_selected"><h5>Geringe Stückzahl</h5><small>Sobald ein Artikel in geringer Stückzahl verfügbar ist</small><div class="kk_check"></div></div>'+
                                 '<div id="kk_sale" class="kk_whitebox kk_selected"><h5>Sale</h5><small>Sobald der Artikel günstiger wird</small><div class="kk_check"></div></div>'+
                                 '<div id="kk_aktion" class="kk_whitebox kk_selected"><h5>Aktion</h5><small>Sobald ein Artikel in einer Aktion gelistet wird (z.B.SSV)</small><div class="kk_check"></div></div>'+
@@ -428,6 +440,13 @@
                 WATO.goalPush("kk02_button_to_wishlist_ca"+(pageIsCart ? 'r' : '')+"t2");
             });
 
+            if(!pageIsCart){
+                WATO.qs(".kk_wishlist_modal .large-12 .large-8 button").addEventListener('click', function(){
+                    WATO.goalPush("kk02_button_beobachten_cat");
+                });
+            }
+           
+
             // "Jetzt Wunschliste beobachten" Button - öffnet die Folgeseite mit dem Gutschein
             WATO.qs(".large-12 .large-8 button",theModal).addEventListener('click', function(e){
                 e.preventDefault();
@@ -437,13 +456,13 @@
 
                 if(pageIsCart){
                     // Auf dem Warenkorb fügt erst dieser Link das Produkt zur Wunschliste hinzu
-                    addToWishlist(theModal.dataset.id);
+                    addToWishlist(theModal); // .dataset.id
 
                     WATO.goalPush("kk02_button_beobachten_cart1");
-
-                }else{
-                    WATO.goalPush("kk02_button_beobachten_cat");
                 }
+                // else{
+                    
+                // }
             });
 
             // Der Gutscheincode
@@ -474,9 +493,8 @@
                         removeClass(thisCheck, 'kk_selected');
                     }else{
                         addClass(thisCheck, 'kk_selected');
-
-                        WATO.goalPush("kk02_service_cart");
                     }
+                    WATO.goalPush("kk02_service_cart");
                 });
             }
             
@@ -484,9 +502,9 @@
             if(pageIsCart){
                 // Zur Wunschliste hinzufügen
                 WATO.qs(".kk_onlybuttons .kk_gotowish",theModal).addEventListener('click', function(){
-                    addToWishlist(theModal.dataset.id);
+                    addToWishlist(theModal); // .dataset.id
 
-                    WATO.goalPush("kk02_button_beobachten_cart2");
+                    WATO.goalPush("kk02_button_beobachten_cart2", true);
 
                     setTimeout(function(){
                         WATO.reload();
