@@ -40,7 +40,7 @@
         window.localStorage.setItem(key, body);
     }
 
-    var gutscheincode = "Versandkostenfrei",
+    var gutscheincode = "DANKE",
         isModalClosed = getLS("kk_modalClosed"),
         productsOnWishlist = [],
         winPath = window.location.pathname,
@@ -339,6 +339,8 @@
         });
     }
 
+    
+
     // Modal wird auch ohne Interaktion schon in die Seite eingebaut
     WATO.elem('.off-canvas-wrapper-inner', function(offCanvasWrapperInner){
     
@@ -382,7 +384,7 @@
                                 '<p>Um Ihnen die Wartezeit zu verkürzen, erhalten Sie einen Versandkostenfrei-<br>Gutschein, den Sie für Ihre nächste Bestellung einlösen können.</p>'+
                                 '<div class="kk_code"><input readonly id="kk_copytext" type="text" value="'+gutscheincode+'"><button>Code kopieren</button></div>'+
                                 '<a href="/merkzettel">Zur Wunschliste</a>'+
-                                '<small>Einmalig einlösbar für Ihre nächste Bestellung und nur in Verbindung mit Ihrem Aktionscode. Nicht kombinierbar mit anderen<br>Aktionen. Keine Auszahlung möglich. Gültig bis xxx.</small>'+
+                                '<small>Einmalig einlösbar für Ihre nächste Bestellung und nur in Verbindung mit Ihrem Aktionscode. Nicht kombinierbar mit anderen Aktionen. Keine Auszahlung möglich. Gültig bis 31.12.2020.</small>'+
                             '</div>' +
                         '</div>' +
                         '<button class="close-button" data-close="" aria-label="Close reveal" type="button">' +

@@ -593,6 +593,28 @@
         background-size: 13px auto;
     }
 }
+a.-padding-tight[href*="merkzettel"] {
+    font-size: 0;
+    &::after {
+        font-size: 1rem;
+        content: "Zur Wunschliste";
+    }
+}
+#wishlist_send_button {
+    font-size: 0;
+    height: 36.8px;
+    line-height: 33px;
+    &::after {
+        font-size: 1rem;
+        content: "Wunschliste versenden";
+        letter-spacing: normal;
+        margin-right: 21px;
+    }
+}
+.meta-navigation .badge--hollow {
+    background-color: #4d9209 !important;
+}
+
 
 @keyframes bounce-in-fwd {
     0% {
@@ -633,6 +655,13 @@
         display: none;
     }
 }
+
+// .page-cartPage:not([cz-shortcut-listen="true"]) {
+//     &::after{
+//         content: "Ihr Warenkorb wird aktualisiert";
+//         font-size: 20px;
+//     }
+// }
 
 //   @keyframes bounce-in-fwd {
 //     0% {
