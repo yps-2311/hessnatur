@@ -510,16 +510,16 @@
      * 
      * @author Lukas Dziambor
      */
-    /*
-	window.WATO.prototype.xhr_get = function(url, callback, scopedData) {
+    
+	window.WATO.prototype.xhr_get = function(url, callback) {
         var request = new XMLHttpRequest();
         request.open('GET', url, true);
         
         request.onload = function() {
           if (this.readyState === 4 && this.status >= 200 && this.status < 400) {
             try {
-                var data = JSON.parse(this.response);
-                callback(data, scopedData);
+                // var data = JSON.parse(this.response);
+                callback(this.response);
             }
             catch(e) {
                 callback(false);    
@@ -537,7 +537,7 @@
         // request.withCredentials = true;
         request.send();
     };
-    */
+    
 
     /**
      * @function xhr_post
