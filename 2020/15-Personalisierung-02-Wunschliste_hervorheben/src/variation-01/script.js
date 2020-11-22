@@ -62,8 +62,6 @@
     }
 
     function fetchSend(urlPath, sendParameter, callback) {
-        // console.log('urlPath: ', urlPath);
-        // console.log('sendParameter: ', sendParameter);
 
         window.fetch('https://www.hessnatur.com/de/'+urlPath, {
             method: 'post',
@@ -72,37 +70,31 @@
             },
             body: sendParameter + '&CSRFToken=' + window.ACC.config.CSRFToken
         }).then(function() {
-            // console.log(">>> KK: done");
-            callback();
-        }).catch(function(error) {
-            console.log(">>> KK: error", error.toString());
-            // WATO.goalPush("error_setup");
+            if(callback){
+                callback();
+            }
+        }).catch(function() {
+            // console.log(">>> KK: error", error.toString());
+            WATO.goalPush("error_setup");
         });
     }
 
     function addToWishlist(product) {
-        console.log('addToWishlist product: ', product);
-        console.log('product.getAttribute(data-id): ', product.getAttribute('data-id'));
-
-        // WATO.goalPush("kk02_button_beobachten"+(pageIsCart ? "_cart" : '_cat'));
 
         fetchSend("wishlist/add", 'productCodePost=' + product.getAttribute('data-id').substring(0,7) + '&qty=1', function(){
             // Callback - erfolgreich der Wishlist hinzugefügt
             
             if(pageIsCart){
-                console.log('WATO.qs(".kk_onlybuttons", product): ', WATO.qs(".kk_onlybuttons .kk_gotowish", product));
+                // console.log('WATO.qs(".kk_onlybuttons", product): ', WATO.qs(".kk_onlybuttons .kk_gotowish", product));
                 addClass(WATO.qs(".kk_onlybuttons .kk_gotowish", product), "kk_added");
             }
         });
 
         highestWishlistEntryNumber++;
-        console.log('highestWishlistEntryNumber: ', highestWishlistEntryNumber);
 
         product.setAttribute('data-entry-number', highestWishlistEntryNumber);
     }
     function removeFromWishlist(entryNumber) {
-        console.log('entryNumber: ', entryNumber);
-
         // fetchSend("merkzettel/update", 'wishlistTopic=&entryNumber=0&variantCode=' + productId + '&quantity=0&redirectUrl=');
 
         fetchSend("wishlist/quickUpdate", 'entryNumber='+entryNumber+'&quantity=0');
@@ -111,8 +103,6 @@
 
     function createNewButtons(clickedLoadMoreProducts) {
         var newButtons = WATO.qsa(".gridviewProductItemWrapper:not(.kk_isrebuilt), .item__form:not(.kk_isrebuilt)");
-
-        // console.log(">>> kk: found " + newButtons.length + " products");
 
         // Produkte auf Produktliste und Warenkorb
         for(var i = 0; i < newButtons.length; i++){
@@ -151,7 +141,7 @@
                 var thistarget = e.target,
                     productId = thistarget.dataset.id;
 
-                console.log('productId: ', productId);
+                // console.log('productId: ', productId);
 
                 if(!pageIsCart){
                     // Produktliste
@@ -233,9 +223,6 @@
                                 '<a class="kk_gotowish" href="/merkzettel">Zur Wunschliste</a>'+
                             '</div>'
                         );
-                        // WATO.qs(".kk_swipeinfo .kk_gotowish", productTop).addEventListener('click', function(){
-                        //     WATO.goalPush("");
-                        // });
                     }
                 }
             });
@@ -277,12 +264,6 @@
 
     WATO.ps02goals(1);
 
-
-    // Wenn auf der Warenkorbseite der Optin gewählt wurde kommt hier kein Umbau mehr, auf der Produktliste jedoch weiterhin
-    // console.log('pageIsCart: ', pageIsCart);
-    // console.log('getLS("kk_cartmodalClosed"): ', getLS("kk_cartmodalClosed"));
-
-
     if(winPath.indexOf("merkzettel") !== -1) {
         // Merkzettel, Wunschliste
         
@@ -323,13 +304,12 @@
                         }
 
                     } catch (error) {
-                        console.log('Error: ', error);
+                        WATO.goalPush("error_setup");
+                        // console.log('Error: ', error);
                     }
                 }
             }
         });
-
-        // console.log(123);
 
         // Produktliste und Warenkorb
         WATO.elem('.footerWrapper', function(footer){
@@ -442,11 +422,11 @@
                 WATO.goalPush("kk02_button_to_wishlist_ca"+(pageIsCart ? 'r' : '')+"t2");
             });
 
-            if(!pageIsCart){
-                WATO.qs(".kk_wishlist_modal .large-12 .large-8 button").addEventListener('click', function(){
-                    WATO.goalPush("kk02_button_beobachten_cat");
-                });
-            }
+            // if(!pageIsCart){
+            //     WATO.qs(".kk_wishlist_modal .large-12 .large-8 button").addEventListener('click', function(){
+            //         WATO.goalPush("kk02_button_beobachten_cat");
+            //     });
+            // }
            
 
             // "Jetzt Wunschliste beobachten" Button - öffnet die Folgeseite mit dem Gutschein
@@ -461,10 +441,25 @@
                     addToWishlist(theModal); // .dataset.id
 
                     WATO.goalPush("kk02_button_beobachten_cart1");
+                }else{
+                    WATO.goalPush("kk02_button_beobachten_cat");
                 }
-                // else{
+
+                try {
+                    if(WATO.qs("#kk_menge.kk_selected")){
+                        window.iridion.push(['profile', 'setValue', 'wunschliste1', 'geringestueckzahl']);
+                    }
+                    if(WATO.qs("#kk_sale.kk_selected")){
+                        window.iridion.push(['profile', 'setValue', 'wunschliste2', 'sale']);
+                    }
+                    if(WATO.qs("#kk_aktion.kk_selected")){
+                        window.iridion.push(['profile', 'setValue', 'wunschliste3', 'aktion']);
+                    }
                     
-                // }
+                } catch (error) {
+                    WATO.goalPush("error_setup");
+                    // console.log('Error: ', error);
+                }
             });
 
             // Der Gutscheincode
@@ -481,7 +476,8 @@
                     WATO.qs("#kk_copytext").select();
                     window.document.execCommand('copy');
                 } catch (error) {
-                    console.log('Error: ', error);
+                    WATO.goalPush("error_setup");
+                    // console.log('Error: ', error);
                 }
             });
 

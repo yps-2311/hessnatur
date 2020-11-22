@@ -13,7 +13,7 @@
     /*jshint loopfunc: true */
 
     WATO.prototype.goalPush = function(key, sendOnNextPageView){
-        console.log('key: ', key);
+        // console.log('key: ', key);
         if(sendOnNextPageView){
             window.iridion.push(['goal', key, '', true]);
         }else{
