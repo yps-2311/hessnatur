@@ -45,10 +45,12 @@
             });
         }
         
-        if(!variante){
+        if(variante === 0){
             // V0
-            clickgoal('.whishList', "kk02_herz_cat");
-            clickgoal('.js-entry-remove', "kk02_delite_cart");
+            _self.ready(function(){
+                clickgoal('.whishList', "kk02_herz_cat", true);
+                clickgoal('.js-entry-remove', "kk02_delite_cart", true);
+            });
         }
     };
 

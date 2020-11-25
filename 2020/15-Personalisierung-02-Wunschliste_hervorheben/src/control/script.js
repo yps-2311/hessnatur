@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -11,6 +11,6 @@
 (function(WATO) {
     "use strict";
 
-    WATO.ps02goals(1);
+    WATO.ps02goals(0);
 
 })(new window.WATO());
