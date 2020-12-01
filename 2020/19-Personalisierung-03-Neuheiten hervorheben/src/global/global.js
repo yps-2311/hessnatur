@@ -17,12 +17,34 @@
 (function (WATO, window) {
 	"use strict";
 
+
+	// init the campaign overall
+	function initCampaign() {
+		// eg. trigger widget
+		econdaWidget(sessionStorage.getItem('kk_targetGroup') !== undefined ? sessionStorage.getItem('kk_targetGroup') : 'interessent');
+
+		// eg. trigger content, visual changes depending on design
+		doCampaignStuff(sessionStorage.getItem('kk_targetGroup') !== undefined ? sessionStorage.getItem('kk_targetGroup') : 'interessent')
+	}
+
+	// placeholder for econda widget call and rendering to specific container
+	function econdaWidget(widget){
+		console.log("triggered econda widget: " + widget);
+	}
+
+	// placeholder for campaign stuff
+	function doCampaignStuff(variation){
+		console.log("triggered campagin visuals and content for: " + variation);
+	}
+
+
 	// get user classification, only once per session
 
 	// already in session storage?
 	if (!window.sessionStorage.getItem("kk_targetGroup")) {
 	
 		// 1. check if user is logged in > it's "neukunde" or "bestandskunde" then
+		// TODO: Polling or DOM-Ready to check if form-wrapper is present
 		if (document.getElementById("_loginComponentForm") === null) {  // form not present, so user is logged in
 			
 			// check if more than 1 order (ajax request to the my-account ajax content)
@@ -34,6 +56,7 @@
 				if (response){
 
 					// neukunde, only 0 or 1 order
+					// TODO: what if js_orderHistoryItem is not available? Error then?
 					if (response.split("js_orderHistoryItem-").length < 2) {
 						
 						sessionStorage.setItem('kk_targetGroup', 'neukunde');
@@ -109,25 +132,6 @@
 		}
 	} else {
 		initCampaign();
-	}
-
-	// init the campaign overall
-	function initCampaign() {
-		// eg. trigger widget
-		econdaWidget(sessionStorage.getItem('kk_targetGroup') !== undefined ? sessionStorage.getItem('kk_targetGroup') : 'interessent');
-
-		// eg. trigger content, visual changes depending on design
-		doCampaignStuff(sessionStorage.getItem('kk_targetGroup') !== undefined ? sessionStorage.getItem('kk_targetGroup') : 'interessent')
-	}
-
-	// placeholder for econda widget call and rendering to specific container
-	function econdaWidget(widget){
-		console.log("triggered econda widget: " + widget);
-	}
-
-	// placeholder for campaign stuff
-	function doCampaignStuff(variation){
-		console.log("triggered campagin visuals and content for: " + variation);
 	}
 
 })(new window.WATO(), window);
