@@ -15,9 +15,9 @@
         console.log("goal: ", key);
         if(window.iridion){
             if(sendOnNextPageView){
-                window.iridion.push(['goal', key, (value || ''), true]);
+                window.iridion.push(['goal', key, '', true]);
             }else{
-                window.iridion.push(['goal', key]);
+                window.iridion.push(['goal', key, (value || '')]);
             }
         }
     };
@@ -69,12 +69,15 @@
             _self.elem('.gridviewProductItemWrapper', function(products){
                 if(products){
                     for (var i = 0; i < 6; i++) {
-                        if(typeof products[i] === "undefined"){
+                        var thisProduct = products[i];
+                        if(typeof thisProduct === "undefined"){
                             break;
                         }
-                        products[i].addEventListener('click', function(){
-                            _self.goalPush('kk19_first6prods', true);
-                        });
+                        if(!thisProduct.classList.contains('kk_kachel')){
+                            thisProduct.addEventListener('click', function(){
+                                _self.goalPush('kk19_first6prods', true);
+                            });
+                        }
                     }
                 }
             });
@@ -90,6 +93,20 @@
             
             // KK: PS19 - Button Weitere Artikel
             clickgoal(".js-more-results", "kk19_showmore", false);
+
+
+            clickgoal(".shrink .changeArticleViewItem", "kk19_changeview", true);
+
+
+            _self.elem('#desktop__sort', function(desktopSort){
+                if(desktopSort){
+                    desktopSort[0].addEventListener('change', function(){
+                        _self.goalPush('kk19_sortchange', true);
+                    });
+                }
+            });
+            
+            
             
             // KK: PS19 - Verweildauer des Besuchers
             var counter = 0,
@@ -97,12 +114,13 @@
 
                 counter = counter + 10;
                 
-                _self.goalPush('kk19_staysonpage', false, counter);
+                _self.goalPush('kk19_staysonpage', false, String(counter));
                 console.log('counter: ', counter);
                 
                 if(counter >= 120){
                     clearInterval(interval);
                 }
+
             }, 10000);
         });
     };
