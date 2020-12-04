@@ -106,9 +106,9 @@
                 addToCartBox[0].insertAdjacentHTML('afterend', 
                     '<div class="kk_cta_uvps">'+
                         '<ul>'+
-                            '<li>Wir versenden Ihr Paket per DHL</li>'+
-                            '<li>14 Tage bequem Zuhause anprobieren</li>'+
-                            '<li>Einfach & kostenlos zurücksenden</li>'+
+                            '<li>Kostenlose Rücksendung</li>'+
+                            '<li>14 Tage Rückgaberecht</li>'+
+                            '<li>Versand aller Pakete mit DHL</li>'+
                         '</ul>'+
                     '</div>'
                 );
