@@ -827,29 +827,29 @@
                         }
 
                         // Gefahrenhinweis Link in Produktinfos verschoben
-                        WATO.elem('.productInfosItem a[href*=".pdf"]', function(gefahrenhinweis){
-                            var infos = WATO.qs("p", Produktbeschreibung);
-                            if(gefahrenhinweis && infos){
-                                gefahrenhinweis = gefahrenhinweis[0].cloneNode(true);
+                        // WATO.elem('.productInfosItem a[href*=".pdf"]', function(gefahrenhinweis){
+                        //     var infos = WATO.qs("p", Produktbeschreibung);
+                        //     if(gefahrenhinweis && infos){
+                        //         gefahrenhinweis = gefahrenhinweis[0].cloneNode(true);
 
-                                infos.insertAdjacentElement('afterend', gefahrenhinweis);
-                                addClass(gefahrenhinweis, "kk_hinweis");
-                                gefahrenhinweis.setAttribute('target', '_blank');
+                        //         infos.insertAdjacentElement('afterend', gefahrenhinweis);
+                        //         addClass(gefahrenhinweis, "kk_hinweis");
+                        //         gefahrenhinweis.setAttribute('target', '_blank');
 
-                                WATO.elem(function(){
-                                    return WATO.qs('#Produktbeschreibung a[href*=".pdf"]') === null;
+                        //         WATO.elem(function(){
+                        //             return WATO.qs('#Produktbeschreibung a[href*=".pdf"]') === null;
 
-                                }, function(fnCallback){
-                                    if(fnCallback){
-                                        gefahrenhinweis = WATO.qs('.productInfosItem a[href*=".pdf"]').cloneNode(true);
+                        //         }, function(fnCallback){
+                        //             if(fnCallback){
+                        //                 gefahrenhinweis = WATO.qs('.productInfosItem a[href*=".pdf"]').cloneNode(true);
 
-                                        WATO.qs("p", Produktbeschreibung).insertAdjacentElement('afterend', gefahrenhinweis);
-                                        addClass(gefahrenhinweis, "kk_hinweis");
-                                        gefahrenhinweis.setAttribute('target', '_blank');
-                                    }
-                                });
-                            }
-                        });
+                        //                 WATO.qs("p", Produktbeschreibung).insertAdjacentElement('afterend', gefahrenhinweis);
+                        //                 addClass(gefahrenhinweis, "kk_hinweis");
+                        //                 gefahrenhinweis.setAttribute('target', '_blank');
+                        //             }
+                        //         });
+                        //     }
+                        // });
 
                         // Bild in die Produktinfos einbauen
                         Produktbeschreibung.insertAdjacentHTML('afterend', 

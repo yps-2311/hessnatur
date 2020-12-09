@@ -12,7 +12,7 @@
     /*jshint loopfunc: true */
 
     WATO.prototype.goalPush = function(key, sendOnNextPageView, value){
-        console.log("goal: ", key);
+        // console.log("goal: ", key);
         if(window.iridion){
             if(sendOnNextPageView){
                 window.iridion.push(['goal', key, '', true]);
@@ -115,7 +115,7 @@
                 counter = counter + 10;
                 
                 _self.goalPush('kk19_staysonpage', false, String(counter));
-                console.log('counter: ', counter);
+                // console.log('counter: ', counter);
                 
                 if(counter >= 120){
                     clearInterval(interval);

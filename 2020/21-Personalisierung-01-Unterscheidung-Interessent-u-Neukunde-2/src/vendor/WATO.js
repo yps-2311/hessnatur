@@ -343,7 +343,7 @@
      * @param {string} domain - Domain like .exaple.com
      * @param {Boolean} session - true = session cookie, false = permanent cookie
      */
-    /*
+    
 	window.WATO.prototype.setCookie = function(name, value, domain, session){
 		
 		var exdate = new Date();
@@ -352,7 +352,7 @@
 		
 		document.cookie = name + "=" + encodeURIComponent(value) + ";" + (!session ? "expires=" + exdate.toUTCString() + ";" : "") + "domain=" + domain + ";path=/";
 	};
-	*/
+	
 
     /**
      * @function removeCookie
