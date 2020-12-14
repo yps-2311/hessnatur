@@ -27,6 +27,7 @@
         _self.exclude(1023, function(){
 
             _self.setCookie('kksp17desk_exclude', 'true', ".hessnatur.com", false);
+            _self.setCookie('kkps01desk_exclude', 'true', ".hessnatur.com", false);
 
             _self.reload();
 
