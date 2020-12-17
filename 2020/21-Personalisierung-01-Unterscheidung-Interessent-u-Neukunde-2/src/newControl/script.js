@@ -21,8 +21,16 @@
     
         var isInteressent = !window.localStorage.getItem("kk_hasbought") && document.location.search.indexOf("show=neukunde") === -1;
     
-        if ((!window.iridion.push(['hasSegment', "32812"])) && (!window.iridion.push(['hasSegment', "32813"]))) {
-            window.iridion.push(["segment", (isInteressent ? "32812" : "32813")]);
+        // if ((!window.iridion.push(['hasSegment', "32812"])) && (!window.iridion.push(['hasSegment', "32813"]))) {
+        //     window.iridion.push(["segment", (isInteressent ? "32812" : "32813")]);
+        // }
+        if(isInteressent){
+
+            window.iridion.push(["segment", "32812"]);
+        } else {
+            
+            window.iridion.push(["segment", "-32812"]);
+            window.iridion.push(["segment", "32813"]);
         }
     
     } catch (error) {
