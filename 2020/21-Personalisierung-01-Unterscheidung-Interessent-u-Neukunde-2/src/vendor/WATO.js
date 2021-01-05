@@ -292,6 +292,8 @@
 
                 if (this.readyState === 4) {
 
+                    console.log("uri", uri);
+                    
                     if (uri.indexOf(url) !== -1) {
 
                         if (typeof callback === "function") {
