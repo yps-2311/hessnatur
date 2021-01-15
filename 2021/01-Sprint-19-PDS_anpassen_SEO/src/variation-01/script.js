@@ -18,7 +18,138 @@
     document.documentElement.classList.add('specific-experiment-class');
     */
 
+    var cutTxt = function(tag) {
 
+        var lineHeight          = window.getComputedStyle(tag)['line-height'],
+            truncateTextParts   = tag.innerHTML.split(' ');
+
+        if (lineHeight === 'normal') {
+
+            lineHeight = 1.16 * parseFloat(window.getComputedStyle(tag)['font-size']);
+        } else {
+
+            lineHeight = parseFloat(lineHeight);
+        }
+
+        while (3 * lineHeight < tag.clientHeight) {
+            truncateTextParts.pop();
+            tag.innerHTML = truncateTextParts.join(' ') + ' ...';
+        }
+    }
+
+
+    /** HEADER **/
+    WATO.elem('.breadcrumb-productList', function(breadcrumb){
+
+        if(breadcrumb){
+
+            console.log( WATO.qs('.sidebarNav--headline').textContent );
+
+            breadcrumb[0].parentNode.insertAdjacentHTML('beforebegin', 
+                '<div id="kk-header" class="row">' + 
+                    '<div id="kk-headline" class="column"></div>' +
+                    '<div id="kk-intro" class="column">' + 
+                        '<span></span>' +
+                        '<a href="#">MEHR ERFAHREN</a>' +
+                    '</div>' +
+                '</div>'
+            );
+
+            WATO.elem('.sidebarNav--headline', function(headline){
+
+                if(headline){
+                    
+                    WATO.qs('#kk-headline').textContent = headline[0].textContent;
+                }
+            });
+        }
+    });
+
+
+   /** BADGES **/
+    var CLASS_MODIFIED = 'kk-modified',
+        productsEdited = 0;
+
+    WATO.elem('body', function(body){
+
+        if(body){
+
+            new MutationObserver(function(mutations) {
+                mutations.forEach(function() {
+
+                    var products = WATO.qsa('.gridviewProductItemWrapper:not(.kk-modified)');
+
+                    if(productsEdited < products.length){
+
+                        products.forEach(function(product){
+            
+                            if(!product.classList.contains(CLASS_MODIFIED)){
+
+                                product.classList.add(CLASS_MODIFIED);
+
+                                var icons = WATO.qsa('.productBadges img', product),
+                                    iconImagePath = '',
+                                    iconHTML = '';
+                    
+                                icons.forEach(function(icon){
+                                    iconImagePath += icon.getAttribute('src');
+                                });
+
+                                if(iconImagePath !== ''){
+
+                                    if(iconImagePath.indexOf('_neu') !== -1){
+
+                                        iconHTML = '<span><b>NEU</b></span>';
+                                    } 
+
+                                    if(iconImagePath.indexOf('_vegan') !== -1){
+
+                                        iconHTML += '<span class="kk-vegan"><b>VEGAN</b></span>';
+                                    }
+                                }
+
+                                // Ich setze diesen Container immer, damit nth-child greifed und wir ggfs. alles
+                                // auf eine Höhe setzen können 
+                                WATO.qs('.productItemColorContainer', product).insertAdjacentHTML('afterbegin', 
+                                    '<div class="kk-icons column small-12">' + iconHTML + '</div>'
+                                );
+                            }
+                        });
+                    }
+                });
+            }).observe(document.body, {
+                attributes: true, 
+                childList: true, 
+                characterData: true 
+            });
+        }
+    });
+
+
+    WATO.elem('.breadcrumb-productList .js-filter-form', function(dropdownSort){
+
+        if(dropdownSort){
+
+            WATO.elem('.filterRow .shrink', function(changeView){
+
+                if(changeView){
+
+                    console.log("change pos");
+
+                    console.log(changeView[0]);
+
+                    var copy = changeView[0].cloneNode(true);
+
+                    console.log(copy);
+
+                    dropdownSort[0].insertAdjacentElement('beforebegin', copy);
+                }
+            });
+        }
+    });
+
+
+    /** SEO **/
     WATO.elem('#js-foundation-sticky-left-navigation-data-anchor', function(prodContainer){
 
         if(prodContainer){
@@ -40,6 +171,20 @@
                     // we need to wrap the text into seperate parts and add wrapper for product images
                     seoWrapper[0].innerHTML.split('<h2>').forEach(function(container, index) {
                         
+                        if(index === 0){
+
+                            WATO.elem('#kk-intro span', function(kkIntro){
+
+                                if(kkIntro){
+
+                                    kkIntro[0].innerHTML = container;
+
+                                    // cut txt after 3 lines
+                                    cutTxt(WATO.qs('#kk-intro p'));
+                                }
+                            });
+                        }
+
                         if(index === 1){
                             newHTML += '<div class="column small-6 kk-seo-img"><div class="kk-seo-left"></div></div>';
                         }
@@ -58,8 +203,6 @@
                         }
                     });
                     
-                    console.log(newHTML);
-
                     WATO.qs('#kk-seo .columns').innerHTML = '<div class="row">' + newHTML + '</div>';
 
                     // get the first 3 product images
@@ -73,10 +216,7 @@
 
                                 if(index >= 3)return false;
 
-                                console.log("img", img);
-
                                 if(kkSEOImages[index]){
-
                                     kkSEOImages[index].children[0].style.backgroundImage = 'url(' + img.getAttribute('src') + ')';
                                 }
                             });
