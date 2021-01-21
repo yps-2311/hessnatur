@@ -6,7 +6,8 @@
 
 /** BADGES **/
 .productItemAttributes,
-.footerSmoBoxWrapper {
+.footerSmoBoxWrapper,
+#toggleModel {
     display: none;
 }
 
@@ -51,6 +52,14 @@
 }
 
 /** HEADER **/
+.js-filter-form {
+    // padding-left: 0;
+
+    .filterRow {
+        min-height: 40px;
+    }
+} 
+
 #kk-header {
     height: 215px;
     background: #fafafa;
@@ -65,9 +74,18 @@
     text-transform: uppercase;
     font-family: @font-bold;
     font-size: 4rem;
+    width: 70%;
 }
 
 #kk-intro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    & > div {
+        position: relative;
+    }
 
     h1 {
         display: none;
@@ -79,13 +97,29 @@
     }
 
     a {
+        position: absolute;
+        right: 20px;
+        bottom: -35px;
         font-size: 1.4rem;
         font-family: @font-bold;
         text-decoration: underline;
     }
 }
 
-#toggleModel {
+#kk-select {
+    // padding-right: 0;
+
+    li {
+        padding-right: 8px;
+
+        &:nth-child(1) {
+            padding-right: 12px;
+        }
+
+        label {
+            cursor: pointer;
+        }
+    }
 
     .changeArticleViewItem {
         display: block;
@@ -111,16 +145,42 @@
     .changeArticleViewItem:focus {
         text-decoration: none
     }
+
+    .kk-model-active {
+        background-position: left -1.53846rem !important;
+        font-weight: 700;
+    }
     
-    .productFilterInput:checked+.changeArticleViewItem {
-        background-position: left -1.53846rem;
+    .kk-article-active {
+        background-position: left -1.53846rem !important;
         font-weight: 700
     }
 }
 
 /** SEO CONTENT **/
+#kk-more {
+    position: absolute;
+    top: -240px;
+}
+
 #kk-seo {
+    position: relative;
     margin-top: 100px;
+
+    li {
+        position: relative;
+        list-style: none;
+
+        &:before {
+            content: " ";
+            position: absolute;
+            top: 10px;
+            left: -17px;
+            width: 15px;
+            height: 15px;
+            background: url('@{base-url}check.svg') no-repeat 0 0;
+        }
+    }
 
     .column {
         position: relative;
@@ -157,5 +217,12 @@
         &.kk-seo-right {
             background-position: right 0;
         }
+    }
+}
+
+@media (max-width: 680px) {
+
+    #kk-header {
+        flex-direction: column;
     }
 }

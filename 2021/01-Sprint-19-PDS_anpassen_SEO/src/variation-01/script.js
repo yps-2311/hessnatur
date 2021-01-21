@@ -4,7 +4,7 @@
 
 /**
  * @function
- * @author Max Mustermann
+ * @author Max Vith
  * @namespace V1
  * @name Variation 01
  * @description
@@ -12,11 +12,17 @@
 (function(WATO) {
     "use strict";
     
+    console.log("update 0815");
+
     /**
      * CSS Prefix 
      *
     document.documentElement.classList.add('specific-experiment-class');
     */
+
+//    window.iridion.econda.push(["Sprint19Messtest", "V1"]);
+
+   WATO.sprint19goals();
 
     var cutTxt = function(tag) {
 
@@ -49,8 +55,10 @@
                 '<div id="kk-header" class="row">' + 
                     '<div id="kk-headline" class="column"></div>' +
                     '<div id="kk-intro" class="column">' + 
-                        '<span></span>' +
-                        '<a href="#">MEHR ERFAHREN</a>' +
+                        '<div>' + 
+                            '<span></span>' +
+                            '<a href="#kk-more">MEHR ERFAHREN</a>' +
+                        '</div>' +
                     '</div>' +
                 '</div>'
             );
@@ -110,9 +118,14 @@
 
                                 // Ich setze diesen Container immer, damit nth-child greifed und wir ggfs. alles
                                 // auf eine Höhe setzen können 
-                                WATO.qs('.productItemColorContainer', product).insertAdjacentHTML('afterbegin', 
-                                    '<div class="kk-icons column small-12">' + iconHTML + '</div>'
-                                );
+                                var prodItem = WATO.qs('.productItemColorContainer', product);
+
+                                if(prodItem){
+
+                                    prodItem.insertAdjacentHTML('afterbegin', 
+                                        '<div class="kk-icons column small-12">' + iconHTML + '</div>'
+                                    );
+                                }
                             }
                         });
                     }
@@ -134,15 +147,35 @@
 
                 if(changeView){
 
-                    console.log("change pos");
+                    changeView = changeView[0];
 
-                    console.log(changeView[0]);
+                    var isArticleActive = document.URL.indexOf('viewMode=article') === -1;
 
-                    var copy = changeView[0].cloneNode(true);
+                    dropdownSort[0].insertAdjacentHTML('beforebegin', 
+                        '<div id="kk-select" class="column large-3 shrink">' +
+                            '<div class="filterWrapper">' +
+                                '<ul class="changeArticleView no-bullet h-list--horizontal">' + 
+                                    '<li>Ansicht</li>' +
+                                    '<li>' +
+                                        '<label class="changeArticleViewItem -icon-model' + ( isArticleActive ? ' kk-article-active' : '' ) + '"></label>' +
+                                    '</li>' +
+                                    '<li>' +
+                                        '<label class="changeArticleViewItem -icon-article' + ( !isArticleActive ? ' kk-model-active' : '' ) + '"></label>' +
+                                    '</li>' +
+                                '</ul>' +
+                            '</div>' +
+                        '</div>'
+                    );
 
-                    console.log(copy);
-
-                    dropdownSort[0].insertAdjacentElement('beforebegin', copy);
+                    WATO.qs('#kk-select .changeArticleViewItem.-icon-model').addEventListener('click', function(event){
+                        event.preventDefault();
+                        WATO.qs('label[for="desktop__viewmode_model"]', changeView).click();
+                    });
+                    
+                    WATO.qs('#kk-select .changeArticleViewItem.-icon-article').addEventListener('click', function(event){
+                        event.preventDefault();
+                        WATO.qs('label[for="desktop__viewmode_article"]', changeView).click();
+                    });
                 }
             });
         }
@@ -157,6 +190,7 @@
             // create kk root container
             prodContainer[0].parentNode.insertAdjacentHTML('afterend', 
                 '<div id="kk-seo" class="row">' +
+                    '<div id="kk-more"></div>' + 
                     '<div class="columns small-12 large-9 large-offset-3"></div>' +
                 '</div>'
             );
