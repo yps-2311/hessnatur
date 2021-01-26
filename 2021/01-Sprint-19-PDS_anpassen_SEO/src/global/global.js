@@ -112,4 +112,248 @@
             }, 10000);
         });
     };
+
+
+
+    WATO.prototype.sprint19 = function() {
+
+
+        console.log("global sprint19");
+        
+
+        /**
+         * CSS Prefix 
+         *
+        document.documentElement.classList.add('specific-experiment-class');
+        */
+
+        //    window.iridion.econda.push(["Sprint19Messtest", "V1"]);
+
+        var WATO = this;
+
+        WATO.sprint19goals();
+
+        var cutTxt = function(tag) {
+
+                var lineHeight          = window.getComputedStyle(tag)['line-height'],
+                    truncateTextParts   = tag.innerHTML.split(' ');
+
+                if (lineHeight === 'normal') {
+
+                    lineHeight = 1.16 * parseFloat(window.getComputedStyle(tag)['font-size']);
+                } else {
+
+                    lineHeight = parseFloat(lineHeight);
+                }
+
+                while (3 * lineHeight < tag.clientHeight) {
+                    truncateTextParts.pop();
+                    tag.innerHTML = truncateTextParts.join(' ') + ' ...';
+                }
+            },
+            checkUserAgent = function(str) {
+                
+                return navigator.userAgent.indexOf(str) !== -1;
+            },
+            getImgWrapper = function(position){
+
+                return '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-' + position + '"></div></div>';
+            };
+
+        var DESKTOP_DEVICE = !checkUserAgent('Mobile') && !checkUserAgent('Android');
+
+        console.log("DESKTOP_DEVICE", DESKTOP_DEVICE);
+
+        /** HEADER **/
+        WATO.elem('.breadcrumb-productList', function(breadcrumb){
+
+            if(breadcrumb){
+
+                breadcrumb[0].parentNode.insertAdjacentHTML('beforebegin', 
+                    '<div id="kk-header" class="row">' + 
+                        '<div id="kk-headline" class="column ' + (!DESKTOP_DEVICE ? 'small-12' : '' ) + '"></div>' +
+                        '<div id="kk-intro" class="column ' + (!DESKTOP_DEVICE ? 'small-12' : '' ) + '">' + 
+                            '<div>' + 
+                                '<span></span>' +
+                                // '<a href="#kk-more">MEHR ERFAHREN</a>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>'
+                );
+
+                WATO.elem('.sidebarNav .h-text-decoration-none-hover.h-text-bold', function(headline){
+
+                    if(headline){
+                        
+                        WATO.qs('#kk-headline').textContent = headline[0].textContent;
+                    }
+                });
+            }
+        });
+
+        WATO.elem('.breadcrumb-productList .js-filter-form', function(dropdownSort){
+
+            if(dropdownSort){
+
+                WATO.elem('.filterRow .shrink', function(changeView){
+
+                    if(changeView){
+
+                        changeView = changeView[0];
+
+                        var isArticleActive = document.URL.indexOf('viewMode=article') === -1;
+
+                        dropdownSort[0].insertAdjacentHTML('beforebegin', 
+                            '<div id="kk-select" class="column large-3 shrink">' +
+                                '<div class="filterWrapper">' +
+                                    '<ul class="changeArticleView no-bullet h-list--horizontal">' + 
+                                        '<li>Ansicht</li>' +
+                                        '<li>' +
+                                            '<label class="changeArticleViewItem -icon-model' + ( isArticleActive ? ' kk-article-active' : '' ) + '"></label>' +
+                                        '</li>' +
+                                        '<li>' +
+                                            '<label class="changeArticleViewItem -icon-article' + ( !isArticleActive ? ' kk-model-active' : '' ) + '"></label>' +
+                                        '</li>' +
+                                    '</ul>' +
+                                '</div>' +
+                            '</div>'
+                        );
+
+                        WATO.qs('#kk-select .changeArticleViewItem.-icon-model').addEventListener('click', function(event){
+                            event.preventDefault();
+                            WATO.qs('label[for="desktop__viewmode_model"]', changeView).click();
+                        });
+                        
+                        WATO.qs('#kk-select .changeArticleViewItem.-icon-article').addEventListener('click', function(event){
+                            event.preventDefault();
+                            WATO.qs('label[for="desktop__viewmode_article"]', changeView).click();
+                        });
+                    }
+                });
+            }
+        });
+
+
+        /** SEO TXT **/
+        WATO.elem('#js-foundation-sticky-left-navigation-data-anchor', function(prodContainer){
+
+            if(prodContainer){
+
+                // create kk root container
+                prodContainer[0].parentNode.insertAdjacentHTML('afterend', 
+                    '<div id="kk-seo" class="row">' +
+                        '<div id="kk-more"></div>' + 
+                        '<div class="columns small-12 large-9 large-offset-3"></div>' +
+                    '</div>'
+                );
+
+                // get current SEO text
+                WATO.elem('.footerSmoBoxWrapper .rteContainer', function(seoWrapper){
+
+                    if(seoWrapper){
+
+                        var newHTML = '';
+
+                        // we need to wrap the text into seperate parts and add wrapper for product images
+                        seoWrapper[0].innerHTML.split('<h2>').forEach(function(container, index) {
+                            
+                            if(index === 0){
+
+                                WATO.elem('#kk-intro span', function(kkIntro){
+
+                                    if(kkIntro){
+
+                                        kkIntro[0].innerHTML = container;
+
+                                        // cut txt after 3 lines
+                                        cutTxt(WATO.qs('#kk-intro p'));
+
+                                        kkIntro[0].insertAdjacentHTML('afterend', 
+                                            '<a href="#kk-more">MEHR ERFAHREN</a>'
+                                        );
+                                    }
+                                });
+                            }
+
+                            if(DESKTOP_DEVICE && index === 1 || (!DESKTOP_DEVICE && index <= 2)){
+                                newHTML += getImgWrapper('left');
+                            }
+
+                            newHTML += '<div class="column small-12 large-6">';
+
+                            if(index !== 0) {
+                                newHTML += '<h2>';
+                            }
+                            
+                            newHTML += container; 
+                            newHTML += '</div>';
+
+                            if(DESKTOP_DEVICE && (index === 0 || index === 2)){
+                                newHTML += getImgWrapper('right');
+                            }
+                        });
+                        
+                        WATO.qs('#kk-seo .columns').innerHTML = '<div class="row">' + newHTML + '</div>';
+
+                        // get the first 3 product images
+                        var savedSEOImages          = sessionStorage.getItem('kk19Images'),
+                            firstVisitOnThisPage    = document.URL.indexOf(document.referrer) === -1,
+                            seoImages               = [];
+
+                        if(firstVisitOnThisPage){
+                            console.log("erster aufruf, speichere die Bilder");
+                        } else if(!firstVisitOnThisPage && savedSEOImages){
+                            console.log("Bilder übernehmen");
+                        }
+
+                        WATO.elem('.productPrgWrapper img.productImage-1', function(prodImages){
+
+                            if(prodImages){
+
+                                var kkSEOImages = WATO.qsa('.kk-seo-img');
+
+                                if(!firstVisitOnThisPage && savedSEOImages){
+                            
+                                    console.log("gespeicherte Bilder verwedenn", savedSEOImages);
+
+                                    try {
+                                        
+                                        savedSEOImages = JSON.parse(savedSEOImages);
+
+                                        savedSEOImages.forEach(function(img, index){
+                                            kkSEOImages[index].children[0].style.backgroundImage = 'url(' + img + ')';
+                                        });
+                                    } catch(e) {
+
+                                        console.log("kk >", e.toString());
+                                    }
+                                } else {
+
+                                    console.log("bilder von der Seite übernehmen");
+
+                                    prodImages.forEach(function(img, index){
+    
+                                        if(index >= 3) return false;
+    
+                                        if(kkSEOImages[index]){
+    
+                                            var src = img.getAttribute('src');
+    
+                                            seoImages.push(src);
+    
+                                            kkSEOImages[index].children[0].style.backgroundImage = 'url(' + src + ')';
+                                        }
+                                    });
+
+                                    if(seoImages.length > 0){
+                                        sessionStorage.setItem('kk19Images', JSON.stringify(seoImages));
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
 })(window.WATO);
