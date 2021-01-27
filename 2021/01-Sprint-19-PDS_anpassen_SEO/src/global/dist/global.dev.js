@@ -110,13 +110,11 @@
   };
 
   WATO.prototype.sprint19 = function () {
-    console.log("global sprint19");
     /**
      * CSS Prefix 
      *
-    document.documentElement.classList.add('specific-experiment-class');
-    */
-    //    window.iridion.econda.push(["Sprint19Messtest", "V1"]);
+     */
+    document.documentElement.classList.add('kk-ab19'); //    window.iridion.econda.push(["Sprint19Messtest", "V1"]);
 
     var WATO = this;
     WATO.sprint19goals();

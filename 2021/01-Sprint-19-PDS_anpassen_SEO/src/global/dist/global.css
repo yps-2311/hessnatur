@@ -1,8 +1,8 @@
 /* IMPORT VAR LESS FILE */
 /* DEFINE VARS */
 /** BADGES **/
-.footerSmoBoxWrapper,
-#toggleModel {
+.kk-ab19 .footerSmoBoxWrapper,
+.kk-ab19 #toggleModel {
   display: none;
 }
 #kk-header {
@@ -40,7 +40,7 @@
   position: absolute;
   right: 20px;
   bottom: -35px;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-family: "Roboto Condensed Bold", Helvetica, Arial, "Archer A", sans-serif;
   text-decoration: underline;
 }
@@ -90,14 +90,17 @@
   position: relative;
   margin-top: 100px;
 }
-#kk-seo li {
+#kk-seo ul:not(.menu) li {
   position: relative;
   list-style: none;
+  line-height: 1.5rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
-#kk-seo li:before {
+#kk-seo ul:not(.menu) li:before {
   content: " ";
   position: absolute;
-  top: 10px;
+  top: 4px;
   left: -17px;
   width: 15px;
   height: 15px;

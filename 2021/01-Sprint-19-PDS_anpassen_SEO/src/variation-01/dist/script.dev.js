@@ -36,12 +36,20 @@
                 });
 
                 if (iconImagePath !== '') {
-                  if (iconImagePath.indexOf('_neu') !== -1) {
+                  if (iconImagePath.indexOf('_neu.svg') !== -1) {
                     iconHTML = '<span><b>NEU</b></span>';
                   }
 
-                  if (iconImagePath.indexOf('_vegan') !== -1) {
+                  if (iconImagePath.indexOf('_vegan.svg') !== -1) {
                     iconHTML += '<span class="kk-vegan"><b>VEGAN</b></span>';
+                  }
+
+                  if (iconImagePath.indexOf('_sale.svg') !== -1) {
+                    iconHTML += '<span class="kk-sale"><b>SALE</b></span>';
+                  }
+
+                  if (iconImagePath.indexOf('_neue_qualitaet.svg') !== -1) {
+                    iconHTML += '<span class="kk-quality"><b>NEUE QUALITÄT</b></span>';
                   }
                 } // Ich setze diesen Container immer, damit nth-child greifed und wir ggfs. alles
                 // auf eine Höhe setzen können 

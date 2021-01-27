@@ -7,9 +7,11 @@
 
 
 /** BADGES **/
-.footerSmoBoxWrapper,
-#toggleModel {
-    display: none;
+.kk-ab19 {
+    .footerSmoBoxWrapper,
+    #toggleModel {
+        display: none;
+    }
 }
 
 #kk-header {
@@ -53,7 +55,7 @@
         position: absolute;
         right: 20px;
         bottom: -35px;
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         font-family: @font-bold;
         text-decoration: underline;
     }
@@ -120,14 +122,17 @@
     position: relative;
     margin-top: 100px;
 
-    li {
+    ul:not(.menu) li {
         position: relative;
         list-style: none;
+        line-height: 1.5rem;
+        margin-top: 10px;
+        margin-bottom: 10px;
 
         &:before {
             content: " ";
             position: absolute;
-            top: 10px;
+            top: 4px;
             left: -17px;
             width: 15px;
             height: 15px;
