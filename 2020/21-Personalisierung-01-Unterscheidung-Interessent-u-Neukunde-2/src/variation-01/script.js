@@ -204,23 +204,22 @@
                         if(prod15 && !checkForKachelClass(prod15)){
                             prod15.insertAdjacentHTML('afterend',  all3boxes[2]);
                         }
-                    } else {
+                    }
 
-                        // Neukunde
-                        var allProducts = WATO.qsa(".dropdown-pane");
+                    // Neukunde
+                    var allProducts = WATO.qsa(".dropdown-pane");
 
-                        for (var k = 0; k < allProducts.length; k++) {
+                    for (var k = 0; k < allProducts.length; k++) {
 
-                            var thisProd = allProducts[k],
-                                thisID = parseInt(thisProd.getAttribute('id').substring(0,5));
+                        var thisProd = allProducts[k],
+                            thisID = parseInt(thisProd.getAttribute('id').substring(0,5));
 
-                            if(favProducts.indexOf(thisID) !== -1) {
-                                thisProd.classList.add('kk_fav');
-                            }
+                        if(favProducts.indexOf(thisID) !== -1) {
+                            thisProd.classList.add('kk_fav');
+                        }
 
-                            if(sehrgefragtProducts.indexOf(thisID) !== -1) {
-                                thisProd.classList.add('kk_sehrgefragt');
-                            }
+                        if(sehrgefragtProducts.indexOf(thisID) !== -1) {
+                            thisProd.classList.add('kk_sehrgefragt');
                         }
                     }
                 }

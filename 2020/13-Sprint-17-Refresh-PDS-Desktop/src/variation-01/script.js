@@ -8,11 +8,8 @@
  * @name Variation 01
  * @description
  */
-
-
 (function(WATO, window) {
     "use strict";
-
 
     var hasNotExcludeCookie = document.cookie.indexOf("kksp17desk_exclude=true") === -1,
         isColorChange = false;
@@ -250,6 +247,7 @@
 
                                 // alte Galerie entfernen
                                 removeItem(WATO.qs(".kk_slider", mainWrapper));
+
                                 removeItem(WATO.qs(".kk_carouselnav", mainWrapper));
         
                                 // Markup und Statische Felder für "Complete the Look" und "Titel" werden eingebaut
@@ -349,24 +347,46 @@
         });
     }
 
-    function setPlaceholder(id, text) {
-        WATO.elem(id, function(placeholder){
-            if(placeholder){
-                placeholder[0].setAttribute('placeholder', text);
-            }
-        });
-    }
+    // function setPlaceholder(id, text) {
+    //     WATO.elem(id, function(placeholder){
+    //         if(placeholder){
+    //             placeholder[0].setAttribute('placeholder', text);
+    //         }
+    //     });
+    // }
 
     // Complete the Look
     function createCTL(init) {
+
         WATO.elem('.js-jump-complete-look', function(completeTheLookLink){
+
             if(completeTheLookLink){
                 
+                // MV, Hotfix, 14.01.2021
+                // Es gibt Produkte ohne STL Elemente, wodurch Magic Zoom nicht getriggert wird. Dies kann auch bei
+                // einem Farbwechsel passieren
+                window.setTimeout(function(){
+
+                    if(WATO.qsa('.h-xxLargeOffset-bottom-inner-xLarge-up > img').length === 0){
+
+                        WATO.elem(function(){
+                            // Falls noch nicht geladen
+                            return typeof window.MagicZoom !== "undefined" && typeof window.MagicZoom.start !== "undefined";
+
+                        }, function(fnCallback){
+                            if(fnCallback){
+
+                                // init MagicZoom
+                                window.MagicZoom.start();
+                            }
+                        });
+                    }
+                }, 2000);
+
                 WATO.elem(function(){
-
                     return WATO.qsa('.h-xxLargeOffset-bottom-inner-xLarge-up > img').length > 0 && !WATO.qs(".kk_ctl");
-
                 }, function(){
+
                     var completeTheLookImg = WATO.qs('.h-xxLargeOffset-bottom-inner-xLarge-up > img');
 
                     try {
@@ -416,6 +436,7 @@
                             });
 
                             if(CTLWrapper){
+
                                 var CTLProducts = WATO.qsa(".item__image", CTLWrapper);
                             
                                 removeItem(WATO.qs("#look"));
@@ -461,6 +482,7 @@
 
                                 }, function(fnCallback){
                                     if(fnCallback){
+
                                         // init MagicZoom
                                         window.MagicZoom.start();
                                     }
@@ -580,6 +602,7 @@
                     var selectIndex = Math.floor( lerp( firstIndex, lastIndex,
                     this.navCompanion.cellAlign ) );
                     this.selectCell( selectIndex, false, isInstant );
+
                     // set nav selected class
                     this.removeNavSelectedElements();
                     // stop if companion has more cells than this one
