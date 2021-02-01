@@ -51,6 +51,10 @@
                   if (iconImagePath.indexOf('_neue_qualitaet.svg') !== -1) {
                     iconHTML += '<span class="kk-quality"><b>NEUE QUALITÄT</b></span>';
                   }
+
+                  if (iconImagePath.indexOf('shell.svg') !== -1) {
+                    iconHTML += '<span class="kk-quality"><b>NATURE SHELL</b></span>';
+                  }
                 } // Ich setze diesen Container immer, damit nth-child greifed und wir ggfs. alles
                 // auf eine Höhe setzen können 
 

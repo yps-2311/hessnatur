@@ -5,12 +5,15 @@
 // Beispiel für die Verwendung der Variable base-url
 // background: url('@{base-url}sprite.png') no-repeat 0 0;
 
-
 /** BADGES **/
 .kk-ab19 {
     .footerSmoBoxWrapper,
     #toggleModel {
         display: none;
+    }
+
+    .breadcrumb-productList .js-filter-form {
+        max-width: 30%;
     }
 }
 
@@ -33,6 +36,7 @@
 }
 
 #kk-intro {
+    padding-left: 120px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -121,6 +125,22 @@
 #kk-seo {
     position: relative;
     margin-top: 100px;
+
+    ul li {
+        line-height: 1.69231rem;
+        letter-spacing: .005rem;
+
+        ul.nested {
+            margin-left: 1.53846rem;
+            margin-bottom: 1.53846rem;
+                
+            li, a {
+                line-height: 1.69231rem;
+                letter-spacing: .005rem;
+                color: #393939;
+            }
+        }
+    }
 
     ul:not(.menu) li {
         position: relative;

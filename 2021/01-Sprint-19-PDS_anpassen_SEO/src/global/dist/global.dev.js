@@ -184,41 +184,39 @@
 
         WATO.elem('.footerSmoBoxWrapper .rteContainer', function (seoWrapper) {
           if (seoWrapper) {
-            var newHTML = ''; // we need to wrap the text into seperate parts and add wrapper for product images
-
-            seoWrapper[0].innerHTML.split('<h2>').forEach(function (container, index) {
-              if (index === 0) {
-                WATO.elem('#kk-intro span', function (kkIntro) {
-                  if (kkIntro) {
-                    kkIntro[0].innerHTML = container; // cut txt after 3 lines
-
-                    cutTxt(WATO.qs('#kk-intro p'));
-                    kkIntro[0].insertAdjacentHTML('afterend', '<a href="#kk-more">MEHR ERFAHREN</a>');
-                  }
-                });
-              }
-
-              if (DESKTOP_DEVICE && index === 1 || !DESKTOP_DEVICE && index <= 2) {
-                newHTML += getImgWrapper('left');
-              }
-
-              newHTML += '<div class="column small-12 large-6">';
-
-              if (index !== 0) {
-                newHTML += '<h2>';
-              }
-
-              newHTML += container;
-              newHTML += '</div>';
-
-              if (DESKTOP_DEVICE && (index === 0 || index === 2)) {
-                newHTML += getImgWrapper('right');
-              }
-            });
-            WATO.qs('#kk-seo .columns').innerHTML = '<div class="row">' + newHTML + '</div>'; // get the first 3 product images
-
+            // var newHTML = '';
+            // // we need to wrap the text into seperate parts and add wrapper for product images
+            // seoWrapper[0].innerHTML.split('<h2>').forEach(function(container, index) {
+            //     if(index === 0){
+            //         WATO.elem('#kk-intro span', function(kkIntro){
+            //             if(kkIntro){
+            //                 kkIntro[0].innerHTML = container;
+            //                 // cut txt after 3 lines
+            //                 cutTxt(WATO.qs('#kk-intro p'));
+            //                 kkIntro[0].insertAdjacentHTML('afterend', 
+            //                     '<a href="#kk-more">MEHR ERFAHREN</a>'
+            //                 );
+            //             }
+            //         });
+            //     }
+            //     if(DESKTOP_DEVICE && index === 1 || (!DESKTOP_DEVICE && index <= 2)){
+            //         newHTML += getImgWrapper('left');
+            //     }
+            //     newHTML += '<div class="column small-12 large-6">';
+            //     if(index !== 0) {
+            //         newHTML += '<h2>';
+            //     }
+            //     newHTML += container; 
+            //     newHTML += '</div>';
+            //     if(DESKTOP_DEVICE && (index === 0 || index === 2)){
+            //         newHTML += getImgWrapper('right');
+            //     }
+            // });
+            // WATO.qs('#kk-seo .columns').innerHTML = '<div class="row">' + newHTML + '</div>';
+            // get the first 3 product images
             var savedSEOImages = sessionStorage.getItem('kk19Images'),
-                firstVisitOnThisPage = document.URL.indexOf(document.referrer) === -1,
+                // firstVisitOnThisPage    = document.URL.indexOf(document.referrer) === -1,
+            firstVisitOnThisPage = document.referrer.indexOf(location.pathname) === -1,
                 seoImages = [];
 
             if (firstVisitOnThisPage) {
@@ -229,35 +227,83 @@
 
             WATO.elem('.productPrgWrapper img.productImage-1', function (prodImages) {
               if (prodImages) {
-                var kkSEOImages = WATO.qsa('.kk-seo-img');
+                window.setTimeout(function () {
+                  // var kkSEOImages = WATO.qsa('.kk-seo-img');
+                  var kkSEOImages = [];
+                  console.log("!firstVisitOnThisPage", !firstVisitOnThisPage);
+                  console.log("savedSEOImages", savedSEOImages);
 
-                if (!firstVisitOnThisPage && savedSEOImages) {
-                  console.log("gespeicherte Bilder verwedenn", savedSEOImages);
+                  if (!firstVisitOnThisPage && savedSEOImages) {
+                    console.log("gespeicherte Bilder verwedenn", savedSEOImages);
 
-                  try {
-                    savedSEOImages = JSON.parse(savedSEOImages);
-                    savedSEOImages.forEach(function (img, index) {
-                      kkSEOImages[index].children[0].style.backgroundImage = 'url(' + img + ')';
-                    });
-                  } catch (e) {
-                    console.log("kk >", e.toString());
-                  }
-                } else {
-                  console.log("bilder von der Seite übernehmen");
-                  prodImages.forEach(function (img, index) {
-                    if (index >= 3) return false;
+                    try {
+                      savedSEOImages = JSON.parse(savedSEOImages); // savedSEOImages.forEach(function(img, index){
 
-                    if (kkSEOImages[index]) {
+                      savedSEOImages.forEach(function (img) {
+                        kkSEOImages.push(img); // kkSEOImages[index].children[0].style.backgroundImage = 'url(' + img + ')';
+                      });
+                    } catch (e) {
+                      console.log("kk >", e.toString());
+                    }
+                  } else {
+                    console.log("bilder von der Seite übernehmen");
+                    console.log("prodImages", prodImages);
+                    prodImages.forEach(function (img, index) {
+                      if (index >= 3) return false; // if(kkSEOImages[index]){
+
                       var src = img.getAttribute('src');
-                      seoImages.push(src);
-                      kkSEOImages[index].children[0].style.backgroundImage = 'url(' + src + ')';
+                      seoImages.push(src); // kkSEOImages[index].children[0].style.backgroundImage = 'url(' + src + ')';
+
+                      console.log(src);
+                      kkSEOImages.push(src); // }
+                    });
+
+                    if (seoImages.length > 0) {
+                      sessionStorage.setItem('kk19Images', JSON.stringify(seoImages));
+                    }
+                  }
+
+                  console.log("kkSEOImages 1234", kkSEOImages);
+                  var newHTML = ''; // imgCount = 0;
+                  // we need to wrap the text into seperate parts and add wrapper for product images
+
+                  seoWrapper[0].innerHTML.split('<h2>').forEach(function (container, index) {
+                    if (index === 0) {
+                      WATO.elem('#kk-intro span', function (kkIntro) {
+                        if (kkIntro) {
+                          kkIntro[0].innerHTML = container; // cut txt after 3 lines
+
+                          cutTxt(WATO.qs('#kk-intro p'));
+                          kkIntro[0].insertAdjacentHTML('afterend', '<a href="#kk-more">MEHR ERFAHREN</a>');
+                        }
+                      });
+                    }
+
+                    if (DESKTOP_DEVICE && index === 1 && kkSEOImages[0] || !DESKTOP_DEVICE && index <= 2) {
+                      // newHTML += getImgWrapper('left');
+                      newHTML += '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-left" style="background-image:url(' + kkSEOImages[0] + ')"></div></div>';
+                      kkSEOImages.shift();
+                      console.log("kkSEOImages 1", kkSEOImages);
+                    }
+
+                    newHTML += '<div class="column small-12 large-6">';
+
+                    if (index !== 0) {
+                      newHTML += '<h2>';
+                    }
+
+                    newHTML += container;
+                    newHTML += '</div>';
+
+                    if (DESKTOP_DEVICE && kkSEOImages[0] && (index === 0 || index === 2)) {
+                      // newHTML += getImgWrapper('right');
+                      newHTML += '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-right" style="background-image:url(' + kkSEOImages[0] + ')"></div></div>';
+                      kkSEOImages.shift();
+                      console.log("kkSEOImages 2", kkSEOImages);
                     }
                   });
-
-                  if (seoImages.length > 0) {
-                    sessionStorage.setItem('kk19Images', JSON.stringify(seoImages));
-                  }
-                }
+                  WATO.qs('#kk-seo .columns').innerHTML = '<div class="row">' + newHTML + '</div>';
+                }, 500);
               }
             });
           }

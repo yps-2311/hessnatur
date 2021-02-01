@@ -5,6 +5,9 @@
 .kk-ab19 #toggleModel {
   display: none;
 }
+.kk-ab19 .breadcrumb-productList .js-filter-form {
+  max-width: 30%;
+}
 #kk-header {
   height: 215px;
   background: #fafafa;
@@ -21,6 +24,7 @@
   width: 70%;
 }
 #kk-intro {
+  padding-left: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -89,6 +93,20 @@
 #kk-seo {
   position: relative;
   margin-top: 100px;
+}
+#kk-seo ul li {
+  line-height: 1.69231rem;
+  letter-spacing: 0.005rem;
+}
+#kk-seo ul li ul.nested {
+  margin-left: 1.53846rem;
+  margin-bottom: 1.53846rem;
+}
+#kk-seo ul li ul.nested li,
+#kk-seo ul li ul.nested a {
+  line-height: 1.69231rem;
+  letter-spacing: 0.005rem;
+  color: #393939;
 }
 #kk-seo ul:not(.menu) li {
   position: relative;
