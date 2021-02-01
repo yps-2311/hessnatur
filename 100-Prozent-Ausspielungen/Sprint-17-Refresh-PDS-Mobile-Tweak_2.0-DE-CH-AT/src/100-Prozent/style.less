@@ -1,0 +1,44 @@
+// @media only screen and (max-width: 1190px) and (min-width: 1024px) {
+    
+// }
+
+/* IMPORT VAR LESS FILE */
+@import "../global/vars.less";
+
+/* IMPORT GLOBAL LESS FILES */
+// @import "../global/global.less";
+
+/* DEFINE VARIATION CSS */
+
+.js_backstopWrapper {
+    > .row {
+        .js-badges-container {
+            -ms-flex: 0 0 55%;
+            flex: 0 0 55%;
+            max-width: 55%;
+        }
+        > .pds-cockpit__headlineWrapper {
+            position: relative !important;
+            height: auto !important;
+        }
+        h1.pds-cockpit__productName {
+            margin: 15px 10px 20px;
+        }
+    }
+    > .h-smallOffset-bottom-outer {
+        margin: 15px 10px 0 !important; 
+        > .pds-cockpit__articleNumber {
+            display: none;
+        }
+    }
+    .pds-cockpit__ratingSummaryWrapper {
+        -ms-flex: 0 0 45%;
+        flex: 0 0 45%;
+        max-width: 45%;
+        text-align: right;
+        white-space: nowrap;
+    }
+}
+.pds-cockpit__wrapper {
+    padding: 10px 24px 0 !important;
+}
