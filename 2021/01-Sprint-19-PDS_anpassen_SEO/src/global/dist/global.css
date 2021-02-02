@@ -165,6 +165,7 @@
     font-size: 3rem;
   }
   #kk-intro {
+    padding-left: 0.76923rem !important;
     justify-content: flex-start;
   }
   #kk-intro a {

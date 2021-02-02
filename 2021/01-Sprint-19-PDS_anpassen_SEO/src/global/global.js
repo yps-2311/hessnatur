@@ -10,9 +10,6 @@
 	"use strict";
 
 	WATO.prototype.goalPush = function(key, sendOnNextPageView, value){
-
-		console.log("goal: ", key);
-		
         if(window.iridion){
             if(sendOnNextPageView){
                 window.iridion.push(['goal', key, '', true]);
@@ -150,14 +147,19 @@
                 
                 return navigator.userAgent.indexOf(str) !== -1;
             },
-            getImgWrapper = function(position){
+            clickOnChangeArticleViewItem = function(selector, changeView){
 
-                return '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-' + position + '"></div></div>';
+                WATO.qs('#kk-select .changeArticleViewItem.-icon-' + selector).addEventListener('click', function(event){
+                    event.preventDefault();
+                    WATO.qs('label[for="desktop__viewmode_' + selector + '"]', changeView).click();
+                });
             };
+            // getImgWrapper = function(position){
+
+            //     return '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-' + position + '"></div></div>';
+            // };
 
         var DESKTOP_DEVICE = !checkUserAgent('Mobile') && !checkUserAgent('Android');
-
-        console.log("DESKTOP_DEVICE", DESKTOP_DEVICE);
 
         /** HEADER **/
         WATO.elem('.breadcrumb-productList', function(breadcrumb){
@@ -165,9 +167,9 @@
             if(breadcrumb){
 
                 breadcrumb[0].parentNode.insertAdjacentHTML('beforebegin', 
-                    '<div id="kk-header" class="row">' + 
+                    '<div id="kk-header" style="height:100px;" class="row">' + 
                         '<div id="kk-headline" class="column ' + (!DESKTOP_DEVICE ? 'small-12' : '' ) + '"></div>' +
-                        '<div id="kk-intro" class="column ' + (!DESKTOP_DEVICE ? 'small-12' : '' ) + '">' + 
+                        '<div id="kk-intro" style="display:none;" class="column ' + (!DESKTOP_DEVICE ? 'small-12' : '' ) + '">' + 
                             '<div>' + 
                                 '<span></span>' +
                                 // '<a href="#kk-more">MEHR ERFAHREN</a>' +
@@ -179,8 +181,14 @@
                 WATO.elem('.sidebarNav .h-text-decoration-none-hover.h-text-bold', function(headline){
 
                     if(headline){
-                        
                         WATO.qs('#kk-headline').textContent = headline[0].textContent;
+                    }
+                });
+
+                WATO.ready(function(){
+
+                    if(!WATO.qs('.sidebarNav .h-text-decoration-none-hover.h-text-bold')){
+                        WATO.qs('#kk-headline').textContent = WATO.qs('.sidebarNav--headline').textContent;
                     }
                 });
             }
@@ -214,15 +222,17 @@
                             '</div>'
                         );
 
-                        WATO.qs('#kk-select .changeArticleViewItem.-icon-model').addEventListener('click', function(event){
-                            event.preventDefault();
-                            WATO.qs('label[for="desktop__viewmode_model"]', changeView).click();
-                        });
+                        clickOnChangeArticleViewItem('model', changeView);
+                        clickOnChangeArticleViewItem('article', changeView);
+                        // WATO.qs('#kk-select .changeArticleViewItem.-icon-model').addEventListener('click', function(event){
+                        //     event.preventDefault();
+                        //     WATO.qs('label[for="desktop__viewmode_model"]', changeView).click();
+                        // });
                         
-                        WATO.qs('#kk-select .changeArticleViewItem.-icon-article').addEventListener('click', function(event){
-                            event.preventDefault();
-                            WATO.qs('label[for="desktop__viewmode_article"]', changeView).click();
-                        });
+                        // WATO.qs('#kk-select .changeArticleViewItem.-icon-article').addEventListener('click', function(event){
+                        //     event.preventDefault();
+                        //     WATO.qs('label[for="desktop__viewmode_article"]', changeView).click();
+                        // });
                     }
                 });
             }
@@ -295,14 +305,7 @@
                             // firstVisitOnThisPage    = document.URL.indexOf(document.referrer) === -1,
                             firstVisitOnThisPage    = document.referrer.indexOf(location.pathname) === -1,
                             seoImages               = [];
-
                             
-                        if(firstVisitOnThisPage){
-                            console.log("erster aufruf, speichere die Bilder");
-                        } else if(!firstVisitOnThisPage && savedSEOImages){
-                            console.log("Bilder übernehmen");
-                        }
-
                         WATO.elem('.productPrgWrapper img.productImage-1', function(prodImages){
 
                             if(prodImages){
@@ -312,13 +315,8 @@
                                     // var kkSEOImages = WATO.qsa('.kk-seo-img');
                                     var kkSEOImages = [];
 
-                                    console.log("!firstVisitOnThisPage", !firstVisitOnThisPage);
-                                    console.log("savedSEOImages", savedSEOImages);
-
                                     if(!firstVisitOnThisPage && savedSEOImages){
                                 
-                                        console.log("gespeicherte Bilder verwedenn", savedSEOImages);
-
                                         try {
                                             
                                             savedSEOImages = JSON.parse(savedSEOImages);
@@ -329,27 +327,21 @@
                                                 // kkSEOImages[index].children[0].style.backgroundImage = 'url(' + img + ')';
                                             });
                                         } catch(e) {
-
                                             console.log("kk >", e.toString());
                                         }
                                     } else {
-
-                                        console.log("bilder von der Seite übernehmen");
-                                        console.log("prodImages", prodImages);
 
                                         prodImages.forEach(function(img, index){
         
                                             if(index >= 3) return false;
         
                                             // if(kkSEOImages[index]){
-        
-                                                var src = img.getAttribute('src');
-        
-                                                seoImages.push(src);
-        
-                                                // kkSEOImages[index].children[0].style.backgroundImage = 'url(' + src + ')';
-                                                console.log(src);
-                                                kkSEOImages.push(src);
+                                            var src = img.getAttribute('src');
+    
+                                            seoImages.push(src);
+    
+                                            // kkSEOImages[index].children[0].style.backgroundImage = 'url(' + src + ')';
+                                            kkSEOImages.push(src);
                                             // }
                                         });
 
@@ -357,8 +349,6 @@
                                             sessionStorage.setItem('kk19Images', JSON.stringify(seoImages));
                                         }
                                     }
-
-                                    console.log("kkSEOImages 1234", kkSEOImages);
 
                                     var newHTML = '';
                                         // imgCount = 0;
@@ -372,6 +362,8 @@
 
                                                 if(kkIntro){
 
+                                                    kkIntro[0].parentNode.parentNode.parentNode.style.height = "215px";
+                                                    kkIntro[0].parentNode.parentNode.style.display = "flex";
                                                     kkIntro[0].innerHTML = container;
 
                                                     // cut txt after 3 lines
@@ -388,7 +380,6 @@
                                             // newHTML += getImgWrapper('left');
                                             newHTML += '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-left" style="background-image:url(' + kkSEOImages[0] + ')"></div></div>';
                                             kkSEOImages.shift();
-                                            console.log("kkSEOImages 1", kkSEOImages);
                                         }
 
                                         newHTML += '<div class="column small-12 large-6">';
@@ -404,14 +395,10 @@
                                             // newHTML += getImgWrapper('right');
                                             newHTML += '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-right" style="background-image:url(' + kkSEOImages[0] + ')"></div></div>';
                                             kkSEOImages.shift();
-                                            console.log("kkSEOImages 2", kkSEOImages);
                                         }
                                     });
                                     
                                     WATO.qs('#kk-seo .columns').innerHTML = '<div class="row">' + newHTML + '</div>';
-
-
-
                                 }, 500);
                             }
                         });

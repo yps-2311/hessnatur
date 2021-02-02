@@ -11,8 +11,6 @@
   "use strict";
 
   WATO.prototype.goalPush = function (key, sendOnNextPageView, value) {
-    console.log("goal: ", key);
-
     if (window.iridion) {
       if (sendOnNextPageView) {
         window.iridion.push(['goal', key, '', true]);
@@ -137,21 +135,31 @@
         checkUserAgent = function checkUserAgent(str) {
       return navigator.userAgent.indexOf(str) !== -1;
     },
-        getImgWrapper = function getImgWrapper(position) {
-      return '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-' + position + '"></div></div>';
-    };
+        clickOnChangeArticleViewItem = function clickOnChangeArticleViewItem(selector, changeView) {
+      WATO.qs('#kk-select .changeArticleViewItem.-icon-' + selector).addEventListener('click', function (event) {
+        event.preventDefault();
+        WATO.qs('label[for="desktop__viewmode_' + selector + '"]', changeView).click();
+      });
+    }; // getImgWrapper = function(position){
+    //     return '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-' + position + '"></div></div>';
+    // };
+
 
     var DESKTOP_DEVICE = !checkUserAgent('Mobile') && !checkUserAgent('Android');
-    console.log("DESKTOP_DEVICE", DESKTOP_DEVICE);
     /** HEADER **/
 
     WATO.elem('.breadcrumb-productList', function (breadcrumb) {
       if (breadcrumb) {
-        breadcrumb[0].parentNode.insertAdjacentHTML('beforebegin', '<div id="kk-header" class="row">' + '<div id="kk-headline" class="column ' + (!DESKTOP_DEVICE ? 'small-12' : '') + '"></div>' + '<div id="kk-intro" class="column ' + (!DESKTOP_DEVICE ? 'small-12' : '') + '">' + '<div>' + '<span></span>' + // '<a href="#kk-more">MEHR ERFAHREN</a>' +
+        breadcrumb[0].parentNode.insertAdjacentHTML('beforebegin', '<div id="kk-header" style="height:100px;" class="row">' + '<div id="kk-headline" class="column ' + (!DESKTOP_DEVICE ? 'small-12' : '') + '"></div>' + '<div id="kk-intro" style="display:none;" class="column ' + (!DESKTOP_DEVICE ? 'small-12' : '') + '">' + '<div>' + '<span></span>' + // '<a href="#kk-more">MEHR ERFAHREN</a>' +
         '</div>' + '</div>' + '</div>');
         WATO.elem('.sidebarNav .h-text-decoration-none-hover.h-text-bold', function (headline) {
           if (headline) {
             WATO.qs('#kk-headline').textContent = headline[0].textContent;
+          }
+        });
+        WATO.ready(function () {
+          if (!WATO.qs('.sidebarNav .h-text-decoration-none-hover.h-text-bold')) {
+            WATO.qs('#kk-headline').textContent = WATO.qs('.sidebarNav--headline').textContent;
           }
         });
       }
@@ -163,14 +171,15 @@
             changeView = changeView[0];
             var isArticleActive = document.URL.indexOf('viewMode=article') === -1;
             dropdownSort[0].insertAdjacentHTML('beforebegin', '<div id="kk-select" class="column large-3 shrink">' + '<div class="filterWrapper">' + '<ul class="changeArticleView no-bullet h-list--horizontal">' + '<li>Ansicht</li>' + '<li>' + '<label class="changeArticleViewItem -icon-model' + (isArticleActive ? ' kk-article-active' : '') + '"></label>' + '</li>' + '<li>' + '<label class="changeArticleViewItem -icon-article' + (!isArticleActive ? ' kk-model-active' : '') + '"></label>' + '</li>' + '</ul>' + '</div>' + '</div>');
-            WATO.qs('#kk-select .changeArticleViewItem.-icon-model').addEventListener('click', function (event) {
-              event.preventDefault();
-              WATO.qs('label[for="desktop__viewmode_model"]', changeView).click();
-            });
-            WATO.qs('#kk-select .changeArticleViewItem.-icon-article').addEventListener('click', function (event) {
-              event.preventDefault();
-              WATO.qs('label[for="desktop__viewmode_article"]', changeView).click();
-            });
+            clickOnChangeArticleViewItem('model', changeView);
+            clickOnChangeArticleViewItem('article', changeView); // WATO.qs('#kk-select .changeArticleViewItem.-icon-model').addEventListener('click', function(event){
+            //     event.preventDefault();
+            //     WATO.qs('label[for="desktop__viewmode_model"]', changeView).click();
+            // });
+            // WATO.qs('#kk-select .changeArticleViewItem.-icon-article').addEventListener('click', function(event){
+            //     event.preventDefault();
+            //     WATO.qs('label[for="desktop__viewmode_article"]', changeView).click();
+            // });
           }
         });
       }
@@ -218,24 +227,13 @@
                 // firstVisitOnThisPage    = document.URL.indexOf(document.referrer) === -1,
             firstVisitOnThisPage = document.referrer.indexOf(location.pathname) === -1,
                 seoImages = [];
-
-            if (firstVisitOnThisPage) {
-              console.log("erster aufruf, speichere die Bilder");
-            } else if (!firstVisitOnThisPage && savedSEOImages) {
-              console.log("Bilder übernehmen");
-            }
-
             WATO.elem('.productPrgWrapper img.productImage-1', function (prodImages) {
               if (prodImages) {
                 window.setTimeout(function () {
                   // var kkSEOImages = WATO.qsa('.kk-seo-img');
                   var kkSEOImages = [];
-                  console.log("!firstVisitOnThisPage", !firstVisitOnThisPage);
-                  console.log("savedSEOImages", savedSEOImages);
 
                   if (!firstVisitOnThisPage && savedSEOImages) {
-                    console.log("gespeicherte Bilder verwedenn", savedSEOImages);
-
                     try {
                       savedSEOImages = JSON.parse(savedSEOImages); // savedSEOImages.forEach(function(img, index){
 
@@ -246,15 +244,12 @@
                       console.log("kk >", e.toString());
                     }
                   } else {
-                    console.log("bilder von der Seite übernehmen");
-                    console.log("prodImages", prodImages);
                     prodImages.forEach(function (img, index) {
                       if (index >= 3) return false; // if(kkSEOImages[index]){
 
                       var src = img.getAttribute('src');
                       seoImages.push(src); // kkSEOImages[index].children[0].style.backgroundImage = 'url(' + src + ')';
 
-                      console.log(src);
                       kkSEOImages.push(src); // }
                     });
 
@@ -263,7 +258,6 @@
                     }
                   }
 
-                  console.log("kkSEOImages 1234", kkSEOImages);
                   var newHTML = ''; // imgCount = 0;
                   // we need to wrap the text into seperate parts and add wrapper for product images
 
@@ -271,6 +265,8 @@
                     if (index === 0) {
                       WATO.elem('#kk-intro span', function (kkIntro) {
                         if (kkIntro) {
+                          kkIntro[0].parentNode.parentNode.parentNode.style.height = "215px";
+                          kkIntro[0].parentNode.parentNode.style.display = "flex";
                           kkIntro[0].innerHTML = container; // cut txt after 3 lines
 
                           cutTxt(WATO.qs('#kk-intro p'));
@@ -283,7 +279,6 @@
                       // newHTML += getImgWrapper('left');
                       newHTML += '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-left" style="background-image:url(' + kkSEOImages[0] + ')"></div></div>';
                       kkSEOImages.shift();
-                      console.log("kkSEOImages 1", kkSEOImages);
                     }
 
                     newHTML += '<div class="column small-12 large-6">';
@@ -299,7 +294,6 @@
                       // newHTML += getImgWrapper('right');
                       newHTML += '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-right" style="background-image:url(' + kkSEOImages[0] + ')"></div></div>';
                       kkSEOImages.shift();
-                      console.log("kkSEOImages 2", kkSEOImages);
                     }
                   });
                   WATO.qs('#kk-seo .columns').innerHTML = '<div class="row">' + newHTML + '</div>';
