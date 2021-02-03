@@ -11,7 +11,7 @@
 (function(WATO) {
     "use strict";
     
-    WATO.sprint19();
+    WATO.sprint19("V1");
 
     /** BADGES **/
     var CLASS_MODIFIED = 'kk-modified',
@@ -67,6 +67,19 @@
                                     if(iconImagePath.indexOf('shell.svg') !== -1){
 
                                         iconHTML += '<span class="kk-quality"><b>NATURE SHELL</b></span>';
+                                    }
+                                }
+
+                                if(window.sehrgefragtProducts){
+
+                                    try {
+                                        
+                                        var prodId = parseInt(WATO.qs('.dropdown-pane', product).getAttribute('id').substring(0,5));
+
+                                        if(window.sehrgefragtProducts.indexOf(prodId) !== -1) {
+                                            iconHTML += '<span class="kk-sehrgefragt"><b>AKTUELL SEHR GEFRAGT!</b></span>';
+                                        }
+                                    } catch(e) {
                                     }
                                 }
 

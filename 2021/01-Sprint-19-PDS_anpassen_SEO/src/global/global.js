@@ -111,15 +111,12 @@
     };
 
 
-    WATO.prototype.sprint19 = function() {
+    WATO.prototype.sprint19 = function(variation) {
+        
+        window.iridion.econda.push(["Sprint19", variation]);
 
-        /**
-         * CSS Prefix 
-         *
-         */
-       document.documentElement.classList.add('kk-ab19');
+        document.documentElement.classList.add('kk-ab19');
 
-        //    window.iridion.econda.push(["Sprint19Messtest", "V1"]);
 
         var WATO = this;
 
@@ -144,7 +141,6 @@
                 }
             },
             checkUserAgent = function(str) {
-                
                 return navigator.userAgent.indexOf(str) !== -1;
             },
             clickOnChangeArticleViewItem = function(selector, changeView){
@@ -153,11 +149,10 @@
                     event.preventDefault();
                     WATO.qs('label[for="desktop__viewmode_' + selector + '"]', changeView).click();
                 });
+            },
+            getImgWrapper = function(position, image){
+                return '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-' + position + '" style="background-image:url(' + image + ')"></div></div>';
             };
-            // getImgWrapper = function(position){
-
-            //     return '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-' + position + '"></div></div>';
-            // };
 
         var DESKTOP_DEVICE = !checkUserAgent('Mobile') && !checkUserAgent('Android');
 
@@ -172,7 +167,6 @@
                         '<div id="kk-intro" style="display:none;" class="column ' + (!DESKTOP_DEVICE ? 'small-12' : '' ) + '">' + 
                             '<div>' + 
                                 '<span></span>' +
-                                // '<a href="#kk-more">MEHR ERFAHREN</a>' +
                             '</div>' +
                         '</div>' +
                     '</div>'
@@ -224,15 +218,6 @@
 
                         clickOnChangeArticleViewItem('model', changeView);
                         clickOnChangeArticleViewItem('article', changeView);
-                        // WATO.qs('#kk-select .changeArticleViewItem.-icon-model').addEventListener('click', function(event){
-                        //     event.preventDefault();
-                        //     WATO.qs('label[for="desktop__viewmode_model"]', changeView).click();
-                        // });
-                        
-                        // WATO.qs('#kk-select .changeArticleViewItem.-icon-article').addEventListener('click', function(event){
-                        //     event.preventDefault();
-                        //     WATO.qs('label[for="desktop__viewmode_article"]', changeView).click();
-                        // });
                     }
                 });
             }
@@ -257,52 +242,8 @@
 
                     if(seoWrapper){
 
-                        // var newHTML = '';
-
-                        // // we need to wrap the text into seperate parts and add wrapper for product images
-                        // seoWrapper[0].innerHTML.split('<h2>').forEach(function(container, index) {
-                            
-                        //     if(index === 0){
-
-                        //         WATO.elem('#kk-intro span', function(kkIntro){
-
-                        //             if(kkIntro){
-
-                        //                 kkIntro[0].innerHTML = container;
-
-                        //                 // cut txt after 3 lines
-                        //                 cutTxt(WATO.qs('#kk-intro p'));
-
-                        //                 kkIntro[0].insertAdjacentHTML('afterend', 
-                        //                     '<a href="#kk-more">MEHR ERFAHREN</a>'
-                        //                 );
-                        //             }
-                        //         });
-                        //     }
-
-                        //     if(DESKTOP_DEVICE && index === 1 || (!DESKTOP_DEVICE && index <= 2)){
-                        //         newHTML += getImgWrapper('left');
-                        //     }
-
-                        //     newHTML += '<div class="column small-12 large-6">';
-
-                        //     if(index !== 0) {
-                        //         newHTML += '<h2>';
-                        //     }
-                            
-                        //     newHTML += container; 
-                        //     newHTML += '</div>';
-
-                        //     if(DESKTOP_DEVICE && (index === 0 || index === 2)){
-                        //         newHTML += getImgWrapper('right');
-                        //     }
-                        // });
-                        
-                        // WATO.qs('#kk-seo .columns').innerHTML = '<div class="row">' + newHTML + '</div>';
-
                         // get the first 3 product images
                         var savedSEOImages          = sessionStorage.getItem('kk19Images'),
-                            // firstVisitOnThisPage    = document.URL.indexOf(document.referrer) === -1,
                             firstVisitOnThisPage    = document.referrer.indexOf(location.pathname) === -1,
                             seoImages               = [];
                             
@@ -312,7 +253,6 @@
 
                                 window.setTimeout(function(){
 
-                                    // var kkSEOImages = WATO.qsa('.kk-seo-img');
                                     var kkSEOImages = [];
 
                                     if(!firstVisitOnThisPage && savedSEOImages){
@@ -321,10 +261,8 @@
                                             
                                             savedSEOImages = JSON.parse(savedSEOImages);
 
-                                            // savedSEOImages.forEach(function(img, index){
                                             savedSEOImages.forEach(function(img){
                                                 kkSEOImages.push(img);
-                                                // kkSEOImages[index].children[0].style.backgroundImage = 'url(' + img + ')';
                                             });
                                         } catch(e) {
                                             console.log("kk >", e.toString());
@@ -335,14 +273,10 @@
         
                                             if(index >= 3) return false;
         
-                                            // if(kkSEOImages[index]){
                                             var src = img.getAttribute('src');
     
                                             seoImages.push(src);
-    
-                                            // kkSEOImages[index].children[0].style.backgroundImage = 'url(' + src + ')';
                                             kkSEOImages.push(src);
-                                            // }
                                         });
 
                                         if(seoImages.length > 0){
@@ -351,7 +285,6 @@
                                     }
 
                                     var newHTML = '';
-                                        // imgCount = 0;
 
                                     // we need to wrap the text into seperate parts and add wrapper for product images
                                     seoWrapper[0].innerHTML.split('<h2>').forEach(function(container, index) {
@@ -377,8 +310,7 @@
                                         }
 
                                         if(DESKTOP_DEVICE && index === 1 && kkSEOImages[0] || (!DESKTOP_DEVICE && index <= 2)){
-                                            // newHTML += getImgWrapper('left');
-                                            newHTML += '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-left" style="background-image:url(' + kkSEOImages[0] + ')"></div></div>';
+                                            newHTML += getImgWrapper('left', kkSEOImages[0]);
                                             kkSEOImages.shift();
                                         }
 
@@ -392,8 +324,7 @@
                                         newHTML += '</div>';
 
                                         if(DESKTOP_DEVICE && kkSEOImages[0] && (index === 0 || index === 2)){
-                                            // newHTML += getImgWrapper('right');
-                                            newHTML += '<div class="column small-12 large-6 kk-seo-img"><div class="kk-seo-right" style="background-image:url(' + kkSEOImages[0] + ')"></div></div>';
+                                            newHTML += getImgWrapper('right', kkSEOImages[0]);
                                             kkSEOImages.shift();
                                         }
                                     });

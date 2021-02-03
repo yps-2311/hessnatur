@@ -11,6 +11,6 @@
 (function(WATO) {
     "use strict";
     
-    WATO.sprint19();
+    WATO.sprint19("V2");
     
 })(new window.WATO());
