@@ -113,7 +113,7 @@
 
     WATO.prototype.sprint19 = function(variation) {
         
-        window.iridion.econda.push(["Sprint19", variation]);
+        window.iridion.econda.push(["Sprint19V2", variation]);
 
         document.documentElement.classList.add('kk-ab19');
 
