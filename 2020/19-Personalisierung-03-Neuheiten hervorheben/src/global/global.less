@@ -5,3 +5,201 @@
 // Beispiel für die Verwendung der Variable base-url
 // background: url('@{base-url}sprite.png') no-repeat 0 0;
 
+#kk_crossprods {
+    margin-bottom: 133px;
+}
+.gridviewProductItemWrapper + #kk_crossprods {
+    margin-left: 2.30769rem;
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 94%;
+    flex: 0 0 94%;
+    max-width: 94%;
+}
+.kk_chead {
+    background: #F0E5E0;
+    padding: 21px 0 25px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 103px;
+    position: relative;
+    h5 {
+        margin-bottom: 0;
+        letter-spacing: 0.22px;
+        font-size: 24px;
+    }
+    span {
+        margin-top: 13px;
+        display: block;
+        font-weight: bold;
+        font-size: 14px;
+        letter-spacing: 0.13px;
+        text-transform: uppercase;
+        &[data-type="bestandskunde"]{
+            display: none;
+        }
+        span {
+            display: inline;
+        }
+    }
+    &::after {
+        content: "New in";
+        background: #B5C8D8;
+        width: 83px;
+        height: 83px;
+        display: block;
+        text-transform: uppercase;
+        text-align: center;
+        line-height: 83px;
+        color: #fff;
+        position: absolute;
+        right: 57px;
+        top: 9px;
+        border-radius: 50%;
+    }
+}
+.kk_cbody {
+    background: #F0E5E0;
+    height: 216px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.kk_cprod {
+    cursor: pointer;
+    background-color: #fff;
+    height: 288px;
+    margin: 0 1% 0;
+    width: 212px;
+    max-width: 100%;
+    max-width: 23%;
+    overflow: hidden;
+    box-shadow: 0 3px 19px 1px rgba(0,0,0,0.05);
+    &:hover {
+        box-shadow: 0 3px 19px 1px rgba(0,0,0,0.15);
+    }
+}
+.kk_cimg {
+    height: 216px;
+    width: 212px;
+    padding: 10px 10px 0;
+    overflow: hidden;
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+.kk_title {
+    font-weight: bold;
+    font-size: 14px;
+    color: #000000;
+    overflow: hidden;
+    padding: 17px 13px 10px;
+    span {
+        background: #9DB1BF;
+        border-radius: 10px;
+        font-weight: bold;
+        font-size: 10px;
+        color: #FFFFFF;
+        letter-spacing: 0.09px;
+        text-align: center;
+        width: 34px;
+        height: 20px;
+        line-height: 20px;
+        float: right;
+        margin-top: -4px;
+    }
+    + div {
+        padding-left: 13px;
+        font-size: 11px;
+        color: #959493;
+        line-height: 14.16px;
+        margin-bottom: 10px;
+    }
+}
+
+
+
+// NEU Seiten
+
+
+.kk_seiteneu {
+    .h-disp-block,
+    #kk-header {
+        display: none;
+    }
+}
+// #kk_neuhead {
+
+// }
+// .kk_neubox {
+//     background: #FFFFFF;
+//     border: 1px solid #B5CADB;
+//     box-shadow: 0 3px 19px 1px rgba(0,0,0,0.05);
+//     opacity: 0.45;
+// }
+// .kk_neuleft {
+//     b {
+//         font-family: "Roboto Condensed Bold";
+//         font-weight: normal;
+//         font-size: 18px;
+//         color: #000000;
+//         line-height: 20px;
+         
+//     }
+//     span {
+//         font-size: 11px;
+//         color: #959493;
+//         line-height: 14.16px;
+//     }
+// }
+// .kk_neuright {
+//     display: none;
+// }
+// .kk_neuimg {
+//     height: 215px;
+//     width: 147px;
+//     overflow: hidden;
+// }
+
+#kk_neumenu {
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+    text-align: center;
+    border-bottom: 2px solid #f7f6f5;
+    height: 56px;
+    line-height: 56px;
+    > a {
+        font-family: "Roboto Condensed";
+        padding: 16px;
+        font-size: 14px;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+    .kk_bold {
+        font-family: "Roboto Condensed Bold";
+        font-weight: bold;
+    }
+}
+#kk_neumenu2 {
+    padding: 0 2.30769rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    li {
+        width: 16%;
+        list-style: none;
+        opacity: 0.45;
+    }
+}
+.kk_selected {
+
+}
+
