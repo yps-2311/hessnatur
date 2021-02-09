@@ -13,11 +13,6 @@
  * WATO.exclude 		 ==> Punchout-Funktion
  * WATO.storageAvailable ==> Überprüft ob der LocalStorage verfügbar ist
  * WATO.reload           ==> Führt einen Reload aus (löscht dabei den #hash, als Workaround für manche Browser)
- * WATO.offsetY          ==> Gibt die Y-Position eines Elements zurück
- * WATO.scrollTo         ==> Scrollt bis zum Übergebenen Pixel (von oben)
- * WATO.event            ==> EventListener setzen
- * WATO.xhr_get          ==> Ajax GET Request
- * WATO.xhr_post          ==> Ajax POST Request
  */
 (function (window, document) {
     "use strict";
@@ -69,8 +64,7 @@
             _status = _result.length > 0;
         } else {
 
-            _result = waitFor() || false;
-            _status = !!_result;
+            _result = _status = waitFor() === true;
         }
 
         return _status === true ? callback(_result) : setTimeout(_self.elem.bind(null, waitFor, callback, timeout, _self, _time), timeout || 20);
@@ -80,26 +74,64 @@
      * @function qs
      * @memberOf WATO
      *
-     * @author Timo Ott
+     * @author Max Vith, Timo Ott
      *
      * @param {string} selector - CSS Selector des zu findenden DOM Elements
+     * @param {node} parent - CSS Selector des zu findenden DOM Elements
+     * @param {func} callback - Callback function if the node was found
+     * @param {error} callback - Error callback funciton if no node was found
      */
-    window.WATO.prototype.qs = function (selector, parent) {
+    window.WATO.prototype.qs = function (selector, parent, callback, error) {
 
-        return (parent ? parent : document).querySelector(selector);
+        var elem = (parent ? parent : document).querySelector(selector);
+
+        if (elem) {
+
+            if (typeof callback === "function") {
+
+                callback(elem);
+            }
+        } else {
+
+            if (typeof error === "function") {
+
+                error();
+            }
+        }
+
+        return elem;
     };
 
     /**
      * @function qsa
      * @memberOf WATO
      *
-     * @author Timo Ott
+     * @author Max Vith, Timo Ott
      *
      * @param {string} selector - CSS Selector des zu findenden DOM Elements
+     * @param {node} parent - CSS Selector des zu findenden DOM Elements
+     * @param {func} callback - Callback function if the node was found
+     * @param {error} callback - Error callback funciton if no node was found
      */
-    window.WATO.prototype.qsa = function (selector, parent) {
+    window.WATO.prototype.qsa = function (selector, parent, callback, error) {
 
-        return (parent ? parent : document).querySelectorAll(selector);
+        var elem = (parent ? parent : document).querySelectorAll(selector);
+
+        if (elem) {
+
+            if (typeof callback === "function") {
+
+                callback(elem);
+            }
+        } else {
+
+            if (typeof error === "function") {
+
+                error();
+            }
+        }
+
+        return elem;
     };
 
     /**
@@ -120,15 +152,6 @@
 
             document.addEventListener('DOMContentLoaded', callback);
         }
-
-        // BUGFIX LD 09.05.2017
-        // var state = document.readyState !== 'loading';
-        // if(state) {
-        // 	callback();
-        // } else {
-        // 	document.addEventListener('DOMContentLoaded', callback);
-        // }
-        // return state;
     };
 
     /**
@@ -258,6 +281,7 @@
      * @param {string} url -
      * @param {function} callback -
      */
+
     window.WATO.prototype.ajax = function (url, callback) {
 
         var request = XMLHttpRequest.prototype.open;
@@ -265,8 +289,8 @@
         XMLHttpRequest.prototype.open = function (method, uri, async, user, pass) {
 
             this.addEventListener("loadend", function () {
-                var _that = this;
-                if (_that.readyState === 4) {
+
+                if (this.readyState === 4) {
 
                     console.log("uri", uri);
                     
@@ -274,7 +298,7 @@
 
                         if (typeof callback === "function") {
 
-                            callback(_that);
+                            callback();
                         }
                     }
                 }
@@ -283,6 +307,7 @@
             request.call(this, method, uri, async, user, pass);
         };
     };
+
 
     /**
      * @function getCookie
@@ -320,7 +345,7 @@
      * @param {string} domain - Domain like .exaple.com
      * @param {Boolean} session - true = session cookie, false = permanent cookie
      */
-    /*
+    
 	window.WATO.prototype.setCookie = function(name, value, domain, session){
 		
 		var exdate = new Date();
@@ -329,7 +354,7 @@
 		
 		document.cookie = name + "=" + encodeURIComponent(value) + ";" + (!session ? "expires=" + exdate.toUTCString() + ";" : "") + "domain=" + domain + ";path=/";
 	};
-	*/
+	
 
     /**
      * @function removeCookie
@@ -356,7 +381,7 @@
      * @param {number} width -
      * @param {function} callback
      */
-    /*
+    
 	window.WATO.prototype.exclude = function(width, callback){
 		
 		function _checkWidth() {
@@ -383,7 +408,7 @@
 			};
 		}
 	};
-	*/
+	
 
     /**
      * @function storageAvailable
@@ -417,174 +442,10 @@
      *
      * @author Lukas Dziambor
      */
-    /*
+    
 	window.WATO.prototype.reload = function(){
         location.reload();
         location.href=location.href.split('#')[0];
 	};
-    */
-
-    /**
-     * @function offsetY
-     * @memberOf WATO
-     *
-     * @author Lukas Dziambor
-     * 
-     * @returns {integer} - y-position from top in pixel
-     */
-    /*
-	window.WATO.prototype.offsetY = function(el){
-        var curtop = 0;
-        if (el.offsetParent) {
-            while (el.offsetParent) {
-                curtop += el.offsetTop;
-                el = el.offsetParent;
-            }
-        }
-        else if (el.y){
-            curtop += el.y;
-        }
-          
-        return curtop;
-	};
-    */
-
-    /**
-     * @function scrollTo
-     * @memberOf WATO
-     *
-     * @author Lukas Dziambor
-     */
-    /*
-	window.WATO.prototype.scrollTo = function(pixel, duration){
-        Math.easeInOutQuad = function (t, b, c, d) {
-            t /= d/2;
-            if (t < 1){
-                return c/2*t*t + b;
-            }else{
-                t--;
-                return -c/2 * (t*(t-2) - 1) + b;
-            }
-        };
-
-        var start = window.document.documentElement.scrollTop + window.document.body.scrollTop,
-        change = pixel - start,
-        currentTime = 0,
-        increment = 20,
-            
-        animateScroll = function(){        
-            currentTime += increment;
-            var val = Math.easeInOutQuad(currentTime, start, change, duration);
-
-            window.document.documentElement.scrollTop = val;
-            window.document.body.scrollTop = val;
-
-            if(currentTime < duration) {
-                setTimeout(animateScroll, increment);
-            }
-        };
-        animateScroll();
-	};
-    */
-
-    /**
-     * @function event
-     * @memberOf WATO
-     *
-     * @param {node} element - DOM Node die den Listener erhalten soll
-     * @param {string} - Eventtype z.B. click
-     * @param {function} callback - Auszuführende Funktion bei Trigger.
-     * 
-     * @author Lukas Dziambor
-     */
-    /*
-	window.WATO.prototype.event = function(element, type, callback){
-        element.addEventListener(type, callback);
-	};
-    */
-
-    /**
-     * @function xhr_get
-     * @memberOf WATO
-     *
-     * @param {string} url - URL die angefragt werden soll
-     * @param {function} callback - Auszuführende Funktion nachdem der Request erfolgreich beendet wurde.
-     * @param {object} scopedData - Daten die im Scope des Callbacks verfügbar sein sollen
-     * 
-     * @author Lukas Dziambor
-     */
-    
-	window.WATO.prototype.xhr_get = function(url, callback) {
-        var request = new XMLHttpRequest();
-        request.open('GET', url, true);
-        
-        request.onload = function() {
-          if (this.readyState === 4 && this.status >= 200 && this.status < 400) {
-            try {
-                // var data = JSON.parse(this.response);
-                callback(this.response);
-            }
-            catch(e) {
-                callback(false);    
-            }
-          } else {
-                // We reached our target server, but it returned an error
-                callback(false);
-          }
-        };
-        
-        request.onerror = function() {
-            // There was a connection error of some sort
-            callback(false);
-        };
-        // request.withCredentials = true;
-        request.send();
-    };
-    
-
-    /**
-     * @function xhr_post
-     * @memberOf WATO
-     *
-     * @param {string} url - URL die angefragt werden soll
-     * @param {string} payload - POST parameter als key=value pair mit & verknüpft
-     * @param {function} callback - Auszuführende Funktion nachdem der Request erfolgreich beendet wurde.
-     * @param {string} contentType - RequestHeader Content-Type -> default 'application/x-www-form-urlencoded'
-     * @param {object} scopedData - Daten die im Scope des Callbacks verfügbar sein sollen
-     * 
-     * @author Lukas Dziambor
-     */
-    /*
-	window.WATO.prototype.xhr_post = function(url, payload, callback, contentType, scopedData) {
-        var request = new XMLHttpRequest();
-
-        contentType = contentType || 'application/x-www-form-urlencoded';
-
-        request.open('POST', url, true);
-        
-        request.onload = function() {
-          if (this.readyState === 4 && this.status >= 200 && this.status < 400) {
-            try {
-                var data = JSON.parse(this.response);
-                callback(data, scopedData);
-            }
-            catch(e) {
-                callback(false);    
-            }
-          } else {
-                // We reached our target server, but it returned an error
-                callback(false);
-          }
-        };
-        
-        request.onerror = function() {
-            // There was a connection error of some sort
-            callback(false);
-        };
-        // request.withCredentials = true;
-        request.setRequestHeader('Content-Type', contentType);
-        request.send(payload);
-    };
-    */
-
+	
 })(window, document);
