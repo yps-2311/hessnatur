@@ -172,17 +172,25 @@
                     '</div>'
                 );
 
-                WATO.elem('.sidebarNav .h-text-decoration-none-hover.h-text-bold', function(headline){
-
-                    if(headline){
-                        WATO.qs('#kk-headline').textContent = headline[0].textContent;
-                    }
-                });
-
                 WATO.ready(function(){
 
-                    if(!WATO.qs('.sidebarNav .h-text-decoration-none-hover.h-text-bold')){
-                        WATO.qs('#kk-headline').textContent = WATO.qs('.sidebarNav--headline').textContent;
+                    var kkHeadline  = WATO.qs('#kk-headline'),
+                        h1          = WATO.qs('h1');
+
+                    if(h1 && DESKTOP_DEVICE){
+
+                        kkHeadline.textContent = h1.textContent;
+                    } else {
+
+                        var sidebar = WATO.qs('.sidebarNav .h-text-decoration-none-hover.h-text-bold');
+
+                        if(sidebar){
+
+                            kkHeadline.textContent = sidebar.textContent;
+                        } else {
+                            
+                            kkHeadline.textContent = WATO.qs('.sidebarNav--headline').textContent;
+                        }
                     }
                 });
             }
