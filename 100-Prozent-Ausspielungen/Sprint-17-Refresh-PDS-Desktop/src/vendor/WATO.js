@@ -346,7 +346,47 @@
 		
 		document.cookie = name + "=false;expires=Thu, 01 Jan 1970 00:00:01 GMT;domain=" + domain + ";path=/";
 	};
-	*/
+    */
+    
+    /**
+     * @function xhr_get
+     * @memberOf WATO
+     *
+     * @param {string} url - URL die angefragt werden soll
+     * @param {function} callback - Auszuführende Funktion nachdem der Request erfolgreich beendet wurde.
+     * @param {object} scopedData - Daten die im Scope des Callbacks verfügbar sein sollen
+     * 
+     * @author Lukas Dziambor
+     */
+
+    window.WATO.prototype.xhr_get = function (url, callback, scopedData) {
+        var request = new XMLHttpRequest();
+        request.open('GET', url, true);
+
+        request.timeout = 2000;
+
+        request.onload = function () {
+            if (this.status >= 200 && this.status < 400) {
+                try {
+                    var data = JSON.parse(this.response);
+                    callback(data, scopedData);
+                }
+                catch (e) {
+                    callback(false);
+                }
+            } else {
+                // We reached our target server, but it returned an error
+                callback(false);
+            }
+        };
+
+        request.onerror = function () {
+            // There was a connection error of some sort
+            callback(false);
+        };
+        // request.withCredentials = true;
+        request.send();
+    };
 
     /**
      * @function exclude
