@@ -305,14 +305,18 @@
 
                                                     kkIntro[0].parentNode.parentNode.parentNode.style.height = "215px";
                                                     kkIntro[0].parentNode.parentNode.style.display = "flex";
-                                                    kkIntro[0].innerHTML = container;
 
-                                                    // cut txt after 3 lines
-                                                    cutTxt(WATO.qs('#kk-intro p'));
+                                                    try {
 
-                                                    kkIntro[0].insertAdjacentHTML('afterend', 
-                                                        '<a href="#kk-more">MEHR ERFAHREN</a>'
-                                                    );
+                                                        kkIntro[0].innerHTML = '<p>' + container.split('<p>')[1];
+
+                                                        // cut txt after 3 lines
+                                                        cutTxt(WATO.qs('#kk-intro p'));
+    
+                                                        kkIntro[0].insertAdjacentHTML('afterend', 
+                                                            '<a href="#kk-more">MEHR ERFAHREN</a>'
+                                                        );
+                                                    } catch(e){}
                                                 }
                                             });
                                         }
