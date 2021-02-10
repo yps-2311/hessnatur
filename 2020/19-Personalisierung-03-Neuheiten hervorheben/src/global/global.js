@@ -18,11 +18,37 @@
 	"use strict";
 
 	var customerType = 'interessent',
-		econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f';
+		econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f',
+		UrlHref = window.location.href;
 
 	function setCustomerType(newType){
 		sessionStorage.setItem('kk_targetGroup', newType);
 		customerType = "bestandskunde";
+	}
+
+	function getCompareString(categoryString) {
+		var temp = 0,
+			splitString = categoryString.productcategory.split("^^");
+		if(UrlHref.indexOf(splitString[0].toLowerCase()) !== -1){
+			temp++;
+		}
+		if(UrlHref.indexOf(splitString[1].toLowerCase()) !== -1){
+			temp++;
+		}
+		return temp;
+	}
+
+	function compare(a, b) {
+		var tempA = getCompareString(a),
+			tempB = getCompareString(b);
+			
+		if (tempA < tempB) {
+			return 1;
+		}
+		if (tempA > tempB) {
+			return -1;
+		}
+		return 0;
 	}
 
 	// placeholder for campaign stuff
@@ -56,7 +82,74 @@
 			if(isLoadedEconda){
 
 				WATO.ajax("widgets.crosssell.info/eps/crosssell/recommendations", function(callbackData){
-					console.log('callbackData: ', JSON.parse(callbackData.response));
+					var data = JSON.parse(callbackData.response),
+						items = data.items;
+
+					console.log('data: ', data);
+
+					WATO.elem('#kk_crossprods .kk_cbody', function(cbody){
+						if(cbody){
+							cbody = cbody[0];
+							
+							items.sort(compare);
+
+							for (var j = 0; j < (items.length <= 4 ? items.length : 4); j++) { // (items.length <= 4 ? items.length : 4)
+								var item = items[j],
+									category = item.productcategory.split("^^"),
+									mainCat = category[0],
+									subCat = category[1];
+
+								if(mainCat.indexOf("Baby") !== -1 || mainCat.indexOf("Kinder") !== -1){
+									if (mainCat.indexOf("Baby") !== -1 || subCat.indexOf("Baby") !== -1) {
+										subCat = 'assortment%3ABaby';
+									}
+									mainCat = 'junior';
+
+								}else if(mainCat.indexOf("Loungewear") !== -1 || mainCat.indexOf("Damen") !== -1
+									 || mainCat.indexOf("Strümpfe") !== -1 || subCat.indexOf("BHs") !== -1
+									 || mainCat.indexOf("umstandsmode") !== -1){
+									mainCat = 'damen';
+
+									if (subCat.indexOf(" ") !== -1) {
+										subCat = subCat.split(" ")[1];
+									}
+								}else if(mainCat.indexOf("Herren") !== -1){
+									mainCat = 'herren';
+								}
+
+								if(window.location.href.indexOf(mainCat.toLowerCase()) !== -1){
+									console.log("mainCat passt");
+								}
+								if(window.location.href.indexOf(subCat.toLowerCase()) !== -1){
+									console.log("subCat passt");
+								}
+								console.log("---------------");
+								
+								cbody.insertAdjacentHTML('beforeend', 
+									'<a class="kk_cprod" href="https://www.hessnatur.com/de/c/neu-'+
+											mainCat.toLowerCase()+
+											'?q=%3Anull-desc%3Aproductgroup%3A'+
+											subCat.replace("/","%252F")+
+											'&viewMode=model">'+
+										'<div class="kk_cimg">'+
+											'<img src="'+item.iconurl+'">'+
+										'</div>'+
+										'<div class="kk_title">Neue '+category[0].replace("Home","").replace("Baby","").replace("Wäsche/Strümpfe","").replace("Strümpfe/Hausschuhe","")+' '+category[1]+'</div>'+ // <span>X</span>
+										// '<div>Vor X Tagen aktualisiert</div>'+
+									'</a>'
+								);
+								
+							}
+							
+
+
+						}
+					});
+
+					
+
+
+
 				});
 
 				var widget = new window.econda.recengine.Widget({
@@ -67,7 +160,7 @@
 			}
 		});
 
-
+		
 
 
 		WATO.elem(position, function(wrapperOfAllProducts){
@@ -79,34 +172,34 @@
 							'<span data-type="'+variation+'">'+variationText[1]+'</span>'+
 						'</div>'+
 						'<div class="kk_cbody">'+
-							'<div class="kk_cprod">'+
-								'<div class="kk_cimg">'+
-									'<img src="https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_list_main/Jeans_Lina_Skinny_Fit_aus_Bio_Denim-49685_29_7.jpg">'+
-								'</div>'+
-								'<div class="kk_title">Neue Shirts <span>9</span></div>'+
-								'<div>Vor 2 Tagen aktualisiert</div>'+
-							'</div>'+
-							'<div class="kk_cprod">'+
-								'<div class="kk_cimg">'+
-									'<img src="https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_list_main/Jeans_Lina_Skinny_Fit_aus_Bio_Denim-49685_29_7.jpg">'+
-								'</div>'+
-								'<div class="kk_title">Neue Shirts <span>9</span></div>'+
-								'<div>Vor 2 Tagen aktualisiert</div>'+
-							'</div>'+
-							'<div class="kk_cprod">'+
-								'<div class="kk_cimg">'+
-									'<img src="https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_list_main/Jeans_Lina_Skinny_Fit_aus_Bio_Denim-49685_29_7.jpg">'+
-								'</div>'+
-								'<div class="kk_title">Neue Shirts <span>9</span></div>'+
-								'<div>Vor 2 Tagen aktualisiert</div>'+
-							'</div>'+
-							'<div class="kk_cprod">'+
-								'<div class="kk_cimg">'+
-									'<img src="https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_list_main/Jeans_Lina_Skinny_Fit_aus_Bio_Denim-49685_29_7.jpg">'+
-								'</div>'+
-								'<div class="kk_title">Neue Shirts <span>9</span></div>'+
-								'<div>Vor 2 Tagen aktualisiert</div>'+
-							'</div>'+
+							// '<div class="kk_cprod">'+
+							// 	'<div class="kk_cimg">'+
+							// 		'<img src="https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_list_main/Jeans_Lina_Skinny_Fit_aus_Bio_Denim-49685_29_7.jpg">'+
+							// 	'</div>'+
+							// 	'<div class="kk_title">Neue Shirts <span>9</span></div>'+
+							// 	'<div>Vor 2 Tagen aktualisiert</div>'+
+							// '</div>'+
+							// '<div class="kk_cprod">'+
+							// 	'<div class="kk_cimg">'+
+							// 		'<img src="https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_list_main/Jeans_Lina_Skinny_Fit_aus_Bio_Denim-49685_29_7.jpg">'+
+							// 	'</div>'+
+							// 	'<div class="kk_title">Neue Shirts <span>9</span></div>'+
+							// 	'<div>Vor 2 Tagen aktualisiert</div>'+
+							// '</div>'+
+							// '<div class="kk_cprod">'+
+							// 	'<div class="kk_cimg">'+
+							// 		'<img src="https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_list_main/Jeans_Lina_Skinny_Fit_aus_Bio_Denim-49685_29_7.jpg">'+
+							// 	'</div>'+
+							// 	'<div class="kk_title">Neue Shirts <span>9</span></div>'+
+							// 	'<div>Vor 2 Tagen aktualisiert</div>'+
+							// '</div>'+
+							// '<div class="kk_cprod">'+
+							// 	'<div class="kk_cimg">'+
+							// 		'<img src="https://imgs7.hessnatur.com/is/image/HessNatur/hyb_redes_list_main/Jeans_Lina_Skinny_Fit_aus_Bio_Denim-49685_29_7.jpg">'+
+							// 	'</div>'+
+							// 	'<div class="kk_title">Neue Shirts <span>9</span></div>'+
+							// 	'<div>Vor 2 Tagen aktualisiert</div>'+
+							// '</div>'+
 						'</div>'+
 					'</div>'
 				);
