@@ -14,6 +14,9 @@
     var textContent = "{{name=Headline&type=webarts.watt.editor.impl.TextBoxEditor}}",
         imgPath = "{{name=Image&type=webarts.watt.editor.impl.TextBoxEditor}}";
 
+    textContent = "ALLE ARTIKEL IM SALE<br/>50% REDUZIERT";
+    imgPath = "//media.hessnatur.com/pb/435/KW07-2021-HP-Sale-04-d.jpg";
+
     WATO.elem(".lpmHero__wrapper .lpmHero__image", function(banner) {
 
         if(banner) {
@@ -33,7 +36,7 @@
     WATO.elem('.lpmHero__headline.hn-headline', function(bannerContent){
 
         if(bannerContent){
-            bannerContent[0].textContent = textContent;
+            bannerContent[0].innerHTML = textContent;
         }
     });
 })(new window.WATO());
