@@ -1,6 +1,6 @@
 (function(){
 
-    if(document.cookie.indexOf('iridion_debug=true') === -1) return;
+    // if(document.cookie.indexOf('iridion_debug=true') === -1) return;
 
     function ready(fn) {
         if (document.readyState != 'loading'){
