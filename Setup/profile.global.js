@@ -87,27 +87,44 @@
         }
     }
 
-    var URL                     = document.URL,
-        PATHNAME                = location.pathname,
-        KEY_DATA                = 'categoryAffinityData',
-        KEY_STATUS              = 'categoryAffinity',
-        // MAIN_CATEGORY           = ["/de/NEU", "/de/damen", "/de/herren", "/de/outdoor", "/de/baby", "/de/home", "/de/sale"];
-        MAIN_CATEGORY           = ["/de/damen", "/de/herren", "/de/baby", "/de/home"],
-        DEBUG_MODE              = document.cookie.indexOf('iridion_debug=true') !== -1;
+    function pushErrorLog(err) {
+        window.iridion.push(['goal', 'profile_error', err.toString()]);
+    }
 
-    console.log("DEBUG_MODE", DEBUG_MODE);
+
+
+    var URL                         = document.URL,
+        PATHNAME                    = location.pathname,
+        KEY_DATA                    = 'categoryAffinityData',
+        KEY_STATUS                  = 'categoryAffinity',
+        DEFAULT_CATEGORY_AFFINITY   = {
+            damen: 0,
+            herren: 0,
+            baby: 0,
+            home: 0,
+            lastVisit: 0
+        },
+        // MAIN_CATEGORY           = ["/de/NEU", "/de/damen", "/de/herren", "/de/outdoor", "/de/baby", "/de/home", "/de/sale"];
+        MAIN_CATEGORY               = ["/de/damen", "/de/herren", "/de/baby", "/de/home"],
+        DEBUG_MODE                  = document.cookie.indexOf('iridion_debug=true') !== -1;
+
+    // hotfix data error
+    try {
+
+        var checkJuniorKey = getProfileValue(KEY_DATA);
+    
+        if(checkJuniorKey && checkJuniorKey.junior){
+            setProfileValue(KEY_DATA, DEFAULT_CATEGORY_AFFINITY);
+        }
+    } catch(err) {
+        pushErrorLog(err);
+    }
 
     ready(function() {
 
         try {
 
-            var DATA = getProfileValue(KEY_DATA, {
-                    damen: 0,
-                    herren: 0,
-                    baby: 0,
-                    home: 0,
-                    lastVisit: 0
-                }),
+            var DATA = getProfileValue(KEY_DATA, DEFAULT_CATEGORY_AFFINITY),
                 PROFILE_USER_SESSION = getProfileValue('visitorSession'),
                 PROFILE_CATEGORY_AFFINITY = getProfileValue(KEY_STATUS, 'damen'),
                 multiplier = 1,
@@ -171,7 +188,7 @@
                 }
             }
         } catch(err){
-            window.iridion.push(['goal', 'profile_error', document.URL + ' - ' + err.toString()]);
+            pushErrorLog(err);
         }
     });
 })();
