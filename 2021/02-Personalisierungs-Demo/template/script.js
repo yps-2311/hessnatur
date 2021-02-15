@@ -11,33 +11,136 @@
 (function(WATO) {
     "use strict";
 
-    var textContent = "{{name=Headline&type=webarts.watt.editor.impl.TextBoxEditor}}",
-        imgPath = "{{name=Image&type=webarts.watt.editor.impl.TextBoxEditor}}";
+    function getProfileValue(key, defaultValue) {
+        if(!key) return;
 
-    textContent = "ALLE ARTIKEL IM SALE<br/>50% REDUZIERT";
-    imgPath = "//media.hessnatur.com/pb/435/KW07-2021-HP-Sale-04-d.jpg";
+        // TODO refactor
+        if(defaultValue){
 
-    WATO.elem(".lpmHero__wrapper .lpmHero__image", function(banner) {
+            // fix escaping string
+            return window.iridion.push(['profile', 'getValue', key, JSON.stringify(defaultValue)]);
+        } else {
 
-        if(banner) {
+            return window.iridion.push(['profile', 'getValue', key]);
+        }
+    }
 
-            banner = banner[0];
+    function setClickGoals() {
 
-            if(imgPath !== ""){
+        var links = WATO.qsa('.lpmHero__buttons a');
+        
+        for(var i = 0; i < links.length; i++){
 
-                banner.setAttribute('src', imgPath + '?width=640');
-                banner.setAttribute('srcset', imgPath + '?width=640 640w, ' + imgPath + '?width=1024 1024w, ' + imgPath + '?width=1200 1200w, ' + imgPath + '?width=1440 1440w, ' + imgPath + '?width=1920 1920w');
+            links[i].addEventListener('click', function(){
+
+                window.iridion.push(['goal', 'kk_sale_home_click_btn', this.textContent, true]);
+            });
+        }
+    }
+
+    /** EDITOR VARS */
+    // var TEXT_CONTENT = "{{name=Headline&type=webarts.watt.editor.impl.TextBoxEditor}}",
+    var IMG_PATH = "{{name=Banner&type=webarts.watt.editor.impl.TextBoxEditor}}";
+
+    // TEXT_CONTENT = "ALLE ARTIKEL IM SALE<br/>50% REDUZIERT";
+    // IMG_PATH = "//media.hessnatur.com/pb/435/KW07-2021-HP-Sale-04-d.jpg";
+
+    /** PROFILE */
+    var KEY_DATA         = 'categoryAffinityData',
+        KEY_STATUS       = 'categoryAffinity';
+
+    WATO.elem(".lpmHero__wrapper", function(wrapper) {
+
+        if(wrapper) {
+
+            wrapper = wrapper[0];
+
+            if(IMG_PATH){
+
+                // change background image
+                var image = WATO.qs('.lpmHero__image', wrapper);
+
+                if(image){
+
+                    image.setAttribute('src', IMG_PATH + '?width=640');
+                    image.setAttribute('srcset', IMG_PATH + '?width=640 640w, ' + IMG_PATH + '?width=1024 1024w, ' + IMG_PATH + '?width=1200 1200w, ' + IMG_PATH + '?width=1440 1440w, ' + IMG_PATH + '?width=1920 1920w');
+        
+                    // hide early workaround
+                    document.documentElement.classList.add('kk-banner-show');
+                }
             }
 
-            document.documentElement.classList.add('kk-banner-show');
-        }
-    });
+            // change headline
+            // var headline = WATO.qs('.lpmHero__headline.hn-headline', wrapper);
 
-    WATO.elem('.lpmHero__headline.hn-headline', function(bannerContent){
+            // if(headline){
+            //     headline.innerHTML = TEXT_CONTENT;
+            // }
 
-        if(bannerContent){
-            bannerContent[0].innerHTML = textContent;
+            // parsing error
+            try {
+
+                var categoryAffinity = getProfileValue(KEY_STATUS);
+
+                // change buttons
+                if(categoryAffinity && categoryAffinity !== 'damen'){
+
+                    // Profile data
+                    var categoryAffinityData = getProfileValue(KEY_DATA);
+
+                    delete categoryAffinityData.lastVisit;
+
+                    // fix, clear categoryAffinityData object
+                    for(var category in categoryAffinityData){
+
+                        if(['damen', 'herren', 'baby', 'home'].indexOf(category) === -1){
+                            delete categoryAffinityData[category];
+                        }
+                    }
+
+                    // NEW LINKS
+                    // https://www.hessnatur.com/de/sale/damen/c/sale-damen
+                    // https://www.hessnatur.com/de/sale/herren/c/sale-herren
+                    // https://www.hessnatur.com/de/sale/junior/c/sale-junior
+                    // https://www.hessnatur.com/de/sale/home/c/sale-home
+                    WATO.elem('.lpmHero__buttons', function(buttons){
+
+                        if(buttons){
+
+                            buttons[0].innerHTML = Object.keys(categoryAffinityData)
+                                .sort(function (a, b) {
+                                    return categoryAffinityData[b] - categoryAffinityData[a];
+                                }).map(function(item, index){
+        
+                                    var br = '';
+        
+                                    if(index === 2) {
+                                        br = '<br class="show-for-small-only">';
+                                    }
+        
+                                    if(item === 'baby'){
+                                        item = 'junior';
+                                    }
+        
+                                    return br + '<a href="sale/' + item + '/c/sale-' + item + '" class="hn-button"> ' + item + '</a>';
+                                }).join('');
+
+                                setClickGoals();
+                            }
+                        })
+                } else {
+
+                    // set click events for control variation
+                    WATO.elem('.lpmHero__buttons', function(buttons){
+
+                        if(buttons){
+                            setClickGoals();
+                        }
+                    });
+                }
+            } catch(e) {
+                console.log("KK >>> ", e.toString());
+            }
         }
     });
 })(new window.WATO());
-

@@ -45,9 +45,9 @@
         } else if(checkPath('herren')){
 
             category = 'herren';
-        } else if(checkPath('outdoor')){
+        } else if(checkPath('home')){
 
-            category = 'outdoor';
+            category = 'home';
         } else if(checkPath('baby')){
 
             category = 'baby';
@@ -56,11 +56,11 @@
         // product detail page?
         if(!category && checkPath('/p/')){
 
-            var item = document.querySelectorAll('.breadcrumbs span')[1];
+            var item = document.querySelectorAll('.breadcrumbs span');
 
-            if(item){
+            if(item && item[1]){
 
-                item = item[1].textContent;
+                item = item[1].textContent.toLowerCase();
 
                 if(item === 'damen'){
     
@@ -68,9 +68,9 @@
                 } else if(item === 'herren'){
     
                     category = 'herren';
-                } else if(item === 'outdoor'){
+                } else if(item === 'home'){
     
-                    category = 'outdoor';
+                    category = 'home';
                 } else if(item === 'baby'){
     
                     category = 'baby';
@@ -81,11 +81,21 @@
         return category;
     }
 
+    function sendMessage(message, value) {
+        if(DEBUG_MODE){
+            console.log("kk >>> ", message, value);
+        }
+    }
+
     var URL                     = document.URL,
         PATHNAME                = location.pathname,
         KEY_DATA                = 'categoryAffinityData',
         KEY_STATUS              = 'categoryAffinity',
-        MAIN_CATEGORY           = ["/de/NEU", "/de/damen", "/de/herren", "/de/outdoor", "/de/baby", "/de/home", "/de/sale"];
+        // MAIN_CATEGORY           = ["/de/NEU", "/de/damen", "/de/herren", "/de/outdoor", "/de/baby", "/de/home", "/de/sale"];
+        MAIN_CATEGORY           = ["/de/damen", "/de/herren", "/de/baby", "/de/home"],
+        DEBUG_MODE              = document.cookie.indexOf('iridion_debug=true') !== -1;
+
+    console.log("DEBUG_MODE", DEBUG_MODE);
 
     ready(function() {
 
@@ -94,7 +104,7 @@
             var DATA = getProfileValue(KEY_DATA, {
                     damen: 0,
                     herren: 0,
-                    junior: 0,
+                    baby: 0,
                     home: 0,
                     lastVisit: 0
                 }),
@@ -117,7 +127,7 @@
             }
             // }
 
-            console.log("kk >>> current category", currentCategory);
+            sendMessage("current category " + currentCategory);
 
             if(currentCategory){
 
@@ -137,7 +147,7 @@
                     points = 5;
                 }
 
-                console.log("kk >>> points", points);
+                sendMessage("points", points);
 
                 if(points !== 0){
 
@@ -151,17 +161,17 @@
                         return currentData[a] > currentData[b] ? a : b;
                     });
 
-                    console.log("kk >>> your best score", bestValue);
+                    sendMessage("your best score", bestValue);
                     
                     if(PROFILE_CATEGORY_AFFINITY !== bestValue){
                         
-                        console.log("kk >>> save new category affinity", bestValue);
+                        sendMessage("save new category affinity", bestValue);
                         setProfileValue(KEY_STATUS, bestValue);
                     }
                 }
             }
         } catch(err){
-            window.iridion.push(['goal', 'profile_error', err.toString()]);
+            window.iridion.push(['goal', 'profile_error', document.URL + ' - ' + err.toString()]);
         }
     });
 })();
