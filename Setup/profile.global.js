@@ -1,4 +1,4 @@
-(function(){
+(function(window, document){
 
     // if(document.cookie.indexOf('iridion_debug=true') === -1) return;
 
@@ -92,7 +92,7 @@
     }
 
 
-
+    /** CATEGORY AFFINITY **/
     var URL                         = document.URL,
         PATHNAME                    = location.pathname,
         KEY_DATA                    = 'categoryAffinityData',
@@ -111,9 +111,11 @@
     // hotfix data error
     try {
 
-        var checkJuniorKey = getProfileValue(KEY_DATA);
-    
-        if(checkJuniorKey && checkJuniorKey.junior){
+        var checkJuniorKey = getProfileValue(KEY_DATA, DEFAULT_CATEGORY_AFFINITY);
+
+        if(!checkJuniorKey || checkJuniorKey && checkJuniorKey.junior){
+
+            sendMessage("reset data object", DEFAULT_CATEGORY_AFFINITY);
             setProfileValue(KEY_DATA, DEFAULT_CATEGORY_AFFINITY);
         }
     } catch(err) {
@@ -124,17 +126,16 @@
 
         try {
 
-            var DATA = getProfileValue(KEY_DATA, DEFAULT_CATEGORY_AFFINITY),
-                PROFILE_USER_SESSION = getProfileValue('visitorSession'),
-                PROFILE_CATEGORY_AFFINITY = getProfileValue(KEY_STATUS, 'damen'),
-                multiplier = 1,
-                currentCategory = getCategory();
+            var DATA                        = getProfileValue(KEY_DATA, DEFAULT_CATEGORY_AFFINITY),
+                PROFILE_USER_SESSION        = getProfileValue('visitorSession'),
+                PROFILE_CATEGORY_AFFINITY   = getProfileValue(KEY_STATUS, 'damen'),
+                multiplier                  = 1,
+                currentCategory             = getCategory();
 
             if(typeof DATA === "string"){
                 DATA = JSON.parse(DATA);
             }
 
-            // if(PROFILE_USER_SESSION && PROFILE_USER_SESSION.last){
             if(DATA.lastVisit === 0 || DATA.lastVisit !== PROFILE_USER_SESSION.last) {
 
                 multiplier = 2;
@@ -142,7 +143,6 @@
                 DATA["lastVisit"] = PROFILE_USER_SESSION.last;
                 setProfileValue(KEY_DATA, DATA);
             }
-            // }
 
             sendMessage("current category " + currentCategory);
 
@@ -174,9 +174,11 @@
                     var currentData = DATA;
                     delete currentData.lastVisit;
 
+                    console.log(Object.keys(currentData));
+
                     var bestValue = Object.keys(currentData).reduce(function(a, b) {
                         return currentData[a] > currentData[b] ? a : b;
-                    });
+                    }, 0);
 
                     sendMessage("your best score", bestValue);
                     
@@ -191,4 +193,4 @@
             pushErrorLog(err);
         }
     });
-})();
+})(window, document);
