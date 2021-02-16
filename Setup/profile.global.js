@@ -174,8 +174,6 @@
                     var currentData = DATA;
                     delete currentData.lastVisit;
 
-                    console.log(Object.keys(currentData));
-
                     var bestValue = Object.keys(currentData).reduce(function(a, b) {
                         return currentData[a] > currentData[b] ? a : b;
                     }, 0);
