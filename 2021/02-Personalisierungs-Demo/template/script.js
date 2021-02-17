@@ -58,13 +58,16 @@
             if(IMG_PATH){
 
                 // change background image
-                var image = WATO.qs('.lpmHero__image', wrapper);
+                var image = WATO.qsa('.lpmHero__image', wrapper);
 
                 if(image){
 
-                    image.setAttribute('src', IMG_PATH + '?width=640');
-                    image.setAttribute('srcset', IMG_PATH + '?width=640 640w, ' + IMG_PATH + '?width=1024 1024w, ' + IMG_PATH + '?width=1200 1200w, ' + IMG_PATH + '?width=1440 1440w, ' + IMG_PATH + '?width=1920 1920w');
-        
+                    image[0].setAttribute('src', IMG_PATH + '?width=640');
+                    image[0].setAttribute('srcset', IMG_PATH + '?width=640 640w, ' + IMG_PATH + '?width=1024 1024w, ' + IMG_PATH + '?width=1200 1200w, ' + IMG_PATH + '?width=1440 1440w, ' + IMG_PATH + '?width=1920 1920w');
+                    
+                    image[1].setAttribute('src', IMG_PATH + '?width=375');
+                    image[1].setAttribute('srcset', IMG_PATH + '?width=375 375w, ' + IMG_PATH + '?width=640 640w');
+
                     // hide early workaround
                     document.documentElement.classList.add('kk-banner-show');
                 }
