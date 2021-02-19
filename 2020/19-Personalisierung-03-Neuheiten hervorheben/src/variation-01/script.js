@@ -9,8 +9,8 @@
  * @name Variation 01
  * @description
  */
-(function(WATO) {
-    "use strict";
+// (function(WATO) {
+//     "use strict";
 
     /**
      * CSS Prefix 
@@ -64,4 +64,4 @@
 
     });
     */
-})(new window.WATO());
+// })(new window.WATO());

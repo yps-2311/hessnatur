@@ -67,19 +67,18 @@
     flex-direction: row;
     justify-content: center;
 
-    // Nur für Entwicklung
     // flex-wrap: wrap;
     // z-index: 10000000;
     // position: absolute;
+
 }
 .kk_cprod {
     cursor: pointer;
     background-color: #fff;
     height: 288px;
     margin: 0 1% 0;
-    width: 212px;
-    max-width: 100%;
-    max-width: 23%;
+    width: 22%;
+    max-width: 250px;
     overflow: hidden;
     box-shadow: 0 3px 19px 1px rgba(0,0,0,0.05);
     text-decoration: none;
@@ -89,12 +88,15 @@
 }
 .kk_cimg {
     height: 216px;
-    width: 212px;
+    width: 100%;
     padding: 10px 10px 0;
     overflow: hidden;
     img {
-        max-width: 100%;
+        max-width: 92%;
+        width: 200px;
         height: auto;
+        display: block;
+        margin: auto;
     }
 }
 .kk_title {
@@ -131,6 +133,9 @@
 
 // NEU Seiten
 
+.kk_hideneu {
+    display: none !important;
+}
 
 .kk_seiteneu {
     .h-disp-block,
@@ -177,10 +182,17 @@
     // justify-content: center;
     // align-items: center;
     text-align: center;
-    border-bottom: 2px solid #f7f6f5;
+    // border-bottom: 2px solid #f7f6f5;
     height: 56px;
     line-height: 56px;
+
+    .kk_bubble {
+        background-color: #F7F7F7;
+        color: #AFAFAF;
+    }
+    
     > a {
+        color: #AFAFAF;
         font-family: "Roboto Condensed";
         padding: 16px;
         font-size: 14px;
@@ -188,25 +200,126 @@
         &:hover {
             text-decoration: underline;
         }
-    }
-    .kk_bold {
-        font-family: "Roboto Condensed Bold";
-        font-weight: bold;
+        &.kk_bold {
+            font-family: "Roboto Condensed Bold";
+            font-weight: normal;
+            color: #393939;
+            .kk_bubble {
+                color: #fff;
+                background-color: #333333;
+            }
+        }
     }
 }
 #kk_neumenu2 {
     padding: 0 2.30769rem;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    // align-items: center;
+    justify-content: center;
+    margin: 0;
 
     li {
+        cursor: pointer;
         width: 16%;
+        height: 230px;
         list-style: none;
-        opacity: 0.45;
+        margin-right: 15px;
+        box-shadow: 0 3px 19px 1px rgba(90,92,102,0.05);
+        &:last-child {
+            margin-right: 0;
+        }
+        &:hover {
+            box-shadow: 0 3px 19px 1px rgba(0,0,0,0.15);
+        }
+
+        .kk_imgbox {
+            opacity: 0.45;
+            height: 175px;
+            overflow: hidden;
+        }
+        img {
+            max-width: 100%;
+        }
+        label {
+            // cursor: default;
+            opacity: 0.45;
+            display: block;
+            padding: 10px 13px;
+            .prgRedirLink {
+                position: relative;
+                font-size: 14px;
+                font-family: "Roboto Condensed Bold";
+                font-weight: normal;
+                line-height: 19.99px;
+                display: block;
+                text-decoration: none !important;
+            }
+            &:hover {
+                text-decoration: none;
+            }
+            div {
+                padding-top: 22px;
+                font-size: 13px;
+                // color: #000000;
+                line-height: 19.99px;
+            }
+        }
+        &.kk_selected {
+            display: flex;
+            flex-direction: row;
+            width: 42%;
+            max-width: 423px;
+            border: 1px solid #B5CADB;
+            box-shadow: 0 3px 19px 1px rgba(0,0,0,0.05);
+            
+            .kk_imgbox {
+                opacity: 1;
+                height: 100%;
+                max-width: 50%;
+            }
+            label {
+                position: relative;
+                opacity: 1;
+                width: 50%;
+                height: 100%;
+                padding: 28px 15px;
+            }
+        }
     }
 }
-// .kk_selected {
-
-// }
-
+.kk_bubble {
+    background: #333333;
+    border-radius: 10px;
+    font-family: "Roboto Condensed Bold";
+    font-weight: normal;
+    font-size: 10px !important;
+    color: #FFFFFF;
+    letter-spacing: 0.09px;
+    height: 20px;
+    line-height: 21px !important;
+    padding: 0 10px !important;
+    display: inline-block;
+    margin-left: 6px;
+}
+#kk_neumenu2 {
+    .kk_bubble {
+        text-align: center;
+        position: absolute;
+        right: 2px;
+        top: -1px;
+        background-color: #F7F7F7;
+        color: #AFAFAF;
+    }
+    .kk_selected {
+        .kk_bubble {
+            color: #fff;
+            background-color: #333;
+        }
+    }
+}
+.is-dropdown-submenu-parent .kk_bubble {
+    position: absolute;
+    top: -12px;
+    right: -25px;
+}
