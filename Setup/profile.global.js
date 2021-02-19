@@ -24,31 +24,31 @@
         }
     }
     
-    function xhr_get(url, callback) {
-        var request = new XMLHttpRequest();
-        request.open('GET', url, true);
+    // function xhr_get(url, callback) {
+    //     var request = new XMLHttpRequest();
+    //     request.open('GET', url, true);
         
-        request.onload = function() {
-            if (this.readyState === 4 && this.status >= 200 && this.status < 400) {
-                try {
-                    callback(this.response);
-                }
-                catch(e) {
-                    callback(false);    
-                }
-            } else {
-                // We reached our target server, but it returned an error
-                callback(false);
-            }
-        };
+    //     request.onload = function() {
+    //         if (this.readyState === 4 && this.status >= 200 && this.status < 400) {
+    //             try {
+    //                 callback(this.response);
+    //             }
+    //             catch(e) {
+    //                 callback(false);    
+    //             }
+    //         } else {
+    //             // We reached our target server, but it returned an error
+    //             callback(false);
+    //         }
+    //     };
         
-        request.onerror = function() {
-            // There was a connection error of some sort
-            callback(false);
-        };
-        // request.withCredentials = true;
-        request.send();
-    };
+    //     request.onerror = function() {
+    //         // There was a connection error of some sort
+    //         callback(false);
+    //     };
+    //     // request.withCredentials = true;
+    //     request.send();
+    // };
 
     function setProfileValue(key, value) {
         if(!key || !value) return;
@@ -227,64 +227,66 @@
      * Bestandskunde: Mehr als einmal gekauft
      */
 
-    var CUSTOMERTYPE = getProfileValue("customerType");
-    // console.log('CUSTOMERTYPE 8: ', CUSTOMERTYPE);
+    // var CUSTOMERTYPE = getProfileValue("customerType");
+    // // console.log('CUSTOMERTYPE 8: ', CUSTOMERTYPE);
 
-    if(CUSTOMERTYPE && CUSTOMERTYPE !== "Bestandskunde") {
-        ready(function() {
-            try {
-                if(PATHNAME.indexOf("/my-account") !== -1){
-                    if(CUSTOMERTYPE === "Interessent"){
-                        setProfileValue("customerType", "Neukunde");
-                    }
-                    var counter = 0,
-                        interval = setInterval(function(){
-                            counter++;
-                            var orders = window.document.querySelectorAll("#orderhistory_ajax .zebra_even > div").length;
-                            if(orders > 0){
-                                if (orders > 1) {
-                                    // bestandskunde, more than 1 order
-                                    setProfileValue("customerType", "Bestandskunde");
-                                }
-                                clearInterval(interval);
-                            }else if(counter > 100){
-                                // Maximal 10 Sek
-                                clearInterval(interval);
-                            }
-                        }, 100);
+    // // TODO: Auf der Dankeseite könnte es auch nochmal geprüft werden
 
-                }else if(PATHNAME.indexOf("/addresses/") !== -1){
+    // if(CUSTOMERTYPE && CUSTOMERTYPE !== "Bestandskunde") {
+    //     ready(function() {
+    //         try {
+    //             if(PATHNAME.indexOf("/my-account") !== -1){
+    //                 if(CUSTOMERTYPE === "Interessent"){
+    //                     setProfileValue("customerType", "Neukunde");
+    //                 }
+    //                 var counter = 0,
+    //                     interval = setInterval(function(){
+    //                         counter++;
+    //                         var orders = window.document.querySelectorAll("#orderhistory_ajax .zebra_even > div").length;
+    //                         if(orders > 0){
+    //                             if (orders > 1) {
+    //                                 // bestandskunde, more than 1 order
+    //                                 setProfileValue("customerType", "Bestandskunde");
+    //                             }
+    //                             clearInterval(interval);
+    //                         }else if(counter > 100){
+    //                             // Maximal 10 Sek
+    //                             clearInterval(interval);
+    //                         }
+    //                     }, 100);
 
-                    xhr_get('https://www.hessnatur.com/de/my-account/orders', function(response){
-                        try {
+    //             }else if(PATHNAME.indexOf("/addresses/") !== -1){
 
-                            if (response){
-                                // neukunde, only 0 or 1 order
-                                if (response.split("js_orderHistoryItem-").length < 2) {
-                                    // sessionStorage.setItem('kk_targetGroup', 'neukunde');
-                                    setProfileValue("customerType", "Neukunde");
+    //                 xhr_get('https://www.hessnatur.com/de/my-account/orders', function(response){
+    //                     try {
+
+    //                         if (response){
+    //                             // neukunde, only 0 or 1 order
+    //                             if (response.split("js_orderHistoryItem-").length < 2) {
+    //                                 // sessionStorage.setItem('kk_targetGroup', 'neukunde');
+    //                                 setProfileValue("customerType", "Neukunde");
     
-                                }else {
-                                    // bestandskunde, more than 1 order
-                                    setProfileValue("customerType", "Bestandskunde");
-                                }
-                            }
+    //                             }else {
+    //                                 // bestandskunde, more than 1 order
+    //                                 setProfileValue("customerType", "Bestandskunde");
+    //                             }
+    //                         }
                             
-                        } catch (error) {
-                            console.log('Error: ', error);
-                        }
-                    });
-                }
+    //                     } catch (error) {
+    //                         console.log('Error: ', error);
+    //                     }
+    //                 });
+    //             }
 
-            } catch (error) {
-                console.log('Error2: ', error);
-            }
-        });
+    //         } catch (error) {
+    //             console.log('Error2: ', error);
+    //         }
+    //     });
 
-    }else if(CUSTOMERTYPE !== "Interessent" && CUSTOMERTYPE !== "Neukunde"){
-        // Interessent
-        setProfileValue("customerType", "Interessent");
-    }
+    // }else if(CUSTOMERTYPE !== "Interessent" && CUSTOMERTYPE !== "Neukunde"){
+    //     // Interessent
+    //     setProfileValue("customerType", "Interessent");
+    // }
 
 
 })(window, document);
