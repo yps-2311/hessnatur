@@ -908,9 +908,10 @@
 
         var eco_data = JSON.parse(window.localStorage.getItem('kk_ecological')) || {},
             excludedProducts = ['4782699', '4782600', '4783599', '4782200', '4782400', '4782800', '4782899', '4783500', '4783700', '4783799'],
-            id = document.URL.match(/de\/.*\/p\/(\d+)/)[1];
-
-        if (excludedProducts.indexOf(id) === -1) {
+            id = window.document.location.pathname.split("/p/");//document.URL.match(/(de|at|ch)\/.*\/p\/(\d+)/);
+        
+        if (id.length > 0 && excludedProducts.indexOf(id[1]) === -1) {
+            id = id[1];
             if (eco_data[id] && new Date().getTime() - eco_data[id].timestamp < 86400000) {
                 window.kk07_ecoData = eco_data[id];
             } else {
