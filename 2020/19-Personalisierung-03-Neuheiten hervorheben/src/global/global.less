@@ -5,6 +5,30 @@
 // Beispiel für die Verwendung der Variable base-url
 // background: url('@{base-url}sprite.png') no-repeat 0 0;
 
+
+
+// @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:700&display=swap');
+
+// @font-face {
+//     font-family: 'Roboto Condensed';
+//     font-style: normal;
+//     font-weight: 700;
+//     font-display: swap;
+//     src: url("https://media.hessnatur.com/kk/fonts/robotocondensed.woff2") format('woff2');
+//     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+// }
+
+// @font-face {
+//     font-family: 'Roboto Condensed';
+//     font-style: normal;
+//     font-weight: 700;
+//     font-display: swap;
+//     src: url("https://media.hessnatur.com/kk/fonts/RobotoCondensed.ttf") format('ttf');
+//     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+// }
+
+
+
 #kk_crossprods {
     margin-bottom: 133px;
 }
@@ -31,6 +55,10 @@
         font-size: 24px;
     }
     span {
+        // color: #363939;
+        font-family: "Roboto Condensed Bold";
+        font-weight: normal;
+
         margin-top: 13px;
         display: block;
         font-weight: bold;
@@ -193,7 +221,9 @@
     
     > a {
         color: #AFAFAF;
-        font-family: "Roboto Condensed";
+        // font-family: "Roboto Condensed","Roboto",Helvetica,Arial,"Archer A",sans-serif;
+        font-family: "Roboto Condensed Bold";
+        font-weight: normal;
         padding: 16px;
         font-size: 14px;
         text-decoration: none;

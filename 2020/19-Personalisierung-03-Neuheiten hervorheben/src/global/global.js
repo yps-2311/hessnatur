@@ -8,23 +8,29 @@
 
 /**
 * @function
-* @author Manuel Brueckmann
+* @author Denis Leno
 * @namespace
-* @name Global Script for lookup customer type
-* @description Prototype for requesting Econda ARP API for user profiles
+* @name
+* @description
 */
 
 (function (WATO, window) {
 	"use strict";
 
+	/*jshint loopfunc: true */
+
+	var timestamp = new Date().getTime();
+	console.log('timestamp: ', timestamp);
+
 	var econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f',
-		UrlHref = window.location.href;
+		UrlHref = window.location.href,
+		UrlPathname = window.location.pathname;
 
 	function getCompareString(categoryString) {
 		var temp = 0,
 			splitString = categoryString.productcategory.split("^^");
 		if(UrlHref.indexOf(splitString[0].toLowerCase()) !== -1){
-			temp++;
+			temp = 2;
 		}
 		if(UrlHref.indexOf(splitString[1].toLowerCase()) !== -1){
 			temp++;
@@ -45,31 +51,68 @@
 		return 0;
 	}
 
-	if(window.location.pathname === "/de/NEU"){
+	function addClass(elem, thisclassname) {
+		if(elem){
+			elem.classList.add(thisclassname);
+		}
+	}
 
-		window.document.documentElement.classList.add('kk_hideneu');
+	function iridionProfile(thisName, thisvalue) {
+		if(thisvalue){
+			window.iridion.push(['profile', 'setValue', thisName, JSON.stringify(thisvalue)]);
+		}else{
+			return window.iridion.push(['profile', 'getValue', thisName]);
+		}
+	}
 
-		var categoryAffinity = window.iridion.push(['profile', 'getValue', 'categoryAffinity']);
+	function getSum(category) {
+		var sum = 0;
+		for (var x in category) {
+			sum += category[x];
+		}
+		return sum;
+	}
+
+	if(UrlPathname === "/de/NEU"){
+		// LP Kategorieseite NEU
+
+		// Seite soll ausgeblendet werden
+		addClass(window.document.documentElement, 'kk_hideneu');
+
+		// Weiterleitung auf die Unterkategorie von NEU je nach Affinität des Benutzers, 
+		// wenn keine Festgestellt wurde wird default "damen" ausgewählt
+		var categoryAffinity = iridionProfile('categoryAffinity') || "damen";
 		if(categoryAffinity){
-
+			// Damen und Männer wird bekleidung vorausgewählt
 			var secondKeyWord = "bekleidung";
 
 			if(categoryAffinity === "junior"){
 				categoryAffinity = "baby";
+
 			}else if(categoryAffinity === "home"){
 				categoryAffinity = "baby";
 				secondKeyWord = "schlafzimmer";
 			}
+			console.log('categoryAffinity: ', categoryAffinity);
+			console.log('secondKeyWord: ', secondKeyWord);
+
+			// Weiterleitung je nach Affinität
 			window.location.href = "https://www.hessnatur.com/de/"+categoryAffinity+"/"+secondKeyWord+"/kleidung/c/neu-"+categoryAffinity+"-"+secondKeyWord;
 		}
 
-	}else if(window.location.pathname.indexOf("/c/neu-") !== -1){
+	}else if(UrlPathname.indexOf("/c/neu-") !== -1){
 		// Kategorieseite NEU
 
+		console.log("1 Zeitvergangen in Sekunden: ", timestamp - new Date().getTime());
+
+		// DataNeu zeigt die Mengen der in NEU befindlichen Produkte pro Unterkategorie
+		// Stand: 22.02.2021
+		// TODO: zum Teststart können die Daten nocheinmal aktualisiert werden.
+		// Beim Besuch einer Unterkategorie-Seite werden automatisch die aktuellen Mengen in diesen Datensatz gespeichert
 		var dataNeu = {
 			Damen: {
-				Bekleidung: 199,
-				Basics: 53,
+				Bekleidung: 206,
+				Basics: 52,
 				Loungewear: 31,
 				Waesche: 103,
 				Outdoor: 34,
@@ -95,6 +138,7 @@
 		},
 		imgPath = "https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_small/",
 		dataImg = {
+			// Bilder für die Boxen der Unterkategorien
 			Damen: {
 				Bekleidung: 'Jeans_Lea_Slim_Fit_aus_Bio_Denim-51346_28_1',
 				Basics: 'Shirt_aus_reiner_Bio_Baumwolle-51292_89_1',
@@ -121,36 +165,37 @@
 				Kinderzimmer: 'Biber_Bettwaesche_aus_reiner_Bio_Baumwolle-50829_94_1'
 			},
 		},
-		getDataFromProfile = window.iridion.push(['profile', 'getValue', 'kategorieneu']);
+		getDataFromProfile = iridionProfile('kategorieneu');
+		console.log('getDataFromProfile: ', getDataFromProfile);
 
+		console.log("2 Zeitvergangen in Sekunden: ", new Date().getTime() - timestamp);
+
+		// Sind Daten schon vorhanden?
 		if(getDataFromProfile){
 			dataNeu = JSON.parse(getDataFromProfile);
 		}else{
-			window.iridion.push(['profile', 'setValue', 'kategorieneu', JSON.stringify(dataNeu)]);
+			// Datensatz ins Profile geschrieben
+			iridionProfile('kategorieneu', dataNeu);
 		}
 
-		console.log('dataNeu: ', dataNeu);
+		addClass(window.document.documentElement, 'kk_seiteneu');
 
-		function getSum(category) {
-			var sum = 0;
-			for (var x in category) {
-				sum += category[x];
-			}
-			return sum;
-		}
-
-		document.documentElement.classList.add('kk_seiteneu');
+		console.log("3 Zeitvergangen in Sekunden: ", new Date().getTime() - timestamp);
 
 		WATO.elem('.js_backstopWrapper', function(underMenu){
 			if(underMenu){
+				console.log('underMenu: ', underMenu);
+
+				console.log("4 Zeitvergangen in Sekunden: ", new Date().getTime() - timestamp);
+
 				underMenu = underMenu[0];
 
 				var selectedSecondLevelCategory = WATO.qs(".secondLevel .h-text-bold").textContent,
 					selectedSubMenu = WATO.qsa("li:not(.secondLevel):not(.h-text-decoration-none)",WATO.qs("#mainNavPrgRedirectionForm ul ul ul .h-text-bold").parentNode.parentNode),
-					sumDamen = getSum(dataNeu["Damen"]),
-					sumHerren = getSum(dataNeu["Herren"]),
-					sumJunior = getSum(dataNeu["Junior"]),
-					sumHome = getSum(dataNeu["Home"]);
+					sumDamen = getSum(dataNeu.Damen),
+					sumHerren = getSum(dataNeu.Herren),
+					sumJunior = getSum(dataNeu.Junior),
+					sumHome = getSum(dataNeu.Home);
 
 				WATO.qs('[href="/de/NEU"]').insertAdjacentHTML('afterend', 
 					'<span class="kk_bubble">'+(sumDamen+sumHerren+sumJunior+sumHome)+'</span>'
@@ -170,8 +215,10 @@
 					'</div>'
 				);
 
-				var menu2 = WATO.qs("#kk_neumenu2", underMenu),
-					isSubSelected = false;
+
+				console.log("5 Zeitvergangen in Sekunden: ", new Date().getTime() - timestamp);
+
+				var menu2 = WATO.qs("#kk_neumenu2", underMenu);
 
 				for (var i = 0; i < selectedSubMenu.length; i++) {
 					var subLabel = selectedSubMenu[i].cloneNode(true),
@@ -179,20 +226,10 @@
 						subCategoryNameBox = WATO.qs(".prgRedirLink", subLabel),
 						subCategoryNameText = subCategoryNameBox.textContent.replace("ä","ae");
 
-					// console.log('subLabel: ', subLabel);
-					// console.log('selectedSubSub: ', selectedSubSub);
-
 					if(selectedSubSub){
-						subLabel.classList.add('kk_selected');
-						isSubSelected = true;
+						addClass(subLabel, 'kk_selected');
 
 						var seoText = WATO.qs("#kk-headline, .footerSmoBoxWrapper h1");
-							// subCatProductCount = WATO.qs(".show-for-large.column .breadcrumbs > li:last-child strong:last-child"),
-							// rightBoxContent = '';
-
-						// if(subCatProductCount){
-						// 	rightBoxContent = '<span class="kk_bubble">'+subCatProductCount.textContent.match(/\d+/g)[0]+'</span>';
-						// }
 						
 						WATO.qs("label", subLabel).insertAdjacentHTML('beforeend', 
 							'<div>' + (seoText ? seoText.textContent : 'Trends der Kategorie '+subCategoryNameBox.textContent ) +'</div>'
@@ -213,6 +250,7 @@
 					
 					menu2.insertAdjacentElement('beforeend', subLabel);
 				}
+				console.log("6 Zeitvergangen in Sekunden: ", new Date().getTime() - timestamp);
 
 
 				WATO.elem('.breadcrumbs li:last-child[itemprop="itemListElement"] strong:last-child', function(lastBreadcrumbLi){
@@ -235,13 +273,11 @@
 									selectedLabel.innerHTML = siteproductCounter;
 								}
 
-								window.iridion.push(['profile', 'setValue', 'kategorieneu', JSON.stringify(dataNeu)]);
+								iridionProfile('kategorieneu', dataNeu);
 							}
 						}
 					}
 				});
-
-				
 			}
 		});
 
@@ -249,22 +285,19 @@
 	}else{
 		// Restliche Kategorieseiten
 		
-		var variation = window.iridion.push(['profile', 'getValue', 'customerType']);
-
-		console.log("triggered campagin visuals and content for: " + variation);
-
-		var headerText = {
-			Interessent: ['Neu bei uns eingetroffen', 'Lassen Sie sich von unseren neuen Outfits inspirieren.'],
-			Neukunde: ['Neu Seit Ihrem letzten Besuch ', 'Im Bereich<span class="kk_cattype"></span>:'],
-			Bestandskunde: ['Neuheiten passend zu Artikeln die Sie häufig kaufen:']
-		},
-		econdaWidgetIDs = {
-			Interessent: 128,
-			Neukunde: 129,
-			Bestandskunde: 130
-		},
-		variationText = headerText[variation],
-		position = '#productTilePrgRedirectionForm'.parentNode;
+		var variation = iridionProfile('customerType') || "Interessent",
+			headerText = {
+				Interessent: ['Neu bei uns eingetroffen', 'Lassen Sie sich von unseren neuen Outfits inspirieren.'],
+				Neukunde: ['Neu Seit Ihrem letzten Besuch ', 'Im Bereich<span class="kk_cattype"></span>:'],
+				Bestandskunde: ['Neuheiten passend zu Artikeln die Sie häufig kaufen:']
+			},
+			econdaWidgetIDs = {
+				Interessent: 128,
+				Neukunde: 129,
+				Bestandskunde: 130
+			},
+			variationText = headerText[variation],
+			position = '#productTilePrgRedirectionForm'.parentNode;
 
 		if(variation === "Interessent"){
 			position = ".gridviewProductItemWrapper:nth-child(8) > div";
@@ -279,15 +312,30 @@
 					var data = JSON.parse(callbackData.response),
 						items = data.items;
 
-					console.log('data: ', data);
+					WATO.elem(position, function(wrapperOfAllProducts){
+						if(wrapperOfAllProducts){
+							wrapperOfAllProducts[0].parentNode.insertAdjacentHTML('beforebegin', 
+								'<div id="kk_crossprods" >'+
+									'<div class="kk_chead">'+
+										'<h5>'+variationText[0]+'</h5>'+
+										'<span data-type="'+variation+'">'+variationText[1]+'</span>'+
+									'</div>'+
+									'<div class="kk_cbody"></div>'+
+								'</div>'
+							);
+			
+							if(variation === "neukunde"){
+								WATO.elem('.opens-right > a.h-text-bold', function(categoryName){
+									if(categoryName){
+										WATO.qs(".kk_cattype").innerHTML = " "+categoryName[0].textContent;
+									}
+								});
+							}
 
-					WATO.elem('#kk_crossprods .kk_cbody', function(cbody){
-						if(cbody){
-							cbody = cbody[0];
-							
 							items.sort(compare);
 
-							var counter = 0;
+							var counter = 0,
+								cbody = WATO.qs('.kk_cbody');
 
 							for (var j = 0; j < items.length; j++) {
 								var item = items[j],
@@ -304,14 +352,14 @@
 										}
 										mainCat = 'junior';
 
-									}else if(mainCat.indexOf("Loungewear") !== -1 || mainCat.indexOf("Damen") !== -1
-										|| mainCat.indexOf("Strümpfe") !== -1 || subCat.indexOf("BHs") !== -1
-										|| mainCat.indexOf("umstandsmode") !== -1){
-										mainCat = 'damen';
+									}else if(mainCat.indexOf("Loungewear") !== -1 || mainCat.indexOf("Damen") !== -1 ||
+										mainCat.indexOf("Strümpfe") !== -1 || subCat.indexOf("BHs") !== -1 ||
+										mainCat.indexOf("umstandsmode") !== -1){
+											mainCat = 'damen';
 
-										if (subCat.indexOf(" ") !== -1) {
-											subCat = subCat.split(" ")[1];
-										}
+											if (subCat.indexOf(" ") !== -1) {
+												subCat = subCat.split(" ")[1];
+											}
 									}else if(mainCat.indexOf("Herren") !== -1){
 										mainCat = 'herren';
 									}
@@ -326,7 +374,6 @@
 												'<img src="'+item.iconurl.replace("large","small")+'">'+
 											'</div>'+
 											'<div class="kk_title">Neue '+category[0].replace("Home","").replace("Wäsche/Strümpfe","").replace("Strümpfe/Hausschuhe","")+' '+category[1].replace("Overall","Overalls")+'</div>'+ // <span>X</span>
-											// '<div>Vor X Tagen aktualisiert</div>'+
 										'</a>'
 									);
 
@@ -339,34 +386,24 @@
 							}
 						}
 					});
+
+					// WATO.elem('#kk_crossprods .kk_cbody', function(cbody){
+					// 	if(cbody){
+					// 		cbody = cbody[0];
+							
+							
+					// 	}
+					// });
 				});
 
-				var widget = new window.econda.recengine.Widget({
-					accountId: econdaAccountID,
-					id: econdaWidgetIDs[variation]
-				});
-				widget.render();
-			}
-		});
-
-		WATO.elem(position, function(wrapperOfAllProducts){
-			if(wrapperOfAllProducts){
-				wrapperOfAllProducts[0].parentNode.insertAdjacentHTML('beforebegin', 
-					'<div id="kk_crossprods" >'+
-						'<div class="kk_chead">'+
-							'<h5>'+variationText[0]+'</h5>'+
-							'<span data-type="'+variation+'">'+variationText[1]+'</span>'+
-						'</div>'+
-						'<div class="kk_cbody"></div>'+
-					'</div>'
-				);
-
-				if(variation === "neukunde"){
-					WATO.elem('.opens-right > a.h-text-bold', function(categoryName){
-						if(categoryName){
-							WATO.qs(".kk_cattype").innerHTML = " "+categoryName[0].textContent;
-						}
+				try {
+					var widget = new window.econda.recengine.Widget({
+						accountId: econdaAccountID,
+						id: econdaWidgetIDs[variation]
 					});
+					widget.render();
+				} catch (error) {
+					// console.log('Error: ', error);
 				}
 			}
 		});

@@ -267,8 +267,6 @@
             this.addEventListener("loadend", function () {
                 var _that = this;
                 if (_that.readyState === 4) {
-
-                    console.log("uri", uri);
                     
                     if (uri.indexOf(url) !== -1) {
 
