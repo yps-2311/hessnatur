@@ -12,12 +12,12 @@
     "use strict";
 
     /** Template Variables **/
-    var TP_POSITION = "{{name=Position&type=webarts.watt.editor.impl.TextBoxEditor}}",
-        TP_HEADLINE = "{{name=Headline&type=webarts.watt.editor.impl.TextBoxEditor}}",
-        TP_IMAGE = "{{name=Image&type=webarts.watt.editor.impl.TextBoxEditor}}",
-        TP_UVP1 = "{{name=UVP1&type=webarts.watt.editor.impl.TextBoxEditor}}",
-        TP_UVP2 = "{{name=UVP2&type=webarts.watt.editor.impl.TextBoxEditor}}",
-        TP_UVP3 = "{{name=UVP3&type=webarts.watt.editor.impl.TextBoxEditor}}";
+    var TP_POSITION = "{{name=Position&type=webarts.watt.editor.impl.TextEditor}}",
+        TP_HEADLINE = "{{name=Headline&type=webarts.watt.editor.impl.TextEditor}}",
+        TP_IMAGE = "{{name=Image&type=webarts.watt.editor.impl.TextEditor}}",
+        TP_UVP1 = "{{name=UVP1&type=webarts.watt.editor.impl.TextEditor}}",
+        TP_UVP2 = "{{name=UVP2&type=webarts.watt.editor.impl.TextEditor}}",
+        TP_UVP3 = "{{name=UVP3&type=webarts.watt.editor.impl.TextEditor}}";
 
     console.log("kk >>> TP_POSITION", TP_POSITION);
     console.log("kk >>> TP_HEADLINE", TP_HEADLINE);
