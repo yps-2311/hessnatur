@@ -14,17 +14,18 @@
     /** Template Variables **/
     var TP_POSITION = "{{name=Position&type=webarts.watt.editor.impl.TextEditor}}",
         TP_HEADLINE = "{{name=Headline&type=webarts.watt.editor.impl.TextEditor}}",
+        TP_UVP1 = "{{name=Slogan&type=webarts.watt.editor.impl.TextEditor}}",
         TP_IMAGE = "{{name=Image&type=webarts.watt.editor.impl.TextEditor}}",
-        TP_UVP1 = "{{name=UVP1&type=webarts.watt.editor.impl.TextEditor}}",
-        TP_UVP2 = "{{name=UVP2&type=webarts.watt.editor.impl.TextEditor}}",
-        TP_UVP3 = "{{name=UVP3&type=webarts.watt.editor.impl.TextEditor}}";
+        TP_LINK = "{{name=Link&type=webarts.watt.editor.impl.TextEditor}}";
+        // TP_UVP2 = "{{name=UVP2&type=webarts.watt.editor.impl.TextEditor}}",
+        // TP_UVP3 = "{{name=UVP3&type=webarts.watt.editor.impl.TextEditor}}";
 
     console.log("kk >>> TP_POSITION", TP_POSITION);
     console.log("kk >>> TP_HEADLINE", TP_HEADLINE);
     console.log("kk >>> TP_IMAGE", TP_IMAGE);
     console.log("kk >>> TP_UVP1", TP_UVP1);
-    console.log("kk >>> TP_UVP3", TP_UVP3);
-    console.log("kk >>> TP_UVP3", TP_UVP3);
+    // console.log("kk >>> TP_UVP3", TP_UVP3);
+    // console.log("kk >>> TP_UVP3", TP_UVP3);
 
     if(document.URL.indexOf('kkSalePreview=true') !== -1){
 
@@ -34,8 +35,8 @@
         TP_HEADLINE = "Tragekomfort & Verträglichkeit";
         TP_IMAGE = "https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/trage1.jpg";
         TP_UVP1 = "Verwendung von hautsympathischen Materialien";
-        TP_UVP2 = "Verzicht auf belastende Chemikalien";
-        TP_UVP3 = "Wertvolle Naturfasern auf Ihrer Haut";
+        // TP_UVP2 = "Verzicht auf belastende Chemikalien";
+        // TP_UVP3 = "Wertvolle Naturfasern auf Ihrer Haut";
     }
 
     // TODO get info from profile object
@@ -60,15 +61,15 @@
 
                         position.insertAdjacentHTML('afterend', 
                             '<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel">'+
-                                '<div style="background-image: url(' + TP_IMAGE + ');">'+
+                                '<a href="' + TP_LINK + '" style="background-image: url(' + TP_IMAGE + ');">'+
                                     '<div class="kk_content">'+
-                                        '<img src="https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/boxlogo.svg">'+
+                                        // '<img src="https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/boxlogo.svg">'+
                                         '<h3>' + TP_HEADLINE + '</h3>'+
                                         '<div>' + TP_UVP1 + '</div>'+
-                                        '<div>' + TP_UVP2 + '</div>'+
-                                        '<div>' + TP_UVP3 + '</div>'+
+                                        // '<div>' + TP_UVP2 + '</div>'+
+                                        // '<div>' + TP_UVP3 + '</div>'+
                                     '</div>'+
-                                '</div>'+
+                                '</a>'+
                             '</div>'
                         );
                     }

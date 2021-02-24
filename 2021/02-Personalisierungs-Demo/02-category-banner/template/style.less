@@ -14,7 +14,8 @@
 
 @media only screen and (min-width: 1024px) {
     .kk_kachel {
-        > div {
+        > a {
+            text-decoration: none;
             background: #fff no-repeat center 0;
             background-size: cover;
             padding: 7%;
@@ -34,7 +35,7 @@
             }
 
             .kk_content {
-                background-color: #fff;
+                // background-color: #fff;
                 width: 100%;
                 position: relative;
                 min-height: 440px;
@@ -42,23 +43,42 @@
                 flex-wrap: wrap;
                 align-items: center;
                 padding-bottom: 7px;
+                color: #FFFFFF !important;
 
-                > div {
-                    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/check.svg") #fff no-repeat center 0;
-                    // margin: 0 0 5%;
-                    margin: 0;
-                    // padding: 14% 7% 0;
-                    padding: 29px 7% 0;
-                    font-size: 1rem;
-                    min-height: 82px;
-                    text-align: center;
-                    line-height: 17px;
-                    font-weight: 300;
-                    width: 100%;
-                    &:last-child {
-                        margin-bottom: 0;
-                    }
+                h3 {
+                    padding-top: 130px;
+                    text-shadow: 0 0.15385rem 2.30769rem rgb(54 67 74 / 25%);
+                    font-size: 36px !important;
+                    line-height: 40px !important;
+                    text-align: center !important;
                 }
+
+                div {
+                    width: 100%;
+                    margin-top: -85px;
+                    text-shadow: 0 0.15385rem 2.30769rem rgb(54 67 74 / 25%);
+                    font-size: 24px !important;
+                    line-height: 28px !important;
+                    text-align: center !important;
+                }
+
+
+                // > div {
+                //     background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/check.svg") #fff no-repeat center 0;
+                //     // margin: 0 0 5%;
+                //     margin: 0;
+                //     // padding: 14% 7% 0;
+                //     padding: 29px 7% 0;
+                //     font-size: 1rem;
+                //     min-height: 82px;
+                //     text-align: center;
+                //     line-height: 17px;
+                //     font-weight: 300;
+                //     width: 100%;
+                //     &:last-child {
+                //         margin-bottom: 0;
+                //     }
+                // }
                 img {
                     margin: 10px auto 5px;
                     display: block;
