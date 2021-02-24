@@ -41,10 +41,8 @@
     /** EDITOR VARS */
     var TEXT_CONTENT = "{{name=Headline&type=webarts.watt.editor.impl.TextEditor}}",
         TEXT_SLOGAN = "{{name=Slogan&type=webarts.watt.editor.impl.TextEditor}}",
-        IMG_PATH = "{{name=Banner&type=webarts.watt.editor.impl.TextEditor}}";
-
-    // TEXT_CONTENT = "ALLE ARTIKEL IM SALE<br/>50% REDUZIERT";
-    // IMG_PATH = "//media.hessnatur.com/pb/435/KW07-2021-HP-Sale-04-d.jpg";
+        IMG_PATH_DESKTOP = "{{name=Banner_Desktop&type=webarts.watt.editor.impl.TextEditor}}",
+        IMG_PATH_MOBILE = "{{name=Banner_Mobile&type=webarts.watt.editor.impl.TextEditor}}";
 
     /** PROFILE */
     var KEY_DATA         = 'categoryAffinityData',
@@ -56,18 +54,18 @@
 
             wrapper = wrapper[0];
 
-            if(IMG_PATH){
+            if(IMG_PATH_DESKTOP && IMG_PATH_MOBILE){
 
                 // change background image
                 var image = WATO.qsa('.lpmHero__image', wrapper);
 
                 if(image){
 
-                    image[0].setAttribute('src', IMG_PATH + '?width=640');
-                    image[0].setAttribute('srcset', IMG_PATH + '?width=640 640w, ' + IMG_PATH + '?width=1024 1024w, ' + IMG_PATH + '?width=1200 1200w, ' + IMG_PATH + '?width=1440 1440w, ' + IMG_PATH + '?width=1920 1920w');
+                    image[0].setAttribute('src', IMG_PATH_DESKTOP + '?width=640');
+                    image[0].setAttribute('srcset', IMG_PATH_DESKTOP + '?width=640 640w, ' + IMG_PATH_DESKTOP + '?width=1024 1024w, ' + IMG_PATH_DESKTOP + '?width=1200 1200w, ' + IMG_PATH_DESKTOP + '?width=1440 1440w, ' + IMG_PATH_DESKTOP + '?width=1920 1920w');
                     
-                    image[1].setAttribute('src', IMG_PATH + '?width=375');
-                    image[1].setAttribute('srcset', IMG_PATH + '?width=375 375w, ' + IMG_PATH + '?width=640 640w');
+                    image[1].setAttribute('src', IMG_PATH_MOBILE + '?width=375');
+                    image[1].setAttribute('srcset', IMG_PATH_MOBILE + '?width=375 375w, ' + IMG_PATH_MOBILE + '?width=640 640w');
 
                     // hide early workaround
                     document.documentElement.classList.add('kk-banner-show');
