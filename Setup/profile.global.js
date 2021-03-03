@@ -242,11 +242,12 @@
                     var counter = 0,
                         interval = setInterval(function(){
                             counter++;
-
-                            var orders = window.document.querySelectorAll("#orderhistory_ajax .zebra_even > div").length;
-
-                            if(orders > 0){
-                                if (orders > 1) {
+                            
+                            console.log('window.document.querySelectorAll("#orderhistory_ajax > .columns > .row > .columns").length: ', window.document.querySelectorAll("#orderhistory_ajax > .columns > .row > .columns").length);
+                            if(window.document.querySelectorAll("#orderhistory_ajax > .columns > .row > .columns").length > 0){
+                                
+                                console.log('window.document.querySelectorAll("#orderhistory_ajax .zebra_even > div").length: ', window.document.querySelectorAll("#orderhistory_ajax .zebra_even > div").length);
+                                if (window.document.querySelectorAll("#orderhistory_ajax .zebra_even > div").length > 1) {
                                     // bestandskunde, more than 1 order
                                     setProfileValue("customerType", "Bestandskunde");
                                 }else if(CUSTOMERTYPE === "Interessent"){

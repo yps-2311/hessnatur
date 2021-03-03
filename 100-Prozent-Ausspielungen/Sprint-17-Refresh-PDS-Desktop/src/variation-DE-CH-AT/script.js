@@ -951,8 +951,6 @@
 
             document.documentElement.classList.add('kk07B');
 
-            console.log(1);
-
             function formatNumber(num) {
                 num = Math.round(num * 100) / 100;
                 var num_parts = num.toString().split(".");
@@ -964,7 +962,6 @@
                 return WATO.qs('.js-product-info .large-10') && !!window.kk07_ecoData;
             }, function (run) {
                 if (run) {
-                    console.log(2);
         
                     WATO.qs('.js-product-info .large-10').insertAdjacentHTML('afterend',
                         '<div class="column small-12" id="kk07_ecological">' +
