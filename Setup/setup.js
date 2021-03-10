@@ -148,14 +148,17 @@ window.iridion = window.iridion || [];
                         interval = setInterval(function(){
                             if(typeof _filterTab !== "undefined"){
                                 clearInterval(interval);
-                                var _filterLabel = _filterTab.querySelector('strong');
-                                if(typeof _filterLabel !== "undefined"){
-                                    if(_filterLabel.innerHTML.indexOf('(0)') === -1 && _filterLabel.innerHTML.indexOf('>0<') === -1) {
-                                        goalPush('filter_genutzt');
+                                try {
+                                    var _filterLabel = _filterTab.querySelector('strong');
+                                    if(typeof _filterLabel !== "undefined"){
+                                        if(_filterLabel.innerHTML.indexOf('(0)') === -1 && _filterLabel.innerHTML.indexOf('>0<') === -1) {
+                                            goalPush('filter_genutzt');
+                                        }
+                                        _filterTab.addEventListener('click', function(){
+                                            goalPush('filter_click');
+                                        });
                                     }
-                                    _filterTab.addEventListener('click', function(){
-                                        goalPush('filter_click');
-                                    });
+                                } catch (error) {
                                 }
                             }
                         }, 100);
