@@ -227,99 +227,89 @@
      * Bestandskunde: Mehr als einmal gekauft
      */
 
-    if(window.document.cookie.indexOf("kkprofiletest") !== -1){
-        console.log("kkprofiletest");
+    var CUSTOMERTYPE = getProfileValue("customerType");
 
-        var CUSTOMERTYPE = getProfileValue("customerType");
-        console.log('CUSTOMERTYPE 14: ', CUSTOMERTYPE);
-
-        function econdaCall() {
-            var counter2 = 0,
-                interval2 = setInterval(function(){
-                    counter2++;
-                    
-                    if(typeof window.emos3 !== "undefined" && (typeof window.emos3.emos_vid !== "undefined" || typeof window.emos3.emos_cid !== "undefined")){
-                        
-                        xhr_get('https://services.crosssell.info/profileaccess/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f/profiles/cgroup?' + (typeof window.emos3.emos_cid !== "undefined" ? 'emcid=' + window.emos3.emos_cid : 'emvid=' + window.emos3.emos_vid), function (response) {
-
-                            console.log('response: ', response);
-
-                            if (response){
-                                if (response.indexOf('Bestandskunde') !== -1){
-                                    // Bestandskunde
-                                    setProfileValue("customerType", "Bestandskunde");
-                                } else if (response.indexOf('Neukunde') !== -1 && CUSTOMERTYPE === "Interessent") {
-                                    // neukunde
-                                    setProfileValue("customerType", "Neukunde");
-                                }
-                            }
-                        });
-
-                        clearInterval(interval2);
-
-                    }else if(counter2 > 100){
-                        // Maximal 10 Sek
-                        clearInterval(interval2);
-                    }
-                }, 100);
-        }
-
-        if(CUSTOMERTYPE !== "Bestandskunde"){
-            if(!!CUSTOMERTYPE) {
-
-                if(!sessionStorage.getItem('kk_eCustomerType')){
-                    sessionStorage.setItem('kk_eCustomerType', 'true');
-                    econdaCall();
-                }
+    function econdaCall() {
+        var counter2 = 0,
+            interval2 = setInterval(function(){
+                counter2++;
                 
-                if(PATHNAME.indexOf("/addresses/") !== -1){
+                if(typeof window.emos3 !== "undefined" && (typeof window.emos3.emos_vid !== "undefined" || typeof window.emos3.emos_cid !== "undefined")){
+                    
+                    xhr_get('https://services.crosssell.info/profileaccess/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f/profiles/cgroup?' + (typeof window.emos3.emos_cid !== "undefined" ? 'emcid=' + window.emos3.emos_cid : 'emvid=' + window.emos3.emos_vid), function (response) {
 
-                    econdaCall();
-
-                }else if(PATHNAME.indexOf("/checkout/") === -1){
-
-                    var counter3 = 0,
-                        interval3 = setInterval(function(){
-                            counter3++;
-
-                            if(document.querySelector('#myAccountLink[href="/de/my-account"]')){
-                                console.log(1);
-                                clearInterval(interval3);
-
-                                xhr_get('https://www.hessnatur.com/de/my-account/orders', function(response){
-                                    console.log(2);
-                                    try {
-
-                                        if (response){
-                                            // neukunde, only 0 or 1 order
-                                            if (response.split("js_orderHistoryItem-").length < 2) {
-                                                setProfileValue("customerType", "Neukunde");
-
-                                            }else {
-                                                // bestandskunde, more than 1 order
-                                                setProfileValue("customerType", "Bestandskunde");
-                                            }
-                                        }
-                                        
-                                    } catch (error) {
-                                        console.log('Error: ', error);
-                                    }
-                                });
-                                // }
-                            }else if(counter3 > 100){
-                                // Maximal 10 Sek
-                                clearInterval(interval3);
+                        if (response){
+                            if (response.indexOf('Bestandskunde') !== -1){
+                                // Bestandskunde
+                                setProfileValue("customerType", "Bestandskunde");
+                            } else if (response.indexOf('Neukunde') !== -1 && CUSTOMERTYPE === "Interessent") {
+                                // neukunde
+                                setProfileValue("customerType", "Neukunde");
                             }
-                        }, 100);
+                        }
+                    });
 
+                    clearInterval(interval2);
+
+                }else if(counter2 > 100){
+                    // Maximal 10 Sek
+                    clearInterval(interval2);
                 }
-        
-            }else if(CUSTOMERTYPE !== "Interessent" && CUSTOMERTYPE !== "Neukunde"){
-                // Interessent
-                setProfileValue("customerType", "Interessent");
+            }, 100);
+    }
+
+    if(CUSTOMERTYPE !== "Bestandskunde"){
+        if(!!CUSTOMERTYPE) {
+
+            if(!sessionStorage.getItem('kk_eCustomerType')){
+                sessionStorage.setItem('kk_eCustomerType', 'true');
+                econdaCall();
             }
-        }
+            
+            if(PATHNAME.indexOf("/addresses/") !== -1){
+
+                econdaCall();
+
+            }else if(PATHNAME.indexOf("/checkout/") === -1){
+
+                var counter3 = 0,
+                    interval3 = setInterval(function(){
+                        counter3++;
+
+                        if(document.querySelector('#myAccountLink[href="/de/my-account"]')){
+                            clearInterval(interval3);
+
+                            xhr_get('https://www.hessnatur.com/de/my-account/orders', function(response){
+                                try {
+
+                                    if (response){
+                                        // neukunde, only 0 or 1 order
+                                        if (response.split("js_orderHistoryItem-").length < 2) {
+                                            setProfileValue("customerType", "Neukunde");
+
+                                        }else {
+                                            // bestandskunde, more than 1 order
+                                            setProfileValue("customerType", "Bestandskunde");
+                                        }
+                                    }
+                                    
+                                } catch (error) {
+                                    // console.log('Error: ', error);
+                                }
+                            });
+                            // }
+                        }else if(counter3 > 100){
+                            // Maximal 10 Sek
+                            clearInterval(interval3);
+                        }
+                    }, 100);
+
+            }
     
+        }else if(CUSTOMERTYPE !== "Interessent" && CUSTOMERTYPE !== "Neukunde"){
+            // Interessent
+            setProfileValue("customerType", "Interessent");
+        }
     }
 
 })(window, document);
