@@ -6,12 +6,17 @@
 // background: url('@{base-url}sprite.png') no-repeat 0 0;
 
 
+
 .kk_sp17 {
     body {
         color: #373939;
     }
     .pds__imageAndCockpitWrapper {
         margin-bottom: 0;
+        > nav {
+            margin-bottom: -43px;
+            z-index: 100;
+        }
     }
     .color-white,
     #Pflege-label,
@@ -317,8 +322,11 @@
     }
 
     .breadcrumbs {
-        margin: 2px 0 0 4px;
+        margin: 9px 0 0 0;
+        position: relative;
         li.breadcrumb--back {
+            margin: 0;
+            padding: 0 30px 0 19px;
             &::before {
                 font-family: "FontAwesome";
                 font-weight: normal;
@@ -329,6 +337,7 @@
                 height: 26px;
                 position: absolute;
                 top: 5.5px;
+                line-height: 20px;
             }
             a {
                 font-family: "Roboto Condensed Bold";

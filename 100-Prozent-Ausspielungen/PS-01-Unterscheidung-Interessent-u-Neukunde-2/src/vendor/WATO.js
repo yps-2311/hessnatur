@@ -292,7 +292,7 @@
 
                 if (this.readyState === 4) {
 
-                    console.log("uri", uri);
+                    // console.log("uri", uri);
                     
                     if (uri.indexOf(url) !== -1) {
 
@@ -447,5 +447,60 @@
         location.reload();
         location.href=location.href.split('#')[0];
 	};
+
+
+    /**
+     * @function event
+     * @memberOf WATO
+     *
+     * @param {node} element - DOM Node die den Listener erhalten soll
+     * @param {string} - Eventtype z.B. click
+     * @param {function} callback - Auszuführende Funktion bei Trigger.
+     * 
+     * @author Lukas Dziambor
+     */
+    /*
+	window.WATO.prototype.event = function(element, type, callback){
+        element.addEventListener(type, callback);
+	};
+    */
+
+    /**
+     * @function xhr_get
+     * @memberOf WATO
+     *
+     * @param {string} url - URL die angefragt werden soll
+     * @param {function} callback - Auszuführende Funktion nachdem der Request erfolgreich beendet wurde.
+     * @param {object} scopedData - Daten die im Scope des Callbacks verfügbar sein sollen
+     * 
+     * @author Lukas Dziambor
+     */
+    
+	window.WATO.prototype.xhr_get = function(url, callback) {
+        var request = new XMLHttpRequest();
+        request.open('GET', url, true);
+        
+        request.onload = function() {
+          if (this.readyState === 4 && this.status >= 200 && this.status < 400) {
+            try {
+                // var data = JSON.parse(this.response);
+                callback(this.response);
+            }
+            catch(e) {
+                callback(false);    
+            }
+          } else {
+                // We reached our target server, but it returned an error
+                callback(false);
+          }
+        };
+        
+        request.onerror = function() {
+            // There was a connection error of some sort
+            callback(false);
+        };
+        // request.withCredentials = true;
+        request.send();
+    };
 	
 })(window, document);
