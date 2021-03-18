@@ -96,6 +96,30 @@
 }
 
 #search_form#search_form {
-  left: 30px;
+  left: auto;
+  right: 21%;
   top: 28px;
+  transition: right 500ms;
+
+  @media (min-width: 1400px) {
+    right: 20%;
+  }
+
+  @media (min-width: 1550px) {
+    right: 18.5%;
+  }
+
+  @media (min-width: 1750px) {
+    right: 17.5%;
+  }
+
+  @media (min-width: 1920px) {
+    right: 330px;
+  }
+
+}
+
+#suggest_layer#suggest_layer {
+  left: auto;
+  right: 0;
 }

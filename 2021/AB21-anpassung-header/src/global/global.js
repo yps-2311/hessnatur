@@ -14,7 +14,8 @@
 
 		// Punchout
 		if (!that.getCookie(excludeCookieName)) {
-			that.exclude(1023, function() {
+			// Start bei 1280
+			that.exclude(1279, function() {
 				that.setCookie(excludeCookieName, 'true', '.hessnatur.com', true);
 				that.reload();
 			});
@@ -57,10 +58,17 @@
 		}
 
 		that.ready(function() {
-			var searchForm = that.qs('#search_form input');
+			var searchForm = that.qs('#search_form');
+			var searchFormInput = that.qs('input', searchForm);
 
 			if (searchForm) {
-				searchForm.addEventListener('focus', function() {
+				searchForm.addEventListener('submit', function () {
+					iridionPushGoal('kk_ab21_search_submit');
+				});
+			}
+
+			if (searchFormInput) {
+				searchFormInput.addEventListener('focus', function() {
 					iridionPushGoal('kk_ab21_search_click');
 				});
 			}

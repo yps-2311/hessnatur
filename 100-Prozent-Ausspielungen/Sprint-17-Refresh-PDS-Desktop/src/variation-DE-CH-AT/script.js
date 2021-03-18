@@ -951,8 +951,6 @@
 
             document.documentElement.classList.add('kk07B');
 
-            console.log(1);
-
             function formatNumber(num) {
                 num = Math.round(num * 100) / 100;
                 var num_parts = num.toString().split(".");
@@ -964,35 +962,37 @@
                 return WATO.qs('.js-product-info .large-10') && !!window.kk07_ecoData;
             }, function (run) {
                 if (run) {
-                    console.log(2);
+
+                    var savingMeter = window.kk07_ecoData.clean_earth_consumption_in_square_meter.toFixed(1).replace(".",",");
         
                     WATO.qs('.js-product-info .large-10').insertAdjacentHTML('afterend',
                         '<div class="column small-12" id="kk07_ecological">' +
-                        '<div class="h3">Wir haben dieses Produkt nachhaltig für Sie <br/>produziert. Sparen Sie mit Ihrem Kauf:</div>' +
+                        '<div class="h3"><b>Ökologische Ersparnis:</b> im Vergleich zum<br>konventionellen Baumwollanbau</div>' +
                         '<div class="row">' +
                         '<div class="column large-4 kk07_eco__point">' +
                         '<div class="kk07_eco__icon water"></div>' +
                         '<div class="kk07_eco__amount"><span data-property="water_savings_in_liter">' + formatNumber(window.kk07_ecoData.water_savings_in_liter) + '</span> l</div>' +
-                        '<strong>Wasser*</strong>' +
-                        '<span>Wir setzen durchweg auf wassersparende und -schonende Verfahren.</span>' +
+                        '<strong>weniger Wasserverbrauch</strong>' +
+                        '<span>91% Einsparung von Wasser durch Verwendung von Regenwasser, im Boden gespeicherte Feuchtigkeit und Anwendung verbrauchsarmer Bewässerungsmethoden.</span>' +
                         '</div>' +
                         '<div class="column large-4 kk07_eco__point">' +
                         '<div class="kk07_eco__icon co2"></div>' +
-                        '<div class="kk07_eco__amount"><span data-property="carbon_dioxide_savings_in_gram">' + formatNumber(window.kk07_ecoData.carbon_dioxide_savings_in_gram / 1000) + '</span> kg</div>' +
-                        '<strong>CO2*</strong>' +
-                        '<span>Wir nutzen so wenig Strom wie möglich und nur aus nachhaltigen Energiequellen.</span>' +
+                        '<div class="kk07_eco__amount">46%</div>' +
+                        '<strong>weniger CO2-Ausstoß</strong>' +
+                        '<span>46% CO2 Einsparung durch weniger energieintensive Arbeitsmethoden im Bio-Anbau und den Verzicht auf Mineraldünger und Pestizide.</span>' +
                         '</div>' +
                         '<div class="column large-4 kk07_eco__point">' +
                         '<div class="kk07_eco__icon earth"></div>' +
-                        '<div class="kk07_eco__amount"><span data-property="clean_earth_in_square_meter">' + formatNumber(window.kk07_ecoData.clean_earth_consumption_in_square_meter) + '</span> m<sup>2</sup></div>' +
-                        '<strong>Boden/Erde*</strong>' +
-                        '<span>Wir verwenden ausschließlich Rohstoffe aus ökologischer Landwirtschaft.</span>' +
+                        '<div class="kk07_eco__amount"><span data-property="clean_earth_in_square_meter">' + savingMeter + '</span> m<sup>2</sup></div>' +
+                        '<strong>mehr gesunde Erde</strong>' +
+                        '<span>'+savingMeter+' m² mehr gesunde Erde durch Vermeidung von Pestiziden, künstlichen Düngemitteln und Entlaubungsmitteln.</span>' +
                         '</div>' +
-                        '</div>' +
-                        '<div class="kk07_eco__footer">' +
+                        '</div>'
+                        // '<div class="kk07_eco__footer">' +
                         // '<a href="#">Mehr erfahren</a> ' +
-                        '<small>*im Vergleich zur konventionellen Produktion</small></div>' +
-                        '</div>');
+                        // '<small>*im Vergleich zur konventionellen Produktion</small></div>' +
+                        // '</div>'
+                        );
         
                 }
             });

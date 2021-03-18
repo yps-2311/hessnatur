@@ -796,13 +796,13 @@ button.mz-button.mz-button-close {
     > .row {
         align-items: flex-start;
         position: relative;
-        a[href*="Gebrauchsanweisung"] {
+        a[href*=".pdf"] {
             // position: absolute;
             // left: 30px;
             // bottom: -15px;
-            width: 300px !important;
+            width: 500px !important;
             display: block;
-            padding-left: 25px;
+            padding: 10px 0 0;
         }
     }
     .js_shortenDomElement {
@@ -831,6 +831,27 @@ button.mz-button.mz-button-close {
         margin-bottom: 14px;
     }
 }
+
+@media screen and (min-width:40em) {
+    #Produktbeschreibung > .row a[href*=".pdf"],
+    #kk-prod-desc-img + .productInfosItem {
+        padding-left: .76923rem
+    }
+}
+@media screen and (min-width:64em) {
+    #Produktbeschreibung > .row a[href*=".pdf"],
+    #kk-prod-desc-img + .productInfosItem {
+        padding-left: 1.15385rem;
+    }
+}
+@media screen and (min-width:75em) {
+    #Produktbeschreibung > .row a[href*=".pdf"],
+    #kk-prod-desc-img + .productInfosItem {
+        padding-left: 2.30769rem;
+    }
+}
+
+
 #Pflege {
     border: none;
 }
@@ -894,14 +915,19 @@ button.mz-button.mz-button-close {
 #kk07_ecological {
     text-align: center;
     // background: #f7f6f5;
-    padding: 6.92308rem calc(~"8.33333% + 2.30769rem");
+    padding: 53px calc(~"8.33333% + 2.30769rem");
     margin-bottom: 6.92308rem;
     background: #f7f6f5 url('https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB07-KK/bg.png') center center/cover no-repeat;
 
     .h3 {
+        text-transform: uppercase;
         font-weight: 500;
-        font-size: 1.9rem;
-        line-height: 2.3rem;
+        font-size: 32px;
+        line-height: 38px;
+        letter-spacing: 0.3px;
+        color: #363939;
+        text-align: center;
+        margin-bottom: 80px;
     }
 }
 
@@ -909,15 +935,16 @@ button.mz-button.mz-button-close {
     padding: 2rem 4.5rem;
 
     >strong {
+        text-transform: uppercase;
         display: block;
-        font-size: 0.9rem;
-        margin-bottom: .4rem;
+        font-size: 18px;
+        margin-bottom: 9px;
     }
 
     >span {
-        font-size: .95rem;
+        font-size: 13px;
         letter-spacing: .045rem;
-        line-height: 1.6rem;
+        line-height: 21px;
     }
 }
 
@@ -941,7 +968,8 @@ button.mz-button.mz-button-close {
 .kk07_eco__amount {
     font-size: 2.8rem;
     line-height: 3rem;
-    margin: 1rem 0 1.5rem;
+    margin: 1rem 0 45px;
+    font-weight: 100;
 }
 
 .kk07_eco__footer {

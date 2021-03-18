@@ -105,8 +105,7 @@
 
     ul.meta-navigation.show-for-large {
         > li:nth-child(1),
-        > li:nth-child(2),
-        > li:nth-child(3) {
+        > li:nth-child(2) {
             position: absolute;
             top: -31px;
             z-index: 100;
@@ -120,6 +119,30 @@
 
         > li:nth-child(2) {
             right: 120px;
+        }
+    }
+
+    html[lang="de"] ul.meta-navigation.show-for-large {
+        > li:nth-child(3) {
+            position: absolute;
+            top: -31px;
+            z-index: 100;
+            right: 32px;
+            margin: 0;
+        }
+    }
+
+    html[lang="en"] ul.meta-navigation.show-for-large {
+        > li:nth-child(1) {
+            right: 120px;
+        }
+        > li:nth-child(2) {
+            right: 32px;
+        }
+        > li:nth-child(3) {
+            position: relative;
+            top: auto;
+            right: auto;
         }
     }
 

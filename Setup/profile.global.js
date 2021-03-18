@@ -227,100 +227,89 @@
      * Bestandskunde: Mehr als einmal gekauft
      */
 
-    if(window.document.cookie.indexOf("kkprofiletest") !== -1){
-        console.log("kkprofiletest");
+    var CUSTOMERTYPE = getProfileValue("customerType");
 
-        var CUSTOMERTYPE = getProfileValue("customerType");
-        console.log('CUSTOMERTYPE 12: ', CUSTOMERTYPE);
-        console.log('CUSTOMERTYPE !== "Bestandskunde": ', CUSTOMERTYPE !== "Bestandskunde");
-        console.log('CUSTOMERTYPE !== "Interessent" && CUSTOMERTYPE !== "Neukunde": ', CUSTOMERTYPE !== "Interessent" && CUSTOMERTYPE !== "Neukunde");
+    function econdaCall() {
+        var counter2 = 0,
+            interval2 = setInterval(function(){
+                counter2++;
+                
+                if(typeof window.emos3 !== "undefined" && (typeof window.emos3.emos_vid !== "undefined" || typeof window.emos3.emos_cid !== "undefined")){
+                    
+                    xhr_get('https://services.crosssell.info/profileaccess/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f/profiles/cgroup?' + (typeof window.emos3.emos_cid !== "undefined" ? 'emcid=' + window.emos3.emos_cid : 'emvid=' + window.emos3.emos_vid), function (response) {
 
-        if(CUSTOMERTYPE !== "Bestandskunde"){
-            console.log('!!CUSTOMERTYPE: ', !!CUSTOMERTYPE);
-            if(!!CUSTOMERTYPE) {
-                if(PATHNAME.indexOf("/my-account") !== -1){
-                    var counter = 0,
-                        interval = setInterval(function(){
-                            counter++;
-
-                            var orders = window.document.querySelectorAll("#orderhistory_ajax .zebra_even > div").length;
-
-                            if(orders > 0){
-                                if (orders > 1) {
-                                    // bestandskunde, more than 1 order
-                                    setProfileValue("customerType", "Bestandskunde");
-                                }else if(CUSTOMERTYPE === "Interessent"){
-                                    setProfileValue("customerType", "Neukunde");
-                                }
-                                clearInterval(interval);
-                            }else if(counter > 100){
-                                // Maximal 10 Sek
-                                clearInterval(interval);
+                        if (response){
+                            if (response.indexOf('Bestandskunde') !== -1){
+                                // Bestandskunde
+                                setProfileValue("customerType", "Bestandskunde");
+                            } else if (response.indexOf('Neukunde') !== -1 && CUSTOMERTYPE === "Interessent") {
+                                // neukunde
+                                setProfileValue("customerType", "Neukunde");
                             }
-                        }, 100);
-
-                }else if(PATHNAME.indexOf("/addresses/") !== -1){
-
-                    var counter2 = 0,
-                        interval2 = setInterval(function(){
-                            counter2++;
-                            
-                            if(typeof window.emos3 !== "undefined" && (typeof window.emos3.emos_vid !== "undefined" || typeof window.emos3.emos_cid !== "undefined")){
-                                
-                                xhr_get('https://services.crosssell.info/profileaccess/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f/profiles/cgroup?' + (typeof window.emos3.emos_cid !== "undefined" ? 'emcid=' + window.emos3.emos_cid : 'emvid=' + window.emos3.emos_vid), function (response) {
-
-                                    console.log('response: ', response);
-
-                                    if (response){
-                                        if (response.indexOf('Bestandskunde') !== -1){
-                                            // Bestandskunde
-                                            setProfileValue("customerType", "Bestandskunde");
-                                        } else if (response.indexOf('Neukunde') !== -1 && CUSTOMERTYPE === "Interessent") {
-                                            // neukunde
-                                            setProfileValue("customerType", "Neukunde");
-                                        }
-                                    }
-                                });
-
-                                clearInterval(interval2);
-
-                            }else if(counter2 > 100){
-                                // Maximal 10 Sek
-                                clearInterval(interval2);
-                            }
-                        }, 100);
-
-                }else if(PATHNAME.indexOf("/checkout/") === -1 && window.document.referrer.indexOf("/checkout/") !== -1){
-                    console.log("no in checkout");
-
-                    xhr_get('https://www.hessnatur.com/de/my-account/orders', function(response){
-                        try {
-
-                            if (response){
-                                // neukunde, only 0 or 1 order
-                                if (response.split("js_orderHistoryItem-").length < 2) {
-                                    // sessionStorage.setItem('kk_targetGroup', 'neukunde');
-                                    setProfileValue("customerType", "Neukunde");
-    
-                                }else {
-                                    // bestandskunde, more than 1 order
-                                    setProfileValue("customerType", "Bestandskunde");
-                                }
-                            }
-                            
-                        } catch (error) {
-                            console.log('Error: ', error);
                         }
                     });
 
+                    clearInterval(interval2);
+
+                }else if(counter2 > 100){
+                    // Maximal 10 Sek
+                    clearInterval(interval2);
                 }
-        
-            }else if(CUSTOMERTYPE !== "Interessent" && CUSTOMERTYPE !== "Neukunde"){
-                // Interessent
-                setProfileValue("customerType", "Interessent");
+            }, 100);
+    }
+
+    if(CUSTOMERTYPE !== "Bestandskunde"){
+        if(!!CUSTOMERTYPE) {
+
+            if(!sessionStorage.getItem('kk_eCustomerType')){
+                sessionStorage.setItem('kk_eCustomerType', 'true');
+                econdaCall();
             }
-        }
+            
+            if(PATHNAME.indexOf("/addresses/") !== -1){
+
+                econdaCall();
+
+            }else if(PATHNAME.indexOf("/checkout/") === -1){
+
+                var counter3 = 0,
+                    interval3 = setInterval(function(){
+                        counter3++;
+
+                        if(document.querySelector('#myAccountLink[href="/de/my-account"]')){
+                            clearInterval(interval3);
+
+                            xhr_get('https://www.hessnatur.com/de/my-account/orders', function(response){
+                                try {
+
+                                    if (response){
+                                        // neukunde, only 0 or 1 order
+                                        if (response.split("js_orderHistoryItem-").length < 2) {
+                                            setProfileValue("customerType", "Neukunde");
+
+                                        }else {
+                                            // bestandskunde, more than 1 order
+                                            setProfileValue("customerType", "Bestandskunde");
+                                        }
+                                    }
+                                    
+                                } catch (error) {
+                                    // console.log('Error: ', error);
+                                }
+                            });
+                            // }
+                        }else if(counter3 > 100){
+                            // Maximal 10 Sek
+                            clearInterval(interval3);
+                        }
+                    }, 100);
+
+            }
     
+        }else if(CUSTOMERTYPE !== "Interessent" && CUSTOMERTYPE !== "Neukunde"){
+            // Interessent
+            setProfileValue("customerType", "Interessent");
+        }
     }
 
 })(window, document);
