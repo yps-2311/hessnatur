@@ -90,6 +90,8 @@
 
                 var categoryAffinity = getProfileValue(KEY_STATUS);
 
+                console.log("categoryAffinity", categoryAffinity);
+
                 // change buttons
                 if(categoryAffinity && categoryAffinity !== 'damen'){
 

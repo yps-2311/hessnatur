@@ -74,7 +74,7 @@
         } else if(checkPath('home')){
 
             category = 'home';
-        } else if(checkPath('baby')){
+        } else if(checkPath('baby') || checkPath('junior')){
 
             category = 'baby';
         }
