@@ -74,7 +74,7 @@
         } else if(checkPath('home')){
 
             category = 'home';
-        } else if(checkPath('baby')){
+        } else if(checkPath('baby') || checkPath('junior')){
 
             category = 'baby';
         }
@@ -265,6 +265,11 @@
                 sessionStorage.setItem('kk_eCustomerType', 'true');
                 econdaCall();
             }
+
+            // Noch nicht hochgeladen
+            if(getProfileValue("hasbought") === "true" && CUSTOMERTYPE === "Interessent"){
+                setProfileValue("customerType", "Neukunde");
+            }
             
             if(PATHNAME.indexOf("/addresses/") !== -1){
 
@@ -279,15 +284,18 @@
                         if(document.querySelector('#myAccountLink[href="/de/my-account"]')){
                             clearInterval(interval3);
 
+                            setProfileValue("customerType", "Neukunde");
+
                             xhr_get('https://www.hessnatur.com/de/my-account/orders', function(response){
                                 try {
 
                                     if (response){
                                         // neukunde, only 0 or 1 order
-                                        if (response.split("js_orderHistoryItem-").length < 2) {
-                                            setProfileValue("customerType", "Neukunde");
+                                        // if (response.split("js_orderHistoryItem-").length < 2) {
+                                        //     setProfileValue("customerType", "Neukunde");
 
-                                        }else {
+                                        // }else {
+                                        if(response.split("js_orderHistoryItem-").length > 1){
                                             // bestandskunde, more than 1 order
                                             setProfileValue("customerType", "Bestandskunde");
                                         }
@@ -313,3 +321,6 @@
     }
 
 })(window, document);
+
+
+// !function(e,t){function n(t,n){if(t)return n?e.iridion.push(["profile","getValue",t,JSON.stringify(n)]):e.iridion.push(["profile","getValue",t])}function r(e,t){var n=new XMLHttpRequest;n.open("GET",e,!0),n.onload=function(){if(4===this.readyState&&this.status>=200&&this.status<400)try{t(this.response)}catch(e){t(!1)}else t(!1)},n.onerror=function(){t(!1)},n.send()}function s(t,n){t&&n&&e.iridion.push(["profile","setValue",t,n])}function o(e,t){y&&console.log("kk >>> ",e,t)}function i(t){e.iridion.push(["goal","profile_error",t.toString()])}var a,u=t.URL,c=location.pathname,d="categoryAffinityData",f="categoryAffinity",m={damen:0,herren:0,baby:0,home:0,lastVisit:0},l=["/de/damen","/de/herren","/de/baby","/de/home"],y=-1!==t.cookie.indexOf("iridion_debug=true");try{var h=n(d,m);(!h||h&&h.junior)&&(o("reset data object",m),s(d,m))}catch(e){i(e)}a=function(){try{var e=n(d,m),r=n("visitorSession"),a=n(f,"damen"),y=1,h=function(){function e(e){return-1!==c.indexOf(e)}var n=!1;if(e("damen")?n="damen":e("herren")?n="herren":e("home")?n="home":(e("baby")||e("junior"))&&(n="baby"),!n&&e("/p/")){var r=t.querySelectorAll(".breadcrumbs span");r&&r[1]&&("damen"===(r=r[1].textContent.toLowerCase())?n="damen":"herren"===r?n="herren":"home"===r?n="home":"baby"===r&&(n="baby"))}return n}();if("string"==typeof e&&(e=JSON.parse(e)),0!==e.lastVisit&&e.lastVisit===r.last||(y=2,e.lastVisit=r.last,s(d,e)),o("current category "+h),h){var p=0;if(-1!==u.indexOf("/p/")?p=3:-1!==l.indexOf(c)?p=7:-1!==u.indexOf("/c/")&&(p=5),o("points",p),0!==p){e[h]=e[h]+y*p,s(d,e);var v=e;delete v.lastVisit;var b=Object.keys(v).reduce((function(e,t){return v[e]>v[t]?e:t}),0);o("your best score",b),a!==b&&(o("save new category affinity",b),s(f,b))}}}catch(e){i(e)}},"loading"!=t.readyState?a():t.addEventListener("DOMContentLoaded",a);var p=n("customerType");function v(){var t=0,n=setInterval((function(){t++,void 0===e.emos3||void 0===e.emos3.emos_vid&&void 0===e.emos3.emos_cid?t>100&&clearInterval(n):(r("https://services.crosssell.info/profileaccess/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f/profiles/cgroup?"+(void 0!==e.emos3.emos_cid?"emcid="+e.emos3.emos_cid:"emvid="+e.emos3.emos_vid),(function(e){e&&(-1!==e.indexOf("Bestandskunde")?s("customerType","Bestandskunde"):-1!==e.indexOf("Neukunde")&&"Interessent"===p&&s("customerType","Neukunde"))})),clearInterval(n))}),100)}if("Bestandskunde"!==p)if(p){if(sessionStorage.getItem("kk_eCustomerType")||(sessionStorage.setItem("kk_eCustomerType","true"),v()),"true"===n("hasbought")&&"Interessent"===p&&s("customerType","Neukunde"),-1!==c.indexOf("/addresses/"))v();else if(-1===c.indexOf("/checkout/"))var b=0,g=setInterval((function(){b++,t.querySelector('#myAccountLink[href="/de/my-account"]')?(clearInterval(g),s("customerType","Neukunde"),r("https://www.hessnatur.com/de/my-account/orders",(function(e){try{e&&e.split("js_orderHistoryItem-").length>1&&s("customerType","Bestandskunde")}catch(e){}}))):b>100&&clearInterval(g)}),100)}else"Interessent"!==p&&"Neukunde"!==p&&s("customerType","Interessent")}(window,document);

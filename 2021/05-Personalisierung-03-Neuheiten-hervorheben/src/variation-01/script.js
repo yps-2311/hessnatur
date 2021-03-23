@@ -14,10 +14,10 @@
 
 	/*jshint loopfunc: true */
 
-    // window.iridion.econda.push(["SprintPS03", "V1"]);
+	window.iridion.econda.push(["SprintPS03", "V1"]);
 
-    WATO.ps03setSegment();
-    WATO.ps03desktop();
+	WATO.ps03setSegment();
+	WATO.ps03desktop();
 
 	var econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f',
 		UrlHref = window.location.href,
@@ -34,7 +34,6 @@
 		}
 		return temp;
 	}
-    
 
 	function compare(a, b) {
 		var tempA = getCompareString(a),
@@ -54,14 +53,6 @@
 			elem.classList.add(thisclassname);
 		}
 	}
-
-	// function goProfile(thisName, thisvalue) {
-	// 	if(thisvalue){
-	// 		window.iridion.push(['profile', 'setValue', thisName, JSON.stringify(thisvalue)]);
-	// 	}else{
-	// 		return window.iridion.push(['profile', 'getValue', thisName]);
-	// 	}
-	// }
 
     function ajax(url, callback) {
         var request = XMLHttpRequest.prototype.open;
@@ -231,11 +222,6 @@
 					// console.log('Error: ', error);
 				}
 
-
-				// WATO.qs('[href="/de/NEU"]').insertAdjacentHTML('afterend', 
-				// 	'<span class="kk_bubble">'+(sumDamen+sumHerren+sumJunior+sumHome)+'</span>'
-				// );
-
 				var isSubMenu = WATO.qs("#mainNavPrgRedirectionForm ul ul ul .h-text-bold");
 
 				if(isSubMenu){
@@ -389,8 +375,6 @@
             position = ".js-product-grid > *:nth-child(8) > div"; // ".gridviewProductItemWrapper:nth-child(8) > div"
 		}
 
-        console.log('variation: ', variation);
-
 		WATO.elem(function(){
 			return typeof window.econda !== "undefined" && typeof window.econda.recengine !== "undefined";
 		}, function(isLoadedEconda){
@@ -505,7 +489,7 @@
                             }
                         });
                     } catch (error) {
-                        console.log('Error: ', error);
+                        // console.log('Error: ', error);
                     }
 				});
 
@@ -516,7 +500,7 @@
 					});
 					widget.render();
 				} catch (error) {
-					console.log('Error: ', error);
+					// console.log('Error: ', error);
 				}
 			}
 		});
@@ -575,8 +559,6 @@
 				}
 			});
 		}
-
 	}
-
 
 })(new window.WATO(), window);

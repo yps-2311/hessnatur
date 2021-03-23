@@ -29,7 +29,7 @@
 (function(WATO) {
     "use strict";
 
-    // window.iridion.econda.push(["SprintPS03", "V0"]);
+    window.iridion.econda.push(["SprintPS03", "V0"]);
 
     WATO.ps03setSegment();
     WATO.ps03desktop();
