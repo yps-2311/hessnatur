@@ -319,6 +319,7 @@
             setProfileValue("customerType", "Interessent");
         }
     }
+    
 
 })(window, document);
 
