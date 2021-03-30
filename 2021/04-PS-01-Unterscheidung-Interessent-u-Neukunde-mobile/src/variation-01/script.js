@@ -11,6 +11,9 @@
 (function(WATO) {
     "use strict";
 
+    // window.iridion.econda.push(["SprintPS01mobile", "V1"]);
+
+    WATO.ps01mobileSegment();
     WATO.ps01mobile(1);
 
 })(new window.WATO());

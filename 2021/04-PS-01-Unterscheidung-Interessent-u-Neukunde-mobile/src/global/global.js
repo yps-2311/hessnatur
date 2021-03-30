@@ -15,6 +15,89 @@
 
     // window.iridion.econda.push(["SprintPS01", "V1"]);
 
+    WATO.prototype.goProfile = function(thisName, thisvalue) {
+		if(thisvalue){
+			window.iridion.push(['profile', 'setValue', thisName, JSON.stringify(thisvalue)]);
+		}else{
+			return window.iridion.push(['profile', 'getValue', thisName]);
+		}
+	};
+
+    WATO.prototype.ps01mobileSegment = function(){
+		var _self = this;
+
+		function doSomeSegment(id, key) {
+			if(!key){
+				window.iridion.push(["segment", id]);
+			}else if(key === 1 && window.iridion.push(['hasSegment', id])){
+				window.iridion.push(["removeSegment", id]);
+			}else if(key === 2){
+				return window.iridion.push(['hasSegment', id]);
+			}
+		}
+		try {
+			var variation = _self.goProfile('customerType') || "Interessent";
+
+			if(variation === "Interessent"){
+				// Interessent
+				if(!doSomeSegment("32862", 2)){
+					doSomeSegment("32862");
+				}
+			}else if(variation === "Neukunde"){
+				// Neukunde
+				if(!doSomeSegment("32863", 2)){
+					doSomeSegment("32862", 1);
+					doSomeSegment("32863");
+				}
+			}else if(variation === "Bestandskunde"){
+				// Bestandskunde
+				if(!doSomeSegment("32860", 2)){
+					doSomeSegment("32862", 1);
+					doSomeSegment("32863", 1);
+					doSomeSegment("32860");
+				}
+			}
+			
+			// switch (_self.goProfile('categoryAffinity')) {
+			// 	case "herren":
+			// 		if(!doSomeSegment("32865", 2)){
+			// 			doSomeSegment("32866", 1);
+			// 			doSomeSegment("32867", 1);
+			// 			doSomeSegment("32864", 1);
+			// 			doSomeSegment("32865");
+			// 		}
+			// 		break;
+			// 	case "baby":
+			// 		if(!doSomeSegment("32866", 2)){
+			// 			doSomeSegment("32865", 1);
+			// 			doSomeSegment("32867", 1);
+			// 			doSomeSegment("32864", 1);
+			// 			doSomeSegment("32866");
+			// 		}
+			// 		break;
+			// 	case "home":
+			// 		if(!doSomeSegment("32867", 2)){
+			// 			doSomeSegment("32866", 1);
+			// 			doSomeSegment("32865", 1);
+			// 			doSomeSegment("32864", 1);
+			// 			doSomeSegment("32867");
+			// 		}
+			// 		break;
+			// 	default: // damen
+			// 		if(!doSomeSegment("32864", 2)){
+			// 			doSomeSegment("32866", 1);
+			// 			doSomeSegment("32867", 1);
+			// 			doSomeSegment("32865", 1);
+			// 			doSomeSegment("32864");
+			// 		}
+			// 		break;
+			// }
+		} catch (error) {
+			// console.log('error: ', error);
+		}
+	};
+
+
     WATO.prototype.ps01mobile = function(variation){
         
         var _self = this,
@@ -31,12 +114,20 @@
                 return window.iridion.push(['profile', 'getValue', thisName]);
             }
         }
+
+        function goalPush(selector, key){
+            _self.elem(selector, function(selectorElem){
+                if(selectorElem){
+                    selectorElem[0].addEventListener('click', function(){
+                        window.iridion.push(['goal', key]);
+                    });
+                }
+            });
+		}
         
         if(sessionStorage.getItem("kk_favForSession")){
             favProducts = JSON.parse(iridionProfile("favProducts"));
-            console.log('1 favProducts: ', favProducts);
             sehrgefragtProducts = JSON.parse(iridionProfile("sehrgefragtProducts"));
-            console.log('1 sehrgefragtProducts: ', sehrgefragtProducts);
         }else{
             _self.xhr_get("https://widgets.crosssell.info/eps/crosssell/recommendations.do?aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&wid=131&csize=50&start=0&type=cs&widgetdetails=true", function(data) {
                 favProducts = [];
@@ -173,6 +264,9 @@
                         );
                     }
                 });
+
+                goalPush('#kk_infoTabs .kk_carousel[data="Produktbeschreibung"]', "kk17_Produktbeschreibung");
+                goalPush('#kk_infoTabs .kk_carousel[data="Passform"]', "kk17_Passform");
     
             } else {
     
@@ -184,13 +278,13 @@
                         var allProds = getAllProducts();
     
                         console.log('isInteressent: ', isInteressent);
-                        // isInteressent = true;
+                        isInteressent = true;
                         if(isInteressent && !_self.qs('.kk_hoechstequali')) {
-    
+
                             // Interessent
                             var prod6 = allProds[4] || allProds[allProds.length-2] || allProds[allProds.length-1],
-                                prod9 = allProds[7],
-                                prod15 = allProds[13],
+                                prod11 = allProds[8],
+                                prod16 = allProds[12],
                                 all3boxes = [
                                     '<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel kk_hoechstequali">'+
                                         '<div>'+
@@ -242,12 +336,12 @@
                                 prod6.insertAdjacentHTML('afterend', all3boxes[0]);
                             }
                             
-                            if(prod9 && !checkForKachelClass(prod9)){
-                                prod9.insertAdjacentHTML('afterend',  all3boxes[1]);
+                            if(prod11 && !checkForKachelClass(prod11)){
+                                prod11.insertAdjacentHTML('afterend',  all3boxes[1]);
                             }
     
-                            if(prod15 && !checkForKachelClass(prod15)){
-                                prod15.insertAdjacentHTML('afterend',  all3boxes[2]);
+                            if(prod16 && !checkForKachelClass(prod16)){
+                                prod16.insertAdjacentHTML('afterend',  all3boxes[2]);
                             }
                         }
     

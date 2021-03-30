@@ -4,16 +4,16 @@
 /**
  * @function
  * @author Denis Leno
- * @namespace V1
- * @name Variation 01
+ * @namespace V0
+ * @name Variation 00
  * @description
  */
+
 (function(WATO) {
     "use strict";
 
-    // window.iridion.econda.push(["SprintPS01mobile", "V2"]);
+    // window.iridion.econda.push(["SprintPS01mobile", "V0"]);
 
     WATO.ps01mobileSegment();
-    WATO.ps01mobile(2);
 
 })(new window.WATO());
