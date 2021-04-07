@@ -97,15 +97,22 @@
 		}
 	};
 
-
     WATO.prototype.ps01mobile = function(variation){
         
         var _self = this,
-            isInteressent = window.iridion.push(['profile', 'getValue', 'customerType']) === "Interessent" && document.location.search.indexOf("show=neukunde") === -1,
+            customerType = window.iridion.push(['profile', 'getValue', 'customerType']),
+            isInteressent = customerType === false || customerType === "Interessent",
             hessnaturLogo = "https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/boxlogo.svg", //"https://www.hessnatur.com/medias/sys_master/images/images/hcc/hed/8967611056158/hessnatur-Logo-1c.svg",
             isPDS = window.document.location.pathname.indexOf("/p/") !== -1,
             favProducts = [], // Beliebteste Produkte der letzten 3 Monate
             sehrgefragtProducts = []; // Beliebteste Produkte der letzten 14 Tage
+
+        // Nur für QS
+        if(document.location.search.indexOf("show=neukunde") !== -1){
+            isInteressent = false;
+        }else if(document.location.search.indexOf("show=interessent") !== -1){
+            isInteressent = true;
+        }
 
         function iridionProfile(thisName, thisvalue) {
             if(thisvalue){
@@ -162,7 +169,7 @@
             for (var k = 0; k < allProds.length; k++) {
                 var isSaleBadge = _self.qs('.productBadgesWrapper img[src*="sale"], .productBadgesWrapper img[src*="Prozent"]', allProds[k]);
                 if(isSaleBadge){
-                    console.log('isSaleBadge: ', isSaleBadge);
+                    // console.log('isSaleBadge: ', isSaleBadge);
                     allProds[k].insertAdjacentElement('afterbegin', isSaleBadge.parentNode);
                 }
             }
@@ -175,7 +182,7 @@
         function init() {
     
             if(isPDS){
-                console.log('isPDS: ', isPDS);
+                // console.log('isPDS: ', isPDS);
     
                 // PDS
                 var thisProductID = parseInt(window.location.pathname.split("/p/")[1].substring(0,5));
@@ -277,8 +284,8 @@
                         
                         var allProds = getAllProducts();
     
-                        console.log('isInteressent: ', isInteressent);
-                        isInteressent = true;
+                        // console.log('isInteressent: ', isInteressent);
+                        
                         if(isInteressent && !_self.qs('.kk_hoechstequali')) {
 
                             // Interessent
@@ -331,7 +338,7 @@
                                 all3boxes[ramdomValue] = temp;
                             }
                             
-                            console.log('prod6: ', prod6);
+                            // console.log('prod6: ', prod6);
                             if(prod6 && !checkForKachelClass(prod6)){
                                 prod6.insertAdjacentHTML('afterend', all3boxes[0]);
                             }
