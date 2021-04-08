@@ -12,7 +12,7 @@
 (function(WATO) {
     "use strict";
 
-    // window.iridion.econda.push(["SprintPS01mobile", "V0"]);
+    window.iridion.econda.push(["SprintPS01mobile", "V0"]);
 
     WATO.ps01mobileSegment();
 
