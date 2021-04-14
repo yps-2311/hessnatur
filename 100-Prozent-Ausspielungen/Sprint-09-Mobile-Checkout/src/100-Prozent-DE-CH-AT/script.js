@@ -372,10 +372,10 @@
                 for (var i = 0; i < paymentOptions.length; i++) {
                     if (i === 1) {
                         // Paypal
-                        paymentOptions[1].innerHTML = '<img src="https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ab07-mobile-checkout/paypal-icon.png">';
+                        paymentOptions[1].innerHTML = '<img src="https://media.hessnatur.com/kk/100Prozent/sprint09/paypal-icon.png">';
                     } else if (i === 2) {
                         // Kreditkarte
-                        paymentOptions[2].innerHTML = 'Kreditkarte <img src="https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ab07-mobile-checkout/visa-icon.png">';
+                        paymentOptions[2].innerHTML = 'Kreditkarte <img src="https://media.hessnatur.com/kk/100Prozent/sprint09/visa-icon.png">';
                     }
 
                     paymentOptions[i].addEventListener('click', function (e) {

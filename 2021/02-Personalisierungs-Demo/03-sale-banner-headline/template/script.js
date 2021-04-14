@@ -43,6 +43,11 @@
         return thisText.replace(/&lt;/g,"<").replace(/&gt;/g,">");
     }
 
+    // function checkURLImage(urlImage) {
+    //     urlImage
+
+    // }
+
     /** EDITOR VARS */
     var TEXT_HEADLINE = "{{name=Headline&type=webarts.watt.editor.impl.TextEditor}}",
         TEXT_SLOGAN = "{{name=Slogan&type=webarts.watt.editor.impl.TextEditor}}",
@@ -81,12 +86,14 @@
             var headline = WATO.qs('.lpmHero__headline.hn-headline', wrapper);
 
             if(headline && TEXT_HEADLINE.length > 0){
+                console.log('TEXT_HEADLINE: ', TEXT_HEADLINE);
                 headline.innerHTML = baseConverter(TEXT_HEADLINE);
             }
 
             var slogan = WATO.qs('.lpmHero__text', wrapper);
 
             if(slogan && TEXT_SLOGAN.length > 0){
+                console.log('TEXT_SLOGAN: ', TEXT_SLOGAN);
                 slogan.innerHTML = baseConverter(TEXT_SLOGAN);
             }
 

@@ -14,7 +14,7 @@
  * WATO.storageAvailable ==> Überprüft ob der LocalStorage verfügbar ist
  * WATO.reload           ==> Führt einen Reload aus (löscht dabei den #hash, als Workaround für manche Browser)
  */
-(function (window, document) {
+ (function (window, document) {
     "use strict";
 
     if (window.WATO === undefined) {
