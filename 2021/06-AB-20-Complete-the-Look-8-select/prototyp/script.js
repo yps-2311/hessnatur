@@ -84,9 +84,11 @@
         });
     }
 
-    if(siteURL.indexOf("/p/") !== -1){
+    var productUPC = WATO.qs('meta[property="product:upc"]');
 
-        skuID = WATO.qs('meta[property="product:upc"]').getAttribute('content').substring(0,7);
+    if(siteURL.indexOf("/p/") !== -1 && productUPC){
+
+        skuID = productUPC.getAttribute('content').substring(0,7);
 
         WATO.xhr_get('https://pss.8select.io/'+eightSelectAPIid+'/sys/'+skuID, function(resp){
             if(resp){

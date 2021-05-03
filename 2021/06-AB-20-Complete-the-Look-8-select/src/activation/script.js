@@ -30,12 +30,15 @@
         entry.parentNode.insertBefore(script, entry);
     }
 
-    if(siteURL.indexOf("/p/") !== -1){
+
+    var productUPC = WATO.qs('meta[property="product:upc"]');
+
+    if(siteURL.indexOf("/p/") !== -1 && productUPC){
         // PDS
 
         // SKU = ProduktID
         // Steht in einem Meta Tag im Head
-        skuID = WATO.qs('meta[property="product:upc"]').getAttribute('content').substring(0,7);
+        skuID = productUPC.getAttribute('content').substring(0,7);
 
         // Anfrage ob von 8 Select für diese SKU ein CTL existiert um den Benutzer in den Test zu lassen
         WATO.xhr_get('https://pss.8select.io/'+eightSelectAPIid+'/sys/'+skuID, function(resp){
@@ -84,7 +87,8 @@
                         }  
                     );
                 } catch (error) {
-                    console.log('Error: ', error);
+                    window.iridion.push(['goal', 'error_sprint2']);
+                    // console.log('Error: ', error);
                 }
             }
         });
