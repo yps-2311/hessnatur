@@ -31,7 +31,7 @@
 
         for(var b = 0; b < _badgeCount; b++) {
             var thisBadge = _badges[b],
-            _displayTxt = 'block';
+                _displayTxt = 'block';
             
             if(thisBadge.textContent === '0') {
                 _displayTxt = 'none';
@@ -43,7 +43,6 @@
     // set navi in fullsize under logo
     WATO.elem('#header', function(header){
         if(header) {
-            console.log(4);
             // add ajax listener for icon badges
             checkIcons();
             WATO.ajax('wishlist/add', checkIcons);

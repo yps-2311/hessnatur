@@ -882,29 +882,29 @@
         createCTL(true);
     
         // Klick auf mehr Details
-        WATO.elem('.js-pds-more-details', function(moreDetails){
-            if(moreDetails){
-                moreDetails = moreDetails[0];
-                moreDetails.insertAdjacentHTML('beforebegin', 
-                    '<a class="btn-simple-link kk_moreinfos" href="#">Mehr Produktdetails</a>'
-                );
-                WATO.qs(".kk_moreinfos", moreDetails.parentNode).addEventListener('click', function(e){
-                    e.preventDefault();
+        // WATO.elem('.js-pds-more-details', function(moreDetails){
+        //     if(moreDetails){
+        //         moreDetails = moreDetails[0];
+        //         moreDetails.insertAdjacentHTML('beforebegin', 
+        //             '<a class="btn-simple-link kk_moreinfos" href="#">Mehr Produktdetails</a>'
+        //         );
+        //         WATO.qs(".kk_moreinfos", moreDetails.parentNode).addEventListener('click', function(e){
+        //             e.preventDefault();
     
-                    try {
-                        // window.ACC.global.scrollToElement();
+        //             try {
+        //                 // window.ACC.global.scrollToElement();
     
-                        $('html, body').animate(
-                        {
-                            scrollTop: $("#infoTabs").offset().top - 154
-                        }, 500);
+        //                 $('html, body').animate(
+        //                 {
+        //                     scrollTop: $("#infoTabs").offset().top - 154
+        //                 }, 500);
     
-                    } catch (error) {
-                        setErrorTracking("wa_setup_monitoring3", error);
-                    }
-                });
-            }
-        });
+        //             } catch (error) {
+        //                 setErrorTracking("wa_setup_monitoring3", error);
+        //             }
+        //         });
+        //     }
+        // });
 
         var eco_data = JSON.parse(window.localStorage.getItem('kk_ecological')) || {},
             excludedProducts = ['4782699', '4782600', '4783599', '4782200', '4782400', '4782800', '4782899', '4783500', '4783700', '4783799'],
@@ -965,7 +965,8 @@
 
                     var savingMeter = window.kk07_ecoData.clean_earth_consumption_in_square_meter.toFixed(1).replace(".",",");
         
-                    WATO.qs('.js-product-info .large-10').insertAdjacentHTML('afterend',
+                    WATO.qs('.js-product-info').insertAdjacentHTML('afterend',
+                        '<div class="row show-for-medium" style="order: 4;">'+
                         '<div class="column small-12" id="kk07_ecological">' +
                         '<div class="h3"><b>Ökologische Ersparnis:</b> im Vergleich zum<br>konventionellen Baumwollanbau</div>' +
                         '<div class="row">' +
@@ -987,6 +988,7 @@
                         '<strong>mehr gesunde Erde</strong>' +
                         '<span>'+savingMeter+' m² mehr gesunde Erde durch Vermeidung von Pestiziden, künstlichen Düngemitteln und Entlaubungsmitteln.</span>' +
                         '</div>' +
+                        '</div>'+
                         '</div>'
                         // '<div class="kk07_eco__footer">' +
                         // '<a href="#">Mehr erfahren</a> ' +

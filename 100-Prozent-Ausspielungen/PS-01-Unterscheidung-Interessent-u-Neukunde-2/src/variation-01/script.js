@@ -36,9 +36,7 @@
 
     if(sessionStorage.getItem("kk_favForSession")){
         favProducts = JSON.parse(iridionProfile("favProducts"));
-        console.log('1 favProducts: ', favProducts);
         sehrgefragtProducts = JSON.parse(iridionProfile("sehrgefragtProducts"));
-        console.log('1 sehrgefragtProducts: ', sehrgefragtProducts);
     }else{
         WATO.xhr_get("https://widgets.crosssell.info/eps/crosssell/recommendations.do?aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&wid=131&csize=50&start=0&type=cs&widgetdetails=true", function(data) {
             favProducts = [];
@@ -90,7 +88,6 @@
     function init() {
 
         if(isPDS){
-            console.log('isPDS: ', isPDS);
 
             // PDS
             var thisProductID = parseInt(window.location.pathname.split("/p/")[1].substring(0,5));
@@ -182,8 +179,7 @@
                 if(prodWrapper){
 
                     var allProds = WATO.qsa(".js-product-grid > .gridviewProductItemWrapper");
-
-                    console.log('isInteressent: ', isInteressent);
+                    
                     if(isInteressent && !WATO.qs('.kk_hoechstequali')) {
 
                         // Interessent
