@@ -6,11 +6,53 @@
 
 /* DEFINE VARIATION CSS */
 .lpmHero .lpmHero__wrapper {
-    display: none;
+    // display: none;
+    visibility: hidden;
     // max-height: 500px;
     overflow: hidden;
 }
 
 .kk-banner-show .lpmHero .lpmHero__wrapper {
-    display: block;
+    visibility: visible;
+}
+
+.kk_herobadge {
+    font-size: 1.3vw;
+    line-height: 1.35vw;
+    border-radius: 50%;
+    width: 10vw;
+    height: 10vw;
+    position: absolute;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    top: 76px;
+    padding: 0.6vw;
+    background-color: #709abe;
+}
+.kk_left {
+    left: 12vw;
+}
+.kk_right {
+    right: 12vw;
+}
+
+@media screen and (max-width:39.9375em) {
+    .kk_herobadge {
+        font-size: 4.3vw;
+        line-height: 4.4vw;
+        width: 30vw;
+        height: 30vw;
+        top: 4vw; //28px;
+        padding: 1.6vw;
+    }
+    .kk_left {
+        left: 4vw;
+    }
+    .kk_right {
+        right: 4vw;
+    }
 }

@@ -27,13 +27,21 @@
         skuID = WATO.qs('meta[property="product:upc"]').getAttribute('content').substring(0,7);
 
     function build8select(ctl, firstcall) {
+        console.log('firstcall: ', firstcall);
+        console.log('ctl: ', ctl);
         WATO.elem('.kk_sliderWrapper', function(jumpCompleteLookBtn){
-            if(jumpCompleteLookBtn){
+            console.log('jumpCompleteLookBtn: ', jumpCompleteLookBtn);
+            if(jumpCompleteLookBtn && ctl && !WATO.qs('[data-8select-widget-id="sys-psv"]')){
                 WATO.elem('.pds__imageAndCockpitWrapper .mz-ready img', function(mainImg){
                     if(mainImg){
+                        console.log('mainImg: ', mainImg);
+                        
                         // Ankerbutton liegt unter den Heroshots und wird für 8Select angepasst
                         var ankerButton = WATO.qs('.js-jump-complete-look'),
                             colorID = WATO.qs('.pds-cockpit__colorSwitch .active');
+                            
+                        console.log('ankerButton: ', ankerButton);
+                        console.log('colorID: ', colorID);
 
                         ankerButton.setAttribute('data-8select-widget-id', 'sys-button');
                         ankerButton.setAttribute('href', '#');
@@ -41,6 +49,7 @@
                         // SKU wird neu ermittelt mithilft der alten SKU und einer ggfs. neuen Farb-ID
                         if(colorID){
                             skuID = skuID.substring(0,5) + colorID.getAttribute('data-color');
+                            console.log('skuID: ', skuID);
                         }
 
                         // CTL wird eingebaut inclusive neuer Headline von uns
@@ -50,6 +59,7 @@
                             '<div data-8select-widget-id="sys-psv" data-sku="'+skuID+'"></div>'
                         );
 
+                        console.log('firstcall: ', firstcall);
                         if(firstcall){
                             // Initialisierung von 8Select
                             window.eightlytics = function () {
@@ -65,7 +75,17 @@
 
                         }else{
                             // Nach Änderungen auf der Seite wie Farbauswahl muss das CTL von 8 Select neu initialisert werden
-                            window._8select.initCSE();
+                            WATO.elem(function() {
+                                return typeof window._8select !== "undefined";
+                            }, function(eightselectReady){
+                                if(eightselectReady){
+                                    try {
+                                        window._8select.initCSE();
+                                    } catch (error) {
+                                        console.log('Error: ', error);
+                                    }
+                                }
+                            });
                         }
 
                         window._eightselect_shop_plugin = window._eightselect_shop_plugin || {};
@@ -183,6 +203,12 @@
                     });
                 }
 
+                var existsReco = WATO.qs('#addedtocartrecommendationpopup [data-8select-widget-id="sys-acc"]');
+
+                if(existsReco){
+                    existsReco.parentNode.removeChild(existsReco);
+                }
+
                 // Weiteres CTL von 8 Select wird eingesetzt
                 completeTheLookRecommendationsAddToCart[0].insertAdjacentHTML('beforebegin', 
                     '<div data-8select-widget-id="sys-acc" data-sku="'+tempSKU+'" data-include-css="true"></div>'
@@ -209,18 +235,32 @@
     });
 
     // Farbwechsel Interaktion
-    WATO.elem('.pds-cockpit__colorSwitch a', function(colorSwitcher){
-        if(colorSwitcher){
-            for (var k = 0; k < colorSwitcher.length; k++) {
-                colorSwitcher[k].addEventListener('click', function(){
-                    WATO.elem('#look', function(look){
-                        if(look){
-                            build8select(look, false);
-                        }
-                    });
-                });
+    // WATO.elem('.pds-cockpit__colorSwitch a', function(colorSwitcher){
+    //     if(colorSwitcher){
+    //         for (var k = 0; k < colorSwitcher.length; k++) {
+    //             colorSwitcher[k].addEventListener('click', function(){
+    //                 setTimeout(function(){
+    //                     WATO.elem('#look', function(look){
+    //                         if(look){
+    //                             console.log('look[0]: ', look[0]);
+    //                             build8select(look[0], false);
+    //                         }
+    //                     });
+    //                 }, 500);
+    //             });
+    //         }
+    //     }
+    // });
+
+
+    WATO.ajax("componentId=CrossSelling&productIdsToExclude=", function() {
+        console.log("ajax");
+        WATO.elem('#look', function(look){
+            if(look){
+                console.log('look[0]: ', look[0]);
+                build8select(look[0], false);
             }
-        }
+        });
     });
 
 })(new window.WATO(), window);

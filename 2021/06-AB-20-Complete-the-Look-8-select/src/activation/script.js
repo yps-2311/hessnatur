@@ -38,7 +38,7 @@
 
         // SKU = ProduktID
         // Steht in einem Meta Tag im Head
-        skuID = productUPC.getAttribute('content').substring(0,7);
+        skuID = productUPC.getAttribute('content').indexOf(",") !== -1 ? productUPC.getAttribute('content') : productUPC.getAttribute('content').substring(0,7);
 
         // Anfrage ob von 8 Select für diese SKU ein CTL existiert um den Benutzer in den Test zu lassen
         WATO.xhr_get('https://pss.8select.io/'+eightSelectAPIid+'/sys/'+skuID, function(resp){
@@ -77,7 +77,7 @@
                             price: parseInt(String(thisProd.price).replace(".","")) // integer - price of 1 item in cent
                         });
                     }
-
+                    
                     window.eightlytics(
                         'purchase',
                         {
