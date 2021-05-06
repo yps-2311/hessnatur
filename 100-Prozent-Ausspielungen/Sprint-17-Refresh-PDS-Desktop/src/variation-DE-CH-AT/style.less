@@ -104,6 +104,15 @@
             margin-top: 18px !important;
         }
     }
+    .align-self-top-for-large:not(.text-right) {
+        position: absolute;
+        & + div {
+            margin-bottom: 27px;
+            -ms-flex: 0 0 90%;
+            flex: 0 0 90%;
+            max-width: 90%;
+        }
+    }
 }
 .kk_carouselnav {
     width: 430px;
@@ -340,15 +349,7 @@ h1.pds-cockpit__productName {
         }
     }
 }
-.align-self-top-for-large:not(.text-right) {
-    position: absolute;
-    & + div {
-        margin-bottom: 27px;
-        -ms-flex: 0 0 90%;
-        flex: 0 0 90%;
-        max-width: 90%;
-    }
-}
+
 .h-text-uppercase > strong {
     font-family: "Roboto Condensed Bold";
     font-weight: normal;
