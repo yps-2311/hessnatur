@@ -286,7 +286,7 @@
                             // Interessent
                             var prod6 = allProds[4] || allProds[allProds.length-2] || allProds[allProds.length-1],
                                 prod11 = allProds[8],
-                                prod16 = allProds[12],
+                                prod16 = allProds[14],
                                 all3boxes = [
                                     '<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel kk_hoechstequali">'+
                                         '<div>'+
