@@ -52,7 +52,7 @@
 				var searchMask = WATO.qs('#offCanvasSearchWrapper', searchResultList.parentNode),
 					searchInput = WATO.qs('.input-group-field', searchMask);
 	
-				console.log('searchMask: ', searchMask);
+				// console.log('searchMask: ', searchMask);
 				if(searchMask){
 					searchMask.insertAdjacentHTML('beforeend', 
 						'<img class="kk_deleteinput" src="https://media.hessnatur.com/kk/2021/ab22-suche-mobile/deleteinput.svg">'

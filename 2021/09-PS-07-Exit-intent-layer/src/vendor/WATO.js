@@ -110,26 +110,26 @@
      *
      * @param {function} callback
      */
-    window.WATO.prototype.ready = function (callback) {
+    // window.WATO.prototype.ready = function (callback) {
 
-        // http://youmightnotneedjquery.com/ IE9+
-        if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+    //     // http://youmightnotneedjquery.com/ IE9+
+    //     if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
 
-            callback();
-        } else {
+    //         callback();
+    //     } else {
 
-            document.addEventListener('DOMContentLoaded', callback);
-        }
+    //         document.addEventListener('DOMContentLoaded', callback);
+    //     }
 
-        // BUGFIX LD 09.05.2017
-        // var state = document.readyState !== 'loading';
-        // if(state) {
-        // 	callback();
-        // } else {
-        // 	document.addEventListener('DOMContentLoaded', callback);
-        // }
-        // return state;
-    };
+    //     // BUGFIX LD 09.05.2017
+    //     // var state = document.readyState !== 'loading';
+    //     // if(state) {
+    //     // 	callback();
+    //     // } else {
+    //     // 	document.addEventListener('DOMContentLoaded', callback);
+    //     // }
+    //     // return state;
+    // };
 
     /**
      * @function initObserver
@@ -357,32 +357,32 @@
      * @param {function} callback
      */
     
-	window.WATO.prototype.exclude = function(width, callback){
+	// window.WATO.prototype.exclude = function(width, callback){
 		
-		function _checkWidth() {
+	// 	function _checkWidth() {
 			
-			var current = window.innerWidth || document.body.clientWidth;
+	// 		var current = window.innerWidth || document.body.clientWidth;
 			
-			if(current <= width && !exclude){
+	// 		if(current <= width && !exclude){
 				
-				exclude = true;
+	// 			exclude = true;
 				
-				callback();
-			}
-		}
+	// 			callback();
+	// 		}
+	// 	}
 		
-		var exclude = false;
+	// 	var exclude = false;
 		
-		_checkWidth();
+	// 	_checkWidth();
 		
-		if(typeof callback === "function"){
+	// 	if(typeof callback === "function"){
 			
-			window.onresize = function() {
+	// 		window.onresize = function() {
 
-				_checkWidth();
-			};
-		}
-	};
+	// 			_checkWidth();
+	// 		};
+	// 	}
+	// };
 	
 
     /**
@@ -514,32 +514,32 @@
      * @author Lukas Dziambor
      */
     
-	window.WATO.prototype.xhr_get = function(url, callback) {
-        var request = new XMLHttpRequest();
-        request.open('GET', url, true);
+	// window.WATO.prototype.xhr_get = function(url, callback) {
+    //     var request = new XMLHttpRequest();
+    //     request.open('GET', url, true);
         
-        request.onload = function() {
-          if (this.readyState === 4 && this.status >= 200 && this.status < 400) {
-            try {
-                // var data = JSON.parse(this.response);
-                callback(this.response);
-            }
-            catch(e) {
-                callback(false);    
-            }
-          } else {
-                // We reached our target server, but it returned an error
-                callback(false);
-          }
-        };
+    //     request.onload = function() {
+    //       if (this.readyState === 4 && this.status >= 200 && this.status < 400) {
+    //         try {
+    //             // var data = JSON.parse(this.response);
+    //             callback(this.response);
+    //         }
+    //         catch(e) {
+    //             callback(false);    
+    //         }
+    //       } else {
+    //             // We reached our target server, but it returned an error
+    //             callback(false);
+    //       }
+    //     };
         
-        request.onerror = function() {
-            // There was a connection error of some sort
-            callback(false);
-        };
-        // request.withCredentials = true;
-        request.send();
-    };
+    //     request.onerror = function() {
+    //         // There was a connection error of some sort
+    //         callback(false);
+    //     };
+    //     // request.withCredentials = true;
+    //     request.send();
+    // };
     
 
     /**

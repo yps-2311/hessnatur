@@ -15,7 +15,7 @@
         border-radius: 0;
     }
     .column.small-7 {
-        padding: 68px 30px 39px;
+        padding: 42px 30px 0;
         p {
             text-transform: uppercase;
             padding-bottom: 14px;
@@ -32,40 +32,59 @@
             color: #373939;
             letter-spacing: 0.1px;
             text-align: center;
+            + p {
+                padding-bottom: 29px;
+            }
         }
-        // .input-group-field {
-        //     background: #FFFFFF;
-        //     border: 1px solid #E5E4E3;
-        //     border-radius: 2px;
-        //     font-size: 12px;
-        //     // color: #969A9C;
-        //     letter-spacing: 0.2px;
-        //     line-height: 17px;
-        //     margin-bottom: 10px;
-        // }
-        // .input-group-button {
-        //     background: #393939;
-        //     border-radius: 2px;
-        //     font-family: "Roboto Condensed Bold";
-        //     font-weight: 400;
-        //     font-size: 15px;
-        //     color: #FFFFFF;
-        //     letter-spacing: 0.35px;
-        //     text-align: center;
-        //     line-height: 17px;
-        // }
-        // #command {
-        //     margin-bottom: 17px;
-        //     flex-direction: column;
-        //     > * {
-        //         width: 100%;
-        //     }
-        // }
+        .input-group-field {
+            background: #FFFFFF;
+            border: 1px solid #E5E4E3;
+            border-radius: 2px;
+            font-size: 12px;
+            // color: #969A9C;
+            letter-spacing: 0.2px;
+            line-height: 17px;
+            margin-bottom: 10px;
+        }
+        .input-group-button {
+            background: #393939;
+            border-radius: 2px;
+            font-family: "Roboto Condensed Bold";
+            font-weight: 400;
+            font-size: 15px;
+            color: #FFFFFF;
+            letter-spacing: 0.35px;
+            text-align: center;
+            line-height: 17px;
+            position: relative;
+            height: 40px;
+            line-height: 40px;
+            text-decoration: none;
+        }
+        #command {
+            margin-bottom: 17px;
+            flex-direction: column;
+            > * {
+                width: 100%;
+            }
+        }
+        .js-newsletter-form-error {
+            position: absolute;
+            top: -11px;
+            font-weight: normal;
+        }
         small {
             font-size: 10px;
             color: #000000;
             letter-spacing: 0.12px;
             line-height: 13px;
+        }
+        .kk_success {
+            .js-newsletter-field-email {
+                color: #80B72D;
+                border: 1px solid #80B72D;
+                background: #F5FFEA url(https://media.hessnatur.com/kk/2021/ps07-exitintent/greencheck.svg) no-repeat 316px center;
+            }
         }
     }
 }
