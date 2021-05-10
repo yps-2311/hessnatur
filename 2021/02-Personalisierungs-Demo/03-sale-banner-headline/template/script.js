@@ -74,7 +74,7 @@
         TEXT_BADGE = "{{name=Badge_Text&type=webarts.watt.editor.impl.TextEditor}}",
         TEXT_COLOR = "{{name=Badge_Color&type=webarts.watt.editor.impl.TextEditor}}",
         TEXT_POSITION = "{{name=Badge_Position&type=webarts.watt.editor.impl.TextEditor}}";
-
+    
     /** PROFILE */
     var KEY_DATA         = 'categoryAffinityData';
         // KEY_STATUS       = 'categoryAffinity';
@@ -84,27 +84,32 @@
         if(wrapper) {
 
             wrapper = wrapper[0];
+            console.log('wrapper: ', wrapper);
 
-            if(IMG_PATH_DESKTOP && IMG_PATH_MOBILE){
+            // if(IMG_PATH_DESKTOP && IMG_PATH_MOBILE){
 
                 // change background image
-                var image = WATO.qsa('.lpmHero__image', wrapper);
+            var image = WATO.qsa('.lpmHero__image', wrapper);
 
-                if(image){
+            if(image){
 
-                    if(valideImgURL(IMG_PATH_DESKTOP)){
-                        image[0].setAttribute('src', IMG_PATH_DESKTOP + '?width=640');
-                        image[0].setAttribute('srcset', IMG_PATH_DESKTOP + '?width=640 640w, ' + IMG_PATH_DESKTOP + '?width=1024 1024w, ' + IMG_PATH_DESKTOP + '?width=1200 1200w, ' + IMG_PATH_DESKTOP + '?width=1440 1440w, ' + IMG_PATH_DESKTOP + '?width=1920 1920w');    
-                    }
-                    
-                    if(valideImgURL(IMG_PATH_MOBILE)){
-                        image[1].setAttribute('src', IMG_PATH_MOBILE + '?width=375');
-                        image[1].setAttribute('srcset', IMG_PATH_MOBILE + '?width=375 375w, ' + IMG_PATH_MOBILE + '?width=640 640w');
-                    }
-                    // hide early workaround
-                    document.documentElement.classList.add('kk-banner-show');
+                console.log('IMG_PATH_DESKTOP: ', IMG_PATH_DESKTOP);
+                console.log('valideImgURL(IMG_PATH_DESKTOP): ', valideImgURL(IMG_PATH_DESKTOP));
+                if(IMG_PATH_DESKTOP.length > 0 && valideImgURL(IMG_PATH_DESKTOP)){
+                    image[0].setAttribute('src', IMG_PATH_DESKTOP + '?width=640');
+                    image[0].setAttribute('srcset', IMG_PATH_DESKTOP + '?width=640 640w, ' + IMG_PATH_DESKTOP + '?width=1024 1024w, ' + IMG_PATH_DESKTOP + '?width=1200 1200w, ' + IMG_PATH_DESKTOP + '?width=1440 1440w, ' + IMG_PATH_DESKTOP + '?width=1920 1920w');    
                 }
+                
+                console.log('IMG_PATH_MOBILE: ', IMG_PATH_MOBILE);
+                console.log('valideImgURL(IMG_PATH_MOBILE): ', valideImgURL(IMG_PATH_MOBILE));
+                if(IMG_PATH_MOBILE.length > 0 && valideImgURL(IMG_PATH_MOBILE)){
+                    image[1].setAttribute('src', IMG_PATH_MOBILE + '?width=375');
+                    image[1].setAttribute('srcset', IMG_PATH_MOBILE + '?width=375 375w, ' + IMG_PATH_MOBILE + '?width=640 640w');
+                }
+                // hide early workaround
+                document.documentElement.classList.add('kk-banner-show');
             }
+            // }
 
             // change headline
             var headline = WATO.qs('.lpmHero__headline.hn-headline', wrapper);
