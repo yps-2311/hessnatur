@@ -45,6 +45,8 @@
 	// Maximale Ausspielungsgröße 1024px
 	if(window.innerWidth <= 1024){
 
+		WATO.ab22goals();
+
 		WATO.elem('#suggest_layer_off_canvas', function(searchResultList){
 			if(searchResultList){
 				searchResultList = searchResultList[0];
