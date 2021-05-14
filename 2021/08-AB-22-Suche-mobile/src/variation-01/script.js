@@ -14,15 +14,7 @@
 
 	/*jshint loopfunc: true */
 
-	// window.iridion.econda.push(["SprintPS06", "V1"]);
-
-	// function pushGoal(key, sendOnNextPageView){    
-	// 	if(sendOnNextPageView){
-	// 		window.iridion.push(['goal', key, '', true]);
-	// 	}else{
-	// 		window.iridion.push(['goal', key]);
-	// 	}
-	// }
+	// window.iridion.econda.push(["SprintAB22", "V1"]);
 
 	var htmlElement = document.documentElement;
 
@@ -59,6 +51,14 @@
 					searchMask.insertAdjacentHTML('beforeend', 
 						'<img class="kk_deleteinput" src="https://media.hessnatur.com/kk/2021/ab22-suche-mobile/deleteinput.svg">'
 					);
+
+					// Wenn Suchbutton zum X wird kann es das Suchfeld schließen
+					WATO.qs('.input-group-button', searchMask).addEventListener('click', function(e){
+						if(!htmlElement.classList.contains('kk_settotop')){
+							e.preventDefault();
+							removeClass(searchMask, 'kk_opensearch');
+						}
+					});
 				}
 	
 				var deleteinput = WATO.qs('.kk_deleteinput', searchMask);
@@ -71,14 +71,9 @@
 					searchInput.addEventListener('keyup', function(e){
 						if(e.target.value.length > 0){
 							deleteinput.style.display = "block";
-							// document.documentElement.classList.add('kk_settotop');
 							addClass(htmlElement, 'kk_settotop');
-							// searchResultList.classList.add('kk_showResults');
 							addClass(searchResultList, 'kk_showResults');
 						}else {
-							// deleteinput.style.display = "none";
-							// document.documentElement.classList.remove('kk_settotop');
-							// searchResultList.classList.remove('kk_showResults');
 							removeInputClasses(deleteinput, searchResultList);
 						}
 					});
@@ -93,11 +88,10 @@
 					// Das besagte X zum löschen der Eingabe
 					deleteinput.addEventListener('click', function(e){
 						e.preventDefault();
+
 						searchInput.value = "";
 						removeInputClasses(deleteinput, searchResultList);
-						// deleteinput.style.display = "none";
-						// document.documentElement.classList.remove('kk_settotop');
-						// searchResultList.classList.remove('kk_showResults');
+						window.iridion.push(['goal', 'kk_ab22_del_inputfield']);
 					});
 				}
 				
@@ -127,10 +121,6 @@
 						removeClass(searchMask, 'kk_opensearch');
 						searchInput.value = "";
 						removeInputClasses(deleteinput, searchResultList);
-						// searchMask.classList.remove('kk_opensearch');
-						// deleteinput.style.display = "none";
-						// document.documentElement.classList.remove('kk_settotop');
-						// searchResultList.classList.remove('kk_showResults');
 					}
 				});
 				

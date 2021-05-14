@@ -21,7 +21,9 @@
         z-index: 100;
         transition: width 1s ease-in-out;
         .input-group-button {
-            background: #333333 url("https://media.hessnatur.com/kk/2021/ab22-suche-mobile/lupe.svg") no-repeat center center;
+            // background: #333333 url("https://media.hessnatur.com/kk/2021/ab22-suche-mobile/lupe.svg") no-repeat center center;
+            background: #333333 url("https://media.hessnatur.com/kk/2021/ab22-suche-mobile/close.svg") no-repeat center center;
+            
             border-radius: 0 2px 2px 0;
             width: 44px;
         }
@@ -113,6 +115,11 @@
             }
         }
     }
+    .kk_settotop #header #offCanvasSearchWrapper {
+        .input-group-button {
+            background-image: url("https://media.hessnatur.com/kk/2021/ab22-suche-mobile/lupe.svg");
+        }
+    }
 
 }
 
@@ -121,17 +128,26 @@
     #suggest_layer_off_canvas {
         top: 52px;
         max-height: 75vh; // 73vh calc(8.98rem + 100vh);
+        overflow-y: scroll;
+        overflow-x: hidden;
+
         & > .search-results__list {
-            overflow: hidden;
+            // overflow: hidden;
+            padding: 0 12px;
+            margin: 0 3px;
+            // overflow-y: scroll;
+            // overflow-x: hidden;
+            // height: 100%;
+            // max-height: 75vh;
             .search-results-container {
-                max-height: 75vh; // 73vh calc(8.98rem + 100vh);
+                // max-height: 75vh; // 73vh calc(8.98rem + 100vh);
                 -ms-flex: 0 0 100%;
                 flex: 0 0 100%;
                 max-width: 100%;
-                padding-right: 0 !important;
-                &:nth-child(3) {
-                    display: none;
-                }
+                padding: 0 !important;
+                // &:nth-child(3) {
+                //     display: none;
+                // }
                 .search-results__list--products {
                     height: 100%;
                 }
@@ -151,14 +167,14 @@
             }
         }
     }
-    .kk_inputfocus #header #suggest_layer_off_canvas,
-    .kk_inputfocus #header #suggest_layer_off_canvas > .search-results__list .search-results-container {
+    .kk_inputfocus #header #suggest_layer_off_canvas
+    // .kk_inputfocus #header #suggest_layer_off_canvas > .search-results__list
+    {
         max-height: 38vh;
     }
 
     .kk_search,
-    .menu [href="#search"],
-    #suggest_layer_off_canvas > .search-results__list + .collapse {
+    .menu [href="#search"] { //   #suggest_layer_off_canvas > .search-results__list + .collapse
         display: none !important;
     }
     #header #offCanvasSearchWrapper {
@@ -180,6 +196,11 @@
         display: none !important;
         &.kk_showResults {
             display: block !important;
+        }
+    }
+    #header #offCanvasSearchWrapper {
+        .input-group-button {
+            background-image: url("https://media.hessnatur.com/kk/2021/ab22-suche-mobile/lupe.svg") !important;
         }
     }
     .off-canvas-content > .yCmsComponent.actionbarWrapper {
@@ -216,6 +237,7 @@
             padding: 0;
         }
     }
+    
 }
 
 
@@ -240,20 +262,23 @@
 
 
 @media only screen and (max-height: 750px) {
-    .kk_inputfocus #header #suggest_layer_off_canvas,
-    .kk_inputfocus #header #suggest_layer_off_canvas > .search-results__list .search-results-container {
+    // .kk_inputfocus #header #suggest_layer_off_canvas,
+    // .kk_inputfocus #header #suggest_layer_off_canvas > .search-results__list {
+    .kk_inputfocus #header #suggest_layer_off_canvas {
         max-height: 45vh;
     }
 }
 @media only screen and (max-height: 580px) {
-    .kk_inputfocus #header #suggest_layer_off_canvas,
-    .kk_inputfocus #header #suggest_layer_off_canvas > .search-results__list .search-results-container {
+    // .kk_inputfocus #header #suggest_layer_off_canvas,
+    // .kk_inputfocus #header #suggest_layer_off_canvas > .search-results__list {
+    .kk_inputfocus #header #suggest_layer_off_canvas {
         max-height: 38vh;
     }
 }
 @media only screen and (max-height: 500px) {
-    .kk_inputfocus #header #suggest_layer_off_canvas,
-    .kk_inputfocus #header #suggest_layer_off_canvas > .search-results__list .search-results-container {
+    // .kk_inputfocus #header #suggest_layer_off_canvas,
+    // .kk_inputfocus #header #suggest_layer_off_canvas > .search-results__list {
+    .kk_inputfocus #header #suggest_layer_off_canvas {
         max-height: 69vh;
     }
 }

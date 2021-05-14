@@ -13,7 +13,7 @@
 (function(WATO) {
     "use strict";
 
-    // window.iridion.econda.push(["SprintPS03", "V0"]);
+    // window.iridion.econda.push(["SprintAB22", "V0"]);
 
     WATO.ab22goals();
 
