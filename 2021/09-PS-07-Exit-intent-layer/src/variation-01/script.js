@@ -51,7 +51,7 @@
 								'<p>und über Angebote, Neuheiten & mehr<br>informiert werden.</p>'+
 								'<div class="kk_formspace">'+
 								'</div>'+
-								'<small>Ich habe die <a href="/../datenschutz" target="_blank" rel="noopener noreferrer" class="text-link">Datenschutz-Information</a> gelesen und stimme zu, dass zur Bestätigung meiner Angaben eine Nachricht an unten genannte E-Mail-Adresse verschickt wird.<br><br>'+
+								'<small>Ich habe die <a href="/../datenschutz" target="_blank" rel="noopener noreferrer" class="text-link">Datenschutz-Information</a> gelesen und stimme zu, dass zur Bestätigung meiner Angaben eine Nachricht an oben genannte E-Mail-Adresse verschickt wird.<br><br>'+
 								'(Gutschein einlösbar ab 49,- € Mindestbestellwert, 30 Tage gültig ab Erhalt).</small>'+
 							'</div>'+
 						'</div>'+

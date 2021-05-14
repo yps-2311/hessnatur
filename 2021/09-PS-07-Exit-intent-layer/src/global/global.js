@@ -37,7 +37,7 @@
 				// beim verlassen des Cursors nach oben aus dem Browser
 				window.ouibounce(false, {
 					callback,
-					aggressive: true,
+					aggressive: false,
 					cookieExpire: 10,
 					timer: 0
 				});
