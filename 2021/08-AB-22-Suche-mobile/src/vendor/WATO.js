@@ -356,7 +356,7 @@
      * @param {number} width -
      * @param {function} callback
      */
-    
+    /*
 	window.WATO.prototype.exclude = function(width, callback){
 		
 		function _checkWidth() {
@@ -383,7 +383,7 @@
 			};
 		}
 	};
-	
+    */
 
     /**
      * @function storageAvailable

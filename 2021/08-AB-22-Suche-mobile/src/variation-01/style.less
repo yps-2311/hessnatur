@@ -5,9 +5,7 @@
 @import "../global/global.less";
 
 /* DEFINE VARIATION CSS */
-
-
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1023px) {
 
     // Tablet
     #header #offCanvasSearchWrapper {
@@ -125,6 +123,12 @@
 
 // Mobile
 @media only screen and (max-width: 625px) {
+
+    .headerWrapper,
+    .dataSticky {
+        position: relative;
+    }
+
     #suggest_layer_off_canvas {
         top: 52px;
         max-height: 75vh; // 73vh calc(8.98rem + 100vh);
@@ -177,6 +181,7 @@
     .menu [href="#search"] { //   #suggest_layer_off_canvas > .search-results__list + .collapse
         display: none !important;
     }
+
     #header #offCanvasSearchWrapper {
         transition: none;
         width: calc(100% - 18px);

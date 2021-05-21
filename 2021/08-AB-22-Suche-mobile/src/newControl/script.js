@@ -15,6 +15,21 @@
 
     // window.iridion.econda.push(["SprintAB22", "V0"]);
 
+    function pushSegment(key) {
+		window.iridion.push(['segment', key]);
+	}
+
     WATO.ab22goals();
+
+	if(window.innerWidth <= 1023){
+		pushSegment('32879');
+	} else {
+		pushSegment('32880');
+	}
+
+    window.addEventListener("orientationchange", function() {
+        pushSegment('32881');
+		WATO.reload();
+	}, false);
 
 })(new window.WATO());

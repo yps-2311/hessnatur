@@ -33,14 +33,20 @@
 		removeClass(htmlElement, 'kk_settotop');
 		removeClass(searchResultList, 'kk_showResults');
 	}
+	function pushSegment(key) {
+		window.iridion.push(['segment', key]);
+	}
 
-	// Maximale Ausspielungsgröße 1024px
-	if(window.innerWidth <= 1024){
+	// Maximale Ausspielungsgröße 1023px
+	if(window.innerWidth <= 1023){
+
+		pushSegment('32879');
 
 		WATO.ab22goals();
 
 		WATO.elem('#suggest_layer_off_canvas', function(searchResultList){
 			if(searchResultList){
+
 				searchResultList = searchResultList[0];
 	
 				var searchMask = WATO.qs('#offCanvasSearchWrapper', searchResultList.parentNode),
@@ -78,11 +84,23 @@
 						}
 					});
 
+					
+					var focusOnSearchInput = false,
+						innerHeight = window.innerHeight;
+
 					searchInput.addEventListener('focus', function(){
+						focusOnSearchInput = true;
 						document.documentElement.classList.add('kk_inputfocus');
 					});
 					searchInput.addEventListener('focusout', function(){
+						focusOnSearchInput = false;
 						document.documentElement.classList.remove('kk_inputfocus');
+					});
+
+					window.addEventListener("resize", () => {
+						if(focusOnSearchInput && innerHeight === window.innerHeight){
+							document.documentElement.classList.remove('kk_inputfocus');
+						}
 					});
 
 					// Das besagte X zum löschen der Eingabe
@@ -98,6 +116,7 @@
 				// Neues Suchicon einsetzen
 				WATO.elem('.menu a[href="#search"]', function(searchIcon){
 					if(searchIcon){
+
 						searchIcon = searchIcon[0];
 						searchIcon.insertAdjacentHTML('beforebegin', 
 							'<a class="kk_search" href="#">'+
@@ -127,6 +146,7 @@
 				// Sucheingabe und Suchergebnisse in den Header verschieben
 				WATO.elem('#header > .column > .row', function(headerInner){
 					if(headerInner){
+
 						headerInner = headerInner[0];
 						headerInner.insertAdjacentElement('afterbegin', searchResultList);
 						headerInner.insertAdjacentElement('afterbegin', searchMask);
@@ -134,5 +154,13 @@
 				});
 			}
 		});
+	} else {
+
+		pushSegment('32880');
 	}
+
+	window.addEventListener("orientationchange", function() {
+		pushSegment('32881');
+		WATO.reload();
+	}, false);
 })(new window.WATO(), window);
