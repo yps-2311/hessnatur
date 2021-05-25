@@ -487,7 +487,9 @@
 
     if(hasNotExcludeCookie){
 
-        window.iridion.econda.push(["Sprint17desktop", "V1"]);
+        if(window.iridion.econda){
+            window.iridion.econda.push(["Sprint17desktop", "V1"]);
+        }
 
         WATO.sprint17goals();
 
