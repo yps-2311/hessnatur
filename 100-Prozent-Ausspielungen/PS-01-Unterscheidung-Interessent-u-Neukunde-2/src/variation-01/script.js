@@ -99,18 +99,30 @@
                     var productInfo = contentArea[0];
 
                     productInfo.insertAdjacentHTML('afterbegin', 
-                        '<div class="kk_quali">'+
-                            '<h4 class="kk_hl">'+
-                                '<span>Natürliche Qualität für Ihr Wohlbefinden</span>'+
-                            '</h4>'+
-                            '<div class="kk_natur">'+
-                                'Naturfasern in höchster<br>Qualität'+
-                            '</div>'+
-                            '<div class="kk_stuecke">'+
-                                'Besonderer Tragekomfort &<br>Verzicht auf Schadstoffe'+
-                            '</div>'+
-                            '<div class="kk_tropfen">'+
-                                'Kleidung, die Mensch & Natur<br>gut tut'+
+                        '<div class="kk_quali row">'+
+                            '<div class="column small-12">' +
+                                '<h4 class="kk_hl">'+
+                                    '<span>Natürliche Qualität für Ihr Wohlbefinden</span>'+
+                                '</h4>'+
+                            '</div>' +
+                            '<div class="column">' +
+                                '<div class="row">' +
+                                    '<div class="column small-4">' +
+                                        '<div class="kk_quali_uvp kk_natur">'+
+                                            'Naturfasern in höchster<br>Qualität'+
+                                        '</div>'+
+                                    '</div>'+
+                                    '<div class="column small-4">' +
+                                        '<div class="kk_quali_uvp kk_stuecke">'+
+                                            'Besonderer Tragekomfort &<br>Verzicht auf Schadstoffe'+
+                                        '</div>'+
+                                    '</div>'+
+                                    '<div class="column small-4">' +
+                                        '<div class="kk_quali_uvp kk_tropfen">'+
+                                            'Kleidung, die Mensch & Natur<br>gut tut'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>'+
                             '</div>'+
                         '</div>'
                     );
