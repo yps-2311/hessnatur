@@ -8,48 +8,24 @@
 
 
 .kk_quali {
-    // display: flex;
-    // flex-direction: row;
-    // flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     // border: 2px solid #E8EBE6;
-    margin: 36px auto 25px auto !important;
-    // width: 100%;
-    // min-width: 452px;
+    margin: 36px 72px 25px;
+    width: 100%;
+    min-width: 452px;
     padding: 10px 0 18px;
-    // justify-content: space-between;
+    justify-content: space-between;
     // max-width: 473px;
     // background: #fff url("https://media.hessnatur.com/kk/100Prozent/ps01/pds_blaetter.svg") no-repeat 11% 4px;
-
-    & > .column:nth-child(1):before {
+    &::before {
         content: "";
         border-top: solid 1px #6E964B;
         display: block;
         width: 100%;
-        margin-top: 38px;
+        margin-top: 20px;
     }
-
-    & > .column:nth-child(2) {
-        padding: 0 68px;
-    }
-
-    // & > .column:nth-child(2),
-    .kk_quali_uvp {
-        padding: 40px 0 36px 68px;
-        font-size: 15px;
-        // width: 300px;
-        margin: 0;
-    }
-
-    // &::before {
-    //     position: absolute;
-
-    //     content: "";
-    //     border-top: solid 1px #6E964B;
-    //     display: block;
-    //     width: 100%;
-    //     margin-top: 38px;
-    // }
-
     .kk_hl {
         text-align: center;
         text-transform: uppercase;
@@ -62,13 +38,11 @@
         font-weight: normal;
         // font-family: "Roboto",Helvetica,Arial,sans-serif;
         font-family: "Roboto Condensed Bold", "Roboto",Helvetica,Arial,"Archer A",sans-serif;
-
         span {
             white-space: nowrap;
             display: inline-block;
             padding: 0 34px 0 20px;
             background-color: #fff;
-
             &::before {
                 content: "";
                 margin: -20px -21px 11px 0;
@@ -78,9 +52,15 @@
                 display: inline-block;
             }
         }
+        
+    }
+    > div {
+        padding: 40px 0 36px 68px;
+        font-size: 15px;
+        width: 300px;
+        margin: 0;
     }
 }
-
 .kk_siegel {
     background-color: #fff;
     border: 2px solid #E8EBE6;
@@ -386,9 +366,9 @@
     //     // margin: 0 0 12%;
     //     // padding: 9% 7% 0;
     // }
-    // .kk_quali {
-    //     justify-content: space-around;
-    // }
+    .kk_quali {
+        justify-content: space-around;
+    }
    
 }
 
@@ -396,5 +376,11 @@
 @media only screen and (max-width: 1024px) {
     .kk_kachel {
         display: none;
+    }
+}
+
+@media only screen and (max-width: 1220px) {
+    .kk_quali > div {
+        width: 290px !important;
     }
 }

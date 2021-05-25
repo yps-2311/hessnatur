@@ -99,30 +99,18 @@
                     var productInfo = contentArea[0];
 
                     productInfo.insertAdjacentHTML('afterbegin', 
-                        '<div class="kk_quali row">'+
-                            '<div class="column small-12">' +
-                                '<h4 class="kk_hl">'+
-                                    '<span>Natürliche Qualität für Ihr Wohlbefinden</span>'+
-                                '</h4>'+
-                            '</div>' +
-                            '<div class="column">' +
-                                '<div class="row">' +
-                                    '<div class="column small-4">' +
-                                        '<div class="kk_quali_uvp kk_natur">'+
-                                            'Naturfasern in höchster<br>Qualität'+
-                                        '</div>'+
-                                    '</div>'+
-                                    '<div class="column small-4">' +
-                                        '<div class="kk_quali_uvp kk_stuecke">'+
-                                            'Besonderer Tragekomfort &<br>Verzicht auf Schadstoffe'+
-                                        '</div>'+
-                                    '</div>'+
-                                    '<div class="column small-4">' +
-                                        '<div class="kk_quali_uvp kk_tropfen">'+
-                                            'Kleidung, die Mensch & Natur<br>gut tut'+
-                                        '</div>'+
-                                    '</div>'+
-                                '</div>'+
+                        '<div class="kk_quali">'+
+                            '<h4 class="kk_hl">'+
+                                '<span>Natürliche Qualität für Ihr Wohlbefinden</span>'+
+                            '</h4>'+
+                            '<div class="kk_natur">'+
+                                'Naturfasern in höchster<br>Qualität'+
+                            '</div>'+
+                            '<div class="kk_stuecke">'+
+                                'Besonderer Tragekomfort &<br>Verzicht auf Schadstoffe'+
+                            '</div>'+
+                            '<div class="kk_tropfen">'+
+                                'Kleidung, die Mensch & Natur<br>gut tut'+
                             '</div>'+
                         '</div>'
                     );
@@ -295,4 +283,3 @@
 
 })(new window.WATO(), window);
 
-// !function(e,t){"use strict";void 0===e.WATO&&(e.WATO=function(){}),e.WATO.prototype.elem=function(e,n,i,s,r){var o,a=this||s,c=r||Date.now(),d=!1;return Date.now()-c>1e4?(n(!1),!1):("string"==typeof e?d=(o=t.querySelectorAll(e)).length>0:o=d=!0===e(),!0===d?n(o):setTimeout(a.elem.bind(null,e,n,i,a,c),i||20))},e.WATO.prototype.qs=function(e,n,i,s){var r=(n||t).querySelector(e);return r?"function"==typeof i&&i(r):"function"==typeof s&&s(),r},e.WATO.prototype.qsa=function(e,n,i,s){var r=(n||t).querySelectorAll(e);return r?"function"==typeof i&&i(r):"function"==typeof s&&s(),r},e.WATO.prototype.ready=function(e){(t.attachEvent?"complete"===t.readyState:"loading"!==t.readyState)?e():t.addEventListener("DOMContentLoaded",e)},e.WATO.prototype.ajax=function(e,t){var n=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(i,s,r,o,a){this.addEventListener("loadend",(function(){4===this.readyState&&-1!==s.indexOf(e)&&"function"==typeof t&&t()}),!1),n.call(this,i,s,r,o,a)}},e.WATO.prototype.setCookie=function(e,n,i,s){var r=new Date;r.setDate(r.getDate()+365),t.cookie=e+"="+encodeURIComponent(n)+";"+(s?"":"expires="+r.toUTCString()+";")+"domain="+i+";path=/"},e.WATO.prototype.exclude=function(n,i){function s(){(e.innerWidth||t.body.clientWidth)<=n&&!r&&(r=!0,i())}var r=!1;s(),"function"==typeof i&&(e.onresize=function(){s()})},e.WATO.prototype.reload=function(){location.reload(),location.href=location.href.split("#")[0]},e.WATO.prototype.xhr_get=function(e,t){var n=new XMLHttpRequest;n.open("GET",e,!0),n.onload=function(){if(4===this.readyState&&this.status>=200&&this.status<400)try{t(this.response)}catch(e){t(!1)}else t(!1)},n.onerror=function(){t(!1)},n.send()}}(window,document),function(e,t){"use strict";function n(e,n){if(!n)return t.iridion.push(["profile","getValue",e]);t.iridion.push(["profile","setValue",e,JSON.stringify(n)])}var i=!t.localStorage.getItem("kk_hasbought")&&-1===document.location.search.indexOf("show=neukunde"),s="https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/boxlogo.svg",r=-1!==t.document.location.pathname.indexOf("/p/"),o=[],a=[];function c(e){try{return!!e.nextElementSibling&&e.nextElementSibling.classList.contains("kk_kachel")}catch(e){return!1}}function d(){if(r){console.log("isPDS: ",r);var n=parseInt(t.location.pathname.split("/p/")[1].substring(0,5));e.elem(".small-12 > .small-collapse.medium-uncollapse.large-uncollapse",(function(t){if(t){var n=t[0];n.insertAdjacentHTML("afterbegin",'<div class="kk_quali"><h4 class="kk_hl"><span>Natürliche Qualität für Ihr Wohlbefinden</span></h4><div class="kk_natur">Naturfasern in höchster<br>Qualität</div><div class="kk_stuecke">Besonderer Tragekomfort &<br>Verzicht auf Schadstoffe</div><div class="kk_tropfen">Kleidung, die Mensch & Natur<br>gut tut</div></div>');var i=e.qs(".certificateWrapper",n);if(i){i.parentNode.classList.add("kk_siegel");var s=e.qs('img[src="https://imgs7.hessnatur.com/is/content/HessNatur/Zertifikate/Zertifikat_GOTS.svg"]',i);s&&s.setAttribute("src","https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/organic.jpg")}}})),e.elem((function(){return o.length>0&&a.length>0}),(function(i){i&&(-1!==o.indexOf(n)&&t.document.documentElement.classList.add("kk_favorit"),-1!==a.indexOf(n)&&e.elem(".js-price-container",(function(e){e&&e[0].insertAdjacentHTML("afterend",'<div class="kk_gefragt"><b>Aktuell sehr gefragt!</b> Dieser Artikel verkauft sich schnell</div>')})))})),e.elem(".pds-cockpit__addProductWrapper",(function(e){e&&e[0].insertAdjacentHTML("afterend",'<div class="kk_cta_uvps"><ul><li>Kostenlose Rücksendung</li><li>14 Tage Rückgaberecht</li><li>Versand aller Pakete mit DHL</li></ul></div>')}))}else e.elem("footer",(function(t){if(t){var n=e.qsa(".js-product-grid > .gridviewProductItemWrapper");if(console.log("isInteressent: ",i),i&&!e.qs(".kk_hoechstequali")){for(var r=n[4]||n[n.length-2]||n[n.length-1],d=n[7],l=n[13],u=['<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel kk_hoechstequali"><div><div class="kk_content"><img src="'+s+'"><h3>Qualität & Bewusstsein </h3><div>Verwendung kontrollierter Naturfasern</div><div>Höchste Qualität bei unseren Produkten</div><div>Mensch und Natur vor<br>Chemikalien schützen</div></div></div></div>','<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel kk_nachteile"><div><div class="kk_content"><img src="'+s+'"><h3>Vorteile für Mensch & Natur</h3><div>Konsequente Einhaltung von Naturschutz und Fairness</div><div>Ein Herstellungsprozess mit ökologischer Verantwortung</div><div>Einhaltung des Umweltschutzes<br>(z.B. Abwasserkläranlagen)</div></div></div></div>','<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel kk_trage"><div><div class="kk_content"><img src="'+s+'"><h3>Tragekomfort & Verträglichkeit</h3><div>Verwendung von hautsympathischen Materialien</div><div>Verzicht auf belastende Chemikalien</div><div>Wertvolle Naturfasern<br>auf Ihrer Haut</div></div></div></div>'],f=u.length-1;f>0;f--){var p=Math.floor(Math.random()*(f+1)),h=u[f];u[f]=u[p],u[p]=h}r&&!c(r)&&r.insertAdjacentHTML("afterend",u[0]),d&&!c(d)&&d.insertAdjacentHTML("afterend",u[1]),l&&!c(l)&&l.insertAdjacentHTML("afterend",u[2])}i||e.elem((function(){return o.length>0&&a.length>0}),(function(t){if(t)for(var n=e.qsa(".dropdown-pane"),i=0;i<n.length;i++){var s=n[i],r=parseInt(s.getAttribute("id").substring(0,5));-1!==o.indexOf(r)&&s.classList.add("kk_fav"),-1!==a.indexOf(r)&&s.classList.add("kk_sehrgefragt")}}))}}))}sessionStorage.getItem("kk_favForSession")?(o=JSON.parse(n("favProducts")),console.log("1 favProducts: ",o),a=JSON.parse(n("sehrgefragtProducts")),console.log("1 sehrgefragtProducts: ",a)):(e.xhr_get("https://widgets.crosssell.info/eps/crosssell/recommendations.do?aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&wid=131&csize=50&start=0&type=cs&widgetdetails=true",(function(e){o=[];for(var t=JSON.parse(e).items,i=0;i<t.length;i++)o.push(parseInt(t[i].id));n("favProducts",o),sessionStorage.setItem("kk_favForSession",!0)})),e.xhr_get("https://widgets.crosssell.info/eps/crosssell/recommendations.do?aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&wid=132&csize=50&start=0&type=cs&widgetdetails=true",(function(e){a=[];for(var t=JSON.parse(e).items,i=0;i<t.length;i++)a.push(parseInt(t[i].id));n("sehrgefragtProducts",a),sessionStorage.setItem("kk_favForSession",!0)}))),i?t.iridion.push(["segment","32812"]):(t.iridion.push(["segment","-32812"]),t.iridion.push(["segment","32813"])),d(),e.ajax("productListJSON?products",(function(){d()}))}(new window.WATO,window);
