@@ -3,7 +3,7 @@
 
 /**
  * @function
- * @author Max Vith
+ * @author Denis Leno
  * @namespace V1
  * @name Variation Damen
  * @description
@@ -84,7 +84,6 @@
         if(wrapper) {
 
             wrapper = wrapper[0];
-            console.log('wrapper: ', wrapper);
 
             // if(IMG_PATH_DESKTOP && IMG_PATH_MOBILE){
 
@@ -93,15 +92,15 @@
 
             if(image){
 
-                console.log('IMG_PATH_DESKTOP: ', IMG_PATH_DESKTOP);
-                console.log('valideImgURL(IMG_PATH_DESKTOP): ', valideImgURL(IMG_PATH_DESKTOP));
+                // console.log('IMG_PATH_DESKTOP: ', IMG_PATH_DESKTOP);
+                // console.log('valideImgURL(IMG_PATH_DESKTOP): ', valideImgURL(IMG_PATH_DESKTOP));
                 if(IMG_PATH_DESKTOP.length > 0 && valideImgURL(IMG_PATH_DESKTOP)){
                     image[0].setAttribute('src', IMG_PATH_DESKTOP + '?width=640');
                     image[0].setAttribute('srcset', IMG_PATH_DESKTOP + '?width=640 640w, ' + IMG_PATH_DESKTOP + '?width=1024 1024w, ' + IMG_PATH_DESKTOP + '?width=1200 1200w, ' + IMG_PATH_DESKTOP + '?width=1440 1440w, ' + IMG_PATH_DESKTOP + '?width=1920 1920w');    
                 }
                 
-                console.log('IMG_PATH_MOBILE: ', IMG_PATH_MOBILE);
-                console.log('valideImgURL(IMG_PATH_MOBILE): ', valideImgURL(IMG_PATH_MOBILE));
+                // console.log('IMG_PATH_MOBILE: ', IMG_PATH_MOBILE);
+                // console.log('valideImgURL(IMG_PATH_MOBILE): ', valideImgURL(IMG_PATH_MOBILE));
                 if(IMG_PATH_MOBILE.length > 0 && valideImgURL(IMG_PATH_MOBILE)){
                     image[1].setAttribute('src', IMG_PATH_MOBILE + '?width=375');
                     image[1].setAttribute('srcset', IMG_PATH_MOBILE + '?width=375 375w, ' + IMG_PATH_MOBILE + '?width=640 640w');
@@ -222,103 +221,6 @@
                     setClickGoals();
                 }
             });
-
-
-
-            // parsing error
-            // try {
-
-            //     var categoryAffinity = getProfileValue(KEY_STATUS);
-
-            //     console.log("categoryAffinity", categoryAffinity);
-
-            //     // change buttons
-            //     if(categoryAffinity){ //  && categoryAffinity !== 'damen'
-
-            //         // Profile data
-            //         var categoryAffinityData = getProfileValue(KEY_DATA);
-
-            //         delete categoryAffinityData.lastVisit;
-
-            //         console.log('categoryAffinityData: ', categoryAffinityData);
-
-            //         // fix, clear categoryAffinityData object
-            //         for(var category in categoryAffinityData){
-
-            //             if(['damen', 'herren', 'baby', 'home'].indexOf(category) === -1){
-            //                 delete categoryAffinityData[category];
-            //             }
-            //         }
-
-            //         // NEW LINKS
-            //         // https://www.hessnatur.com/de/sale/damen/c/sale-damen
-            //         // https://www.hessnatur.com/de/sale/herren/c/sale-herren
-            //         // https://www.hessnatur.com/de/sale/junior/c/sale-junior
-            //         // https://www.hessnatur.com/de/sale/home/c/sale-home
-            //         WATO.elem('.lpmHero__buttons', function(buttons){
-
-            //             if(buttons){
-            //                 console.log('buttons: ', buttons);
-
-            //                 console.log('categoryAffinityData: ', categoryAffinityData);
-
-
-
-            //                 buttons[0].innerHTML = Object.keys(categoryAffinityData)
-            //                     .sort(function (a, b) {
-            //                         return categoryAffinityData[b] - categoryAffinityData[a];
-            //                     }).map(function(item, index){
-            //                         console.log('item: ', item);
-        
-            //                         var br = '',
-            //                             tempLink = '';
-        
-            //                         if(index === 2) {
-            //                             br = '<br class="show-for-small-only">';
-            //                         }
-        
-            //                         if(item === 'baby'){
-            //                             item = 'junior';
-            //                         }
-
-            //                         tempLink = 'sale/' + item + '/c/sale-' + item;
-
-            //                         if(TEXT_BUTTON1.length !== 0 && LINK_BUTTON1.length !== 0 && index === 0){
-            //                             tempLink = LINK_BUTTON1;
-            //                             item = TEXT_BUTTON1;
-            //                         }
-            //                         if(TEXT_BUTTON2.length !== 0 && LINK_BUTTON2.length !== 0 && index === 1){
-            //                             tempLink = LINK_BUTTON2;
-            //                             item = TEXT_BUTTON2;
-            //                         }
-            //                         if(TEXT_BUTTON3.length !== 0 && LINK_BUTTON3.length !== 0 && index === 2){
-            //                             tempLink = LINK_BUTTON3;
-            //                             item = TEXT_BUTTON3;
-            //                         }
-            //                         if(TEXT_BUTTON4.length !== 0 && LINK_BUTTON4.length !== 0 && index === 3){
-            //                             tempLink = LINK_BUTTON4;
-            //                             item = TEXT_BUTTON4;
-            //                         }
-        
-            //                         return br + '<a href="'+tempLink+'" class="hn-button"> ' + item + '</a>';
-            //                     }).join('');
-
-            //                     setClickGoals();
-            //                 }
-            //             })
-            //     } else {
-
-            //         // set click events for control variation
-            //         WATO.elem('.lpmHero__buttons', function(buttons){
-
-            //             if(buttons){
-            //                 setClickGoals();
-            //             }
-            //         });
-            //     }
-            // } catch(e) {
-            //     console.log("KK >>> ", e.toString());
-            // }
         }
     });
 })(new window.WATO());
