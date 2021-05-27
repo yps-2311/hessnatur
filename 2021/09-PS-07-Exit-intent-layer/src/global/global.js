@@ -13,6 +13,7 @@
 	/*jshint loopfunc: true */
 
 	WATO.prototype.ps07global = function(callback){
+
 		var _self = this;
 
 		// function goalPush(key, sendOnNextPageView){
@@ -33,12 +34,14 @@
 		}, function(ouibounceReady){
 			if(ouibounceReady){
 
+				console.log("aggressive", true);
+
 				// Das Ouibounce-Script reagiert auf ein Exitintent 
 				// beim verlassen des Cursors nach oben aus dem Browser
 				window.ouibounce(false, {
 					callback,
-					aggressive: false,
-					cookieExpire: 10,
+					aggressive: true,
+					cookieExpire: 30,
 					timer: 0
 				});
 			}

@@ -14,8 +14,11 @@
 
     // window.iridion.econda.push(["SprintPS07", "V0"]);
 
-    WATO.ps07global(function(){
-		window.iridion.push(["segment", "32875"]);
-	})
+    if(window.innerWidth > 1023){
+      
+        WATO.ps07global(function(){
+            window.iridion.push(["segment", "32875"]);
+        });
+    }
 
 })(new window.WATO());
