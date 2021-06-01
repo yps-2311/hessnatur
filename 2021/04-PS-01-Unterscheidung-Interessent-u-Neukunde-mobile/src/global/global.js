@@ -255,7 +255,7 @@
     
                 // }
     
-                if(document.URL.indexOf('.com/ch/') !== -1 === -1){
+                if(document.URL.indexOf('.com/ch/') === -1 && document.URL.indexOf('.com/at/') === -1){
 
                     _self.elem('.pds-cockpit__addProductWrapper', function(addToCartBox){
                         if(addToCartBox){
