@@ -3,7 +3,7 @@
 
 /**
  * @function
- * @author Max Mustermann
+ * @author Max Vith
  * @namespace V1
  * @name Variation 01
  * @description
@@ -11,73 +11,57 @@
 (function(WATO) {
     "use strict";
 
-    /**
-     * CSS Prefix 
-     *
-    document.documentElement.classList.add('specific-experiment-class');
-    */
+    // window.iridion.econda.push(["SprintAB23", "V1"]);
 
-    /**
-     * EXAMPLE - POLLING
-     *
-    WATO.elem(".btn-default", function(btnDefault) {
+    var setContentContainer = function(selectorAccordion, selectorNewPosition) {
 
-        if(btnDefault) {
+        WATO.elem(selectorAccordion, function(accordion){
 
-        }
-    });
+            if(accordion){
 
-    // POLLING MIT FUNKTION
-    WATO.elem(function(){return window.numTest === 123;}, function(funcCallback) {
-
-        if(funcCallback){
-
-        }
-    });
-    */
-
-
-    /**
-     * EXAMPLE - MUTATION OBSERVER
-     * 
-     * MUSS ERST IN WATO AKTIVIERT WERDEN
-     *
-    // INIT MUTATION OBSERVER
-    WATO.initObserver(function(error){
-
-        console.log(error);
-    });
-
-    // FIND ELEMENT
-    WATO.observer('.col-md-4', function(cols){
-
-    });
-    */
-
-
-    /**
-     * DOM READY
-     *
-    WATO.ready(function() {
-
-    });
-    */
-
-    /**
-     * EXAMPLE - Event
-     *
-    // with polling
-    WATO.ev('#main-cta', 'click', function(){
-        console.log("click it");
-    });
-
-    // without polling
-    WATO.elem('#main-cta', function(elem){
-
-        WATO.ev(elem[0], 'click', function(){
-            console.log("click it");
+                WATO.qs(selectorNewPosition).innerHTML = accordion[0].innerHTML;
+            }
         });
+    };
+
+    WATO.elem('#kk-prod-desc-img', function(prodImg){
+
+        if(prodImg){
+
+            prodImg = prodImg[0];
+
+            // left column
+            WATO.elem('#Produktbeschreibung > .row > .column', function(produktbeschreibung){
+
+                if(produktbeschreibung){
+
+                    produktbeschreibung = produktbeschreibung[0];
+
+                    produktbeschreibung.insertAdjacentHTML('beforeend', 
+                        '<div id="kk-ab23-Made_In" class="kk-ab23-contentBox"></div>' +
+                        '<div id="kk-ab23-Material" class="kk-ab23-contentBox"></div>'
+                    );
+
+                    setContentContainer('#Made_In', '#kk-ab23-Made_In');
+                    setContentContainer('#Material', '#kk-ab23-Material');
+                }
+            });
+
+            // right column and prod img
+            prodImg.parentNode.insertAdjacentHTML('beforeend',
+                '<div class="column small-12 medium-6 large-6">' + 
+                    prodImg.outerHTML +
+                    '<div class="row">' + 
+                        '<div id="kk-ab23-content-right" class="column">' +
+                            '<div id="kk-ab23-Ausgezeichnete_Qualitaet" class="kk-ab23-contentBox"></div>' +
+                            '<div id="kk-ab23-Passform" class="kk-ab23-contentBox"></div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>'
+            );
+
+            setContentContainer('#Ausgezeichnete_Qualitaet', '#kk-ab23-Ausgezeichnete_Qualitaet');
+            setContentContainer('#Passform', '#kk-ab23-Passform');
+        }
     });
-    */
-   
 })(new window.WATO());

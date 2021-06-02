@@ -1,0 +1,68 @@
+/* IMPORT VAR LESS FILE */
+@import "../global/vars.less";
+
+/* IMPORT GLOBAL LESS FILES */
+@import "../global/global.less";
+
+/* DEFINE VARIATION CSS */
+
+// hide accordion tabs
+#infoTabs {
+    visibility: hidden;
+    margin-bottom: 0 !important;
+}
+
+.kk-ab23 {
+
+    .accordion-item > a {
+        display: block !important;
+    
+        // margin-bottom: 30px;
+        font-size: 28px;
+        line-height: 28px;
+    
+        // &:before {
+        //     display: none;
+        // }
+    }
+    
+    .accordion-content {
+        padding: 40px 0 70px 0;
+    
+        h4 {
+            display: none;
+        }
+    }
+
+    .accordion-title {
+        padding-left: 2.69231rem;
+        padding-right: 0;
+    
+        &:before {
+            left: 0;
+            right: auto;
+    
+            width: 18px;
+            height: 12px;
+            background-image: url(//media.hessnatur.com/kk/2021/ab23-optimierung-produktdetailseite/kkab23-close.svg);
+        }
+    }
+
+    .accordion-content.kk_show {
+        display: none !important
+    }
+    
+    .is-active > .accordion-content.kk_show {
+        display: block !important
+    }
+
+    .is-active > .accordion-title:before {
+        // width: 18px;
+        // height: 12px;
+        background-image: url(//media.hessnatur.com/kk/2021/ab23-optimierung-produktdetailseite/kkab23-open.svg);
+    }
+    
+    #Produktbeschreibung img {
+        margin-top: -90px !important;
+    }
+}
