@@ -30,4 +30,19 @@
             produktbeschreibungLabel[0].click();
         }
     });
+
+    WATO.elem('.productInfoAccordion .accordion-title', function(accordionTitle){
+
+        if(accordionTitle){
+
+            for(var i = 0; i < accordionTitle.length; i++){
+
+                accordionTitle[i].addEventListener('click', function(){
+                    console.log("push!");
+
+                    this.scrollIntoView({block: "end", behavior: "smooth"});
+                });
+            }
+        }
+    });
 })(new window.WATO());
