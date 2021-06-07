@@ -36,6 +36,8 @@
     .accordion-title {
         padding-left: 2.69231rem;
         padding-right: 0;
+        z-index: 9;
+        font-family: "Roboto Condensed Bold","Roboto",Helvetica,Arial,"Archer A",sans-serif;
     
         &:before {
             left: 0;
@@ -48,7 +50,9 @@
     }
 
     .accordion-content.kk_show {
-        display: none !important
+        display: none !important;
+        z-index: 1;
+
     }
     
     .is-active > .accordion-content.kk_show {
@@ -62,6 +66,6 @@
     }
     
     #Produktbeschreibung img {
-        margin-top: -90px !important;
+        margin-top: -135px !important;
     }
 }
