@@ -13,6 +13,8 @@
 
     // window.iridion.econda.push(["SprintAB23", "V2"]);
 
+    var fakeClick = false;
+
     WATO.elem('#infoTabs', function(infoTabs){
 
         if(infoTabs){
@@ -27,9 +29,28 @@
 
         if(produktbeschreibungLabel){
 
+            fakeClick = true;
             produktbeschreibungLabel[0].click();
         }
     });
+
+    // WATO.elem(function(){
+    //     return typeof window.jQuery === "function";
+    // }, function(){
+
+    //     $('.small-collapse').on('shown.bs.collapse', function(e) {
+    //         // var $card = $(this).closest('.accordion-item');
+    //         // var $open = $($(this).data('parent')).find('.collapse.show');
+
+    //         // var additionalOffset = 0;
+    //         // if($card.prevAll().filter($open.closest('.accordion-item')).length !== 0){
+    //         //       additionalOffset =  $open.height();
+    //         // }
+    //         $('html,body').animate({
+    //             scrollTop: $card.offset().top - additionalOffset
+    //         }, 500);
+    //     });
+    // });
 
     WATO.elem('.productInfoAccordion .accordion-title', function(accordionTitle){
 
@@ -38,11 +59,22 @@
             for(var i = 0; i < accordionTitle.length; i++){
 
                 accordionTitle[i].addEventListener('click', function(){
-                    console.log("push!");
 
-                    this.scrollIntoView({block: "end", behavior: "smooth"});
+                    if(!fakeClick){
+
+                        var $elem = $(this);
+
+                        window.setTimeout(function(){
+                            $('html,body').animate({
+                                scrollTop: $elem.offset().top - 150
+                            }, 500);
+                        }, 250);
+                    }
+
+                    fakeClick = false;
                 });
             }
         }
     });
+
 })(new window.WATO());
