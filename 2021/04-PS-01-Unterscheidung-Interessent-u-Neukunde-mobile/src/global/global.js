@@ -255,23 +255,25 @@
     
                 // }
     
-                _self.elem('.pds-cockpit__addProductWrapper', function(addToCartBox){
-                    if(addToCartBox){
-                        addToCartBox[0].insertAdjacentHTML('afterend', 
-                            '<div class="kk_cta_uvps">'+
-                                '<ul>'+
-                                    '<li>Kostenlose Rücksendung</li>'+
-                                    '<li>14 Tage Rückgaberecht</li>'+
-                                    '<li>Versand aller Pakete mit DHL</li>'+
-                                '</ul>'+
-                            '</div>'
-                        );
-                    }
-                });
+                if(document.URL.indexOf('.com/ch/') === -1 && document.URL.indexOf('.com/at/') === -1){
 
-                goalPush('#kk_infoTabs .kk_carousel[data="Produktbeschreibung"]', "kk17_Produktbeschreibung");
-                goalPush('#kk_infoTabs .kk_carousel[data="Passform"]', "kk17_Passform");
-    
+                    _self.elem('.pds-cockpit__addProductWrapper', function(addToCartBox){
+                        if(addToCartBox){
+                            addToCartBox[0].insertAdjacentHTML('afterend', 
+                                '<div class="kk_cta_uvps">'+
+                                    '<ul>'+
+                                        '<li>Kostenlose Rücksendung</li>'+
+                                        '<li>14 Tage Rückgaberecht</li>'+
+                                        '<li>Versand aller Pakete mit DHL</li>'+
+                                    '</ul>'+
+                                '</div>'
+                            );
+                        }
+                    });
+
+                    goalPush('#kk_infoTabs .kk_carousel[data="Produktbeschreibung"]', "kk17_Produktbeschreibung");
+                    goalPush('#kk_infoTabs .kk_carousel[data="Passform"]', "kk17_Passform");
+                }
             } else {
     
                 // Kategorieseite
