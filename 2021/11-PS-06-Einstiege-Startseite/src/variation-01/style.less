@@ -1,0 +1,107 @@
+/* IMPORT VAR LESS FILE */
+@import "../global/vars.less";
+
+/* IMPORT GLOBAL LESS FILES */
+@import "../global/global.less";
+
+/* DEFINE VARIATION CSS */
+#kk_highlights_header{
+  padding-bottom: 0!important;
+}
+
+#kk_popular_header,#kk_highlights_header,.kk_container{
+  max-width: 147.69231rem;
+  margin: 0 auto;
+  overflow: hidden;
+  display: grid;
+  grid-gap: 0;
+}
+
+.kk_container>div{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-bottom: 2rem;
+}
+
+#kk_popularities_content>div>div>div{
+
+  text-align:center;
+
+  >a>div>h4{
+    text-align:center;
+  }
+}
+
+#kk_highlights_content>div>div>div>a{
+
+  >div>div> .price.special{
+    font-weight: 600;
+  }
+}
+
+.kk_children_50{
+  width: 100%;
+  background-color: #FAFAFA;
+  padding: 25%;
+}
+
+.kk_children_50>img{
+  width: 100%;
+}
+
+.kk_furtherArticles, .kk_badge{
+  font-family: Roboto Condensed !important;
+  font-size: 11pt !important;
+  font-weight: 600;
+}
+
+.kk_furtherArticles{
+  margin-right: 20px;
+}
+
+.kk_badge{
+
+  +h4{
+    text-transform: none;
+  }
+  
+  >span{
+    margin-bottom: .38462rem;
+  }
+  .kk_sales{
+    color:#D34544;
+    text-transform: uppercase;
+  }
+  .kk_vegan{
+    color: #94A880;
+    text-transform: uppercase;
+  }
+  .kk_neu{
+  color: black;
+  text-transform: uppercase;
+  }
+
+}
+
+.kk_flex{
+  display: flex;
+}
+
+@media screen and (min-width:40em) {
+  .kk_furtherArticles, .kk_badge{
+  font-size: 13pt !important;
+  font-weight: 600; 
+  }
+
+}
+@media screen and (min-width:64em) {
+  #kk_highlights_content>div>div>div>a{
+    >img{
+      width: 435px;
+    }
+    
+  }
+}
+@media screen and (min-width:75em) {
+}
