@@ -68,9 +68,12 @@
             var link=product['permalink'];
             var image=product['imageOnlyProduct'];
             var name=product['name'];
+            //var highlight=product['name'];
+            var highlight="Kundenfavorit";
 
             var isNormal= "show";
             var isReduced= "";
+            console.log("product", product);
 
             if(!prevPrice){
                 isReduced="hide";
@@ -88,6 +91,11 @@
 
             result = result.concat(
                 '<div class="kk_productitem_highlight productitem pro text-center small-5 medium-5 large-3 columns " style="position: absolute; left: 0%;">'+
+                    '<div class="kk_highlight-header kk_grid">'+
+                        '<div>'+
+                        highlight+
+                        '</div>'+
+                    '</div>'+
                     '<a href='+link+' class="item__image"><img src='+image+'>'+
                          '<div class="item__desc h-smallOffset-top-outer">'+
                             '<div class="kk_badge kk_flex">'+
@@ -216,7 +224,7 @@
                 headline[0].insertAdjacentHTML("afterend",
                     '<div id="kk_insertion lpmTeaser --two grid --headline    --align    --fluffy">'+
                         '<div class="lpmSeparator">&nbsp;</div>'+
-                        initKkHeadline("kk_highlights_header","Aktuelle Highlights")+
+                        initKkHeadline("kk_highlights_header","Shirts & Tops aus Bio-Baumwolle")+
                         initKkSliderContainer("kk_highlights_content")+
                         initKkHeadline("kk_popular_header","Beliebte Kategorien")+
                         '<div id="kk_chosen_user" class="kk_container">'+

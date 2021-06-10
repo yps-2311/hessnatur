@@ -26,6 +26,13 @@
 #kk_highlights_content .price.special {
   font-weight: 600;
 }
+.kk_highlight-header > div {
+  padding: 0.8rem;
+  background-color: #f9f089;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
 .kk_children_50 {
   width: 100%;
   background-color: #FAFAFA;
