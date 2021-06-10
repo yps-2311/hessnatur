@@ -19,16 +19,15 @@
             window.iridion.push(['goal', key]);
         };
 
-    WATO.elem('.productInfoAccordion .accordion-title', function(accordionTitle){
+    WATO.elem('#infoTabs div', function(accordionTitle){
 
         if(accordionTitle){
 
             for(var i = 0; i < accordionTitle.length; i++){
 
                 accordionTitle[i].addEventListener('click', function(){
-
                     pushGoal('kk_ab23_click_tab');
-                    pushGoal('kk_ab23_click_tab_' + this.getAttribute('id'));
+                    pushGoal('kk_ab23_click_tab_' + this.getAttribute('data') + '-label');
                 });
             }
         }
