@@ -62,6 +62,7 @@
 				var link=product['permalink'];
 				var image=product['imageOnlyProduct'];
 				var name=product['name'];
+				var highlight="Kundenfavorit";
 	
 				var isNormal= "show";
 				var isReduced= "";
@@ -79,9 +80,15 @@
 				   for(var index in badges){
 					   mergedProducts+='<span class="kk_'+badges[index]+'">'+badges[index]+'</span><span>&nbsp;&nbsp;</span>';
 					}
+				var variants=(variation===2?'<div class="kk_highlight-header kk_grid">'+
+											'<div>'+
+												highlight+
+											'</div>'+
+										'</div>':"")
 	
 				result = result.concat(
 					'<div class="kk_productitem_highlight productitem pro text-center small-5 medium-5 large-3 columns " style="position: absolute; left: 0%;">'+
+						variants+
 						'<a href='+link+' class="item__image"><img src='+image+'>'+
 							 '<div class="item__desc h-smallOffset-top-outer">'+
 								'<div class="kk_badge kk_flex">'+

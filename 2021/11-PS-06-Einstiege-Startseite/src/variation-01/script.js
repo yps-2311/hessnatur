@@ -1,5 +1,5 @@
 // load core and global js
-// @ codekit-prepend "../global/global.js";
+ //@codekit-prepend "../global/global.js";
 
 //@ code-kit append "request.min.js";
 /**
@@ -8,8 +8,7 @@
  * @namespace V1
  * @name Variation 01
  * @description
- * @info Slider Arrows sind seitens Hessnatur verändert worden, der Unterstrich bei "Alle Artikel für..." ist schwarz
- *  -> restliche Seite hält dies aber grau
+
  */
  (function (WATO) {
     "use strict";
