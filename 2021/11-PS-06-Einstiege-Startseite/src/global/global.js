@@ -14,11 +14,16 @@
 
 		var WATO=this;
 
-		function initFlickity(slide){
-			const props={
+		function initFlickity(slide, height, selector){
+			var props={
 				cellAlign: 'left',
 				contain: true,
-				pageDots: false
+				pageDots: false,
+				/*on: {
+					ready: function() {
+					  console.log('Flickity is ready');
+					}
+				}*/
 			}
 			return new Flickity(slide,props);
 		}
@@ -109,13 +114,13 @@
 					'</div>'
 					);
 				}
-			}
+			}//https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2021/03-ps06-placeholder/popularity_filler.png
 			return result;
 		}
 	
 		function insertPopularities(element){
 			element[0].innerHTML='';
-			var image='https://dev.web-arts.de/hessnatur/2021/11-PS-06-Einstiege-Startseite/src/variation-01/assets/popularity_filler.png';
+			var image='https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2021/03-ps06-placeholder/popularity_filler.png';
 			var link='https://www.hessnatur.com/de/damen/bekleidung/jacken-und-maentel/c/damen-bekleidung-jacken-maentel';
 	
 				
@@ -123,7 +128,7 @@
 					for (var i=0;i<=5; i++){
 						element[0].insertAdjacentHTML("afterbegin",
 							'<div class="text-center small-4 medium-3 large-2 columns">'+
-								'<a href='+link+' class="item__image"><div class="kk_children_50"><img class="" src='+image+'></div>'+
+								'<a href='+link+' class="item__image"><div class="kk_children_50"><img placeholder="black t-shirt" src='+image+'></div>'+
 									'<div class="item__desc h-smallOffset-top-outer">'+
 										'<h4 class="kk_h4">Kategorie '+i+'</h4>'+
 									'</div>'+
@@ -144,12 +149,13 @@
 							'</div>'
 								); 
 					}
+					
 					initFlickity(element[0]);
 					setTimeout(function(){
 						var heightOfPopularitySlider = jQuery('.kk_productitem_popularity').height();
 						console.log(heightOfPopularitySlider, "height");
 						jQuery("#kk_popularities_content .flickity-viewport").css("height", heightOfPopularitySlider+"px");
-					}, 4000);
+					}, 300);
 				}
 			}
 	
@@ -230,7 +236,7 @@
 								'<div class="kk_furtherArticles kk_isMobile kk_justify-content-center">'+
 									'<span class="hn-button-link">Alle Artikel für Damen</span>'+
 								'</div>'+
-							'</div>'+
+							'</div>'/*+
 							'<div class="kk_contest kk_grid kk_isMobile column">'+
 								'<div class="small-6">'+
 									'<div class="kk_first_line">'+
@@ -245,7 +251,7 @@
 									'<a class="kk_second_line kk_text-white kk_bottom-border_white">Outfit gewinnen</a>'+
 								'</div>'+
 							'</div>'+
-						'</div>');
+						'</div>'*/);
 					}
 				});
 	
@@ -264,7 +270,7 @@
 		function(done){
 			if(done){
 				WATO.elem(function(){
-					return typeof window.Flickity !== "undefined";
+					return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
 				}, function(){        
 								WATO.elem('#kk_popularities_content',function(element){
 									if(element){
@@ -281,32 +287,22 @@
 										try {
 												var slide=element[0];
 								
-												initFlickity(slide);
-	
-												/*
-												WATO.elem('.kk_productitem_highlight',function(highlightCards){
-													WATO.elem("#kk_highlights_content .flickity-viewport", function(HighlightsViewport){
-														//HighlightsViewport[0].style.height=highlightCards[0].style.height;
-														console.log(highlightCards[0].style.height,"card",highlightsViewport[0].style.height,"vp");
-													})
-	
-												})*/
-	
+												initFlickity(slide,'.kk_productitem_highlight',"#kk_highlights_content .flickity-viewport");
+
 												setTimeout(function(){
 													var heightOfHighlightsSlider= jQuery('.kk_productitem_highlight').height();
 													jQuery("#kk_highlights_content .flickity-viewport").css("height", heightOfHighlightsSlider+"px");
-												}, 4000);
+												}, 300);
+
 										}catch (error){
-											console.log("Flickity failure: ", error);
+											console.log("failure: ", error);
 										}
 									}
 								});//second slide
 					});
 				}//done
 			});
-	
-			
-		
+
 			WATO.elem(".lpmSeparator", function(spaceing) {
 				if(spaceing) {
 				spaceing[1].style.display="none";
