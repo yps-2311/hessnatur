@@ -18,13 +18,7 @@
 			var props={
 				cellAlign: 'left',
 				contain: true,
-				pageDots: false,
-				/*on: {
-					ready: function() {
-					  console.log('Flickity is ready');
-					}
-				}*/
-				
+				pageDots: false
 			}
 			return new Flickity(slide,props);
 		}
@@ -60,9 +54,9 @@
 			
 			var result = '';
 	
-			for(var category in data){
+			for(var category in dataHighlights){
 				
-			var product = data[category]['response'];
+			var product = dataHighlights[category]['response'];
 	
 			if (product) {
 				var price=product['price'].toFixed(2);
@@ -75,7 +69,7 @@
 				//console.log(product);
 				var desc=link.split("/")[4].replaceAll('-','_');
 				var cardPara=image.split('/')
-				var cardPara=cardPara[cardPara.length-1];
+				cardPara=cardPara[cardPara.length-1];
 				var imageUrl='https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/'+desc+'-'+cardPara+'.jpg';
 	
 				var isNormal= "show";
@@ -102,7 +96,7 @@
 					result = result.concat(
 						'<div class="kk_productitem_highlight productitem pro text-center small-5 medium-5 large-3 columns " style="position: absolute; left: 0%;">'+
 							variants+
-							'<a href='+link+' class="item__image"><img src='+image+'>'+
+							'<a href='+link+' class="item__image"><img src='+imageUrl+'>'+
 								'<div class="item__desc h-smallOffset-top-outer">'+
 									'<div class="kk_badge kk_flex">'+
 										mergedProducts+
@@ -127,14 +121,15 @@
 		}
 		
 		function insertPopularities(element){
-			element[0].innerHTML='';
+			console.log('Elementinnerpops', element);
+			element.innerHTML='';
 			var image='https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2021/03-ps06-placeholder/popularity_filler.png';
 			var link='https://www.hessnatur.com/de/damen/bekleidung/jacken-und-maentel/c/damen-bekleidung-jacken-maentel';
 	
 				
 			if(window.innerWidth<600){
 				for (var i=0;i<=5; i++){
-					element[0].insertAdjacentHTML("afterbegin",
+					element.insertAdjacentHTML("afterbegin",
 						'<div class="text-center small-4 medium-3 large-2 columns">'+
 							'<a href='+link+' class="item__image"><div class="kk_children_50"><img placeholder="black t-shirt" src='+image+'></div>'+
 								'<div class="item__desc h-smallOffset-top-outer">'+
@@ -146,7 +141,7 @@
 			}
 			else{
 				for (var j=0;j<=5; j++){
-					element[0].insertAdjacentHTML("afterbegin",
+					element.insertAdjacentHTML("afterbegin",
 						'<div class="kk_productitem_popularity productitem text-center small-4 medium-3 kk-large-20 columns" style="position: absolute; left: 0%;">'+
 							'<a href='+link+' class="item__image"><div class="kk_children_50"><img class="" src='+image+'></div>'+
 								'<div class="item__desc h-smallOffset-top-outer">'+
@@ -156,15 +151,6 @@
 						'</div>'
 							); 
 				}
-				
-				initFlickity(element[0]);
-
-				// TODO: Auslagern in eigene Funktion
-				setTimeout(function(){
-					var heightOfPopularitySlider = jQuery('.kk_productitem_popularity').height();
-					console.log(heightOfPopularitySlider, "height");
-					jQuery("#kk_popularities_content .flickity-viewport").css("height", heightOfPopularitySlider+"px");
-				}, 300);
 			}
 		}
 		
@@ -245,22 +231,7 @@
 								'<div class="kk_furtherArticles kk_isMobile kk_justify-content-center">'+
 									'<span class="hn-button-link">Alle Artikel für Damen</span>'+
 								'</div>'+
-							'</div>'/*+
-							'<div class="kk_contest kk_grid kk_isMobile column">'+
-								'<div class="small-6">'+
-									'<div class="kk_first_line">'+
-										'Für Mamas und Papas'+
-									'</div>'+
-									'<div class="kk_second_line">'+
-										'<div>Unser Dankeschön:</div>'+
-										'<div>Lieblingsoutfit zu gewinnen.</div>'+
-									'</div>'+
-								'</div>'+
-								'<div class="small-6 kk_flex kk_justify-content-center kk_align-items-center">'+
-									'<a class="kk_second_line kk_text-white kk_bottom-border_white">Outfit gewinnen</a>'+
-								'</div>'+
-							'</div>'+
-						'</div>'*/);
+							'</div>');
 					}
 				});
 	
@@ -282,9 +253,35 @@
 		function(done){
 			if(done){
 
+
+
 				WATO.elem('#kk_popularities_content',function(element){
 					if(element){
-						insertPopularities(element);
+
+						WATO.elem(function(){
+							return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
+						}, function(){
+
+						var popularities=element[0];
+
+						popularities.innerHTML='';
+						insertPopularities(popularities);
+							try {
+								WATO.elem(function(){
+									console.log(WATO.qs('a > div > img', popularities).clientHeight,"height");
+									return 	WATO.qs('a > div > img', popularities).clientHeight > 0;
+								}, function(oneImgReady){
+									console.log(oneImgReady,"imgrdypopus");
+									if(oneImgReady){
+										console.log("rdy popus", popularities);
+										initFlickity(popularities);
+										
+									}
+								});	
+							}catch (error){
+								console.log("failure: ", error);
+							}
+						});
 					}
 				});
 
@@ -301,20 +298,17 @@
 						}, function(){
 	
 							try {
-								// var slide=element[0];
-				
 								WATO.elem(function(){
-									return 	WATO.qs('a > img', slide).outerHeight > 0;
+									console.log(WATO.qs('a > img', slide).clientHeight,"height");
+									return 	WATO.qs('a > img', slide).clientHeight > 0;
 								}, function(oneImgReady){
+									console.log(oneImgReady,"imgrdy");
 									if(oneImgReady){
+										console.log("rdy");
 										initFlickity(slide,'.kk_productitem_highlight',"#kk_highlights_content .flickity-viewport");
+										
 									}
 								});
-	
-								// setTimeout(function(){
-									// var heightOfHighlightsSlider= jQuery('.kk_productitem_highlight').height();
-									// jQuery("#kk_highlights_content .flickity-viewport").css("height", (jQuery('.kk_productitem_highlight').height() || 0) +"px");
-								// }, 300);
 	
 							}catch (error){
 								console.log("failure: ", error);

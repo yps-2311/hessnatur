@@ -38,7 +38,7 @@
 }
 .kk_furtherArticles {
   flex-direction: row;
-  margin: 0 0 3rem 0;
+  margin: 3rem 0;
 }
 .kk_furtherArticles > span {
   text-transform: none;
@@ -46,6 +46,7 @@
   border-bottom-width: 0.07692rem;
   font-size: 11pt;
   font-weight: 200;
+  text-transform: uppercase;
 }
 .kk_isDesktop {
   display: none;
@@ -123,19 +124,22 @@
 @media screen and (min-width: 40em) {
   .kk_furtherArticles,
   .kk_badge {
-    font-weight: 400;
+    font-weight: 600;
   }
   #kk_popularities_content .kk_h4 {
     text-align: center;
     font-size: 13pt !important;
     font-weight: 600;
   }
+  .kk_furtherArticles {
+    margin: 0 0 2rem 0;
+  }
   .kk_furtherArticles > span {
     margin-right: 20px;
     border-bottom: 1px solid rgba(55, 57, 57, 0.3);
     border-bottom-width: 0.07692rem;
-    font-size: 13pt;
-    font-weight: 600;
+    font-size: 1.07692rem;
+    font-weight: 700;
   }
   .kk_isDesktop {
     display: flex;
