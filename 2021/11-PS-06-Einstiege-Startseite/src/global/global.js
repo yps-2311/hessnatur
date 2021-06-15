@@ -24,6 +24,7 @@
 					  console.log('Flickity is ready');
 					}
 				}*/
+				
 			}
 			return new Flickity(slide,props);
 		}
@@ -59,6 +60,7 @@
 			var result = '';
 	
 			for(var category in data){
+				
 			var product = data[category]['response'];
 	
 			if (product) {
@@ -68,6 +70,12 @@
 				var image=product['imageOnlyProduct'];
 				var name=product['name'];
 				var highlight="Kundenfavorit";
+
+				//console.log(product);
+				var desc=link.split("/")[4].replaceAll('-','_');
+				var cardPara=image.split('/')
+				var cardPara=cardPara[cardPara.length-1];
+				var imageUrl='https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/'+desc+'-'+cardPara+'.jpg';
 	
 				var isNormal= "show";
 				var isReduced= "";
@@ -94,7 +102,7 @@
 				result = result.concat(
 					'<div class="kk_productitem_highlight productitem pro text-center small-5 medium-5 large-3 columns " style="position: absolute; left: 0%;">'+
 						variants+
-						'<a href='+link+' class="item__image"><img src='+image+'>'+
+						'<a href='+link+' class="item__image"><img src='+imageUrl+'>'+
 							 '<div class="item__desc h-smallOffset-top-outer">'+
 								'<div class="kk_badge kk_flex">'+
 									mergedProducts+
@@ -165,7 +173,7 @@
 					"badges": [
 						"neu",
 						"vegan",
-						"sales"
+						"sale"
 					]  
 					,
 					"response": {
@@ -176,7 +184,7 @@
 					"badges": [
 						"neu",
 						"vegan",
-						"sales"
+						"sale"
 					]  ,
 					"response": {
 	
@@ -186,7 +194,7 @@
 					"badges": [
 						"neu",
 						"vegan",
-						"sales"
+						"sale"
 					]  ,
 					"response": {
 	
@@ -196,7 +204,7 @@
 					"badges": [
 						"neu",
 						"vegan",
-						"sales"
+						"sale"
 					]  ,
 					"response": {
 	
@@ -206,7 +214,7 @@
 					"badges": [
 						"neu",
 						"vegan",
-						"sales"
+						"sale"
 					]  ,
 					"response": {
 	

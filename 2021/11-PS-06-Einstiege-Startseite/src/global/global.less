@@ -6,9 +6,6 @@
 // background: url('@{base-url}sprite.png') no-repeat 0 0;
 
 /* DEFINE VARIATION CSS */
-#kk_highlights_header{
-  padding-bottom: 0!important;
-}
 
 #kk_popular_header,#kk_highlights_header,.kk_container{
   max-width: 147.69231rem;
@@ -16,6 +13,7 @@
   overflow: hidden;
   display: grid;
   grid-gap: 0;
+  padding-bottom: 0!important;
 }
 
 #kk_popularities_content>div>div>div{
@@ -49,7 +47,7 @@
 
 .kk_furtherArticles{
   flex-direction: row;
-  margin: 3rem 0;
+  margin: 0 0 3rem 0;
 
   >span{
     text-transform: none;
@@ -83,7 +81,7 @@
   }
 
 .kk_badge{
-  font-size: 11pt !important;
+  //font-size: 11pt !important;
   font-weight: 600;
 
   +h4{
@@ -93,7 +91,7 @@
   >span{
     margin-bottom: .38462rem;
   }
-  .kk_sales{
+  .kk_sale{
     color:#D34544;
     text-transform: uppercase;
   }
@@ -146,8 +144,7 @@
 
 @media screen and (min-width:40em) {
   .kk_furtherArticles, .kk_badge{
-    font-size: 13pt !important;
-    font-weight: 600; 
+    font-weight: 400; 
   }
   #kk_popularities_content .kk_h4{
       text-align:center;
@@ -174,9 +171,9 @@
       width: 435px;
     }
     .kk-large-20{
-      -webkit-box-flex: 0;
-      -ms-flex: 0 0 20%;
-      flex: 0 0 20%;
-      max-width: 20%;
+      -webkit-box-flex: 0 !important;
+      -ms-flex: 0 0 20% !important;
+      flex: 0 0 20% !important;
+      max-width: 20% !important;
     }
 }
