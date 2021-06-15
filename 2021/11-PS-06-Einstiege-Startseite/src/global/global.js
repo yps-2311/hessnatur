@@ -12,9 +12,9 @@
 
 	WATO.prototype.PS06 = function(variation){
 
-		var WATO=this;
+		var WATO = this;
 
-		function initFlickity(slide, height, selector){
+		function initFlickity(slide){ // , height, selector
 			var props={
 				cellAlign: 'left',
 				contain: true,
@@ -40,23 +40,24 @@
 		function initKkSliderContainer(contentId){
 			if(window.innerWidth<600 && contentId=="kk_popularities_content"){
 				return('<div id="'+contentId+'" class="kk_grid">...Loading</div>')
-			}
-			else return(
-				'<div class="small-12 columns js-product-reference">'+
-					'<div class="small-12 columns ">'+
-					   '<div class="row js-productSliderWrapper h-xxLargeOffset-bottom-outer">'+
-						   '<div class="column small-12 h-no-padding-medium-down">'+
-								'<div class="flickity-productslider kk_slider" id="'+contentId+'">'+
-									'...Loading'+
+			}else{
+				return(
+					'<div class="small-12 columns js-product-reference">'+
+						'<div class="small-12 columns ">'+
+						   '<div class="row js-productSliderWrapper h-xxLargeOffset-bottom-outer">'+
+							   '<div class="column small-12 h-no-padding-medium-down">'+
+									'<div class="flickity-productslider kk_slider" id="'+contentId+'">'+
+										'...Loading'+
+									'</div>'+
 								'</div>'+
 							'</div>'+
 						'</div>'+
-					'</div>'+
-				'</div>');
+					'</div>');
+			}
 		}
 	
-		function insertHighlights(data) {
-	
+		function insertHighlights(dataHighlights) {
+			
 			var result = '';
 	
 			for(var category in data){
@@ -82,91 +83,91 @@
 	
 				if(!prevPrice){
 					isReduced="hide";
-				}
-				else{
+				}else{
 					isNormal="hide";
 					prevPrice.toFixed(2);
 					}
-	
-				   var mergedProducts='';
-				   var badges=data[category]['badges'];
-				   for(var index in badges){
-					   mergedProducts+='<span class="kk_'+badges[index]+'">'+badges[index]+'</span><span>&nbsp;&nbsp;</span>';
+		
+					var mergedProducts='';
+					var badges=dataHighlights[category]['badges'];
+					for(var index in badges){
+						mergedProducts+='<span class="kk_'+badges[index]+'">'+badges[index]+'</span><span>&nbsp;&nbsp;</span>';
 					}
-				var variants=(variation===2?'<div class="kk_highlight-header kk_grid">'+
-											'<div>'+
-												highlight+
-											'</div>'+
-										'</div>':"")
-	
-				result = result.concat(
-					'<div class="kk_productitem_highlight productitem pro text-center small-5 medium-5 large-3 columns " style="position: absolute; left: 0%;">'+
-						variants+
-						'<a href='+link+' class="item__image"><img src='+imageUrl+'>'+
-							 '<div class="item__desc h-smallOffset-top-outer">'+
-								'<div class="kk_badge kk_flex">'+
-									mergedProducts+
-								'</div>'+
-								'<h4 class="item_desc desc-name">'+ name +'</h4>'+
-								'<div class="desc-price kk_flex">'+
-									'<span class="price '+isReduced+' special full ">'+prevPrice+' €</span>'+
-									'<span class="'+isReduced+'">&nbsp;&nbsp;</span>'+
-									'<span class="price hide" style="margin-left: 3px">ab </span>'+
-									'<span class="price '+isReduced+' special">'+ price +' €</span>'+
-									'<span class="price light '+isNormal+'">'+ price+ ' €</span>'+
-									'<div class="product-basic-price basicPrice">'+
+					var variants=(variation===2?'<div class="kk_highlight-header kk_grid">'+
+												'<div>'+
+													highlight+
+												'</div>'+
+											'</div>':"")
+		
+					result = result.concat(
+						'<div class="kk_productitem_highlight productitem pro text-center small-5 medium-5 large-3 columns " style="position: absolute; left: 0%;">'+
+							variants+
+							'<a href='+link+' class="item__image"><img src='+image+'>'+
+								'<div class="item__desc h-smallOffset-top-outer">'+
+									'<div class="kk_badge kk_flex">'+
+										mergedProducts+
+									'</div>'+
+									'<h4 class="item_desc desc-name">'+ name +'</h4>'+
+									'<div class="desc-price kk_flex">'+
+										'<span class="price '+isReduced+' special full ">'+prevPrice+' €</span>'+
+										'<span class="'+isReduced+'">&nbsp;&nbsp;</span>'+
+										'<span class="price hide" style="margin-left: 3px">ab </span>'+
+										'<span class="price '+isReduced+' special">'+ price +' €</span>'+
+										'<span class="price light '+isNormal+'">'+ price+ ' €</span>'+
+										'<div class="product-basic-price basicPrice">'+
+										'</div>'+
 									'</div>'+
 								'</div>'+
-							'</div>'+
-						'</a>'+
-					'</div>'
+							'</a>'+
+						'</div>'
 					);
 				}
 			}//https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2021/03-ps06-placeholder/popularity_filler.png
 			return result;
 		}
-	
+		
 		function insertPopularities(element){
 			element[0].innerHTML='';
 			var image='https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2021/03-ps06-placeholder/popularity_filler.png';
 			var link='https://www.hessnatur.com/de/damen/bekleidung/jacken-und-maentel/c/damen-bekleidung-jacken-maentel';
 	
 				
-				if(window.innerWidth<600){
-					for (var i=0;i<=5; i++){
-						element[0].insertAdjacentHTML("afterbegin",
-							'<div class="text-center small-4 medium-3 large-2 columns">'+
-								'<a href='+link+' class="item__image"><div class="kk_children_50"><img placeholder="black t-shirt" src='+image+'></div>'+
-									'<div class="item__desc h-smallOffset-top-outer">'+
-										'<h4 class="kk_h4">Kategorie '+i+'</h4>'+
-									'</div>'+
-								'</a>'+
-							'</div>'
-								); 
-					}
-				}
-				else{
-					for (var j=0;j<=5; j++){
-						element[0].insertAdjacentHTML("afterbegin",
-							'<div class="kk_productitem_popularity productitem text-center small-4 medium-3 kk-large-20 columns" style="position: absolute; left: 0%;">'+
-								'<a href='+link+' class="item__image"><div class="kk_children_50"><img class="" src='+image+'></div>'+
-									'<div class="item__desc h-smallOffset-top-outer">'+
-										'<h4 class="kk_h4">Kategorie '+j+'</h4>'+
-									'</div>'+
-								'</a>'+
-							'</div>'
-								); 
-					}
-					
-					initFlickity(element[0]);
-					setTimeout(function(){
-						var heightOfPopularitySlider = jQuery('.kk_productitem_popularity').height();
-						console.log(heightOfPopularitySlider, "height");
-						jQuery("#kk_popularities_content .flickity-viewport").css("height", heightOfPopularitySlider+"px");
-					}, 300);
+			if(window.innerWidth<600){
+				for (var i=0;i<=5; i++){
+					element[0].insertAdjacentHTML("afterbegin",
+						'<div class="text-center small-4 medium-3 large-2 columns">'+
+							'<a href='+link+' class="item__image"><div class="kk_children_50"><img placeholder="black t-shirt" src='+image+'></div>'+
+								'<div class="item__desc h-smallOffset-top-outer">'+
+									'<h4 class="kk_h4">Kategorie '+i+'</h4>'+
+								'</div>'+
+							'</a>'+
+						'</div>'); 
 				}
 			}
-	
+			else{
+				for (var j=0;j<=5; j++){
+					element[0].insertAdjacentHTML("afterbegin",
+						'<div class="kk_productitem_popularity productitem text-center small-4 medium-3 kk-large-20 columns" style="position: absolute; left: 0%;">'+
+							'<a href='+link+' class="item__image"><div class="kk_children_50"><img class="" src='+image+'></div>'+
+								'<div class="item__desc h-smallOffset-top-outer">'+
+									'<h4 class="kk_h4">Kategorie '+j+'</h4>'+
+								'</div>'+
+							'</a>'+
+						'</div>'
+							); 
+				}
+				
+				initFlickity(element[0]);
+
+				// TODO: Auslagern in eigene Funktion
+				setTimeout(function(){
+					var heightOfPopularitySlider = jQuery('.kk_productitem_popularity').height();
+					console.log(heightOfPopularitySlider, "height");
+					jQuery("#kk_popularities_content .flickity-viewport").css("height", heightOfPopularitySlider+"px");
+				}, 300);
+			}
+		}
+		
 		var DATA={
 			"damen":{
 				"5126626ONE": {
@@ -265,10 +266,13 @@
 	
 		for(var id in DATA ){
 			WATO.xhr_get("https://products.hessnatur.com/products/"+id, function (rawData) {
-	
-				var sku=rawData['products'][0]['sku'];
-				DATA[sku].response=rawData['products'][0];
-				response++;
+				try {
+					var sku=rawData['products'][0]['sku'];
+					DATA[sku].response=rawData['products'][0];
+					response++;
+				} catch (error) {
+					console.log('Error: ', error);
+				}
 			});
 		}
 		WATO.elem(function(){
@@ -277,45 +281,56 @@
 		},
 		function(done){
 			if(done){
-				WATO.elem(function(){
-					return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
-				}, function(){        
-								WATO.elem('#kk_popularities_content',function(element){
-									if(element){
-										insertPopularities(element);
+
+				WATO.elem('#kk_popularities_content',function(element){
+					if(element){
+						insertPopularities(element);
+					}
+				});
+
+				WATO.elem('#kk_highlights_content',function(element){
+					if(element){
+						var slide=element[0];
+
+						//removing Text: ...Loading
+						slide.innerHTML='';
+						slide.insertAdjacentHTML("afterbegin", insertHighlights(DATA));
+						
+						WATO.elem(function(){
+							return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
+						}, function(){
+	
+							try {
+								// var slide=element[0];
+				
+								WATO.elem(function(){
+									return 	WATO.qs('a > img', slide).outerHeight > 0;
+								}, function(oneImgReady){
+									if(oneImgReady){
+										initFlickity(slide,'.kk_productitem_highlight',"#kk_highlights_content .flickity-viewport");
 									}
 								});
-					
-								WATO.elem('#kk_highlights_content',function(element){
-									if(element){
-										//removing Text: ...Loading
-										element[0].innerHTML='';
-										element[0].insertAdjacentHTML("afterbegin", insertHighlights(DATA));
-										
-										try {
-												var slide=element[0];
-								
-												initFlickity(slide,'.kk_productitem_highlight',"#kk_highlights_content .flickity-viewport");
+	
+								// setTimeout(function(){
+									// var heightOfHighlightsSlider= jQuery('.kk_productitem_highlight').height();
+									// jQuery("#kk_highlights_content .flickity-viewport").css("height", (jQuery('.kk_productitem_highlight').height() || 0) +"px");
+								// }, 300);
+	
+							}catch (error){
+								console.log("failure: ", error);
+							}
+						});
+						
+					}
+				});//second slide
+				
+			}//done
+		});
 
-												setTimeout(function(){
-													var heightOfHighlightsSlider= jQuery('.kk_productitem_highlight').height();
-													jQuery("#kk_highlights_content .flickity-viewport").css("height", heightOfHighlightsSlider+"px");
-												}, 300);
-
-										}catch (error){
-											console.log("failure: ", error);
-										}
-									}
-								});//second slide
-					});
-				}//done
-			});
-
-			WATO.elem(".lpmSeparator", function(spaceing) {
-				if(spaceing) {
+		WATO.elem(".lpmSeparator", function(spaceing) {
+			if(spaceing) {
 				spaceing[1].style.display="none";
 			}
-	
 		});
 	};
 	
