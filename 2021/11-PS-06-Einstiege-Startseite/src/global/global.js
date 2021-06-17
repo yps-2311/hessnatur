@@ -115,7 +115,6 @@
 							hasFavorite=true;
 						}
 					}
-					console.log('headerz', hasFavorite);
 					var variants=((variation===2&&hasFavorite)?'<div class="kk_highlight-header kk_grid">'+
 												'<div>'+
 													highlight+
@@ -150,7 +149,6 @@
 		}
 		
 		function insertPopularities(element){
-			console.log('Elementinnerpops', element);
 			element.innerHTML='';
 				
 			if(window.innerWidth<600){
@@ -229,7 +227,7 @@
 			});
 		}
 		WATO.elem(function(){
-			console.log(response, Object.keys(DATA).length, "objectkeys");
+			//console.log(response, Object.keys(DATA).length, "objectkeys");
 			return response===Object.keys(DATA).length;
 		},
 		function(done){
@@ -249,11 +247,9 @@
 
 							try {
 								WATO.elem(function(){
-									console.log(WATO.qs('a > img', popularities).clientHeight,"height");
 									return 	WATO.qs('a > img', popularities).clientHeight > 0;
 								}, function(oneImgReady){
 									if(oneImgReady&&window.innerWidth>=600){
-										console.log("rdy popularities", popularities);
 										initFlickity(popularities);
 										
 									}
@@ -281,9 +277,8 @@
 								WATO.elem(function(){
 									return 	WATO.qs('a > img', slide).clientHeight > 0;
 								}, function(oneImgReady){
-									console.log(oneImgReady,"imgrdy");
 									if(oneImgReady){
-										console.log("rdy");
+										//console.log("rdy");
 										initFlickity(slide,'.kk_productitem_highlight',"#kk_highlights_content .flickity-viewport");
 										
 									}
