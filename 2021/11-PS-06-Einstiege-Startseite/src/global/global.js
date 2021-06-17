@@ -10,17 +10,39 @@
 (function(WATO){
 	"use strict";
 
-	WATO.prototype.PS06 = function(variation){
+	WATO.prototype.PS06 = function(CATEGORY_AFFINITY, CATEGORIES, DATA, variation){
 
+		var IMG_PATH = 'https://media.hessnatur.com/kk/2021/ps06-startseite/';
+		var DOMAIN = 'https://www.hessnatur.com/de/';
 		var WATO = this;
+
+		function pushGoal(key, value) {
+
+			console.log(">>> push goal", key, value);
+
+			var props = ['goal', 'ps06_' + key];
+
+			if(value){
+				props.push(value);
+			}
+
+			window.iridion.push(props);
+		}
+		
+		function pushSegment(key) {
+			
+			console.log(">>> push segment", key);
+			window.iridion.push(['segment', key]);
+		}
 
 		function initFlickity(slide){ // , height, selector
 			var props={
 				cellAlign: 'left',
 				contain: true,
 				pageDots: false
-			}
-			return new Flickity(slide,props);
+			};
+
+			return new window.Flickity(slide,props);
 		}
 	
 		function initKkHeadline(headlineId, headlineText){
@@ -46,7 +68,8 @@
 								'</div>'+
 							'</div>'+
 						'</div>'+
-					'</div>');
+					'</div>'
+				);
 			}
 		}
 	
@@ -66,7 +89,6 @@
 				var name=product['name'];
 				var highlight="Kundenfavorit";
 
-				//console.log(product);
 				var desc=link.split("/")[4].replaceAll('-','_');
 				var cardPara=image.split('/')
 				cardPara=cardPara[cardPara.length-1];
@@ -74,6 +96,7 @@
 	
 				var isNormal= "show";
 				var isReduced= "";
+				var hasFavorite=false;
 	
 				if(!prevPrice){
 					isReduced="hide";
@@ -85,13 +108,19 @@
 					var mergedProducts='';
 					var badges=dataHighlights[category]['badges'];
 					for(var index in badges){
-						mergedProducts+='<span class="kk_'+badges[index]+'">'+badges[index]+'</span><span>&nbsp;&nbsp;</span>';
+						if(badges[index]!=="kundenfavorit"){
+							mergedProducts+='<span class="kk_'+badges[index]+'">'+badges[index]+'</span><span>&nbsp;&nbsp;</span>';
+						}
+						else{
+							hasFavorite=true;
+						}
 					}
-					var variants=(variation===2?'<div class="kk_highlight-header kk_grid">'+
+					console.log('headerz', hasFavorite);
+					var variants=((variation===2&&hasFavorite)?'<div class="kk_highlight-header kk_grid">'+
 												'<div>'+
 													highlight+
 												'</div>'+
-											'</div>':"")
+											'</div>':"");
 		
 					result = result.concat(
 						'<div class="kk_productitem_highlight productitem pro text-center small-5 medium-5 large-3 columns " style="position: absolute; left: 0%;">'+
@@ -116,125 +145,77 @@
 						'</div>'
 					);
 				}
-			}//https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2021/03-ps06-placeholder/popularity_filler.png
+			}
 			return result;
 		}
 		
 		function insertPopularities(element){
 			console.log('Elementinnerpops', element);
 			element.innerHTML='';
-			var image='https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2021/03-ps06-placeholder/popularity_filler.png';
-			var link='https://www.hessnatur.com/de/damen/bekleidung/jacken-und-maentel/c/damen-bekleidung-jacken-maentel';
-	
 				
 			if(window.innerWidth<600){
-				for (var i=0;i<=5; i++){
+				for (var i in CATEGORIES){
 					element.insertAdjacentHTML("afterbegin",
 						'<div class="text-center small-4 medium-3 large-2 columns">'+
-							'<a href='+link+' class="item__image"><div class="kk_children_50"><img placeholder="black t-shirt" src='+image+'></div>'+
+							'<a href='+DOMAIN+CATEGORIES[i][2]+' class="item__image"><img placeholder="Artikel" src='+IMG_PATH+CATEGORIES[i][1]+'>'+
 								'<div class="item__desc h-smallOffset-top-outer">'+
-									'<h4 class="kk_h4">Kategorie '+i+'</h4>'+
-								'</div>'+
-							'</a>'+
-						'</div>'); 
-				}
-			}
-			else{
-				for (var j=0;j<=5; j++){
-					element.insertAdjacentHTML("afterbegin",
-						'<div class="kk_productitem_popularity productitem text-center small-4 medium-3 kk-large-20 columns" style="position: absolute; left: 0%;">'+
-							'<a href='+link+' class="item__image"><div class="kk_children_50"><img class="" src='+image+'></div>'+
-								'<div class="item__desc h-smallOffset-top-outer">'+
-									'<h4 class="kk_h4">Kategorie '+j+'</h4>'+
+									'<h4 class="kk_h4">'+CATEGORIES[i][0]+'</h4>'+
 								'</div>'+
 							'</a>'+
 						'</div>'
-							); 
+					); 
+				}
+			}
+			else{
+				for (var j in CATEGORIES){
+					element.insertAdjacentHTML("afterbegin",
+						'<div class="kk_productitem_popularity productitem text-center small-4 medium-3 kk-large-20 columns" style="position: absolute; left: 0%;">'+
+							'<a href='+DOMAIN+CATEGORIES[j][2]+' class="item__image"><img class="" src='+IMG_PATH+CATEGORIES[j][1]+'>'+
+								'<div class="item__desc h-smallOffset-top-outer">'+
+									'<h4 class="kk_h4">'+CATEGORIES[j][0]+'</h4>'+
+								'</div>'+
+							'</a>'+
+						'</div>'
+					); 
 				}
 			}
 		}
 		
-		var DATA={
-			"damen":{
-				"5126626ONE": {
-					"badges": [
-						"neu",
-						"vegan",
-						"sale"
-					]  
-					,
-					"response": {
+		var response=0;
 	
-					}
-				},
-				"5100536": {
-					"badges": [
-						"neu",
-						"vegan",
-						"sale"
-					]  ,
-					"response": {
-	
-					}
-				},
-				"5119730": {
-					"badges": [
-						"neu",
-						"vegan",
-						"sale"
-					]  ,
-					"response": {
-	
-					}
-				},
-				"5101809": {
-					"badges": [
-						"neu",
-						"vegan",
-						"sale"
-					]  ,
-					"response": {
-	
-					}
-				},
-				"5119501": {
-					"badges": [
-						"neu",
-						"vegan",
-						"sale"
-					]  ,
-					"response": {
-	
-					}
-				}
-			}
-		},
-		response=0;
-	
-		DATA=DATA.damen;
 		WATO.elem(".lpmHero", function (headline) {
 	
 			if (headline) {
-					headline[0].insertAdjacentHTML("afterend",
-						'<div id="kk_insertion lpmTeaser --two grid --headline --align --fluffy">'+
-							'<div class="lpmSeparator">&nbsp;</div>'+
-							initKkHeadline("kk_highlights_header",(variation===1?"Aktuelle Highlights":"Shirts & Tops aus Bio-Baumwolle"))+
-							initKkSliderContainer("kk_highlights_content")+
-							initKkHeadline("kk_popular_header","Beliebte Kategorien")+
-							'<div id="kk_chosen_user" class="kk_container">'+
-								'<div class="kk_furtherArticles kk_isDesktop kk_justify-content-end column">'+
-									'<span class="hn-button-link">Alle Artikel für Damen</span>'+
-								'</div>'+
-							'</div>'+
-							initKkSliderContainer("kk_popularities_content")+
-							'<div id="kk_chosen_user" class="kk_container">'+
-								'<div class="kk_furtherArticles kk_isMobile kk_justify-content-center">'+
-									'<span class="hn-button-link">Alle Artikel für Damen</span>'+
-								'</div>'+
-							'</div>');
+				var furtherArticlesValue=CATEGORIES[0][1].split('/')[0];
+					if(furtherArticlesValue=="baby"){
+						furtherArticlesValue="Kinder";
 					}
-				});
+
+				headline[0].insertAdjacentHTML("afterend",
+					'<div id="kk_insertion lpmTeaser --two grid --headline --align --fluffy">'+
+						'<div class="lpmSeparator">&nbsp;</div>'+
+						initKkHeadline("kk_highlights_header",(variation===1?"Aktuelle Highlights":"Shirts & Tops aus Bio-Baumwolle"))+
+						initKkSliderContainer("kk_highlights_content")+
+						initKkHeadline("kk_popular_header","Beliebte Kategorien")+
+						'<div id="kk_chosen_user" class="kk_container">'+
+							'<div class="kk_furtherArticles kk_isDesktop kk_justify-content-end column">'+
+								'<a href='+DOMAIN+CATEGORY_AFFINITY+'/c/'+CATEGORY_AFFINITY+'>'+
+									'<span class="hn-button-link">Alle Artikel für '+furtherArticlesValue+'</span>'+
+								'</a>'+
+							'</div>'+
+						'</div>'+
+						initKkSliderContainer("kk_popularities_content")+
+						'<div id="kk_chosen_user" class="kk_container">'+
+							'<div class="kk_furtherArticles kk_isMobile kk_justify-content-center">'+
+								'<a href='+DOMAIN+CATEGORY_AFFINITY+'/c/'+CATEGORY_AFFINITY+'>'+
+									'<span class="hn-button-link">Alle Artikel für '+furtherArticlesValue+'</span>'+
+								'</a>'+
+							'</div>'+
+						'</div>');
+				}
+			});
 	
+
 		for(var id in DATA ){
 			WATO.xhr_get("https://products.hessnatur.com/products/"+id, function (rawData) {
 				try {
@@ -243,6 +224,7 @@
 					response++;
 				} catch (error) {
 					console.log('Error: ', error);
+					pushGoal('fetch_error', error.toString());
 				}
 			});
 		}
@@ -253,27 +235,25 @@
 		function(done){
 			if(done){
 
-
-
 				WATO.elem('#kk_popularities_content',function(element){
 					if(element){
 
 						WATO.elem(function(){
-							return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
+							return typeof window.Flickity !== "undefined";
 						}, function(){
 
-						var popularities=element[0];
+							var popularities=element[0];
 
-						popularities.innerHTML='';
-						insertPopularities(popularities);
+							popularities.innerHTML='';
+							insertPopularities(popularities);
+
 							try {
 								WATO.elem(function(){
-									console.log(WATO.qs('a > div > img', popularities).clientHeight,"height");
-									return 	WATO.qs('a > div > img', popularities).clientHeight > 0;
+									console.log(WATO.qs('a > img', popularities).clientHeight,"height");
+									return 	WATO.qs('a > img', popularities).clientHeight > 0;
 								}, function(oneImgReady){
-									console.log(oneImgReady,"imgrdypopus");
-									if(oneImgReady){
-										console.log("rdy popus", popularities);
+									if(oneImgReady&&window.innerWidth>=600){
+										console.log("rdy popularities", popularities);
 										initFlickity(popularities);
 										
 									}
@@ -294,12 +274,11 @@
 						slide.insertAdjacentHTML("afterbegin", insertHighlights(DATA));
 						
 						WATO.elem(function(){
-							return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
+							return typeof window.Flickity !== "undefined";
 						}, function(){
 	
 							try {
 								WATO.elem(function(){
-									console.log(WATO.qs('a > img', slide).clientHeight,"height");
 									return 	WATO.qs('a > img', slide).clientHeight > 0;
 								}, function(oneImgReady){
 									console.log(oneImgReady,"imgrdy");
