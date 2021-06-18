@@ -5,7 +5,7 @@
  * OPTIONAL
  * @ codekit-append "pds.js"; 
  */
-
+window.iridion = window.iridion || [];
 
 (function(WATO){
 	"use strict";
@@ -88,17 +88,15 @@
 				cellAlign: 'left',
 				contain: true,
 				pageDots: false,
-				
 			};
 
-			var myFlickity = window.Flickity(slide,props);
+			var myFlickity = new window.Flickity(slide, props);
 
-			myFlickity.on( 'change', function( event, progress ) {
-				console.log( 'Flickity scrolled ' + progress * 100 + '%' )
-			});
+			myFlickity.on('staticClick', function(event, pointer, cellElement, cellIndex){
 
-			myFlickity.on( 'dragStart', function( event, pointer ) {
-				console.log("dasdasd");
+				var type = cellElement.classList.contains('kk_productitem_highlight') ? 'product' : 'category';
+
+				pushGoal('ps06_click_' + type + '_' + cellIndex);
 			});
 
 		}
