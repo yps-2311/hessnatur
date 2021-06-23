@@ -11,7 +11,7 @@
 (function(WATO) {
     "use strict";
 
-    // window.iridion.econda.push(["SprintAB23", "V1"]);
+    window.iridion.econda.push(["SprintAB23", "V1"]);
 
     var setContentContainer = function(selectorAccordion, selectorNewPosition) {
 
