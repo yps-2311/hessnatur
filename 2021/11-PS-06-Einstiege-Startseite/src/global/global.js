@@ -124,7 +124,7 @@ window.iridion = window.iridion || [];
 	
 		function initKkSliderContainer(contentId){
 			if(window.innerWidth<600 && contentId==="kk_popularities_content"){
-				return('<div id="'+contentId+'" class="kk_grid">...Loading</div>');
+				return('<div id="'+contentId+'" class="kk_grid column">...Loading</div>');
 			}else{
 				return(
 					'<div class="small-12 columns js-product-reference">'+
@@ -230,7 +230,7 @@ window.iridion = window.iridion || [];
 					if(MaxPopularityCounter && i<MaxPopularityCounter){
 						element.insertAdjacentHTML("afterbegin",
 						'<div class="text-center small-4 medium-3 large-2 columns">'+
-							'<a href='+DOMAIN+CATEGORIES[i][2]+' class="item__image"><img placeholder="Artikel" src='+IMG_PATH+CATEGORIES[i][1]+'>'+
+							'<a href='+DOMAIN+CATEGORIES[i][2]+' class="item__image"><img placeholder="Artikel" src='+IMG_PATH+CATEGORIES[i][3]+'>'+
 								'<div class="item__desc h-smallOffset-top-outer">'+
 									'<h4 class="kk_h4">'+CATEGORIES[i][0]+'</h4>'+
 								'</div>'+
@@ -245,7 +245,7 @@ window.iridion = window.iridion || [];
 				for (var j in CATEGORIES){
 					element.insertAdjacentHTML("afterbegin",
 						'<div class="kk_productitem_popularity productitem text-center small-4 medium-3 kk-large-20 columns" style="position: absolute; left: 0%;">'+
-							'<a href='+DOMAIN+CATEGORIES[j][2]+' class="item__image"><img class="" src='+IMG_PATH+CATEGORIES[j][3]+'>'+
+							'<a href='+DOMAIN+CATEGORIES[j][2]+' class="item__image"><img src='+IMG_PATH+CATEGORIES[j][3]+'>'+
 								'<div class="item__desc h-smallOffset-top-outer">'+
 									'<h4 class="kk_h4">'+CATEGORIES[j][0]+'</h4>'+
 								'</div>'+
@@ -261,6 +261,8 @@ window.iridion = window.iridion || [];
 		WATO.elem(".lpmHero", function (headline) {
 	
 			if (headline) {
+				var ref=DOMAIN+CATEGORY_AFFINITY+"/c/"+CATEGORY_AFFINITY;
+				console.log('ref', ref);
 
 				headline[0].insertAdjacentHTML("afterend",
 					'<div id="kk_insertion lpmTeaser --two grid --headline --align --fluffy">'+
@@ -270,7 +272,7 @@ window.iridion = window.iridion || [];
 						initKkHeadline("kk_popular_header","Beliebte Kategorien")+
 						'<div id="kk_chosen_user" class="kk_container">'+
 							'<div class="kk_furtherArticles kk_isDesktop kk_justify-content-end column">'+
-								'<a href='+DOMAIN+CATEGORY_AFFINITY+'/c/'+CATEGORY_AFFINITY+'>'+
+								'<a href='+ref+'>'+
 									'<span class="hn-button-link">Alle Artikel für '+userAlignment+'</span>'+
 								'</a>'+
 							'</div>'+
@@ -278,7 +280,7 @@ window.iridion = window.iridion || [];
 						initKkSliderContainer("kk_popularities_content")+
 						'<div id="kk_chosen_user" class="kk_container">'+
 							'<div class="kk_furtherArticles kk_isMobile kk_justify-content-center">'+
-								'<a href='+DOMAIN+CATEGORY_AFFINITY+'/c/'+CATEGORY_AFFINITY+'>'+
+								'<a href='+ref+'>'+
 									'<span class="hn-button-link">Alle Artikel für '+userAlignment+'</span>'+
 								'</a>'+
 							'</div>'+
