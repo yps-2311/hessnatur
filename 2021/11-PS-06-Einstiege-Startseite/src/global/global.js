@@ -14,6 +14,35 @@ window.iridion = window.iridion || [];
 
 	console.log("v8");
 
+	function pushGoal(key, value, sendOnNextPageView) {
+
+		//console.log(">>> push goal", key, value);
+
+		var props = ['goal', 'ps06_' + key];
+
+		if(value){
+			props.push(value);
+		}
+		if(sendOnNextPageView){
+			props.push("");
+			props.push(true);
+		}
+
+		window.iridion.push(props);
+	}
+
+	WATO.prototype.PS06Goals = function() {
+
+		this.elem("#ecRecommendationsContainer .flickity-slider", function (reco) {
+			if (reco[0]) {
+				console.log(reco);
+				reco[0].addEventListener('click', function(){
+					pushGoal('click_original_slider', false, true);
+				});
+			}
+		});
+	};
+
 	WATO.prototype.PS06Category = function(CATEGORY_AFFINITY) {
 
 		//Name,  img-link desktop, URL, img-link mobile
@@ -68,18 +97,7 @@ window.iridion = window.iridion || [];
 			CATEGORY_AFFINITY = "damen";
 		}
 
-		console.log("#"+CATEGORY_AFFINITY+"#");
 		CATEGORY_AFFINITY = CATEGORY_AFFINITY.replace(/"/g, '');
-		console.log("#"+CATEGORY_AFFINITY+"#");
-
-		//console.log("v8debug", "affinität="+CATEGORY_AFFINITY, "fertiger Link="+DOMAIN,CATEGORY_AFFINITY,"/c/",CATEGORY_AFFINITY);//v8debug affinität="damen" fertiger Link=undefined "damen" /c/ "damen"
-		//console.log("#"+CATEGORY_AFFINITY+"#");//v8debug als concat affinität="damen" fertiger Link=undefined "damen"/c/"damen"
-		//var hey=DOMAIN+CATEGORY_AFFINITY+"/c/"+CATEGORY_AFFINITY;
-		//console.log("hey", hey);//hey undefined"damen"/c/"damen"
-
-		//hhttp://ww.wasauchgimmer.de/damen/c/damen
-		
-		console.log('der String', CATEGORY_AFFINITY+"cool");
 
 		var IMG_PATH = "https://media.hessnatur.com/kk/2021/ps06-startseite/";
 		var DOMAIN = "https://www.hessnatur.com/de/";
@@ -90,23 +108,9 @@ window.iridion = window.iridion || [];
 		var MaxHighlightsCounter=4;
 
 		var userAlignment=CATEGORIES[0][1].split('/')[0];
-			if(userAlignment==="baby"){
-				userAlignment="Kinder";
-			}
-
-		function pushGoal(key, value) {
-
-			//console.log(">>> push goal", key, value);
-
-			var props = ['goal', 'ps06_' + key];
-
-			if(value){
-				props.push(value);
-			}
-
-			window.iridion.push(props);
+		if(userAlignment==="baby"){
+			userAlignment="Kinder";
 		}
-
 
 		function initFlickity(slide){ // , height, selector
 			var props={
@@ -122,7 +126,8 @@ window.iridion = window.iridion || [];
 
 				var type = cellElement.classList.contains('kk_productitem_highlight') ? 'product' : 'category';
 
-				pushGoal('ps06_click_' + type + '_' + cellIndex);
+				pushGoal('click_' + type + '_' + cellIndex, false, true);
+				pushGoal('click_slider', false, true);
 			});
 
 		}
@@ -284,7 +289,7 @@ window.iridion = window.iridion || [];
 				ref=ref.concat(DOMAIN,CATEGORY_AFFINITY,"/c/",CATEGORY_AFFINITY);
 
 				headline[0].insertAdjacentHTML("afterend",
-					'<div id="kk_insertion lpmTeaser --two grid --headline --align --fluffy">'+
+					'<div id="kk_insertion">'+// lpmTeaser --two grid --headline --align --fluffy
 						'<div class="lpmSeparator">&nbsp;</div>'+
 						initKkHeadline("kk_highlights_header",(variation===1?"Aktuelle Highlights":userAlignment+' Basics aus Bio-Baumwolle'))+
 						initKkSliderContainer("kk_highlights_content")+
@@ -303,9 +308,11 @@ window.iridion = window.iridion || [];
 									'<span class="hn-button-link">Alle Artikel für '+userAlignment+'</span>'+
 								'</a>'+
 							'</div>'+
-						'</div>');
-				}
-			});
+						'</div>'+
+					'</div>'	
+					);
+			}
+		});
 	
 
 		for(var id in DATA ){
@@ -331,6 +338,7 @@ window.iridion = window.iridion || [];
 						WATO.elem(function(){
 							return typeof window.Flickity !== "undefined";
 						}, function(){
+							WATO.PS06Goals();
 
 							popularities=popularities[0];
 
