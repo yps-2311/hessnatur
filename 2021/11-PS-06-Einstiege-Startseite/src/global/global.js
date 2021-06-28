@@ -12,49 +12,51 @@ window.iridion = window.iridion || [];
 (function(WATO){
 	"use strict";
 
+	console.log("v6");
+
 	WATO.prototype.PS06Category = function(CATEGORY_AFFINITY) {
 
-		//Name,  img-link mobile, URL, img-link desktop
+		//Name,  img-link desktop, URL, img-link mobile
 		var CATEGORIES = [
-			["Hosen", "damen/min/hosen.png","de/damen/bekleidung/hosen/c/damen-bekleidung-hosen","damen/desktop/Hosen.png"],
-			["Jacken & Mäntel", "damen/min/jacken_maentel.png","damen/bekleidung/jacken-und-maentel/c/damen-bekleidung-jacken-maentel","damen/desktop/Jacken_Mantel.png"],
-			["Kleider", "damen/min/kleider.png","damen/bekleidung/kleider/c/damen-bekleidung-kleider","damen/desktop/Kleider.png"],
-			["Loungewear", "damen/min/loungewear.png","damen/bekleidung/loungewear/c/damen-bekleidung-loungewear","damen/desktop/Loungewear.png"],
-			["Outdoor", "damen/min/outdoor.png","damen/bekleidung/outdoor/c/damen-bekleidung-outdoor","damen/desktop/Outwear.png"],
-			["Pullover", "damen/min/pullover.png","damen/bekleidung/pullover/c/damen-bekleidung-pullover","damen/desktop/Pullover.png"],
-			["Shirts & Tops", "damen/min/shirts_tops.png","damen/bekleidung/shirts-und-tops/c/damen-bekleidung-shirts-tops","damen/desktop/Shirts_Tops.png"]
+			["Shirts & Tops", "damen/desktop/shirts_tops.jpeg","damen/bekleidung/shirts-und-tops/c/damen-bekleidung-shirts-tops","damen/mobile/Shirts_Tops.png"],
+			["Hosen", "damen/desktop/hosen.jpeg","de/damen/bekleidung/hosen/c/damen-bekleidung-hosen","damen/mobile/Hosen.png"],
+			["Kleider", "damen/desktop/kleider.jpeg","damen/bekleidung/kleider/c/damen-bekleidung-kleider","damen/mobile/Kleider.png"],
+			["Pullover", "damen/desktop/pullover.jpeg","damen/bekleidung/pullover/c/damen-bekleidung-pullover","damen/mobile/Pullover.png"],
+			["Loungewear", "damen/desktop/loungewear.jpeg","damen/bekleidung/loungewear/c/damen-bekleidung-loungewear","damen/mobile/Loungewear.png"],
+			["Outdoor", "damen/desktop/outdoor.jpeg","damen/bekleidung/outdoor/c/damen-bekleidung-outdoor","damen/mobile/Outwear.png"],
+			["Jacken & Mäntel", "damen/desktop/jacken_maentel.jpeg","damen/bekleidung/jacken-und-maentel/c/damen-bekleidung-jacken-maentel","damen/mobile/Jacken_Mantel.png"]
 		];
 
 		if(CATEGORY_AFFINITY === "herren"){
 
 			CATEGORIES = [
-                ["Hemden", "herren/min/hemden.png", "herren/bekleidung/hemden/c/herren-bekleidung-hemden", "herren/desktop/Hemden.png"],
-                ["Jeans & Hosen", "herren/min/jeans_hosen.png","herren/bekleidung/jeans-und-hosen/c/herren-bekleidung-jeans-hosen", "herren/desktop/Jeans_Hosen.png"],
-                ["Outdoor", "herren/min/outdoor.png", "herren/bekleidung/jeans-und-hosen/c/herren-bekleidung-jeans-hosen", "herren/desktop/Outdoor.png"],
-                ["Pullover & Strickjacken", "herren/min/pullover_strickjacken.png", "herren/bekleidung/pullover-und-strickjacken/c/herren-bekleidung-pullover-strickjacken", "herren/desktop/Pullover.png"],
-                ["Shirts", "herren/min/shirts.png", "herren/bekleidung/shirts/c/herren-bekleidung-shirts", "herren/desktop/Shirts.png"]
+                ["Shirts", "herren/desktop/shirts.jpeg", "herren/bekleidung/shirts/c/herren-bekleidung-shirts", "herren/mobile/Shirts.png"],
+                ["Jeans & Hosen", "herren/desktop/jeans_hosen.jpeg","herren/bekleidung/jeans-und-hosen/c/herren-bekleidung-jeans-hosen", "herren/mobile/Jeans_Hosen.png"],
+                ["Outdoor", "herren/desktop/outdoor.jpeg", "herren/bekleidung/outdoor/c/herren-bekleidung-outdoor", "herren/mobile/Outdoor.png"],//+
+                ["Pullover & Strickjacken", "herren/desktop/pullover_strickjacken.jpeg", "herren/bekleidung/pullover-und-strickjacken/c/herren-bekleidung-pullover-strickjacken", "herren/mobile/Pullover.png"],
+                ["Hemden", "herren/desktop/hemden.jpeg", "herren/bekleidung/hemden/c/herren-bekleidung-hemden", "herren/mobile/Hemden.png"]
             ];
 		} else if(CATEGORY_AFFINITY === "baby"){
 
 			CATEGORIES = [
-                ["Bodys", "baby/min/bodys.png","baby/bekleidung/bodys/c/baby-bekleidung-bodys","baby/desktop/Bodys.png"],
-                ["GOTS", "baby/min/gots.png","baby/bekleidung/gots/c/lp-junior-gots","baby/desktop/GOTs.png"],
-                ["Hosen", "baby/min/hosen.png","baby/bekleidung/hosen/c/baby-bekleidung-hosen","baby/desktop/Hosen.png"],
-                ["Jacken", "baby/min/jacken.png","baby/bekleidung/jacken/c/baby-bekleidung-jacken","baby/desktop/Jacken.png"],
-                ["Kinderzimmer", "baby/min/kinderzimmer.png","home/kinderzimmer/c/home-kinderzimmer","baby/desktop/Kinderzimmer.png"],
-                ["Overalls", "baby/min/overalls.png","baby/bekleidung/overalls/c/baby-bekleidung-overalls-strampler","baby/desktop/Overall.png"],
-                ["Shirts", "baby/min/shirts.png","baby/bekleidung/shirts/c/junior-bekleidung-shirts","baby/desktop/Shirts.png"]
+                ["Shirts", "baby/desktop/shirts.jpeg","baby/bekleidung/shirts/c/junior-bekleidung-shirts","baby/mobile/Shirts.png"],
+                ["Overalls", "baby/desktop/overalls.jpeg","baby/bekleidung/overalls/c/baby-bekleidung-overalls-strampler","baby/mobile/Overall.png"],
+                ["GOTS", "baby/desktop/gots.jpeg","baby/bekleidung/gots/c/lp-junior-gots","baby/mobile/GOTs.png"],
+                ["Hosen", "baby/desktop/hosen.jpeg","baby/bekleidung/hosen/c/baby-bekleidung-hosen","baby/mobile/Hosen.png"],
+                ["Jacken", "baby/desktop/jacken.jpeg","baby/bekleidung/jacken/c/baby-bekleidung-jacken","baby/mobile/Jacken.png"],
+                ["Bodys", "baby/desktop/bodys.jpeg","baby/bekleidung/bodys/c/baby-bekleidung-bodys","baby/mobile/Bodys.png"],
+                ["Kinderzimmer", "baby/desktop/kinderzimmer.jpeg","home/kinderzimmer/c/home-kinderzimmer","baby/mobile/Kinderzimmer.png"],
             ];
 		} else if(CATEGORY_AFFINITY === "home"){
 
 			CATEGORIES = [
-                ["Bademäntel", "home/min/bademaentel.png","home/bad/bademaentel/c/home-bad-bademaentel","home/desktop/Bademaentel.png"],
-                ["Bettwäsche", "home/min/bettwaesche.png","home/schlafzimmer/bettwaesche/c/home-schlafzimmer-bettwaesche","home/desktop/Bettwaesche.png"],
-                ["Handtücher", "home/min/handtuecher.png","home/bad/badtextilien/c/home-bad-badtextilien","home/desktop/Handtuecher.png"],
-                ["Spannbetttücher & Laken", "home/min/spannbetttuecher_laken.png","home/schlafzimmer/spannbetttuecher-und-laken/c/home-schlafzimmer-spannbetttuecher-laken","home/desktop/Spannbetttuecher.png"],
-                ["Teppiche", "home/min/teppiche.png","home/wohnzimmer-und-esszimmer/teppiche/c/home-wohnzimmer-teppiche","home/desktop/Teppiche.png"],
-                ["Tischwäsche", "home/min/tischwaesche.png","home/wohnzimmer-und-esszimmer/tischwaesche/c/home-wohnzimmer-tischwaesche","home/desktop/Tischwaesche.png"],
-                ["Wolldecken & Plaids", "home/min/wolldecken_plaids.png","home/wohnzimmer-und-esszimmer/wohndecken-und-plaids/c/home-wohnzimmer-wohndecken-plaids","home/desktop/Wolldecken.png"]
+                ["Bettwäsche", "home/desktop/bettwaesche.jpeg","home/schlafzimmer/bettwaesche/c/home-schlafzimmer-bettwaesche","home/mobile/Bettwaesche.png"],
+				["Wolldecken & Plaids", "home/desktop/wolldecken_plaids.jpeg","home/wohnzimmer-und-esszimmer/wohndecken-und-plaids/c/home-wohnzimmer-wohndecken-plaids","home/mobile/Wolldecken.png"],
+                ["Tischwäsche", "home/desktop/tischwaesche.jpeg","home/wohnzimmer-und-esszimmer/tischwaesche/c/home-wohnzimmer-tischwaesche","home/mobile/Tischwaesche.png"],
+                ["Handtücher", "home/desktop/handtuecher.jpeg","home/bad/badtextilien/c/home-bad-badtextilien","home/mobile/Handtuecher.png"],
+                ["Spannbetttücher & Laken", "home/desktop/spannbetttuecher_laken.jpeg","home/schlafzimmer/spannbetttuecher-und-laken/c/home-schlafzimmer-spannbetttuecher-laken","home/mobile/Spannbetttuecher.png"],
+                ["Teppiche", "home/desktop/teppiche.jpeg","home/wohnzimmer-und-esszimmer/teppiche/c/home-wohnzimmer-teppiche","home/mobile/Teppiche.png"],
+				["Bademäntel", "home/desktop/bademaentel.jpeg","home/bad/bademaentel/c/home-bad-bademaentel","home/mobile/Bademaentel.png"]
             ];
 		}
 
@@ -68,8 +70,8 @@ window.iridion = window.iridion || [];
 
 		//console.log(CATEGORIES, CATEGORY_AFFINITY,"jojoo");
 
-		var IMG_PATH = 'https://media.hessnatur.com/kk/2021/ps06-startseite/';
-		var DOMAIN = 'https://www.hessnatur.com/de/';
+		var IMG_PATH = "https://media.hessnatur.com/kk/2021/ps06-startseite/";
+		var DOMAIN = "https://www.hessnatur.com/de/";
 		var WATO = this;
 
 		//sets count of items inside Popularity Slider
@@ -127,13 +129,11 @@ window.iridion = window.iridion || [];
 				return('<div id="'+contentId+'" class="kk_grid column">...Loading</div>');
 			}else{
 				return(
-					'<div class="small-12 columns js-product-reference">'+
-						'<div class="small-12 columns ">'+
-						   '<div class="row js-productSliderWrapper h-xxLargeOffset-bottom-outer">'+
-							   '<div class="column small-12 h-no-padding-medium-down">'+
-									'<div class="flickity-productslider kk_slider" id="'+contentId+'">'+
-										'...Loading'+
-									'</div>'+
+					'<div class="small-12 js-product-reference --cell-padding">'+
+						'<div class="row js-productSliderWrapper h-xxLargeOffset-bottom-outer">'+
+							'<div class="small-12 h-no-padding-medium-down">'+
+								'<div class="flickity-productslider kk_slider" id="'+contentId+'">'+
+									'...Loading'+
 								'</div>'+
 							'</div>'+
 						'</div>'+
@@ -195,7 +195,7 @@ window.iridion = window.iridion || [];
 											'</div>':"");
 		
 					result = result.concat(
-						'<div class="kk_productitem_highlight productitem pro text-center small-5 medium-5 large-3 columns " style="position: absolute; left: 0%;">'+
+						'<div class="kk_productitem_highlight productitem text-center small-5 medium-5 large-3 columns" style="position: absolute; left: 0%;">'+
 							variants+
 							'<a href='+link+' class="item__image"><img src='+imageUrl+'>'+
 								'<div class="item__desc h-smallOffset-top-outer">'+
@@ -228,7 +228,7 @@ window.iridion = window.iridion || [];
 			if(window.innerWidth<600){
 				for (var i in CATEGORIES){
 					if(MaxPopularityCounter && i<MaxPopularityCounter){
-						element.insertAdjacentHTML("afterbegin",
+						element.insertAdjacentHTML("beforeend",
 						'<div class="text-center small-4 medium-3 large-2 columns">'+
 							'<a href='+DOMAIN+CATEGORIES[i][2]+' class="item__image"><img placeholder="Artikel" src='+IMG_PATH+CATEGORIES[i][3]+'>'+
 								'<div class="item__desc h-smallOffset-top-outer">'+
@@ -243,9 +243,9 @@ window.iridion = window.iridion || [];
 			}
 			else{
 				for (var j in CATEGORIES){
-					element.insertAdjacentHTML("afterbegin",
+					element.insertAdjacentHTML("beforeend",
 						'<div class="kk_productitem_popularity productitem text-center small-4 medium-3 kk-large-20 columns" style="position: absolute; left: 0%;">'+
-							'<a href='+DOMAIN+CATEGORIES[j][2]+' class="item__image"><img src='+IMG_PATH+CATEGORIES[j][3]+'>'+
+							'<a href='+DOMAIN+CATEGORIES[j][2]+' class="item__image"><img src='+IMG_PATH+CATEGORIES[j][1]+'>'+
 								'<div class="item__desc h-smallOffset-top-outer">'+
 									'<h4 class="kk_h4">'+CATEGORIES[j][0]+'</h4>'+
 								'</div>'+
@@ -261,18 +261,32 @@ window.iridion = window.iridion || [];
 		WATO.elem(".lpmHero", function (headline) {
 	
 			if (headline) {
-				var ref=DOMAIN+CATEGORY_AFFINITY+"/c/"+CATEGORY_AFFINITY;
-				console.log('ref', ref);
+				
+				
+				var ref="";
+				ref=ref.concat(DOMAIN,CATEGORY_AFFINITY,"/c/",CATEGORY_AFFINITY);
+				var xd=DOMAIN+CATEGORY_AFFINITY+'/c/'+CATEGORY_AFFINITY;
+				var was=function(){
+					return (DOMAIN+''+CATEGORY_AFFINITY+''+'/c/'+CATEGORY_AFFINITY);
+				};
+				var lol=ref.trim();
+				console.log(ref, lol, was());
+				console.log('CATEGORY_AFFINITY', CATEGORY_AFFINITY);
 
 				headline[0].insertAdjacentHTML("afterend",
+				'<p><a href='+lol+'>lol</a></p>'+
+				'<p><a href='+xd+'>xd</a></p>'+
+				'<p><a href='+was()+'>was()</a></p>'+
+				'<p><a href='+ref+'>ref</a></p>'+
+				'<p><div>href="domain/"damen"/c/"damen""</div></p>'+
 					'<div id="kk_insertion lpmTeaser --two grid --headline --align --fluffy">'+
 						'<div class="lpmSeparator">&nbsp;</div>'+
 						initKkHeadline("kk_highlights_header",(variation===1?"Aktuelle Highlights":userAlignment+' Basics aus Bio-Baumwolle'))+
 						initKkSliderContainer("kk_highlights_content")+
 						initKkHeadline("kk_popular_header","Beliebte Kategorien")+
 						'<div id="kk_chosen_user" class="kk_container">'+
-							'<div class="kk_furtherArticles kk_isDesktop kk_justify-content-end column">'+
-								'<a href='+ref+'>'+
+							'<div class="kk_furtherArticles kk_isDesktop kk_justify-content-end">'+
+								'<a href="'+ref+'">'+
 									'<span class="hn-button-link">Alle Artikel für '+userAlignment+'</span>'+
 								'</a>'+
 							'</div>'+
@@ -280,7 +294,7 @@ window.iridion = window.iridion || [];
 						initKkSliderContainer("kk_popularities_content")+
 						'<div id="kk_chosen_user" class="kk_container">'+
 							'<div class="kk_furtherArticles kk_isMobile kk_justify-content-center">'+
-								'<a href='+ref+'>'+
+								'<a href="'+ref+'">'+
 									'<span class="hn-button-link">Alle Artikel für '+userAlignment+'</span>'+
 								'</a>'+
 							'</div>'+
@@ -318,6 +332,7 @@ window.iridion = window.iridion || [];
 							popularities=popularities[0];
 
 							popularities.innerHTML='';
+							popularities.style.opacity="0";
 							insertPopularities(popularities);
 							
 							WATO.elem(function(){
@@ -326,7 +341,9 @@ window.iridion = window.iridion || [];
 								if(oneImgReady&&window.innerWidth>=600){
 									initFlickity(popularities);
 									
+									
 								}
+								popularities.style.opacity="1";
 							});	
 							
 						});
@@ -339,6 +356,7 @@ window.iridion = window.iridion || [];
 
 						//removing Text: ...Loading
 						slide.innerHTML='';
+						slide.style.opacity="0";
 						slide.insertAdjacentHTML("afterbegin", insertHighlights(DATA));
 						
 						WATO.elem(function(){
@@ -351,6 +369,7 @@ window.iridion = window.iridion || [];
 							if(oneImgReady){
 								//console.log("rdy");
 								initFlickity(slide,'.kk_productitem_highlight',"#kk_highlights_content .flickity-viewport");
+								slide.style.opacity="1";
 								
 							}
 							// });
