@@ -12,7 +12,7 @@ window.iridion = window.iridion || [];
 (function(WATO){
 	"use strict";
 
-	console.log("v6");
+	console.log("v8");
 
 	WATO.prototype.PS06Category = function(CATEGORY_AFFINITY) {
 
@@ -40,7 +40,7 @@ window.iridion = window.iridion || [];
 
 			CATEGORIES = [
                 ["Shirts", "baby/desktop/shirts.jpeg","baby/bekleidung/shirts/c/junior-bekleidung-shirts","baby/mobile/Shirts.png"],
-                ["Overalls", "baby/desktop/overalls.jpeg","baby/bekleidung/overalls/c/baby-bekleidung-overalls-strampler","baby/mobile/Overall.png"],
+                ["Overalls", "baby/desktop/overalls.jpg","baby/bekleidung/overalls/c/baby-bekleidung-overalls-strampler","baby/mobile/Overall.png"],
                 ["GOTS", "baby/desktop/gots.jpeg","baby/bekleidung/gots/c/lp-junior-gots","baby/mobile/GOTs.png"],
                 ["Hosen", "baby/desktop/hosen.jpeg","baby/bekleidung/hosen/c/baby-bekleidung-hosen","baby/mobile/Hosen.png"],
                 ["Jacken", "baby/desktop/jacken.jpeg","baby/bekleidung/jacken/c/baby-bekleidung-jacken","baby/mobile/Jacken.png"],
@@ -54,7 +54,7 @@ window.iridion = window.iridion || [];
 				["Wolldecken & Plaids", "home/desktop/wolldecken_plaids.jpeg","home/wohnzimmer-und-esszimmer/wohndecken-und-plaids/c/home-wohnzimmer-wohndecken-plaids","home/mobile/Wolldecken.png"],
                 ["Tischwäsche", "home/desktop/tischwaesche.jpeg","home/wohnzimmer-und-esszimmer/tischwaesche/c/home-wohnzimmer-tischwaesche","home/mobile/Tischwaesche.png"],
                 ["Handtücher", "home/desktop/handtuecher.jpeg","home/bad/badtextilien/c/home-bad-badtextilien","home/mobile/Handtuecher.png"],
-                ["Spannbetttücher & Laken", "home/desktop/spannbetttuecher_laken.jpeg","home/schlafzimmer/spannbetttuecher-und-laken/c/home-schlafzimmer-spannbetttuecher-laken","home/mobile/Spannbetttuecher.png"],
+                ["Bettlaken", "home/desktop/spannbetttuecher_laken.jpeg","home/schlafzimmer/spannbetttuecher-und-laken/c/home-schlafzimmer-spannbetttuecher-laken","home/mobile/Spannbetttuecher.png"],
                 ["Teppiche", "home/desktop/teppiche.jpeg","home/wohnzimmer-und-esszimmer/teppiche/c/home-wohnzimmer-teppiche","home/mobile/Teppiche.png"],
 				["Bademäntel", "home/desktop/bademaentel.jpeg","home/bad/bademaentel/c/home-bad-bademaentel","home/mobile/Bademaentel.png"]
             ];
@@ -64,11 +64,22 @@ window.iridion = window.iridion || [];
 	};
 
 	WATO.prototype.PS06 = function(CATEGORY_AFFINITY, CATEGORIES, DATA, variation){
-		if(!CATEGORY_AFFINITY){
+		if(!CATEGORY_AFFINITY || CATEGORY_AFFINITY===1){
 			CATEGORY_AFFINITY = "damen";
 		}
 
-		//console.log(CATEGORIES, CATEGORY_AFFINITY,"jojoo");
+		console.log("#"+CATEGORY_AFFINITY+"#");
+		CATEGORY_AFFINITY = CATEGORY_AFFINITY.replace(/"/g, '');
+		console.log("#"+CATEGORY_AFFINITY+"#");
+
+		//console.log("v8debug", "affinität="+CATEGORY_AFFINITY, "fertiger Link="+DOMAIN,CATEGORY_AFFINITY,"/c/",CATEGORY_AFFINITY);//v8debug affinität="damen" fertiger Link=undefined "damen" /c/ "damen"
+		//console.log("#"+CATEGORY_AFFINITY+"#");//v8debug als concat affinität="damen" fertiger Link=undefined "damen"/c/"damen"
+		//var hey=DOMAIN+CATEGORY_AFFINITY+"/c/"+CATEGORY_AFFINITY;
+		//console.log("hey", hey);//hey undefined"damen"/c/"damen"
+
+		//hhttp://ww.wasauchgimmer.de/damen/c/damen
+		
+		console.log('der String', CATEGORY_AFFINITY+"cool");
 
 		var IMG_PATH = "https://media.hessnatur.com/kk/2021/ps06-startseite/";
 		var DOMAIN = "https://www.hessnatur.com/de/";
@@ -117,11 +128,20 @@ window.iridion = window.iridion || [];
 		}
 	
 		function initKkHeadline(headlineId, headlineText){
-			return(
-				'<div id="'+headlineId+'" class="lpmTeaser__headline --cell-padding">'+
-					'<p class="hn-headline hn-color-gray-800 hn-2xl large:hn-3xl">'+headlineText+'</p>'+
-				'</div>'
-			);
+			if(window.innerWidth<600){
+				return(
+					'<div id="'+headlineId+'" class="lpmTeaser__headline column">'+
+						'<p class="hn-headline hn-color-gray-800 hn-2xl large:hn-3xl">'+headlineText+'</p>'+
+					'</div>'
+				);	
+			} else{
+				return(
+					'<div id="'+headlineId+'" class="lpmTeaser__headline --cell-padding">'+
+						'<p class="hn-headline hn-color-gray-800 hn-2xl large:hn-3xl">'+headlineText+'</p>'+
+					'</div>'
+				);	
+			}
+			
 		}
 	
 		function initKkSliderContainer(contentId){
@@ -129,10 +149,10 @@ window.iridion = window.iridion || [];
 				return('<div id="'+contentId+'" class="kk_grid column">...Loading</div>');
 			}else{
 				return(
-					'<div class="small-12 js-product-reference --cell-padding">'+
+					'<div class="small-12 js-product-reference">'+
 						'<div class="row js-productSliderWrapper h-xxLargeOffset-bottom-outer">'+
-							'<div class="small-12 h-no-padding-medium-down">'+
-								'<div class="flickity-productslider kk_slider" id="'+contentId+'">'+
+							'<div class="small-12 h-no-padding-medium-down '+(window.innerWidth>600?"column":'')+'">'+
+								'<div class="flickity-productslider kk_slider '+(window.innerWidth>600?"--cell-padding":'')+'" id="'+contentId+'">'+
 									'...Loading'+
 								'</div>'+
 							'</div>'+
@@ -153,7 +173,6 @@ window.iridion = window.iridion || [];
 	
 			if (product && product.availableAT && count < MaxHighlightsCounter) {
 
-
 				var price=product.price.toFixed(2);
 				var prevPrice=product.price_prev;
 				var link=product.permalink;
@@ -165,7 +184,6 @@ window.iridion = window.iridion || [];
 				var cardPara=image.split('/');
 				cardPara=cardPara[cardPara.length-1];
 				var imageUrl='https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/'+desc+'-'+cardPara+'.jpg';
-				//console.log('imageUrl', imageUrl);
 	
 				var isNormal= "show";
 				var isReduced= "";
@@ -229,7 +247,7 @@ window.iridion = window.iridion || [];
 				for (var i in CATEGORIES){
 					if(MaxPopularityCounter && i<MaxPopularityCounter){
 						element.insertAdjacentHTML("beforeend",
-						'<div class="text-center small-4 medium-3 large-2 columns">'+
+						'<div class="text-center small-4 medium-3 large-2 columns kk_l_0">'+
 							'<a href='+DOMAIN+CATEGORIES[i][2]+' class="item__image"><img placeholder="Artikel" src='+IMG_PATH+CATEGORIES[i][3]+'>'+
 								'<div class="item__desc h-smallOffset-top-outer">'+
 									'<h4 class="kk_h4">'+CATEGORIES[i][0]+'</h4>'+
@@ -262,23 +280,10 @@ window.iridion = window.iridion || [];
 	
 			if (headline) {
 				
-				
 				var ref="";
 				ref=ref.concat(DOMAIN,CATEGORY_AFFINITY,"/c/",CATEGORY_AFFINITY);
-				var xd=DOMAIN+CATEGORY_AFFINITY+'/c/'+CATEGORY_AFFINITY;
-				var was=function(){
-					return (DOMAIN+''+CATEGORY_AFFINITY+''+'/c/'+CATEGORY_AFFINITY);
-				};
-				var lol=ref.trim();
-				console.log(ref, lol, was());
-				console.log('CATEGORY_AFFINITY', CATEGORY_AFFINITY);
 
 				headline[0].insertAdjacentHTML("afterend",
-				'<p><a href='+lol+'>lol</a></p>'+
-				'<p><a href='+xd+'>xd</a></p>'+
-				'<p><a href='+was()+'>was()</a></p>'+
-				'<p><a href='+ref+'>ref</a></p>'+
-				'<p><div>href="domain/"damen"/c/"damen""</div></p>'+
 					'<div id="kk_insertion lpmTeaser --two grid --headline --align --fluffy">'+
 						'<div class="lpmSeparator">&nbsp;</div>'+
 						initKkHeadline("kk_highlights_header",(variation===1?"Aktuelle Highlights":userAlignment+' Basics aus Bio-Baumwolle'))+
@@ -286,7 +291,7 @@ window.iridion = window.iridion || [];
 						initKkHeadline("kk_popular_header","Beliebte Kategorien")+
 						'<div id="kk_chosen_user" class="kk_container">'+
 							'<div class="kk_furtherArticles kk_isDesktop kk_justify-content-end">'+
-								'<a href="'+ref+'">'+
+								'<a href='+ref+'>'+
 									'<span class="hn-button-link">Alle Artikel für '+userAlignment+'</span>'+
 								'</a>'+
 							'</div>'+
@@ -294,7 +299,7 @@ window.iridion = window.iridion || [];
 						initKkSliderContainer("kk_popularities_content")+
 						'<div id="kk_chosen_user" class="kk_container">'+
 							'<div class="kk_furtherArticles kk_isMobile kk_justify-content-center">'+
-								'<a href="'+ref+'">'+
+								'<a href='+ref+'>'+
 									'<span class="hn-button-link">Alle Artikel für '+userAlignment+'</span>'+
 								'</a>'+
 							'</div>'+
@@ -310,13 +315,11 @@ window.iridion = window.iridion || [];
 					DATA[sku].response=rawData.products[0];
 					response++;
 				} catch (error) {
-					//console.log('Error: ', error);
 					pushGoal('fetch_error', error.toString());
 				}
 			});
 		}
 		WATO.elem(function(){
-			//console.log(response, Object.keys(DATA).length, "objectkeys");
 			return response===Object.keys(DATA).length;
 		},
 		function(done){
@@ -354,7 +357,6 @@ window.iridion = window.iridion || [];
 					if(slide){
 						slide=slide[0];
 
-						//removing Text: ...Loading
 						slide.innerHTML='';
 						slide.style.opacity="0";
 						slide.insertAdjacentHTML("afterbegin", insertHighlights(DATA));
@@ -362,22 +364,15 @@ window.iridion = window.iridion || [];
 						WATO.elem(function(){
 							return typeof window.Flickity !== "undefined" && WATO.qs('a > img', slide).clientHeight > 0;
 						}, function(oneImgReady){
-							
-							// WATO.elem(function(){
-							// 	return 	WATO.qs('a > img', slide).clientHeight > 0;
-							// }, function(oneImgReady){
+
 							if(oneImgReady){
-								//console.log("rdy");
 								initFlickity(slide,'.kk_productitem_highlight',"#kk_highlights_content .flickity-viewport");
 								slide.style.opacity="1";
-								
 							}
-							// });
 						});
 						
 					}
-				});//second slide
-				
+				});
 			}//done
 		});
 
