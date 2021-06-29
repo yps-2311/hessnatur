@@ -12,11 +12,7 @@ window.iridion = window.iridion || [];
 (function(WATO){
 	"use strict";
 
-	console.log("v8");
-
 	function pushGoal(key, value, sendOnNextPageView) {
-
-		//console.log(">>> push goal", key, value);
 
 		var props = ['goal', 'ps06_' + key];
 
@@ -35,9 +31,15 @@ window.iridion = window.iridion || [];
 
 		this.elem("#ecRecommendationsContainer .flickity-slider", function (reco) {
 			if (reco[0]) {
-				console.log(reco);
 				reco[0].addEventListener('click', function(){
 					pushGoal('click_original_slider', false, true);
+				});
+			}
+		});
+		this.elem('[href=mehrmorgen]', function (mehrmorgen) {
+			if (mehrmorgen[0]) {
+				mehrmorgen[0].addEventListener('click', function(){
+					pushGoal('click_mehrmorgen_link', false, true);
 				});
 			}
 		});
@@ -132,14 +134,27 @@ window.iridion = window.iridion || [];
 
 		}
 	
-		function initKkHeadline(headlineId, headlineText){
+		function initKkHeadline(headlineId, headlineText, link, alignment){
 			if(window.innerWidth<600){
 				return(
 					'<div id="'+headlineId+'" class="lpmTeaser__headline column">'+
 						'<p class="hn-headline hn-color-gray-800 hn-2xl large:hn-3xl">'+headlineText+'</p>'+
 					'</div>'
 				);	
-			} else{
+			} else if(window.innerWidth>=600 && headlineId === "kk_popular_header"){
+				return(
+					'<div id="'+headlineId+'" class="lpmTeaser__headline --cell-padding">'+
+						'<p class="hn-headline hn-color-gray-800 hn-2xl large:hn-3xl">'+headlineText+'</p>'+
+						'<div class="kk_furtherArticles kk_isDesktop kk_justify-content-end">'+
+								'<a href='+link+'>'+
+									'<span class="hn-button-link">Alle Artikel für '+alignment+'</span>'+
+								'</a>'+
+							'</div>'+
+					'</div>'
+				);	
+				
+			}
+			 else{
 				return(
 					'<div id="'+headlineId+'" class="lpmTeaser__headline --cell-padding">'+
 						'<p class="hn-headline hn-color-gray-800 hn-2xl large:hn-3xl">'+headlineText+'</p>'+
@@ -224,6 +239,7 @@ window.iridion = window.iridion || [];
 								'<div class="item__desc h-smallOffset-top-outer">'+
 									'<div class="kk_badge kk_flex">'+
 										mergedProducts+
+										'<span>&nbsp;&nbsp;</span>'+
 									'</div>'+
 									'<h4 class="item_desc desc-name">'+ name +'</h4>'+
 									'<div class="desc-price kk_flex">'+
@@ -293,13 +309,8 @@ window.iridion = window.iridion || [];
 						'<div class="lpmSeparator">&nbsp;</div>'+
 						initKkHeadline("kk_highlights_header",(variation===1?"Aktuelle Highlights":userAlignment+' Basics aus Bio-Baumwolle'))+
 						initKkSliderContainer("kk_highlights_content")+
-						initKkHeadline("kk_popular_header","Beliebte Kategorien")+
+						initKkHeadline("kk_popular_header","Beliebte Kategorien", ref, userAlignment)+
 						'<div id="kk_chosen_user" class="kk_container">'+
-							'<div class="kk_furtherArticles kk_isDesktop kk_justify-content-end">'+
-								'<a href='+ref+'>'+
-									'<span class="hn-button-link">Alle Artikel für '+userAlignment+'</span>'+
-								'</a>'+
-							'</div>'+
 						'</div>'+
 						initKkSliderContainer("kk_popularities_content")+
 						'<div id="kk_chosen_user" class="kk_container">'+
@@ -313,7 +324,6 @@ window.iridion = window.iridion || [];
 					);
 			}
 		});
-	
 
 		for(var id in DATA ){
 			WATO.xhr_get("https://products.hessnatur.com/products/"+id, function (rawData) {
@@ -352,11 +362,9 @@ window.iridion = window.iridion || [];
 								if(oneImgReady&&window.innerWidth>=600){
 									initFlickity(popularities);
 									
-									
 								}
 								popularities.style.opacity="1";
 							});	
-							
 						});
 					}
 				});

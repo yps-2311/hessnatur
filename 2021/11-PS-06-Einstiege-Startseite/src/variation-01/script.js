@@ -68,8 +68,6 @@
 
     var CATEGORIES = WATO.PS06Category(CATEGORY_AFFINITY);
 
-    //console.log("CATEGORY_AFFINITY", CATEGORY_AFFINITY);
-
     if(CATEGORY_AFFINITY){
         if(CATEGORY_AFFINITY === "herren"){
 
