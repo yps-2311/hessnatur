@@ -12,6 +12,8 @@
  (function (WATO) {
     "use strict";
 
+    window.iridion.econda.push(["SprintPS06", "V2"]);
+
        // response > "damen" | "herren" | "baby OR junior" | "home"
        var CATEGORY_AFFINITY = window.iridion.push(['profile', 'getValue', 'categoryAffinity']);
        var DATA = {

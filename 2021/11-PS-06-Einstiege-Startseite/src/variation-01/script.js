@@ -1,5 +1,5 @@
 // load core and global js
- //@codekit-prepend "../global/global.js";
+ //@ codekit-prepend "../global/global.js";
 
 //@code-kit append "request.min.js";
 /**
@@ -11,6 +11,8 @@
  */
  (function (WATO) {
     "use strict";
+
+    window.iridion.econda.push(["SprintPS06", "V1"]);
 
     // response > "damen" | "herren" | "baby OR junior" | "home"
     var CATEGORY_AFFINITY = window.iridion.push(['profile', 'getValue', 'categoryAffinity']);
