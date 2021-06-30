@@ -342,7 +342,10 @@ window.iridion = window.iridion || [];
         // TODO hochladen und testen
         
         // Wenn ein User über einen Newsletter kommt wird er mit diesem Cookie markiert
-        if(window.document.location.search.indexOf("layer=") !== -1){
+        if(
+            window.document.location.search.indexOf("layer=") !== -1 ||
+            location.pathname === "/de/newsletter/doi/einstellungen"            // MV, 30.06.2021
+        ){
             window.document.cookie = "kk_newsletter=true; expires=Thu, 18 Dec 2022 12:00:00 UTC; path=/";
         }
 
@@ -435,7 +438,6 @@ window.iridion = window.iridion || [];
                 window.document.cookie = "kk_visitor_firstsession=false;domain=.hessnatur.com;path=/;expires=Thu, 18 Dec 2000 12:00:00 UTC";
             }
         }
-
     } catch (error) {
         // console.log(error);
         goalPush('error_setup');
