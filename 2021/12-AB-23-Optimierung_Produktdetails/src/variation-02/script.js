@@ -11,7 +11,7 @@
 (function(WATO) {
     "use strict";
 
-    // window.iridion.econda.push(["SprintAB23", "V2"]);
+    window.iridion.econda.push(["SprintAB23", "V2"]);
 
     var fakeClick = false,
         pushGoal = function(key) {
@@ -28,12 +28,30 @@
 
     // open the first tab
     // if we need an alternative > https://get.foundation/sites/docs/accordion.html
-    WATO.elem('#Produktbeschreibung-label', function(produktbeschreibungLabel){
+    // WATO.elem('#Produktbeschreibung-label', function(produktbeschreibungLabel){
+    //     if(produktbeschreibungLabel){
+    //         // fakeClick = true;
+    //         // produktbeschreibungLabel[0].click();
+    //     }
+    // });
 
-        if(produktbeschreibungLabel){
+    WATO.elem('#Produktbeschreibung', function(produktbeschreibung){
 
-            fakeClick = true;
-            produktbeschreibungLabel[0].click();
+        if(produktbeschreibung){
+
+            WATO.elem('.productInfoAccordion', function(productInfoAccordion){
+        
+                if(productInfoAccordion){
+                    
+                    productInfoAccordion[0].insertAdjacentHTML('beforebegin',
+                        '<div id="kk-productInfoAccordion" class="row productInfoAccordion"><div class="column small-12">' + produktbeschreibung[0].innerHTML + '</div></div>'
+                    );
+
+                    window.addEventListener('load', function(){
+                        WATO.qs('#kk-productInfoAccordion > .column').innerHTML = WATO.qs('#Produktbeschreibung').innerHTML;
+                    });
+                }
+            });
         }
     });
 

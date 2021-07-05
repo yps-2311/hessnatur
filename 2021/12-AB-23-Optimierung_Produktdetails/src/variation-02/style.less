@@ -65,9 +65,9 @@
         background-image: url(//media.hessnatur.com/kk/2021/ab23-optimierung-produktdetailseite/kkab23-open.svg);
     }
     
-    #Produktbeschreibung img {
-        margin-top: -135px !important;
-    }
+    // #Produktbeschreibung img {
+    //     margin-top: -135px !important;
+    // }
 
     #Material > * {
         display: none;
@@ -75,5 +75,61 @@
         &:nth-child(2) {
             display: block;
         }
+    }
+
+    #Produktbeschreibung,
+    #Produktbeschreibung-label {
+        display: none !important;
+    }
+}
+
+#kk-productInfoAccordion {
+
+    & > .column > .row > .column {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 100%;
+        flex: 1;
+    }
+
+    #kk-prod-desc-img {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 100%;
+        flex: 1;
+        max-width: 50%;
+    }
+
+
+    h4 {
+        position: relative;
+        font-size: 28px;
+        line-height: 28px;
+        padding: 1.53846rem 0;
+        padding-left: 2.69231rem;
+        border-top: 1px solid #e5e4e3;
+        border-bottom: 1px solid #e5e4e3;
+
+        &:before {
+            content: " ";
+            position: absolute;
+            top: 50%;
+            margin-top: -.5rem;
+            left: 0;
+            right: auto;
+            width: 18px;
+            height: 12px;
+            background-image: url(//media.hessnatur.com/kk/2021/ab23-optimierung-produktdetailseite/kkab23-open.svg);
+        }
+    }
+
+    .pds-productDescription__text {
+        margin-bottom: 30px;
+        letter-spacing: .04em;
+    }
+
+    ul.pds-cockpit__shortDescription li {
+        letter-spacing: .04em;
+        margin-bottom: 14px;
     }
 }

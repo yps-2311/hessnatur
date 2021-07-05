@@ -12,7 +12,7 @@
  (function(WATO) {
     "use strict";
 
-    // window.iridion.econda.push(["SprintAB23", "V0"]);
+    window.iridion.econda.push(["SprintAB23", "V0"]);
 
     // var fakeClick = false,
     var pushGoal = function(key) {
