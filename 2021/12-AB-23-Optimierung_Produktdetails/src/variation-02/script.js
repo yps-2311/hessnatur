@@ -13,8 +13,8 @@
 
     window.iridion.econda.push(["SprintAB23", "V2"]);
 
-    var fakeClick = false,
-        pushGoal = function(key) {
+    // var fakeClick = false,
+    var pushGoal = function(key) {
             window.iridion.push(['goal', key]);
         };
 
@@ -63,21 +63,21 @@
 
                 accordionTitle[i].addEventListener('click', function(){
 
-                    if(!fakeClick){
+                    // if(!fakeClick){
 
                         pushGoal('kk_ab23_click_tab');
                         pushGoal('kk_ab23_click_tab_' + this.getAttribute('id'));
 
-                        var $elem = $(this);
+                        // var $elem = $(this);
 
-                        window.setTimeout(function(){
-                            $('html,body').animate({
-                                scrollTop: $elem.offset().top - 150
-                            }, 500);
-                        }, 250);
-                    }
+                        // window.setTimeout(function(){
+                        //     $('html,body').animate({
+                        //         scrollTop: $elem.offset().top - 150
+                        //     }, 500);
+                        // }, 250);
+                    // }
 
-                    fakeClick = false;
+                    // fakeClick = false;
                 });
             }
         }
