@@ -12,7 +12,7 @@
  (function (WATO) {
     "use strict";
 
-    window.iridion.econda.push(["SprintPS06", "V1"]);
+    window.iridion.econda.push(["PS06_restart", "V1"]);
 
     // v1=modisch
 

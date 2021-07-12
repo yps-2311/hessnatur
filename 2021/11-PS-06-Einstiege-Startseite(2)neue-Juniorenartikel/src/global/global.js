@@ -29,20 +29,73 @@ window.iridion = window.iridion || [];
 
 	WATO.prototype.PS06Goals = function() {
 
-		this.elem("#ecRecommendationsContainer .flickity-slider", function (reco) {
+		var WATO = this;
+
+		WATO.elem("#ecRecommendationsContainer .flickity-slider", function (reco) {
 			if (reco[0]) {
 				reco[0].addEventListener('click', function(){
 					pushGoal('click_original_slider', false, true);
 				});
 			}
 		});
-		this.elem('[href=mehrmorgen]', function (mehrmorgen) {
+		WATO.elem('[href=mehrmorgen]', function (mehrmorgen) {
 			if (mehrmorgen[0]) {
 				mehrmorgen[0].addEventListener('click', function(){
 					pushGoal('click_mehrmorgen_link', false, true);
 				});
 			}
 		});
+
+		var sendClickNavigation = false;
+
+		// click on navigation, desktop
+		WATO.elem('#mainNavPrgRedirectionForm > ul > li', function(mainNav){
+
+			if(mainNav){
+
+				for(var i = 0; i < mainNav.length; i++){
+
+					mainNav[i].addEventListener('mouseenter', function(){
+
+						window.setTimeout(function(){
+
+							var activeNavElem = WATO.qs('#mainNavPrgRedirectionForm > ul > li.is-active');
+
+							if(!sendClickNavigation && activeNavElem && activeNavElem.length > 0){
+
+								sendClickNavigation = true;
+								pushGoal('click_navigation');
+							}
+						}, 500);
+					});
+				}
+			}
+		});
+
+		// click on navigation, mobile
+		WATO.elem('#header .mobileNavigationContainer > li:nth-child(1) > a', function(mainNav){
+
+			if(mainNav){
+
+				for(var i = 0; i < mainNav.length; i++){
+
+					mainNav[i].addEventListener('click', function(){
+
+						pushGoal('click_navigation');
+					});
+				}
+			}
+		});
+
+		// send search form
+		// this.elem('#search_form_off_canvas', function(searchForm){
+		// 	if(searchForm){
+
+		// 		searchForm[0].addEventListener('submit', function(){
+		// 			pushGoal('search_form', false, true);
+		// 		});
+		// 	}
+		// });
 	};
 
 	WATO.prototype.PS06Category = function(CATEGORY_AFFINITY) {
@@ -113,6 +166,8 @@ window.iridion = window.iridion || [];
 		if(userAlignment==="baby"){
 			userAlignment="Kinder";
 		}
+
+		WATO.PS06Goals();
 
 		function initFlickity(slide){ // , height, selector
 			var props={
@@ -348,7 +403,6 @@ window.iridion = window.iridion || [];
 						WATO.elem(function(){
 							return typeof window.Flickity !== "undefined";
 						}, function(){
-							WATO.PS06Goals();
 
 							popularities=popularities[0];
 
