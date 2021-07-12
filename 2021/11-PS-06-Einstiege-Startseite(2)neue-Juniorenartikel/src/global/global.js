@@ -382,17 +382,25 @@ window.iridion = window.iridion || [];
 
 		for(var id in DATA ){
 			WATO.xhr_get("https://products.hessnatur.com/products/"+id, function (rawData) {
-				try {
-					var sku=rawData.products[0].sku;
-					DATA[sku].response=rawData.products[0];
-					response++;
-				} catch (error) {
-					pushGoal('fetch_error', error.toString());
-				}
+					try {
+						if(rawData.products && rawData.products.length>0){
+							var sku=rawData.products[0].sku;
+						
+							DATA[sku].response=rawData.products[0];
+							response++;
+						}
+						else {
+							delete DATA[id];
+						}
+						
+					} catch (error) {
+						pushGoal('fetch_error', error.toString());
+					}
 			});
 		}
 		WATO.elem(function(){
-			return response===Object.keys(DATA).length;
+			console.log('content', response,Object.keys(DATA).length);
+			return /*true*/ response===Object.keys(DATA).length;
 		},
 		function(done){
 			if(done){
