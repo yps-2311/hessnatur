@@ -11,7 +11,6 @@ window.iridion = window.iridion || [];
 
 (function(WATO){
 	"use strict";
-	console.log("jojo");
 
 	function pushGoal(key, value, sendOnNextPageView) {
 
