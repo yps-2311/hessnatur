@@ -1,5 +1,5 @@
 // load core and global js
-//@codekit-prepend "../global/global.js";
+//@ codekit-prepend "../global/global.js";
 
 //@code-kit append "request.min.js";
 /**
@@ -86,14 +86,14 @@
         if(CATEGORY_AFFINITY === "herren"){
             
         DATA = {
-            "4238489": {
+            "4238488": {
                 "badges": [
                     "vegan",
                     "kundenfavorit"
                 ],
                 "response": {}
             },
-            "5055909": {
+            "5077317": {
                 "badges": [
                     "vegan"
                 ],
@@ -105,52 +105,9 @@
                 ],
                 "response": {}
             },
-            "4538589": {
-                "badges": [
-                    "vegan"
-                ],
-                "response": {}
-            },
-            "4969329": {
-                "badges": [
-                    "vegan"
-                ],
-                "response": {}
-            },
-            "4969403": {
-                "badges": [
-                    "vegan"
-                ],
-                "response": {}
-            },
-            "4969719": {
-                "badges": [
-                    "vegan"
-                ],
-                "response": {}
-            },
-            "4581909": {
-                "badges": [
-                    "sale"
-                ],
-                "response": {}
-            },
             "4942717": {
                 "badges": [
                     "vegan"
-                ],
-                "response": {}
-            },
-            "5055989": {
-                "badges": [
-                    "vegan"
-                ],
-                "response": {}
-            },
-            "4238409": {
-                "badges": [
-                    "vegan",
-                    "kundenfavorit"
                 ],
                 "response": {}
             }
