@@ -1,5 +1,5 @@
 // load core and global js
-//@codekit-prepend "../global/global.js";
+//@ codekit-prepend "../global/global.js";
 
 //@code-kit append "request.min.js";
 /**
@@ -79,7 +79,7 @@
     };
 
    
-    var CATEGORIES = WATO.PS06Category(CATEGORY_AFFINITY);
+    var CATEGORIES = WATO.PS06_restartCategory(CATEGORY_AFFINITY);
        //console.log("CATEGORY_AFFINITY", CATEGORY_AFFINITY);
    
     if(CATEGORY_AFFINITY){
@@ -191,17 +191,17 @@
                         "vegan"
                     ],
                     "response": {}
-                }/*,
+                },
                 "5093201": {
                     "badges": [
                         "vegan"
                     ],
                     "response": {}
-                }*/
+                }
             };               
         }
     }
    
-    WATO.PS06(CATEGORY_AFFINITY, CATEGORIES, DATA, 2);
+    WATO.PS06_restart(CATEGORY_AFFINITY, CATEGORIES, DATA, 2);
 
 })(new window.WATO());

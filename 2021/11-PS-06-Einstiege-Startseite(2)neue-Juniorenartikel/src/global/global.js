@@ -27,7 +27,7 @@ window.iridion = window.iridion || [];
 		window.iridion.push(props);
 	}
 
-	WATO.prototype.PS06Goals = function() {
+	WATO.prototype.PS06_restartGoals = function() {
 
 		var WATO = this;
 
@@ -38,6 +38,7 @@ window.iridion = window.iridion || [];
 				});
 			}
 		});
+		/*
 		WATO.elem('[href=mehrmorgen]', function (mehrmorgen) {
 			if (mehrmorgen[0]) {
 				mehrmorgen[0].addEventListener('click', function(){
@@ -45,23 +46,30 @@ window.iridion = window.iridion || [];
 				});
 			}
 		});
-
+		*/
 		var sendClickNavigation = false;
 
 		// click on navigation, desktop
-		WATO.elem('#mainNavPrgRedirectionForm > ul > li', function(mainNav){
+		WATO.elem('#mainNavPrgRedirectionForm > ul > li:nth-child(7)', function(){
 
-			if(mainNav){
+			var navElements=WATO.qsa('#mainNavPrgRedirectionForm > ul > li');
+			//console.log('navElements1', navElements,navElements.length);
 
-				for(var i = 0; i < mainNav.length; i++){
+			if(navElements){
 
-					mainNav[i].addEventListener('mouseenter', function(){
+				for(var i = 0; i < navElements.length; i++){
+
+					navElements[i].addEventListener('mouseenter', function(){
+						
+						//console.log('navElements2', navElements);
 
 						window.setTimeout(function(){
 
 							var activeNavElem = WATO.qs('#mainNavPrgRedirectionForm > ul > li.is-active');
+							//console.log(!sendClickNavigation , activeNavElem , activeNavElem.length > 0);
 
-							if(!sendClickNavigation && activeNavElem && activeNavElem.length > 0){
+							if(!sendClickNavigation && activeNavElem /*&& activeNavElem.length > 0*/){
+								//console.log('sendClickNavigation =>', sendClickNavigation, typeof sendClickNavigation);
 
 								sendClickNavigation = true;
 								pushGoal('click_navigation');
@@ -98,7 +106,7 @@ window.iridion = window.iridion || [];
 		// });
 	};
 
-	WATO.prototype.PS06Category = function(CATEGORY_AFFINITY) {
+	WATO.prototype.PS06_restartCategory = function(CATEGORY_AFFINITY) {
 
 		//Name,  img-link desktop, URL, img-link mobile
 		var CATEGORIES = [
@@ -147,7 +155,8 @@ window.iridion = window.iridion || [];
 		return CATEGORIES;
 	};
 
-	WATO.prototype.PS06 = function(CATEGORY_AFFINITY, CATEGORIES, DATA, variation){
+	WATO.prototype.PS06_restart = function(CATEGORY_AFFINITY, CATEGORIES, DATA, variation){
+
 		if(!CATEGORY_AFFINITY || CATEGORY_AFFINITY===1){
 			CATEGORY_AFFINITY = "damen";
 		}
@@ -167,7 +176,7 @@ window.iridion = window.iridion || [];
 			userAlignment="Kinder";
 		}
 
-		WATO.PS06Goals();
+		WATO.PS06_restartGoals();
 
 		function initFlickity(slide){ // , height, selector
 			var props={
@@ -399,7 +408,7 @@ window.iridion = window.iridion || [];
 			});
 		}
 		WATO.elem(function(){
-			console.log('content', response,Object.keys(DATA).length);
+			//console.log('content', response,Object.keys(DATA).length);
 			return /*true*/ response===Object.keys(DATA).length;
 		},
 		function(done){
@@ -423,6 +432,9 @@ window.iridion = window.iridion || [];
 							}, function(oneImgReady){
 								if(oneImgReady&&window.innerWidth>=600){
 									initFlickity(popularities);
+									
+								}
+								else{
 									
 								}
 								popularities.style.opacity="1";

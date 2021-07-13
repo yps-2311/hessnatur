@@ -70,7 +70,7 @@
         }
     };
 
-    var CATEGORIES = WATO.PS06Category(CATEGORY_AFFINITY);
+    var CATEGORIES = WATO.PS06_restartCategory(CATEGORY_AFFINITY);
 
     if(CATEGORY_AFFINITY){
         if(CATEGORY_AFFINITY === "herren"){
@@ -203,6 +203,6 @@
         }
     }
 
-    WATO.PS06(CATEGORY_AFFINITY, CATEGORIES, DATA, 1);
+    WATO.PS06_restart(CATEGORY_AFFINITY, CATEGORIES, DATA, 1);
 
 })(new window.WATO());
