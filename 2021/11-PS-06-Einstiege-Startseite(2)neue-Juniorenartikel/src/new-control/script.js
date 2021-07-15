@@ -14,6 +14,6 @@
 
     window.iridion.econda.push(["PS06_restart", "V0"]);
 
-    WATO.PS06Goals();
+    WATO.PS06_restartGoals();
 
 })(new window.WATO());

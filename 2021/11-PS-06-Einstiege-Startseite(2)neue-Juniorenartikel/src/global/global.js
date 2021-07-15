@@ -12,6 +12,15 @@ window.iridion = window.iridion || [];
 (function(WATO){
 	"use strict";
 
+	if((/rv\:11\./).test(navigator.userAgent)){
+        if(window.NodeList && !NodeList.prototype.forEach) {
+            NodeList.prototype.forEach = Array.prototype.forEach;
+        }
+        if(window.HTMLCollection && !HTMLCollection.prototype.forEach) {
+        HTMLCollection.prototype.forEach = Array.prototype.forEach;
+        }
+    }
+
 	function pushGoal(key, value, sendOnNextPageView) {
 
 		var props = ['goal', 'ps06_' + key];
@@ -435,7 +444,14 @@ window.iridion = window.iridion || [];
 									
 								}
 								else{
-									
+									//console.log('popularities.childNodes', popularities.childNodes);
+									popularities.childNodes.forEach(function(node,index){
+										node.addEventListener('click',function(){
+											//console.log(popularities.children[index],index,"chuldren");
+											pushGoal('click_category' + index, false, true);
+											pushGoal('click_slider', false, true);
+										})
+									})
 								}
 								popularities.style.opacity="1";
 							});	
