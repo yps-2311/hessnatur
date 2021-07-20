@@ -11,7 +11,15 @@ window.iridion = window.iridion || [];
 
 (function(WATO){
 	"use strict";
-	console.log("jojo");
+
+	if((/rv\:11\./).test(navigator.userAgent)){
+        if(window.NodeList && !NodeList.prototype.forEach) {
+            NodeList.prototype.forEach = Array.prototype.forEach;
+        }
+        if(window.HTMLCollection && !HTMLCollection.prototype.forEach) {
+        HTMLCollection.prototype.forEach = Array.prototype.forEach;
+        }
+    }
 
 	function pushGoal(key, value, sendOnNextPageView) {
 
@@ -28,25 +36,86 @@ window.iridion = window.iridion || [];
 		window.iridion.push(props);
 	}
 
-	WATO.prototype.PS06Goals = function() {
+	WATO.prototype.PS06_restartGoals = function() {
 
-		this.elem("#ecRecommendationsContainer .flickity-slider", function (reco) {
+		var WATO = this;
+
+		WATO.elem("#ecRecommendationsContainer .flickity-slider", function (reco) {
 			if (reco[0]) {
 				reco[0].addEventListener('click', function(){
 					pushGoal('click_original_slider', false, true);
 				});
 			}
 		});
-		this.elem('[href=mehrmorgen]', function (mehrmorgen) {
+		/*
+		WATO.elem('[href=mehrmorgen]', function (mehrmorgen) {
 			if (mehrmorgen[0]) {
 				mehrmorgen[0].addEventListener('click', function(){
 					pushGoal('click_mehrmorgen_link', false, true);
 				});
 			}
 		});
+		*/
+		var sendClickNavigation = false;
+
+		// click on navigation, desktop
+		WATO.elem('#mainNavPrgRedirectionForm > ul > li:nth-child(7)', function(){
+
+			var navElements=WATO.qsa('#mainNavPrgRedirectionForm > ul > li');
+			//console.log('navElements1', navElements,navElements.length);
+
+			if(navElements){
+
+				for(var i = 0; i < navElements.length; i++){
+
+					navElements[i].addEventListener('mouseenter', function(){
+						
+						//console.log('navElements2', navElements);
+
+						window.setTimeout(function(){
+
+							var activeNavElem = WATO.qs('#mainNavPrgRedirectionForm > ul > li.is-active');
+							//console.log(!sendClickNavigation , activeNavElem , activeNavElem.length > 0);
+
+							if(!sendClickNavigation && activeNavElem /*&& activeNavElem.length > 0*/){
+								//console.log('sendClickNavigation =>', sendClickNavigation, typeof sendClickNavigation);
+
+								sendClickNavigation = true;
+								pushGoal('click_navigation');
+							}
+						}, 500);
+					});
+				}
+			}
+		});
+
+		// click on navigation, mobile
+		WATO.elem('#header .mobileNavigationContainer > li:nth-child(1) > a', function(mainNav){
+
+			if(mainNav){
+
+				for(var i = 0; i < mainNav.length; i++){
+
+					mainNav[i].addEventListener('click', function(){
+
+						pushGoal('click_navigation');
+					});
+				}
+			}
+		});
+
+		// send search form
+		// this.elem('#search_form_off_canvas', function(searchForm){
+		// 	if(searchForm){
+
+		// 		searchForm[0].addEventListener('submit', function(){
+		// 			pushGoal('search_form', false, true);
+		// 		});
+		// 	}
+		// });
 	};
 
-	WATO.prototype.PS06Category = function(CATEGORY_AFFINITY) {
+	WATO.prototype.PS06_restartCategory = function(CATEGORY_AFFINITY) {
 
 		//Name,  img-link desktop, URL, img-link mobile
 		var CATEGORIES = [
@@ -95,7 +164,8 @@ window.iridion = window.iridion || [];
 		return CATEGORIES;
 	};
 
-	WATO.prototype.PS06 = function(CATEGORY_AFFINITY, CATEGORIES, DATA, variation){
+	WATO.prototype.PS06_restart = function(CATEGORY_AFFINITY, CATEGORIES, DATA, variation){
+
 		if(!CATEGORY_AFFINITY || CATEGORY_AFFINITY===1){
 			CATEGORY_AFFINITY = "damen";
 		}
@@ -114,6 +184,8 @@ window.iridion = window.iridion || [];
 		if(userAlignment==="baby"){
 			userAlignment="Kinder";
 		}
+
+		WATO.PS06_restartGoals();
 
 		function initFlickity(slide){ // , height, selector
 			var props={
@@ -328,17 +400,25 @@ window.iridion = window.iridion || [];
 
 		for(var id in DATA ){
 			WATO.xhr_get("https://products.hessnatur.com/products/"+id, function (rawData) {
-				try {
-					var sku=rawData.products[0].sku;
-					DATA[sku].response=rawData.products[0];
-					response++;
-				} catch (error) {
-					pushGoal('fetch_error', error.toString());
-				}
+					try {
+						if(rawData.products && rawData.products.length>0){
+							var sku=rawData.products[0].sku;
+						
+							DATA[sku].response=rawData.products[0];
+							response++;
+						}
+						else {
+							delete DATA[id];
+						}
+						
+					} catch (error) {
+						pushGoal('fetch_error', error.toString());
+					}
 			});
 		}
 		WATO.elem(function(){
-			return response===Object.keys(DATA).length;
+			//console.log('content', response,Object.keys(DATA).length);
+			return /*true*/ response===Object.keys(DATA).length;
 		},
 		function(done){
 			if(done){
@@ -349,7 +429,6 @@ window.iridion = window.iridion || [];
 						WATO.elem(function(){
 							return typeof window.Flickity !== "undefined";
 						}, function(){
-							WATO.PS06Goals();
 
 							popularities=popularities[0];
 
@@ -363,6 +442,16 @@ window.iridion = window.iridion || [];
 								if(oneImgReady&&window.innerWidth>=600){
 									initFlickity(popularities);
 									
+								}
+								else{
+									//console.log('popularities.childNodes', popularities.childNodes);
+									popularities.childNodes.forEach(function(node,index){
+										node.addEventListener('click',function(){
+											//console.log(popularities.children[index],index,"chuldren");
+											pushGoal('click_category' + index, false, true);
+											pushGoal('click_slider', false, true);
+										})
+									})
 								}
 								popularities.style.opacity="1";
 							});	

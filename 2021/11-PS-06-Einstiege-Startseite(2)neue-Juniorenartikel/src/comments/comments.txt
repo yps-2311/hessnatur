@@ -1,6 +1,0 @@
-1. Die Header aus der Mock haben keinen Punkt gesetzt. Der darunter ähnlich formatiert Header "Sommerkollektion" schon.
-2. Die Pfeile des Sliders haben während der Entwicklung ihr Aussehen geändert. Ich habe es mal als "zu adaptieren" angesehen und die Formatierung nicht wieder Rückgängig gemacht
-3. Die  Beispiel Bilder sind aus den etailseiten bezogen und haben daher eine nicht beschnittene Höhe. Sobald dafür entsprechende Links da sind, sollte sich die Höhe ändern.
-    ->Der Abstand zwischen dem Highlight-Banner und dem Bild sind somit etwas höher als vorgesehen.
-4. Ich ging davon aus, dass die Variante 2 und 3 auf Variante 1 zu adaptieren gewesen sein sollen. Ich hatte daz keine Vorlage.
-5.
