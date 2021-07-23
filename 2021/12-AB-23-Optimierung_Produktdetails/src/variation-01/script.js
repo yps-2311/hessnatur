@@ -13,9 +13,6 @@
 
     window.iridion.econda.push(["SprintAB23", "V1"]);
 
-    console.log("SprintAB23 - V1");
-
-
     var setContentContainer = function(selectorAccordion, selectorNewPosition) {
 
         WATO.elem(selectorAccordion, function(accordion){

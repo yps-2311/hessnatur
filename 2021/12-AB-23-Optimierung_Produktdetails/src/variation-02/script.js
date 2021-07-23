@@ -47,7 +47,12 @@
                         '<div id="kk-productInfoAccordion" class="row productInfoAccordion"><div class="column small-12">' + produktbeschreibung[0].innerHTML + '</div></div>'
                     );
 
+                    var workaround = setInterval(function(){
+                        WATO.qs('#kk-productInfoAccordion > .column').innerHTML = WATO.qs('#Produktbeschreibung').innerHTML;
+                    }, 50);
+
                     window.addEventListener('load', function(){
+                        clearInterval(workaround);
                         WATO.qs('#kk-productInfoAccordion > .column').innerHTML = WATO.qs('#Produktbeschreibung').innerHTML;
                     });
                 }
