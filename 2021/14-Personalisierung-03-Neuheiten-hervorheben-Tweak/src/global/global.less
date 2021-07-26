@@ -1,0 +1,202 @@
+/* IMPORT VAR LESS FILE */
+@import "vars.less";
+
+// DEFINE GLOBAL CSS
+// Beispiel für die Verwendung der Variable base-url
+// background: url('@{base-url}sprite.png') no-repeat 0 0;
+
+
+
+#kk_crossprods {
+    margin: 20px 0 29px;
+    .carousel-cell {
+        width: 22%;
+        height: calc(29vw);
+        text-decoration: none;
+        margin-right: 1px;
+    }
+    .flickity-prev-next-button {
+        top: 40%;
+        opacity: .46;
+        &[disabled]{
+            display: none !important;
+        }
+    }
+    .flickity-prev-next-button.previous {
+        left: 0;
+    }
+    .flickity-prev-next-button.next {
+        right: 15px;
+    }
+}
+.gridviewProductItemWrapper + #kk_crossprods {
+    margin-left: 2.30769rem;
+    -webkit-box-flex: 0;
+    flex: 0 0 97.5%;
+    max-width: 97.5%;
+}
+
+.kk_cimg {
+    width: 100%;
+    padding: 0;
+    // overflow: hidden;
+    position: relative;
+    img {
+        width: 100%;
+        height: auto;
+        display: block;
+        margin: auto;
+    }
+}
+.kk_title {
+    margin-top: 20px;
+    text-decoration: none;
+    font-size: 13px;
+    color: #393939;
+    letter-spacing: 0.12px;
+    text-align: center;
+    line-height: 17px;
+    padding: 0 8px;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+.kk_price {
+    text-decoration: none;
+    font-size: 13px;
+    color: #393939;
+    letter-spacing: 0.12px;
+    text-align: center;
+    line-height: 17px;
+    padding: 0 8px;
+}
+.kk_badge {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: -10px;
+    width: 100%;
+    img {
+        height: 25px;
+        width: auto;
+        margin: 0 5px;
+    }
+}
+.kk_blackbox {
+    padding: 57px 17px 0;
+    background-color: #000;
+    max-height: calc(22.85vw) !important;
+    h4 {
+        font-family: "Roboto Condensed Bold";
+        font-weight: normal;
+        font-size: calc(1.85vw);
+        line-height: calc(2.2vw);
+        color: #FFFFFF;
+        letter-spacing: 0.22px;
+        text-transform: uppercase;
+    }
+}
+.kk_subline {
+    font-size: calc(1.07vw);
+    line-height: calc(1.2vw);
+    color: #FFFFFF;
+    text-transform: uppercase;
+}
+a.kk_subline {
+    letter-spacing: 0.13px;
+    text-decoration: none;
+    &:hover {
+        color: #FFFFFF;
+        text-decoration: underline;
+    }
+}
+.kk_number {
+    font-family: "Roboto Condensed Bold";
+    font-weight: normal;
+    position: absolute;
+    right: 23px;
+    bottom: 16px;
+    color: #FFFFFF;
+    font-size: 18px;
+}
+
+
+
+.kk_load {
+    display: flex;
+    justify-content: left;
+    flex-direction: row;
+}
+.kk_cprod {
+    cursor: pointer;
+    background-color: #f7f7f7;
+    height: 400px;
+    margin: 0 1px 102px 0;
+    position: relative;
+    display: block;
+    width: 22.22222%;
+    overflow: hidden;
+    // box-shadow: 0 3px 19px 1px rgba(0,0,0,0.05);
+    // border: solid #E9E8E4 2px;
+    text-decoration: none;
+    &:last-child {
+        width: 11.11111%;
+    }
+}
+
+/** LOADER **/
+.kk-loader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 25%;
+    left: 0;
+    z-index: 9;
+    background: #f7f7f7;
+
+    // https://loading.io/css/
+    .lds-ring {
+        position: absolute;
+        margin-left: -40px;
+        top: 10%;
+        left: 50%;
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+    }
+
+    .lds-ring div {
+        box-sizing: border-box;
+        display: block;
+        position: absolute;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border: 5px solid #fff;
+        border-radius: 50%;
+        animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        border-color: #979797 transparent transparent transparent;
+    }
+
+    .lds-ring div:nth-child(1) {
+        animation-delay: -0.45s;
+    }
+
+    .lds-ring div:nth-child(2) {
+        animation-delay: -0.3s;
+    }
+
+    .lds-ring div:nth-child(3) {
+        animation-delay: -0.15s;
+    }
+
+    @keyframes lds-ring {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}
