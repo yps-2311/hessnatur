@@ -54,6 +54,9 @@
 						typeof window.econda.recengine !== "undefined" && typeof window.econda.recengine.Widget !== "undefined"; // typeof jQuery.fn.flickity !== "undefined"
 				} , function(econdaRdy){
 					if(econdaRdy){
+						// Reco-Init aus dem komprimierten Code der Seite von Hessnatur
+						// leicht angepasst "var n = $("#kk_likethisproduct")" und "new window.Flickity(t, ACC.productSlider.getFlickityOptions());"
+
 						var e = window.usercentrics.getConsents("SJXtq4iOoZX");
 						if (null !== e && e.consentStatus) {
 							var t = $("#completeTheLookRecommendationsAddToCart");

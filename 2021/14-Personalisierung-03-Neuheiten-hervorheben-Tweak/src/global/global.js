@@ -11,12 +11,12 @@
 
 	/*jshint loopfunc: true */
 	
-	WATO.prototype.goProfile = function(thisName, thisvalue) {
-		if(thisvalue){
-			window.iridion.push(['profile', 'setValue', thisName, JSON.stringify(thisvalue)]);
-		}else{
+	WATO.prototype.getProfileValue = function(thisName) { // thisvalue
+		// if(thisvalue){
+		// 	window.iridion.push(['profile', 'setValue', thisName, JSON.stringify(thisvalue)]);
+		// }else{
 			return window.iridion.push(['profile', 'getValue', thisName]);
-		}
+		// }
 	};
 
 	WATO.prototype.ps03tweak = function(){
@@ -27,6 +27,9 @@
 			imgs7 = "https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/";
 
 		function getCompareString(categoryString) {
+			// Wenn die Hauptkategorie übereinstimmt +2 Punkte 
+			// wenn die Unterkategorie übereinstimmt +1 Punkt oder halt 0 Punkte. 
+			// Damit kann die Produkt je nach "wichtigkeit der Kategorie" in der man sich befindet, sortieren.
 			var temp = 0,
 				splitString = categoryString.productcategory.split("^^");
 			
@@ -52,27 +55,27 @@
 			return 0;
 		}
 
-		function ajax(url, callback) {
-			var request = XMLHttpRequest.prototype.open;
+		// function ajax(url, callback) {
+		// 	var request = XMLHttpRequest.prototype.open;
 
-			XMLHttpRequest.prototype.open = function (method, uri, async, user, pass) {
+		// 	XMLHttpRequest.prototype.open = function (method, uri, async, user, pass) {
 
-				this.addEventListener("loadend", function () {
-					var _that = this;
-					if (_that.readyState === 4) {
+		// 		this.addEventListener("loadend", function () {
+		// 			var _that = this;
+		// 			if (_that.readyState === 4) {
 						
-						if (uri.indexOf(url) !== -1) {
+		// 				if (uri.indexOf(url) !== -1) {
 
-							if (typeof callback === "function") {
-								callback(_that);
-							}
-						}
-					}
-				}, false);
+		// 					if (typeof callback === "function") {
+		// 						callback(_that);
+		// 					}
+		// 				}
+		// 			}
+		// 		}, false);
 
-				request.call(this, method, uri, async, user, pass);
-			};
-		}
+		// 		request.call(this, method, uri, async, user, pass);
+		// 	};
+		// }
 
 		// function goalPush(key, sendOnNextPageView){
 		// 	if(sendOnNextPageView){
@@ -85,7 +88,7 @@
 		if(UrlPathname.indexOf("/c/") !== -1){
 
 			// Kategorieseiten
-			var userType = WATO.goProfile('customerType') || "Interessent", // "Neukunde",
+			var userType = WATO.getProfileValue('customerType') || "Interessent", // "Neukunde",
 				headerText = {
 					Interessent: ['Neu bei uns eingetroffen.', 'Lassen Sie sich von unseren neuen Outfits inspirieren.'],
 					Neukunde: ['Neu seit Ihrem letzen Besuch.', 'Neue Outfits Im Bereich '+UrlPathname.split("/")[2]],
@@ -112,7 +115,7 @@
 				if(isLoadedEconda){
 					// Wenn Econda geladen ist kann der Call abgeschickt werden
 
-					ajax("widgets.crosssell.info/eps/crosssell/recommendations", function(callbackData){
+					WATO.ajax("widgets.crosssell.info/eps/crosssell/recommendations", function(callbackData){
 						var data = JSON.parse(callbackData.response),
 							items = data.items;
 						
@@ -149,11 +152,14 @@
 												res.blob().then((data) => {
 													if(typeof data.size !== "undefined" && data.size === 5803){ // 3080
 														// Hier wird anhand der Größe des zurückgelieferten Bildes erkannt dass es sich um einen Platzhalter vom Imageserver handelt
-														// console.log('WATO.qs(img[src="+res.url+"]): ', WATO.qs('img[src="'+res.url+'"]'));
-														WATO.qs('img[src="'+res.url+'"]').setAttribute('src', res.url.replace("_1.jpg","_7.jpg"));
+														var imgToChangeSrc = WATO.qs('img[src="'+res.url+'"]');
+														if(imgToChangeSrc){
+															imgToChangeSrc.setAttribute('src', res.url.replace("_1.jpg","_7.jpg"));
+														}
 													}
 												});
 											});
+
 									} catch (error) {
 										console.log('Error: ', error);
 									}
@@ -175,8 +181,8 @@
 
 								cbody.insertAdjacentHTML('beforeend',  
 									'<div class="carousel-cell kk_blackbox">'+
-										'<h4>Noch mehr neuheiten entdecken?</h4>'+
-										'<a class="kk_subline" href="/de/NEU">> zu allen neuheiten</a>'+
+										'<h4>Noch mehr Neuheiten entdecken?</h4>'+
+										'<a class="kk_subline" href="/de/NEU">> zu allen Neuheiten</a>'+
 										'<span class="kk_number">3/3</span>'+
 									'</div>'
 								);
@@ -213,24 +219,19 @@
 
 			WATO.elem(position, function(wrapperOfAllProducts){
 				if(wrapperOfAllProducts){
-					var wrapperOfAllProductsParent = wrapperOfAllProducts[0].parentNode;
+					var wrapperOfAllProductsParent = wrapperOfAllProducts[0].parentNode,
+						loadingPlaceholder = '<div class="kk_cprod"><div class="kk-loader">' +
+												'<div class="lds-ring"><div></div><div></div><div></div><div></div></div>' +
+											'</div></div>';
 
 					wrapperOfAllProductsParent.insertAdjacentHTML('beforebegin', 
 						'<div id="kk_crossprods" >'+
 							'<div class="kk_cbody main-carousel">'+
 								'<div class="kk_load">'+
-									'<div class="kk_cprod"><div class="kk-loader">' +
-										'<div class="lds-ring"><div></div><div></div><div></div><div></div></div>' +
-									'</div></div>'+
-									'<div class="kk_cprod"><div class="kk-loader">' +
-										'<div class="lds-ring"><div></div><div></div><div></div><div></div></div>' +
-									'</div></div>'+
-									'<div class="kk_cprod"><div class="kk-loader">' +
-										'<div class="lds-ring"><div></div><div></div><div></div><div></div></div>' +
-									'</div></div>'+
-									'<div class="kk_cprod"><div class="kk-loader">' +
-										'<div class="lds-ring"><div></div><div></div><div></div><div></div></div>' +
-									'</div></div>'+
+									loadingPlaceholder+
+									loadingPlaceholder+
+									loadingPlaceholder+
+									loadingPlaceholder+
 									'<div class="kk_cprod"></div>'+
 								'</div>'+
 							'</div>'+
