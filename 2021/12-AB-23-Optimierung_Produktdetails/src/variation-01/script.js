@@ -75,4 +75,14 @@
             setProductbeschreibung();
         }
     });
+
+    WATO.ajax('/view/ProductReferencesComponentController/reload', function(){
+        
+        WATO.elem('.row > #kk-prod-desc-img', function(originalImg) {
+            if(originalImg){
+                WATO.qs('.column > #kk-prod-desc-img').setAttribute('src', originalImg[0].getAttribute('src'));
+            }
+        });
+
+    });
 })(new window.WATO());
