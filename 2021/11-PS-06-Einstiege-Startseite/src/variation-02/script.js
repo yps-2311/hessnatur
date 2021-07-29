@@ -1,5 +1,5 @@
 // load core and global js
-//@codekit-prepend "../global/global.js";
+//@ codekit-prepend "../global/global.js";
 
 //@code-kit append "request.min.js";
 /**
@@ -12,7 +12,7 @@
  (function (WATO) {
     "use strict";
 
-    window.iridion.econda.push(["SprintPS06", "V2"]);
+    window.iridion.econda.push(["PS06_restart", "V2"]);
 
        // response > "damen" | "herren" | "baby OR junior" | "home"
        var CATEGORY_AFFINITY = window.iridion.push(['profile', 'getValue', 'categoryAffinity']);
@@ -79,21 +79,21 @@
     };
 
    
-    var CATEGORIES = WATO.PS06Category(CATEGORY_AFFINITY);
+    var CATEGORIES = WATO.PS06_restartCategory(CATEGORY_AFFINITY);
        //console.log("CATEGORY_AFFINITY", CATEGORY_AFFINITY);
    
     if(CATEGORY_AFFINITY){
         if(CATEGORY_AFFINITY === "herren"){
             
         DATA = {
-            "4238489": {
+            "4238488": {
                 "badges": [
                     "vegan",
                     "kundenfavorit"
                 ],
                 "response": {}
             },
-            "5055909": {
+            "5077317": {
                 "badges": [
                     "vegan"
                 ],
@@ -105,52 +105,9 @@
                 ],
                 "response": {}
             },
-            "4538589": {
-                "badges": [
-                    "vegan"
-                ],
-                "response": {}
-            },
-            "4969329": {
-                "badges": [
-                    "vegan"
-                ],
-                "response": {}
-            },
-            "4969403": {
-                "badges": [
-                    "vegan"
-                ],
-                "response": {}
-            },
-            "4969719": {
-                "badges": [
-                    "vegan"
-                ],
-                "response": {}
-            },
-            "4581909": {
-                "badges": [
-                    "sale"
-                ],
-                "response": {}
-            },
             "4942717": {
                 "badges": [
                     "vegan"
-                ],
-                "response": {}
-            },
-            "5055989": {
-                "badges": [
-                    "vegan"
-                ],
-                "response": {}
-            },
-            "4238409": {
-                "badges": [
-                    "vegan",
-                    "kundenfavorit"
                 ],
                 "response": {}
             }
@@ -161,61 +118,34 @@
 
 
             DATA = {
-                "5072349": {
-                    "badges": [
-                        "vegan"
-                    ],
-                    "response": {}
-                },
-                "4655117": {
-                    "badges": [
-                        "vegan",
-                        "sale"
-                    ],
-                    "response": {}
-                },
                 "4330917": {
                     "badges": [
-                        "kundenfavorit"
+                        "new"
                     ],
                     "response": {}
                 },
-                "4330982": {
+                "5177323": {
                     "badges": [
-                        "kundenfavorit"
+                        "new"
                     ],
                     "response": {}
                 },
-                "4212672": {
+                "5172729": {
                     "badges": [
-                        "vegan"
+                        "new"
                     ],
                     "response": {}
                 },
-                "3999604": {
-                    "badges": [
-                        "vegan",
-                        "kundenfavorit"
-                    ],
-                    "response": {}
-                },
-                "4212898": {
+                "5080785": {
                     "badges": [
                         "vegan",
-                        "sale"
+                        "new"
                     ],
                     "response": {}
                 },
-                "4212872": {
+                "5072641": {
                     "badges": [
-                        "sale"
-                    ],
-                    "response": {}
-                },
-                "4212865": {
-                    "badges": [
-                        "vegan",
-                        "sale"
+                        "new"
                     ],
                     "response": {}
                 }
@@ -261,17 +191,17 @@
                         "vegan"
                     ],
                     "response": {}
-                },
+                }/*,
                 "5093201": {
                     "badges": [
                         "vegan"
                     ],
                     "response": {}
-                }
+                }*/
             };               
         }
     }
    
-    WATO.PS06(CATEGORY_AFFINITY, CATEGORIES, DATA, 2);
+    WATO.PS06_restart(CATEGORY_AFFINITY, CATEGORIES, DATA, 2);
 
 })(new window.WATO());

@@ -1,3 +1,6 @@
+## 100%-Ausspielungen
+Alle 100%-Ausspielungen werden im Ordner 100-Prozent-Ausspielungen abgelegt und gepflegt.
+
 ## cartData
 ```javascript
 var origOpenSearch = XMLHttpRequest.prototype.open;

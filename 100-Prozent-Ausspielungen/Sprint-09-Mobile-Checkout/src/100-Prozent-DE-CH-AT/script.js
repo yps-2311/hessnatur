@@ -370,12 +370,12 @@
             if (paymentOptions) {
 
                 for (var i = 0; i < paymentOptions.length; i++) {
-                    if (i === 1) {
+                    if (paymentOptions[i].getAttribute('for') === 'paypal') {
                         // Paypal
-                        paymentOptions[1].innerHTML = '<img src="https://media.hessnatur.com/kk/100Prozent/sprint09/paypal-icon.png">';
-                    } else if (i === 2) {
-                        // Kreditkarte
-                        paymentOptions[2].innerHTML = 'Kreditkarte <img src="https://media.hessnatur.com/kk/100Prozent/sprint09/visa-icon.png">';
+                        paymentOptions[i].innerHTML = '<img src="https://media.hessnatur.com/kk/100Prozent/sprint09/paypal-icon.png">';
+                        // } else if (i === 2) {
+                        //     // Kreditkarte
+                        //     paymentOptions[2].innerHTML = 'Kreditkarte <img src="https://media.hessnatur.com/kk/100Prozent/sprint09/visa-icon.png">';
                     }
 
                     paymentOptions[i].addEventListener('click', function (e) {

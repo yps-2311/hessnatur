@@ -1,9 +1,0 @@
-{
-  "name": "wa-sprint-doc",
-  "version": "1.0.0",
-  "dependencies": {
-  	"grunt": "latest",
-    "grunt-cli": "latest",
-    "grunt-jsdoc": "latest"
-  }
-}

@@ -12,8 +12,8 @@
  (function (WATO) {
     "use strict";
 
-    window.iridion.econda.push(["SprintPS06", "V0"]);
+    window.iridion.econda.push(["PS06_restart", "V0"]);
 
-    WATO.PS06Goals();
+    WATO.PS06_restartGoals();
 
 })(new window.WATO());
