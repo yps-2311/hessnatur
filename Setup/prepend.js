@@ -1,7 +1,67 @@
 /**
+ * Iridion Consent Check
+ */
+if(document.URL.indexOf('//sf.acc.hess-webshop-dev-760c.gcp.get-cloud.io') !== -1){
+
+    console.log("check consent");
+
+    try {
+        
+        var ucSettings = localStorage.getItem('ucSettings');
+        
+        if(ucSettings){
+            
+            ucSettings = JSON.parse(ucSettings);
+
+            for(var containerId in ucSettings){
+
+                var ucConsents  = ucSettings[containerId].ucConsents;
+                var templates   = ucConsents.consentTemplates;
+                var consents    = ucConsents.consents;
+    
+                for(var key in templates){
+
+                    for(var version in templates[key]){
+    
+                        // get the template id out of the uc templates
+                        if(templates[key][version].dataProcessor === "Iridion"){
+    
+                            // get the current consent status
+                            for(var i = 0; i < consents.length; i++){
+                                if(consents[i].templateId === key){
+
+                                    if(!consents[i].consentStatus){
+                                        console.log("stop iridion", consents[i].consentStatus);
+                                        return false;
+                                    }
+
+                                    return consents[i].consentStatus;
+                                }
+                            }
+
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    } catch(e){
+        console.log(e);
+    }
+} else {
+
+    window.iridion.push(["consent", {
+        "cookies": true,
+        "profile": true
+    }]);
+}
+
+
+/**
  * Custom-URL Tracking
  */
 window.iridion.tracking = window.controllerName || window.document.location.pathname;
+
 
 /**
  * Econda
@@ -73,4 +133,442 @@ window.iridion.econda = (function(window){
             }
         }
     };
+})(window);
+
+/**
+ * Setup & Goals
+ * 
+ * jshint loopfunc: true
+ */
+(function(window){
+
+    if (!Element.prototype.matches) {
+        Element.prototype.matches = Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
+    }
+    
+    if (!Element.prototype.closest) {
+        Element.prototype.closest = function(s) {
+            var el = this;
+    
+            do {
+                if (el.matches(s)) {
+                    return el;
+                }
+                el = el.parentElement || el.parentNode;
+            } while (el !== null && el.nodeType === 1);
+            return null;
+        };
+    }
+
+    function goalPush(key){
+        window.iridion.push(['goal', key]);
+    }
+    
+    function docReady(callback) {
+        if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading"){
+            callback();
+        } else {
+            document.addEventListener('DOMContentLoaded', callback);
+        }
+    }
+    
+    function getCookie(name) {
+        
+        var cookies = document.cookie.split(";");
+        
+        for(var i = 0; i < cookies.length; i++){
+            
+            if(cookies[i].substr(0, cookies[i].indexOf("=")).replace(/^\s+|\s+$/g,"") === name){
+                
+                return decodeURIComponent(cookies[i].substr(cookies[i].indexOf("=") + 1));
+            }
+        }
+    }
+
+    function setSegment(thisID) {
+        window.iridion.push(['segment', String(thisID)]);
+    }
+
+    function removeSegment(thisID) {
+        window.iridion.push(['removeSegment', String(thisID)]);
+    }
+
+    // added MV, 09.02.2021
+    function setProfileValue(key, value) {
+        window.iridion.push(['profile', 'setValue', key, value]);
+    }
+
+    // check for crazy user and disable iridion
+    try {
+
+        var userCookie = getCookie('iridion_user');
+
+        if(userCookie && userCookie.indexOf('1521023056101454') !== -1) {
+
+            window.document.cookie = "iridion_exclude=true; expires=Thu, 18 Dec 2022 12:00:00 UTC; domain=.hessnatur.com; path=/";
+        }
+    } catch(e){}
+    
+    try {
+
+        var URL = document.URL,
+            pathNameURL = window.location.pathname;
+
+        if(new RegExp(/.*hessnatur.com\/de\/?($|((\?|\#).*))/).test(URL)){
+            // Startseite
+            goalPush('page_home');
+        }else if(URL.indexOf("/p/") !== -1){
+            // Produktdetailseite
+            goalPush('page_pds');
+    
+            var origOpen = XMLHttpRequest.prototype.open;
+
+            XMLHttpRequest.prototype.open = function(method, uri, async, user, pass) {
+
+                this.addEventListener("loadend", function() {
+
+                    if(this.readyState === 4 && uri.indexOf("https://www.hessnatur.com/de/cart/add") !== -1){
+
+                        goalPush('click_addToCart');
+                    }
+                }, false);
+
+                origOpen.call(this, method, uri, async, user, pass);
+            };
+
+            
+    
+        }else if(
+            pathNameURL === "/de/NEU" || 
+            pathNameURL === "/de/damen" || 
+            pathNameURL === "/de/herren" || 
+            pathNameURL === "/de/outdoor" || 
+            pathNameURL === "/de/baby" || 
+            pathNameURL === "/de/home" || 
+            pathNameURL === "/de/sale"
+        ){
+
+            // Kategorieeinsteigsseite
+            goalPush('page_lp_cat');
+
+            if(pathNameURL.indexOf('damen') !== -1){
+
+                setProfileValue('categoryAffinity', 'damen');
+            } else if(pathNameURL.indexOf('herren') !== -1){
+
+                setProfileValue('categoryAffinity', 'herren');
+            }
+        }else if(
+            // URL.indexOf("/de/damen") !== -1 ||
+            // URL.indexOf("/de/herren") !== -1 ||
+            // URL.indexOf("/de/baby") !== -1 ||
+            // URL.indexOf("/de/home") !== -1 ||
+            // URL.indexOf("/de/sale") !== -1
+            URL.indexOf("/c/") !== -1
+        ){
+
+            // Kategorie
+            goalPush('page_cat');
+
+            docReady(function(){
+                try {
+                    var _filterTab = document.querySelector('#tabFilter-label'), // .gridviewProductFilterDesktopWrapper a
+                        interval = setInterval(function(){
+                            if(typeof _filterTab !== "undefined"){
+                                clearInterval(interval);
+                                try {
+                                    var _filterLabel = _filterTab.querySelector('strong');
+                                    if(typeof _filterLabel !== "undefined"){
+                                        if(_filterLabel.innerHTML.indexOf('(0)') === -1 && _filterLabel.innerHTML.indexOf('>0<') === -1) {
+                                            goalPush('filter_genutzt');
+                                        }
+                                        _filterTab.addEventListener('click', function(){
+                                            goalPush('filter_click');
+                                        });
+                                    }
+                                } catch (error) {
+                                }
+                            }
+                        }, 100);
+                    setTimeout(function(){
+                        clearInterval(interval);
+                    }, 10000);
+
+                    // var _filterTab = document.querySelector('#tabFilter-label'),
+                    //     _filterLabel = _filterTab.querySelector('strong').innerHTML;
+
+                    // if(_filterLabel.indexOf('(0)') === -1 && _filterLabel.indexOf('>0<') === -1) {
+                    //     goalPush('filter_genutzt');
+                    // }
+                    // _filterTab.addEventListener('click', function(){
+                    //     goalPush('filter_click');
+                    // });
+                }
+                catch(e) {
+                    goalPush('error_setup');
+                    goalPush('error_setup1a');
+                }
+
+                try {
+                    var sortButton = document.querySelector('#tabSort-label'), //desktop__sort
+                        interval2 = setInterval(function(){
+                            if(typeof sortButton !== "undefined"){
+                                clearInterval(interval2);
+                                sortButton.addEventListener('click', function(){
+                                    goalPush('cat_click_sort');
+                                });
+                            }
+                        }, 100);
+                    setTimeout(function(){
+                        clearInterval(interval2);
+                    }, 10000);
+                    // document.querySelector('#tabSort-label').addEventListener('click', function(){
+                    //     goalPush('cat_click_sort');
+                    // });
+                }
+                catch(e) {
+                    goalPush('error_setup');
+                    goalPush('error_setup2a');
+                }
+            });
+
+        }else if(URL.indexOf("/de/cart") !== -1){
+            // Warenkorb
+            goalPush('page_cart');
+
+            document.addEventListener('click', function(e){
+                var _target = e.target;
+
+                if(_target.closest('#hessnaturVoucherForm .quickadd__button')) {
+                    // send on next pageview
+                    window.iridion.push(['goal', 'aktionscode', '', true]);
+                }
+                else if(_target.closest('.js-entry-edit-save')) {
+                    goalPush("nutzeEinstellungen", true);
+                }
+            });
+
+        }else if(URL.indexOf("/register/guest-update") !== -1){
+            
+            // Gast Regestrierung
+            goalPush('page_guest');
+        }else if(URL.indexOf("/register") !== -1){
+
+            // Neukunde Regestrierung
+            goalPush('page_reg');
+        }else if(URL.indexOf("/login") !== -1){
+
+            // Login Regestrierung
+            goalPush('page_signin');
+    
+            var wa_loginButtonInterval = setInterval(function(){
+                var $wa_loginButton = window.document.querySelector("#loginForm .text-right .button");
+                if($wa_loginButton){
+                    clearInterval(wa_loginButtonInterval);
+                    $wa_loginButton.addEventListener("click",function(){
+                        goalPush('page_login');
+                    });
+                }
+            },100);
+
+            setTimeout(function(){
+                clearInterval(wa_loginButtonInterval);
+            }, 5000);
+
+        } else if (URL.indexOf("/merkzettel") !== -1) {
+            // Merkzettel
+            goalPush('click_merken');
+            
+        } else if(URL.indexOf("/addresses/add-delivery-address") !== -1){
+            // Adresse
+            goalPush('page_address');
+            
+        }else if(URL.indexOf("/payment/add-payment-method") !== -1){
+            // Bezahungsart
+            goalPush('page_pay');
+
+        }else if(URL.indexOf("/search") !== -1){
+            // Suchergebnissseite
+            goalPush('page_suche');
+            
+        }else if(URL.indexOf("/summary") !== -1){
+            // Zusammenfassung
+            goalPush('page_sum');
+            
+            try{            	
+                docReady(function(){
+                    var zahlart = window.document.querySelectorAll('#checkoutContentPanel > div > .row > div .h-smallOffset-bottom-inner');
+                    
+                    if(	zahlart.length !== 0 && zahlart[0].textContent.trim().toLowerCase().indexOf('rechnung') !== -1){
+                        window.localStorage.setItem("kk_buytype","rechnung");
+                        setProfileValue('kk_buytype', 'rechnung');
+                        // document.querySelector('button.success').addEventListener('click', function(){
+                        // 	window.iridion.push(["segment", "32785"]);
+                        // });
+                    }
+                });
+            } catch(error){
+                goalPush('error_setup');
+                goalPush('error_setup3');
+            }
+
+        }else if(URL.indexOf("/checkout/orderConfirmation") !== -1){
+            // Danke
+            goalPush('page_conv');
+
+            // Für PS01
+            window.localStorage.setItem("kk_hasbought", true);
+
+            // Für Sprint8 und Sprint12
+            window.localStorage.removeItem('kk_upsell_hide');
+    
+            // Revenue
+            var wa_interval = setInterval(function(){
+
+                try {
+                    if(typeof window.emospro !== "undefined"){
+
+                        var wa_price = 0,
+                            wa_buyid = "";
+    
+                        if(window.emospro.billing && window.emospro.billing.length > 3){
+                            clearInterval(wa_interval);
+                            wa_price = window.emospro.billing[3];
+                            wa_buyid = window.emospro.billing[0];
+                        }
+                        if(wa_price === 0 && window.emospro.ec_Event && window.emospro.ec_Event.length > 0){
+                            clearInterval(wa_interval);
+                            wa_price = window.emospro.ec_Event[0].price;
+                        }
+    
+                        if(parseInt(wa_price) !== 0){
+                            window.iridion.push(["revenue", wa_price, wa_buyid]);
+                        }else{
+                            goalPush('error_revenue');
+                        }
+                    }
+                } catch (error) {
+                    // console.log(error);
+                    goalPush('error_revenue');
+                }
+            }, 100);
+
+            setTimeout(function(){
+                clearInterval(wa_interval);
+            }, 3000);
+
+            if(window.localStorage.getItem("kk_buytype") === "rechnung"){
+                window.iridion.push(["segment", "32785"]);
+                window.localStorage.removeItem("kk_buytype");
+
+                setProfileValue("kk_buytype", "false");
+            }
+
+            setProfileValue('hasbought', 'true');
+        }
+
+        // TODO hochladen und testen
+        
+        // Wenn ein User über einen Newsletter kommt wird er mit diesem Cookie markiert
+        if(
+            window.document.location.search.indexOf("layer=") !== -1 ||
+            location.pathname === "/de/newsletter/doi/einstellungen"            // MV, 30.06.2021
+        ){
+            window.document.cookie = "kk_newsletter=true; expires=Thu, 18 Dec 2022 12:00:00 UTC; path=/";
+        }
+
+        docReady(function(){
+            try {
+                var breadcrumbs = document.querySelectorAll('.breadcrumbs *'),
+                breadcrumbsCount = breadcrumbs.length;
+
+                for(var b=0; b < breadcrumbsCount; b++) {
+                    breadcrumbs[b].addEventListener('click', function(){
+                        goalPush('breadcrumb');
+                    });
+                }
+
+                var burgerMenuToggle = document.querySelector('a[data-toggle="offCanvasLeft"]');
+                if(burgerMenuToggle) {
+                    document.querySelector('a[data-toggle="offCanvasLeft"]').addEventListener('click', function(){
+                        goalPush('burgermenu');
+                    });
+                }
+            }
+            catch(e) {
+                goalPush('error_setup');
+                goalPush('error_setup4');
+            }
+        });
+
+        if(window.localStorage.getItem("kk_hasbought")){
+            setProfileValue('hasbought', 'true');
+        }
+
+    } catch (error) {
+        // console.log(error);
+        goalPush('error_setup');
+        goalPush('error_setup5');
+    }
+
+    try {
+
+        var _ref = window.document.referrer,
+            _location = window.document.location,
+            _cookie = window.document.cookie;
+
+        if(_ref.indexOf(".google.") !== -1 || _ref.indexOf(".bing.") !== -1){
+            // Referrer - Suchmaschine
+            setSegment(32804);
+        }else if(_ref.indexOf(".facebook.") !== -1 || _ref.indexOf(".instagram.") !== -1){
+            // Referrer - Social Media
+            setSegment(32805);
+        }else if(_ref.indexOf(".hessnatur.com/magazin/") !== -1){
+            // Referrer - Magazin
+            setSegment(32806);
+        }
+
+        if(_location.pathname.indexOf("/newsletter/doi/einstellungen") !== -1 || _location.search.indexOf("?newsletter=") !== -1){
+            // Referrer - Newsletter
+            setSegment(32803);
+        }
+
+        docReady(function(){
+            var _recos = window.document.querySelectorAll('.js-product-reference[data-componentid="CrossSellingEconda"] .item__image');
+
+            // Klick auf sämtliche Recos
+            for (var i = 0; i < _recos.length; i++) {
+                _recos[i].addEventListener('click', function(){
+                    setSegment(32802);
+                });
+            }
+        });
+
+        if(_cookie.indexOf("kk_visitor_firstsession") === -1){
+
+            // 14400000 Milisekunden entspricht 4h - 4h nach Erstbesuch wird der Benutzer automatisch zum "Wiederkehrer"
+            if(_cookie.indexOf("kk_visitor_returning") === -1){
+                
+                // Segment - Neukunde
+                setSegment(32800);
+
+                window.document.cookie = "kk_visitor_firstsession="+new Date()+";domain=.hessnatur.com;path=/";
+                window.document.cookie = "kk_visitor_returning=true;domain=.hessnatur.com;path=/;expires=Thu, 18 Dec 2025 12:00:00 UTC";
+                
+            } else {
+                // Segment - Wiederkehrer
+                setSegment(32801);
+                // Segment entfernen da kein Neukunde mehr
+                removeSegment(32800);
+            }
+        } else {
+            if(!(new Date() - new Date(getCookie("kk_visitor_firstsession")) < 14400000)){ //14400000
+                window.document.cookie = "kk_visitor_firstsession=false;domain=.hessnatur.com;path=/;expires=Thu, 18 Dec 2000 12:00:00 UTC";
+            }
+        }
+    } catch (error) {
+        // console.log(error);
+        goalPush('error_setup');
+        goalPush('error_setup6');
+    }
 })(window);
