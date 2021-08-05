@@ -13,6 +13,7 @@
 (function(WATO, window) {
     "use strict";
 
+    
 
     var hasNotExcludeCookie = document.cookie.indexOf("kksp17desk_exclude=true") === -1,
         isColorChange = false;
@@ -486,9 +487,11 @@
 
     if(hasNotExcludeCookie){
 
-        window.iridion.econda.push(["Sprint17desktop", "V1"]);
+        if(window.iridion.econda){
+            window.iridion.econda.push(["Sprint17desktop", "V1"]);
+        }
 
-        // WATO.sprint17goals(1);
+        WATO.sprint17goals();
 
         WATO.elem(function(){
             return typeof window.jQuery !== "undefined" && typeof window.Flickity !== "undefined";
@@ -882,29 +885,29 @@
         createCTL(true);
     
         // Klick auf mehr Details
-        WATO.elem('.js-pds-more-details', function(moreDetails){
-            if(moreDetails){
-                moreDetails = moreDetails[0];
-                moreDetails.insertAdjacentHTML('beforebegin', 
-                    '<a class="btn-simple-link kk_moreinfos" href="#">Mehr Produktdetails</a>'
-                );
-                WATO.qs(".kk_moreinfos", moreDetails.parentNode).addEventListener('click', function(e){
-                    e.preventDefault();
+        // WATO.elem('.js-pds-more-details', function(moreDetails){
+        //     if(moreDetails){
+        //         moreDetails = moreDetails[0];
+        //         moreDetails.insertAdjacentHTML('beforebegin', 
+        //             '<a class="btn-simple-link kk_moreinfos" href="#">Mehr Produktdetails</a>'
+        //         );
+        //         WATO.qs(".kk_moreinfos", moreDetails.parentNode).addEventListener('click', function(e){
+        //             e.preventDefault();
     
-                    try {
-                        // window.ACC.global.scrollToElement();
+        //             try {
+        //                 // window.ACC.global.scrollToElement();
     
-                        $('html, body').animate(
-                        {
-                            scrollTop: $("#infoTabs").offset().top - 154
-                        }, 500);
+        //                 $('html, body').animate(
+        //                 {
+        //                     scrollTop: $("#infoTabs").offset().top - 154
+        //                 }, 500);
     
-                    } catch (error) {
-                        setErrorTracking("wa_setup_monitoring3", error);
-                    }
-                });
-            }
-        });
+        //             } catch (error) {
+        //                 setErrorTracking("wa_setup_monitoring3", error);
+        //             }
+        //         });
+        //     }
+        // });
 
         var eco_data = JSON.parse(window.localStorage.getItem('kk_ecological')) || {},
             excludedProducts = ['4782699', '4782600', '4783599', '4782200', '4782400', '4782800', '4782899', '4783500', '4783700', '4783799'],
@@ -962,34 +965,39 @@
                 return WATO.qs('.js-product-info .large-10') && !!window.kk07_ecoData;
             }, function (run) {
                 if (run) {
+
+                    var savingMeter = window.kk07_ecoData.clean_earth_consumption_in_square_meter.toFixed(1).replace(".",",");
         
-                    WATO.qs('.js-product-info .large-10').insertAdjacentHTML('afterend',
+                    WATO.qs('.js-product-info').insertAdjacentHTML('afterend',
+                        '<div class="row show-for-medium" style="order: 4;">'+
                         '<div class="column small-12" id="kk07_ecological">' +
-                        '<div class="h3">Wir haben dieses Produkt nachhaltig für Sie <br/>produziert. Sparen Sie mit Ihrem Kauf:</div>' +
+                        '<div class="h3"><b>Ökologische Ersparnis:</b> im Vergleich zum<br>konventionellen Baumwollanbau</div>' +
                         '<div class="row">' +
                         '<div class="column large-4 kk07_eco__point">' +
                         '<div class="kk07_eco__icon water"></div>' +
                         '<div class="kk07_eco__amount"><span data-property="water_savings_in_liter">' + formatNumber(window.kk07_ecoData.water_savings_in_liter) + '</span> l</div>' +
-                        '<strong>Wasser*</strong>' +
-                        '<span>Wir setzen durchweg auf wassersparende und -schonende Verfahren.</span>' +
+                        '<strong>weniger Wasserverbrauch</strong>' +
+                        '<span>91% Einsparung von Wasser durch Verwendung von Regenwasser, im Boden gespeicherte Feuchtigkeit und Anwendung verbrauchsarmer Bewässerungsmethoden.</span>' +
                         '</div>' +
                         '<div class="column large-4 kk07_eco__point">' +
                         '<div class="kk07_eco__icon co2"></div>' +
-                        '<div class="kk07_eco__amount"><span data-property="carbon_dioxide_savings_in_gram">' + formatNumber(window.kk07_ecoData.carbon_dioxide_savings_in_gram / 1000) + '</span> kg</div>' +
-                        '<strong>CO2*</strong>' +
-                        '<span>Wir nutzen so wenig Strom wie möglich und nur aus nachhaltigen Energiequellen.</span>' +
+                        '<div class="kk07_eco__amount">46%</div>' +
+                        '<strong>weniger CO2-Ausstoß</strong>' +
+                        '<span>46% CO2 Einsparung durch weniger energieintensive Arbeitsmethoden im Bio-Anbau und den Verzicht auf Mineraldünger und Pestizide.</span>' +
                         '</div>' +
                         '<div class="column large-4 kk07_eco__point">' +
                         '<div class="kk07_eco__icon earth"></div>' +
-                        '<div class="kk07_eco__amount"><span data-property="clean_earth_in_square_meter">' + formatNumber(window.kk07_ecoData.clean_earth_consumption_in_square_meter) + '</span> m<sup>2</sup></div>' +
-                        '<strong>Boden/Erde*</strong>' +
-                        '<span>Wir verwenden ausschließlich Rohstoffe aus ökologischer Landwirtschaft.</span>' +
+                        '<div class="kk07_eco__amount"><span data-property="clean_earth_in_square_meter">' + savingMeter + '</span> m<sup>2</sup></div>' +
+                        '<strong>mehr gesunde Erde</strong>' +
+                        '<span>'+savingMeter+' m² mehr gesunde Erde durch Vermeidung von Pestiziden, künstlichen Düngemitteln und Entlaubungsmitteln.</span>' +
                         '</div>' +
-                        '</div>' +
-                        '<div class="kk07_eco__footer">' +
+                        '</div>'+
+                        '</div>'
+                        // '<div class="kk07_eco__footer">' +
                         // '<a href="#">Mehr erfahren</a> ' +
-                        '<small>*im Vergleich zur konventionellen Produktion</small></div>' +
-                        '</div>');
+                        // '<small>*im Vergleich zur konventionellen Produktion</small></div>' +
+                        // '</div>'
+                        );
         
                 }
             });
@@ -1056,8 +1064,3 @@
     } 
 
 })(new window.WATO(), window);
-
-
-
-// BKP
-// !function(e,t){"use strict";void 0===e.WATO&&(e.WATO=function(){}),e.WATO.prototype.elem=function(e,i,n,o,r){var a,s=this||o,c=r||Date.now(),l=!1;return Date.now()-c>2e4?(i(!1),!1):("string"==typeof e?l=(a=t.querySelectorAll(e)).length>0:a=l=!0===e(),!0===l?i(a):setTimeout(s.elem.bind(null,e,i,n,s,c),n||20))},e.WATO.prototype.qs=function(e,i){return(i||t).querySelector(e)},e.WATO.prototype.qsa=function(e,i){return(i||t).querySelectorAll(e)},e.WATO.prototype.ready=function(e){(t.attachEvent?"complete"===t.readyState:"loading"!==t.readyState)?e():t.addEventListener("DOMContentLoaded",e)},e.WATO.prototype.ajax=function(e,t){var i=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(n,o,r,a,s){this.addEventListener("loadend",(function(){var i=this.responseText;4===this.readyState&&-1!==o.indexOf(e)&&t(o,i)}),!1),i.call(this,n,o,r,a,s)}},e.WATO.prototype.setCookie=function(e,i,n,o){var r=new Date;r.setDate(r.getDate()+365),t.cookie=e+"="+encodeURIComponent(i)+";"+(o?"":"expires="+r.toUTCString()+";")+"domain="+n+";path=/"},e.WATO.prototype.reload=function(){location.reload(),location.href=location.href.split("#")[0]},e.WATO.prototype.exclude=function(i,n){function o(){(e.innerWidth||t.body.clientWidth)<=i&&!r&&(r=!0,n())}var r=!1;o(),"function"==typeof n&&(e.onresize=function(){o()})}}(window,document),function(e,t){"use strict";e.prototype.goalPush=function(e,i){i?t.iridion.push(["goal",e,"",!0]):t.iridion.push(["goal",e])},e.prototype.sprint17goals=function(e){var t=this;function i(e,i,n){t.elem(e,(function(e){e&&e[0].addEventListener("click",(function(){t.goalPush(i,n)}))}))}t.exclude(1023,(function(){t.setCookie("kksp17desk_exclude","true",".hessnatur.com",!1),t.setCookie("kkps01desk_exclude","true",".hessnatur.com",!1),t.reload()})),i('div[data-share="Facebook"]',"kk17_facebook"),i('div[data-share="Twitter"]',"kk17_twitter"),i('div[data-share="Pinterest"]',"kk17_pinterest"),i("a.starRatingWrapper","kk17_bewertungen_anker"),i("#ecRecommendationsContainer","kk17_reco"),t.elem("#addToCartButton",(function(e){if(e)for(var i=0;i<e.length;i++)e[i].addEventListener("click",(function(){t.elem('#sizeSelectReminder[aria-hidden="false"]',(function(e){e&&t.goalPush("kk17_addtocart_withoutsize")}))}))})),0===e&&(i(".breadcrumb--back a","kategorie_back"),i("#read_reviews .h-text-uppercase","kk17_rating"),i("#send_review","kk17_rating"),i(".pds-productDescription__text .h-text-uppercase","kk17_Produktbeschreibung"),i(".certificateWrapper a","kk17_Ausgezeichnete_Qualitaet",!0),i(".productInfosItem a","kk17_Made_In"),i(".js-jump-complete-look","kk17_shopthelook_anker"),i(".js-pds-more-details","klick_produktdetails"))}}(window.WATO,window),function(e,t){"use strict";var i=-1===document.cookie.indexOf("kksp17desk_exclude=true"),n=!1;function o(e){var i=t.innerWidth*e;return i>852.8?852.8:parseFloat(i).toFixed(3)}function r(e){e&&e.parentNode.removeChild(e)}function a(e,t){e&&e.classList.add(t)}function s(e,t){e&&e.classList.remove(t)}function c(t,i){-1!==document.cookie.indexOf("kk=testpreview")&&console.log(i),e.goalPush(t)}function l(e,t){return'<div class="kk_slider main-carousel">'+e+'</div><div class="kk_carouselnav carousel carousel-nav">'+t+"</div>"}function d(i){e.elem(".pds__imageAndCockpitWrapper",(function(s){if(s)try{s=s[0],null===e.qs(".kk_sliderWrapper",s)&&s.insertAdjacentHTML("afterbegin",'<div class="kk_sliderWrapper"></div>'),e.elem((function(){return!i||void 0!==t.ACC&&void 0!==t.ACC.productDetail&&void 0!==t.ACC.productDetail.galleryImages}),(function(c){if(c){var d=e.qsa(".show-for-medium-only .thumbnailContainer.js_thumbnailContainer:not(.kk-thumb)",s),u="",p="",k=function(){e.elem((function(){return void 0!==t.jQuery&&void 0!==t.Flickity}),(function(){try{var e={cellAlign:"left",cellSelector:".carousel-cell",draggable:!1,wrapAround:!0,pageDots:!1},i=d.length;i<=2&&(e.prevNextButtons=!1,e.pageDots=!1,1===i&&(e.cellAlign="center")),jQuery(".kk_slider").flickity(e),setTimeout((function(){jQuery(".kk_slider .flickity-viewport").css("height",o(.4398)+"px")}),300);var r=jQuery(".kk_carouselnav");i>2?r.flickity({asNavFor:".kk_slider",cellAlign:"left",contain:!0,pageDots:!1,prevNextButtons:!1}):r.hide(),n=!1}catch(e){t.iridion.push(["goal","wa_setup_monitoring1",e.toString()])}}))};if(i)e.elem((function(){return(d=e.qsa(".show-for-medium-only .thumbnailContainer.js_thumbnailContainer:not(.kk-thumb)",s)).length>0&&void 0!==t.ACC&&void 0!==t.ACC.productDetail&&void 0!==t.ACC.productDetail.galleryImages&&t.ACC.productDetail.galleryImages.length>0}),(function(t){if(t){for(var i=0;i<d.length;i++){var n=d[i].getAttribute("data-image");a(d[i],"kk-thumb"),u+='<div class="carousel-cell"><a href="'+n.replace("_main/","_zoom/")+'" data-options="zoomPosition: right;" class="MagicZoom"><img src="'+n+'"></a></div>',p+='<div class="carousel-cell"><img src="'+n.replace("_main/","_thumb/")+'"></div>'}r(e.qs(".kk_slider",s)),r(e.qs(".kk_carouselnav",s)),e.qs(".kk_sliderWrapper").insertAdjacentHTML("afterbegin",l(u,p)),k()}}));else{for(var f=0;f<d.length;f++){var m=d[f].getAttribute("data-image");a(d[f],"kk-thumb"),u+='<div class="carousel-cell"><a href="'+m.replace("_main/","_zoom/")+'" data-options="zoomPosition: right;" class="MagicZoom"><img src="'+m+'"></a></div>',p+='<div class="carousel-cell"><img src="'+m.replace("_main/","_thumb/")+'"></div>'}r(e.qs(".kk_slider",s)),r(e.qs(".kk_carouselnav",s)),e.qs(".kk_sliderWrapper",s).innerHTML=l(u,p),k()}}}))}catch(e){c("wa_setup_monitoring",e)}}))}function u(i){e.elem(".js-jump-complete-look",(function(n){n&&(t.setTimeout((function(){0===e.qsa(".h-xxLargeOffset-bottom-inner-xLarge-up > img").length&&e.elem((function(){return void 0!==t.MagicZoom&&void 0!==t.MagicZoom.start}),(function(e){e&&t.MagicZoom.start()}))}),2e3),e.elem((function(){return e.qsa(".h-xxLargeOffset-bottom-inner-xLarge-up > img").length>0&&!e.qs(".kk_ctl")}),(function(){var a,s,c,l,d,u=e.qs(".h-xxLargeOffset-bottom-inner-xLarge-up > img");try{if((n=n[0]).innerHTML="Complete the Look",u){var p=u.getAttribute("src").replace("_reco","_main"),k=e.qs(".js-completeTheLookWrapper");if(n.setAttribute("style","background-image: url("+p+")"),e.elem(".kk_sliderWrapper",(function(t){if(t){var o=n.cloneNode(!0);t=t[0],i&&o.addEventListener("click",(function(){e.goalPush("kk17_shopthelook_anker")})),e.qs(".js-jump-complete-look",t)&&t.removeChild(e.qs(".js-jump-complete-look",t)),t.insertAdjacentElement("beforeend",o)}})),k){var f=e.qsa(".item__image",k);r(e.qs("#look")),k.insertAdjacentHTML("beforeend",'<div class="kk_ctl" id="look"><img src="'+p+'"><div class="kk_rightlook"><div class="kk_subline">Complete the Look</div><div class="kk_teaser">Für mehr Stil: Ihr Perfektes Outfit</div><div id="kk_ctlwrapper"></div></div></div>');for(var m=e.qs("#kk_ctlwrapper",k.parentNode),v=0;v<f.length;v++){var g=f[v].cloneNode(!0);g.addEventListener("click",(function(){e.goalPush("kk17_product_ctl",!0)}));var h=e.qs("img",g);h&&h.setAttribute("src",h.getAttribute("src").replace("hyb_redes_reco","hyb_redes_detail_main")),m.insertAdjacentElement("beforeend",g)}a="#kk_ctlwrapper",s=!1,c=f.length>2,l=.41,e.elem((function(){return"undefined"!=typeof $}),(function(e){if(e)try{var i={draggable:!0,cellAlign:"left",contain:!0,prevNextButtons:!!c,pageDots:!!d,percentPosition:!0,setGallerySize:!0,adaptiveHeight:!!s};"#kk_rating_gallery"===a&&!1===c&&(i.cellAlign="center"),"#kk_ctlwrapper"===a&&c&&(i.initialIndex=0,i.pageDots=!0,i.groupCells=2),$(a).flickity(i),"#kk_ctlwrapper"===a&&setTimeout((function(){jQuery(a+" .flickity-viewport").css("height",o(l)+"px")}),300)}catch(e){t.iridion.push(["goal","wa_setup_monitoring1",e.toString()])}})),e.elem((function(){return void 0!==t.MagicZoom&&void 0!==t.MagicZoom.start}),(function(e){e&&t.MagicZoom.start()}))}}}catch(e){t.iridion.push(["goal","kk17_setup_ctl_monitor",document.URL]),t.iridion.push(["goal","catchMonitoring",e.toString()])}})))}))}i&&(t.iridion.econda.push(["Sprint17desktop","V1"]),e.sprint17goals(1),e.elem((function(){return void 0!==t.jQuery&&void 0!==t.Flickity}),(function(){!function(e,t){"function"==typeof define&&define.amd?define(["flickity/js/index","fizzy-ui-utils/utils"],t):"object"==typeof module&&module.exports?module.exports=t(require("flickity"),require("fizzy-ui-utils")):e.Flickity=t(e.Flickity,e.fizzyUIUtils)}(t,(function(e,t){e.createMethods.push("_createAsNavFor");var i=e.prototype;return i._createAsNavFor=function(){this.on("activate",this.activateAsNavFor),this.on("deactivate",this.deactivateAsNavFor),this.on("destroy",this.destroyAsNavFor);var e=this.options.asNavFor;if(e){var t=this;setTimeout((function(){t.setNavCompanion(e)}))}},i.setNavCompanion=function(i){i=t.getQueryElement(i);var n=e.data(i);if(n&&n!==this){this.navCompanion=n;var o=this;this.onNavCompanionSelect=function(){o.navCompanionSelect()},n.on("select",this.onNavCompanionSelect),this.on("staticClick",this.onNavStaticClick),this.navCompanionSelect(!0)}},i.navCompanionSelect=function(e){var t=this.navCompanion&&this.navCompanion.selectedCells;if(t){var i,n,o,r=t[0],a=this.navCompanion.cells.indexOf(r),s=a+t.length-1,c=Math.floor((i=a,n=s,o=this.navCompanion.cellAlign,(n-i)*o+i));if(this.selectCell(c,!1,e),this.removeNavSelectedElements(),!(c>=this.cells.length)){var l=this.cells.slice(a,s+1);this.navSelectedElements=l.map((function(e){return e.element})),this.changeNavSelectedClass("add")}}},i.changeNavSelectedClass=function(e){for(var t=this.navSelectedElements,i=0;i<t.length;i++){t[i].classList[e]("is-nav-selected")}},i.activateAsNavFor=function(){this.navCompanionSelect(!0)},i.removeNavSelectedElements=function(){this.navSelectedElements&&(this.changeNavSelectedClass("remove"),delete this.navSelectedElements)},i.onNavStaticClick=function(e,t,i,n){"number"==typeof n&&this.navCompanion.selectCell(n)},i.deactivateAsNavFor=function(){this.removeNavSelectedElements()},i.destroyAsNavFor=function(){this.navCompanion&&(this.navCompanion.off("select",this.onNavCompanionSelect),this.off("staticClick",this.onNavStaticClick),delete this.navCompanion)},e}))})),d(!1),e.elem(".breadcrumb--back a",(function(t){t&&((t=t[0]).innerHTML="zurück",t.addEventListener("click",(function(){e.goalPush("kategorie_back",!0)})))})),e.elem(".js-badges-container",(function(t){t&&e.elem(".pds-cockpit__ratingSummaryWrapper",(function(i){i&&(i=i[0],e.qs("a + span",i).innerHTML=e.qs("meta",i).getAttribute("content").substring(0,4),t[0].insertAdjacentElement("afterbegin",i),e.qs(".starRatingWrapper",i).setAttribute("data-open-accordion-css-selector",".ang_detail_additional"))}))})),e.elem(".productInfoAccordion .accordion-item",(function(t){if(t){var i=t[0].parentNode;i.insertAdjacentHTML("beforebegin",'<div id="infoTabs"></div>'),e.qs("div",t[0]).classList.add("kk_show");for(var n=e.qs("#infoTabs",i.parentNode),o=0;o<t.length;o++){var r=e.qs("div",t[o]),c=r.previousElementSibling.textContent;if("Produktbeschreibung"===c&&(c="Produktdetails"),r.insertAdjacentHTML("afterbegin","<h4>"+c+"</h4>"),"Passform"===r.getAttribute("id"))e.qs(".kk_carousel:first-child",n).insertAdjacentHTML("afterend",'<div class="kk_carousel'+(0===o?" kk_active":"")+'" data-index="'+o+'" data="'+r.getAttribute("id")+'">'+c+"</div>");else if("Pflege"!==r.getAttribute("id")||0!==e.qsa("#Pflege li").length)if("Pflege"===r.getAttribute("id")){var l=e.qs('.kk_carousel[data="Material"]'),d=e.qs("#Material");l&&d?(l.innerHTML="Material und Pflege",d.insertAdjacentHTML("beforeend",r.innerHTML)):n.insertAdjacentHTML("beforeend",'<div class="kk_carousel'+(0===o?" kk_active":"")+'" data-index="'+o+'" data="'+r.getAttribute("id")+'">'+c+"</div>")}else n.insertAdjacentHTML("beforeend",'<div class="kk_carousel'+(0===o?" kk_active":"")+'" data-index="'+o+'" data="'+r.getAttribute("id")+'">'+c+"</div>");var u=e.qs(".kk_carousel[data-index='"+o+"']",n);u&&u.addEventListener("click",(function(t){var i=t.target,n=i.getAttribute("data");s(e.qs(".kk_show"),"kk_show"),s(e.qs(".kk_active"),"kk_active"),a(e.qs("#"+n),"kk_show"),a(i,"kk_active"),e.goalPush("kk17_"+n)}))}}})),e.elem('meta[property="og:image"]',(function(t){if(t){var i=t[0].getAttribute("content");e.elem("#Produktbeschreibung .column",(function(t){if(t){t=t[0];var n=e.qs(".pds-cockpit__articleNumber"),o=null!==e.qs(".pds-cockpit__shortDescription")?e.qs(".pds-cockpit__shortDescription").innerHTML:"";t.insertAdjacentHTML("beforeend",'<ul class="pds-cockpit__shortDescription kk-prod-uvp">'+o+"</ul>"),e.elem("#Produktbeschreibung .pds-cockpit__shortDescription",(function(i){i&&e.elem((function(){return null===e.qs("#Produktbeschreibung .pds-cockpit__shortDescription")}),(function(e){e&&t.insertAdjacentHTML("beforeend",'<ul class="pds-cockpit__shortDescription kk-prod-uvp">'+o+"</ul>")}))})),n&&(t.insertAdjacentElement("beforeend",n),e.elem("#Produktbeschreibung .pds-cockpit__articleNumber",(function(i){i&&e.elem((function(){return null===e.qs("#Produktbeschreibung .pds-cockpit__articleNumber")}),(function(e){e&&t.insertAdjacentElement("beforeend",n)}))}))),t.insertAdjacentHTML("afterend",'<img id="kk-prod-desc-img" src="'+i.replace("detail_zoom","detail_main").replace("_1.jpg","_7.jpg")+'">')}})),e.elem(".pds-cockpit__colorSwitch li a",(function(t){if(t)try{for(var o=i.replace("detail_zoom","detail_thumb"),r=o.match(/\d{5}/),s=t.length,l=-1,p=0;p<s;p++){var k=t[p],f=k.parentNode;f.classList.contains("active")&&f.getAttribute("data-color")&&(l=f.getAttribute("data-color")),k.innerHTML='<img src="'+o.split(r)[0]+r+"_"+k.parentNode.getAttribute("data-color")+'_7.jpg">',a(k,"kk-img-switch"),k.addEventListener("click",(function(t){var i,o,r,a,s=t.currentTarget.parentNode.getAttribute("data-color");!0===n?t.stopPropagation():null!==s&&s!==l&&!1===n&&(n=!0,l=s,o=(i=t).target.parentNode.getAttribute("data-color"),r=e.qs("img",i.currentTarget),a=e.qs("#kk-prod-desc-img"),o||(o=i.target.parentNode.parentNode.getAttribute("data-color")),d(parseInt(o)),u(!1),a&&r&&r.getAttribute("src")&&a.setAttribute("src",r.getAttribute("src").replace(/hyb_redes_detail_thumb/,"hyb_redes_detail_main")))}))}}catch(e){c("kk17_setup_colorswitch_monitor",e)}}))}})),u(!0),e.elem(".js-pds-more-details",(function(t){t&&((t=t[0]).insertAdjacentHTML("beforebegin",'<a class="btn-simple-link kk_moreinfos" href="#">Mehr Produktdetails</a>'),e.qs(".kk_moreinfos",t.parentNode).addEventListener("click",(function(t){t.preventDefault(),e.goalPush("klick_produktdetails");try{$("html, body").animate({scrollTop:$("#infoTabs").offset().top-154},500)}catch(e){c("wa_setup_monitoring3",e)}})))})),e.ready((function(){setTimeout((function(){e.elem((function(){return void 0!==t.ACC&&void 0!==t.ACC.global}),(function(e){e&&t.ACC.global.destroyShorten(".js_triggerShortenDestroy")}))}),1500)})))}(new window.WATO,window);

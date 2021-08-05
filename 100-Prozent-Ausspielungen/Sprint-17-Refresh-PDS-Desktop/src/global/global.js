@@ -20,18 +20,15 @@
         }
     };
 
-    // WATO.prototype.sprint17goals = function(variante){
-    //     var _self = this;
+    WATO.prototype.sprint17goals = function(variante){
 
+        var _self = this;
 
-    //     _self.exclude(1023, function(){
-
-    //         _self.setCookie('kksp17desk_exclude', 'true', ".hessnatur.com", false);
-    //         _self.setCookie('kkps01desk_exclude', 'true', ".hessnatur.com", false);
-
-    //         _self.reload();
-
-    //     });
+        _self.exclude(1023, function(){
+            // _self.setCookie('kksp17desk_exclude', 'true', ".hessnatur.com", false);
+            // _self.setCookie('kkps01desk_exclude', 'true', ".hessnatur.com", false);
+            _self.reload();
+        });
 
 
     //     function clickgoal(queryparameter, goalname, sendOnNextPageView) {
@@ -83,7 +80,7 @@
 
     //         clickgoal('.js-pds-more-details', "klick_produktdetails");
     //     }
-    // };
+    };
 
 	
 })(window.WATO, window);

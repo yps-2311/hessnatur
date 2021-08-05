@@ -41,7 +41,7 @@
 }
 .kk_chead {
     background: #F0E5E0;
-    padding: 21px 0 25px;
+    padding: 21px 32px 25px;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -50,11 +50,28 @@
     min-height: 103px;
     position: relative;
     h5 {
+        width: 100%;
         margin-bottom: 0;
         letter-spacing: 0.22px;
         font-size: 24px;
+        color: #000404;
+        span {
+            display: inline-block;
+            height: 29px;
+            font-family: "Roboto Condensed Bold";
+            font-weight: normal;
+            background: #000000;
+            border-radius: 2px;
+            line-height: 30px;
+            padding: 0 6px 0 7px;
+            font-size: 22px;
+            color: #FFFFFF;
+            letter-spacing: 1.61px;
+            text-align: center;
+        }
     }
-    span {
+    > span {
+        color: #000404;
         // color: #363939;
         font-family: "Roboto Condensed Bold";
         font-weight: normal;
@@ -72,21 +89,25 @@
             display: inline;
         }
     }
-    &::after {
-        content: "New in";
-        background: #B5C8D8;
-        width: 83px;
-        height: 83px;
-        display: block;
-        text-transform: uppercase;
-        text-align: center;
-        line-height: 83px;
-        color: #fff;
-        position: absolute;
-        right: 57px;
-        top: 9px;
-        border-radius: 50%;
-    }
+    // &::after {
+    //     content: "New in";
+    //     background: #B5C8D8;
+    //     width: 83px;
+    //     height: 83px;
+    //     display: block;
+    //     text-transform: uppercase;
+    //     text-align: center;
+    //     line-height: 83px;
+    //     color: #fff;
+    //     position: absolute;
+    //     right: 57px;
+    //     top: 9px;
+    //     border-radius: 50%;
+    // }
+}
+.kk_floatright {
+    float: right;
+    margin-top: -2px;
 }
 .kk_cbody {
     background: #F0E5E0;
@@ -219,6 +240,8 @@
     .kk_bubble {
         background-color: #F7F7F7;
         color: #AFAFAF;
+        margin-top: -2px;
+        vertical-align: middle;
     }
     
     > a {
@@ -238,7 +261,7 @@
             color: #393939;
             .kk_bubble {
                 color: #fff;
-                background-color: #333333;
+                background-color: #8A9033;
             }
         }
     }
@@ -333,7 +356,7 @@
                 position: relative;
                 width: 50%;
                 height: 100%;
-                padding: 28px 15px;
+                padding: 28px 25px 28px 15px;
                 .prgRedirLink {
                     hyphens: none;
                 }
@@ -342,17 +365,18 @@
         }
     }
 }
+
 .kk_bubble {
-    background: #333333;
-    border-radius: 10px;
+    background: #8A9033;
+    border-radius: 2px;
     font-family: "Roboto Condensed Bold";
     font-weight: normal;
     font-size: 10px !important;
     color: #FFFFFF;
     letter-spacing: 0.09px;
-    height: 20px;
-    line-height: 21px !important;
-    padding: 0 10px !important;
+    height: 15px;
+    line-height: 15px !important;
+    padding: 0 6px !important;
     display: inline-block;
     margin-left: 6px;
 }
@@ -366,15 +390,16 @@
         color: #AFAFAF;
 
         float: right;
-        margin-top: -2px;
+        margin-top: 1px;
     }
     .kk_selected {
         .kk_bubble {
             color: #fff;
-            background-color: #333;
+            background-color: #8A9033;
         }
     }
 }
+
 .is-dropdown-submenu-parent .kk_bubble {
     position: absolute;
     top: -12px;
@@ -481,3 +506,8 @@
 //     }
 }
 
+
+
+// .headerWrapper .dataSticky {
+//     background-color: green;
+// }

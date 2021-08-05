@@ -6,12 +6,17 @@
 // background: url('@{base-url}sprite.png') no-repeat 0 0;
 
 
+
 .kk_sp17 {
     body {
         color: #373939;
     }
     .pds__imageAndCockpitWrapper {
         margin-bottom: 0;
+        > nav {
+            margin-bottom: -43px;
+            z-index: 100;
+        }
     }
     .color-white,
     #Pflege-label,
@@ -101,7 +106,7 @@
             font-weight: 400;
             padding-left: 28px;
             margin-bottom: 5px;
-            background: #fff url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/check.svg") no-repeat left center;
+            background: #fff url("https://media.hessnatur.com/kk/100Prozent/sprint17/check.svg") no-repeat left center;
             &::before {
                 display: none !important;
             }
@@ -317,8 +322,11 @@
     }
 
     .breadcrumbs {
-        margin: 2px 0 0 4px;
+        margin: 9px 0 0 0;
+        position: relative;
         li.breadcrumb--back {
+            margin: 0;
+            padding: 0 30px 0 19px;
             &::before {
                 font-family: "FontAwesome";
                 font-weight: normal;
@@ -329,6 +337,7 @@
                 height: 26px;
                 position: absolute;
                 top: 5.5px;
+                line-height: 20px;
             }
             a {
                 font-family: "Roboto Condensed Bold";
@@ -386,7 +395,7 @@
         color: #fff;
 
         .pds-cockpit__addToCartButtonIconWrapper {
-            background-image: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/shoppingbag.svg");
+            background-image: url("https://media.hessnatur.com/kk/100Prozent/sprint17/shoppingbag.svg");
             background-position: 0 .7rem;
             font-family: "Roboto Condensed Bold";
             font-weight: normal;
@@ -684,7 +693,7 @@
 
 
 .kk_nachhaltig {
-    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/background.jpg") no-repeat center center;
+    background: url("https://media.hessnatur.com/kk/100Prozent/sprint17/background.jpg") no-repeat center center;
     background-size: cover;
     padding: 56px 24px 31px;
     h4 {
@@ -746,15 +755,15 @@
     }
 }
 .kk_water {
-    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-Wasser.svg") no-repeat -10px 6px;
+    background: url("https://media.hessnatur.com/kk/100Prozent/sprint17/Icon-Wasser.svg") no-repeat -10px 6px;
     background-size: auto 51px;
 }
 .kk_cloud {
-    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-CO2.svg") no-repeat 0 8px;
+    background: url("https://media.hessnatur.com/kk/100Prozent/sprint17/Icon-CO2.svg") no-repeat 0 8px;
     background-size: 60px auto;
 }
 .kk_earth {
-    background: url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/AB17/Icon-Blatt.svg") no-repeat -7px 6px;
+    background: url("https://media.hessnatur.com/kk/100Prozent/sprint17/Icon-Blatt.svg") no-repeat -7px 6px;
     background-size: auto 55px;
 }
 

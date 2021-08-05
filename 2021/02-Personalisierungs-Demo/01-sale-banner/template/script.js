@@ -39,10 +39,10 @@
     }
 
     /** EDITOR VARS */
-    var TEXT_CONTENT = "{{name=Headline&type=webarts.watt.editor.impl.TextEditor}}",
-        TEXT_SLOGAN = "{{name=Slogan&type=webarts.watt.editor.impl.TextEditor}}",
-        IMG_PATH_DESKTOP = "{{name=Banner_Desktop&type=webarts.watt.editor.impl.TextEditor}}",
-        IMG_PATH_MOBILE = "{{name=Banner_Mobile&type=webarts.watt.editor.impl.TextEditor}}";
+    // var TEXT_CONTENT = "{{name=Headline&type=webarts.watt.editor.impl.TextEditor}}",
+        // TEXT_SLOGAN = "{{name=Slogan&type=webarts.watt.editor.impl.TextEditor}}",
+    var IMG_PATH_DESKTOP = "{{name=DesktopImage&type=webarts.watt.editor.impl.TextEditor}}",
+        IMG_PATH_MOBILE = "{{name=MobileImage&type=webarts.watt.editor.impl.TextEditor}}";
 
     /** PROFILE */
     var KEY_DATA         = 'categoryAffinityData',
@@ -73,22 +73,24 @@
             }
 
             // change headline
-            var headline = WATO.qs('.lpmHero__headline.hn-headline', wrapper);
+            // var headline = WATO.qs('.lpmHero__headline.hn-headline', wrapper);
 
-            if(headline){
-                headline.innerHTML = TEXT_CONTENT;
-            }
+            // if(headline){
+            //     headline.innerHTML = TEXT_CONTENT;
+            // }
 
-            var slogan = WATO.qs('.lpmHero__text b', wrapper);
+            // var slogan = WATO.qs('.lpmHero__text b', wrapper);
 
-            if(slogan){
-                slogan.innerHTML = TEXT_SLOGAN;
-            }
+            // if(slogan){
+            //     slogan.innerHTML = TEXT_SLOGAN;
+            // }
 
             // parsing error
             try {
 
                 var categoryAffinity = getProfileValue(KEY_STATUS);
+
+                console.log("categoryAffinity", categoryAffinity);
 
                 // change buttons
                 if(categoryAffinity && categoryAffinity !== 'damen'){

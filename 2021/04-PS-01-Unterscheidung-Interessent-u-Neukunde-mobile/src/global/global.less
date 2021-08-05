@@ -1,0 +1,407 @@
+/* IMPORT VAR LESS FILE */
+@import "vars.less";
+
+// DEFINE GLOBAL CSS
+// Beispiel für die Verwendung der Variable base-url
+// background: url('@{base-url}sprite.png') no-repeat 0 0;
+
+
+
+.kk_quali {
+    // display: flex;
+    // flex-direction: row;
+    // flex-wrap: wrap;
+    position: relative;
+    // border: 2px solid #E8EBE6;
+    margin: 36px 24px 25px;
+    width: 100%;
+    // min-width: 452px;
+    padding: 10px 0 18px;
+    justify-content: space-between;
+    // max-width: 473px;
+    // background: #fff url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/pds_blaetter.svg") no-repeat 11% 4px;
+    &::before {
+        content: "";
+        border-top: solid 1px #6D954A;
+        display: block;
+        width: 100%;
+        margin-top: 20px;
+    }
+    .kk_hl {
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 17px;
+        line-height: 20px;
+        display: block;
+        margin: -13px auto 0;
+        width: 72%;
+        padding: 0;
+        color: #363939;
+        letter-spacing: 0.16px;
+        background-color: #fff;
+        font-weight: normal;
+        // font-family: "Roboto",Helvetica,Arial,sans-serif;
+        font-family: "Roboto Condensed Bold", "Roboto",Helvetica,Arial,"Archer A",sans-serif;
+        span {
+            position: relative;
+            // white-space: nowrap;
+            // display: inline-block;
+            // padding: 0 10px 0 0;
+            // background-color: #fff;
+            &::before {
+                content: "";
+                // margin: -21px -24px 5px 0;
+                background: transparent url("https://media.hessnatur.com/kk/2021/ps01-mobile/pds_blaetter.svg") no-repeat 11% 4px;
+                background-size: 85% auto;
+                width: 46px;
+                height: 36px;
+                // display: inline-block;
+                position: absolute;
+                left: -22px;
+                top: -23px;
+            }
+        }
+        
+    }
+    > div > div {
+        padding: 40px 0 36px 68px;
+        font-size: 15px;
+        width: 260px;
+        margin: 0 auto;
+    }
+}
+.kk_siegel {
+    background-color: #fff;
+    border: 2px solid #E8EBE6;
+    padding: 10px 15px;
+    width: 368px;
+    margin: 0 0 10px -25px;
+    min-width: 110%;
+    .h3 { 
+        font-size: 0;
+        &::after {
+            font-size: 2.07692rem;
+            content: "Ausgezeichnet durch:";
+        }
+    }
+    .certificateTextWrapper {
+        display: none;
+    }
+    .certificateWrapper {
+        justify-content: space-around;
+        max-width: 100%;
+        margin: 0;
+        > .columns.row {
+            width: 30%;
+            flex: 0 0 30%;
+            max-width: 30%;
+        }
+        .h-smallOffset-bottom-outer {
+            min-width: 91px;
+            padding: 0;
+            max-width: 100%;
+        }
+        .shrink {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}
+.kk_natur {
+    background: #fff url("https://media.hessnatur.com/kk/2021/ps01-mobile/pds_quali.svg") no-repeat 0 center;
+}
+.kk_stuecke {
+    background: #fff url("https://media.hessnatur.com/kk/2021/ps01-mobile/pds_kleidung.svg") no-repeat 0 center;
+}
+.kk_tropfen {
+    background: #fff url("https://media.hessnatur.com/kk/2021/ps01-mobile/pds_komfort.svg") no-repeat 0 center;
+}
+
+.kk_gefragt {
+    margin: 12px 0;
+    background: #F9F9F9;
+    font-size: 11px;
+    line-height: 21px;
+    padding: 0 8px;
+    display: block;
+    min-height: 21px;
+    display: inline-block;
+    b {
+        color: #2CA700;
+        padding-right: 5px;
+        text-transform: uppercase;
+    }
+}
+// .kk_favorit .js-badges-container {
+//     position: relative;
+//     &::after {
+//         content: "Kundenfavorit";
+//         font-size: 11px;
+//         color: #373939;
+//         font-weight: bold;
+//         line-height: 26px;
+//         height: 25px;
+//         // padding-left: 22px;
+//         text-align: center;
+//         text-transform: uppercase;
+//         // width: 106px;
+//         padding: 0 10px;
+//         margin-left: 1px;
+//         order: 3;
+//         border-radius: 2px;
+//         letter-spacing: 1.55px;
+//         background-color: #F2E543;
+//         display: inline-block;
+//         // background: #F9DC02 url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/daumen.svg") no-repeat 8px 5px;
+//     }
+// }
+// .kk_favorit .kk_slider {
+
+// }
+
+
+
+// .kk_fav,
+.kk_favorit .kk_slider {
+    // border: red solid 4px;
+    &::before {
+        content: "Kundenfavorit";
+        // font-size: 9px;
+        font-family: "Roboto Condensed Bold", "Roboto",Helvetica,Arial,"Archer A",sans-serif;
+        color: #000000;
+        font-weight: normal;
+        // line-height: 18px;
+        // height: 18px;
+        height: 25px;
+        line-height: 25px;
+        font-size: 11px;
+        padding: 0 10px;
+
+        letter-spacing: 0.55px;
+        // padding: 0 6px;
+        text-align: center;
+        text-transform: uppercase;
+        position: absolute;
+        top: 6px;
+        z-index: 20;
+        left: 50%;
+        margin-left: -59px;
+        border-radius: 2px;
+        background-color: #F2E543;
+        // background: #F2E543 url("https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2020/ps01/daumen.svg") no-repeat 6px center;
+        display: block;
+    }
+}
+.kk_favorit .kk_slider {
+    position: relative;
+    &::before {
+        left: 17px;
+        margin: 0;
+        top: auto;
+        bottom: 13px;
+    }
+}
+
+.kk_fav .productBadgesWrapper {
+    &::after {
+        content: "Kundenfavorit";
+        height: 18px;
+        line-height: 18px;
+        letter-spacing: 0.55px;
+        font-size: 9px;
+        display: inline-block;
+        padding: 0 6px;
+        font-family: "Roboto Condensed Bold", "Roboto",Helvetica,Arial,"Archer A",sans-serif;
+        font-weight: normal;
+        text-transform: uppercase;
+        border-radius: 2px;
+        color: #000;
+        background-color: #f2e543;
+    }
+}
+.gridviewProductItemWrapper {
+    position: relative;
+    > .productBadges {
+        position: absolute;
+        right: 0px;
+        top: 5px;
+        z-index: 100;
+        img {
+            height: 19px;
+            width: auto;
+        }
+    }
+}
+
+.kk_sehrgefragt {
+    &::after {
+        content: "Aktuell sehr gefragt!";
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 10px;
+        color: #81B539;
+        line-height: 9px;
+        position: absolute;
+        bottom: -12px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+    }
+}
+// .pds-cockpit__addProductWrapper {
+//     .xlarge-order-2 {
+//         order: 1;
+//         min-width: 202px;
+//         // padding-left: 2.30769rem !important;
+//         flex: 0 0 62%;
+//         max-width: 62%;
+//     }
+//     .medium-order-1 {
+//         order: 2;
+//         padding-left: 0;
+//         margin-left: 0;
+//         flex: 0 0 38% !important;
+//         max-width: 38% !important;
+//     }
+// }
+
+.kk_cta_uvps {
+    margin-top: 5px;
+    padding-bottom: 40px;
+    background: url("https://media.hessnatur.com/kk/2021/ps01-mobile/payment.png") transparent no-repeat center bottom;
+    background-size: 100% auto;
+    max-width: 346px;
+    ul {
+        margin: 0;
+        list-style: none;
+    }
+    li {
+        background: url("https://media.hessnatur.com/kk/2021/ps01-mobile/check.svg") transparent no-repeat 0 center;
+        font-size: 13px;
+        padding-left: 23px;
+        background-size: 16px auto;
+        height: 28px;
+    }
+    + .h-mediumOffset-bottom-outer {
+        display: none;
+        + .pds-cockpit__sozialMediaShareWrapper {
+            display: none;
+        }
+    }
+
+}
+
+// @media only screen and (max-width: 1200px) {
+//     .pds-cockpit__addProductWrapper {
+//         .xlarge-order-2 {
+//             padding-left: 1.15385rem !important;
+//         }
+//         .medium-order-1 {
+//             padding-left: 1.15385rem;
+//         }
+//     }
+// }
+
+// @media only screen and (min-width: 1024px) {
+
+    
+.kk_kachel {
+    > div {
+        background: #fff no-repeat center 0;
+        background-size: cover;
+        padding: 7%;
+        height: 100%;
+        position: relative;
+        display: flex;
+        h3 {
+            margin: 0 3%;
+            font-family: "Roboto Condensed Bold","Roboto",Helvetica,Arial,sans-serif;
+            font-weight: normal;
+            font-size: 15px;
+            text-align: center;
+            text-transform: uppercase;
+            min-height: 30px;
+            width: 94%;
+        }
+        .kk_content {
+            background-color: #fff;
+            width: 100%;
+            position: relative;
+            min-height: 360px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            padding-bottom: 7px;
+            > div {
+                background: url("https://media.hessnatur.com/kk/2021/ps01-mobile/check.svg") #fff no-repeat center 0;
+                margin: 0;
+                padding: 29px 3% 0;
+                font-size: 12px;
+                min-height: 82px;
+                text-align: center;
+                line-height: 17px;
+                font-weight: 300;
+                width: 100%;
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+            img {
+                margin: 10px auto 5px;
+                display: block;
+                width: 81%;
+            }
+        }
+    }
+    &.kk_hoechstequali > div {
+        background-image: url("https://media.hessnatur.com/kk/2021/ps01-mobile/quali2.jpg");
+        .kk_content > div {
+            background: url("https://media.hessnatur.com/kk/2021/ps01-mobile/check2.svg") #fff no-repeat center 0;
+        }
+    }
+    &.kk_nachteile > div {
+        background-image: url("https://media.hessnatur.com/kk/2021/ps01-mobile/keinenachteile1.jpg");
+    }
+    &.kk_trage > div {
+        background-image: url("https://media.hessnatur.com/kk/2021/ps01-mobile/trage1.jpg");
+    }
+}
+
+// }
+
+
+
+// @media only screen and (min-width: 1400px) {
+//     .kk_kachel > div h3,
+//     .kk_kachel > div .kk_content > div {
+//         font-size: 1.2rem;
+//         line-height: 2rem;
+//     }
+//     // .kk_kachel > div .kk_content > div {
+//     //     font-size: 1.2rem;
+//     //     line-height: 2rem;
+//     //     // margin: 0 0 12%;
+//     //     // padding: 9% 7% 0;
+//     // }
+//     .kk_quali {
+//         justify-content: space-around;
+//     }
+   
+// }
+
+
+// @media only screen and (max-width: 1024px) {
+//     .kk_kachel {
+//         display: none;
+//     }
+// }
+
+
+// .kk_quali > div {
+//     position: absolute;
+// }
+.kk_boxes {
+    height: 100px;
+    position: relative;
+}

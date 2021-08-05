@@ -1,0 +1,64 @@
+/* IMPORT VAR LESS FILE */
+@import "../global/vars.less";
+
+/* IMPORT GLOBAL LESS FILES */
+// @import "../global/global.less";
+
+/* DEFINE VARIATION CSS */
+
+#kk_infoTabs {
+    margin-top: 0 !important;
+}
+
+.kk_boxes {
+    > div {
+        position: absolute;
+        left: 50%;
+        margin-left: -130px !important;
+    }
+}
+.kk_natur {
+    opacity: 0;
+    animation: fadein1 15s infinite both;
+}
+.kk_stuecke {
+    opacity: 0;
+    animation: fadein2 15s infinite both;
+}
+.kk_tropfen {
+    opacity: 0;
+    animation: fadein3 15s infinite both;
+}
+@keyframes fadein1{
+    0%, 5%{
+        opacity: 0;
+    }
+    6%, 28%{
+        opacity: 1;
+    }
+    32%, 100%{
+        opacity: 0;
+    }
+}
+@keyframes fadein2{
+    0%, 33%{
+        opacity: 0;
+    }
+    38%, 61%{
+        opacity: 1;
+    }
+    66%, 100%{
+        opacity: 0;
+    }
+}
+@keyframes fadein3{
+    0%, 67%{
+        opacity: 0;
+    }
+    82%, 95%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}

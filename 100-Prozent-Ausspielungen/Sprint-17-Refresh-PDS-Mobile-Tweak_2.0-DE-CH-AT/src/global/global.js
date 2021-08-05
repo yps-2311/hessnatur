@@ -142,9 +142,8 @@
             }, function(isjq){
                 if(isjq){
                     // Doku https://flickity.metafizzy.co/
-                    // console.log('$(galID): ', $(galID));
+                    // console.log('$(galID): ', $(galID)); 
                     var thisGal = $(galID);
-
                     thisGal.flickity({
                         // options
                         draggable: true,
@@ -288,14 +287,14 @@
                                     picReco = picURL.replace("_zoom/","_reco/"),
                                     picThumb = picURL.replace("_zoom/","_thumb/");
 
-                                    markupHTMLColor +=   '<a data-zoom-id="zoomMedium" class="thumbnailContainer js_thumbnailContainer mz-thumb" href="'+picURL+'" data-color="'+colorID+'" data-image="'+picReco+'">'+
-                                                    '<img src="'+picThumb+'" alt="'+altText+'" data-color="'+colorID+'">'+
-                                                '</a>';
+                                    markupHTMLColor +=  '<a data-zoom-id="zoomMedium" class="thumbnailContainer js_thumbnailContainer mz-thumb" href="'+picURL+'" data-color="'+colorID+'" data-image="'+picReco+'">'+
+                                                            '<img itemprop="image" src="'+picThumb+'" alt="'+altText+'" data-color="'+colorID+'">'+
+                                                        '</a>';
 
                                 if(mainPicColor === ""){
-                                    mainPicColor =   '<a class="MagicZoom" data-options="hint: always; zoomPosition: inner" id="zoomMedium" href="'+picURL+'">'+
-                                                    '<img src="'+picReco+'" alt="'+altText+'">'+
-                                                '</a>';
+                                    mainPicColor =  '<a class="MagicZoom" data-options="hint: always; zoomPosition: inner" id="zoomMedium" href="'+picURL+'">'+
+                                                        '<img src="'+picReco+'" alt="'+altText+'">'+
+                                                    '</a>';
                                 }
                                 onlyOneImage++;
 
@@ -346,7 +345,7 @@
                                         picThumb = picURL.replace("_zoom/","_thumb/");
 
                                         markupHTMLInitial += '<a data-zoom-id="zoomMedium" class="thumbnailContainer js_thumbnailContainer mz-thumb" href="'+picURL+'" data-color="" data-image="'+picReco+'">'+
-                                                                '<img src="'+picThumb+'" alt="'+altText+'" data-color="">'+
+                                                                '<img itemprop="image" src="'+picThumb+'" alt="'+altText+'" data-color="">'+
                                                             '</a>';
 
                                     if(mainPicInitial === ""){
