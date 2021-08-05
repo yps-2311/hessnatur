@@ -5,8 +5,6 @@
      */
     if(document.URL.indexOf('//sf.acc.hess-webshop-dev-760c.gcp.get-cloud.io') !== -1){
 
-        console.log("check consent");
-
         try {
             
             var ucSettings = localStorage.getItem('ucSettings');
@@ -33,7 +31,6 @@
                                     if(consents[i].templateId === key){
 
                                         if(!consents[i].consentStatus){
-                                            console.log("stop iridion", consents[i].consentStatus);
                                             window.iridion = [];
                                             return false;
                                         }
@@ -55,7 +52,8 @@
 
         window.iridion.push(["consent", {
             "cookies": true,
-            "profile": true
+            "profile": true,
+            "tracking": true
         }]);
     }
 })();
@@ -75,6 +73,9 @@ window.iridion.tracking = window.controllerName || window.document.location.path
  *     content: (siteTitle ? "HTML-Title/"+siteTitle: "content"),
  *     abtest:  [ [testname, testvariante] ]
  * }]);
+ * 
+ * MV, 05.08.2021 - Ich habe vor dem Versenden eine Prüfung auf das Iridion User Cookie
+ * eingebaut. Sollten wir kein Cookie haben, haben wir keinen Consent. 
  */
 window.iridion.econda = window.iridion.econda || [];
 window.iridion.econda = (function(window){
@@ -92,8 +93,10 @@ window.iridion.econda = (function(window){
 
         try {
             for(var i = 0; i < data.length; i++){
-                window.emos3.send(data[i]);
-                // window.emosPropertiesEvent(data[i]);
+                // check for consent
+                if(document.cookie.indexOf('iridion_user') !== -1){
+                    window.emos3.send(data[i]);
+                }
             }
             data = [];
         } catch(e) {
