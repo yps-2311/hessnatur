@@ -6,8 +6,16 @@
     if(document.URL.indexOf('//sf.acc.hess-webshop-dev-760c.gcp.get-cloud.io') !== -1){
 
         try {
-            
+
             var ucSettings = localStorage.getItem('ucSettings');
+            var setIridionConsent = function(value){
+                window.localStorage.setItem("ucIridionConsent", value);
+                window.iridion.push(["consent", {
+                    "cookies": value,
+                    "profile": value,
+                    "tracking": value
+                }]);
+            }
             
             if(ucSettings){
                 
@@ -30,16 +38,24 @@
                                 for(var i = 0; i < consents.length; i++){
                                     if(consents[i].templateId === key){
 
+                                        var iridionConsentStatus = window.localStorage.ucIridionConsent;
+                                        
                                         if(!consents[i].consentStatus){
-                                            window.iridion = [];
+
+                                            if(iridionConsentStatus === undefined || iridionConsentStatus === "true"){
+                                                setIridionConsent(false);
+                                            }
+
                                             return false;
                                         }
 
-                                        return consents[i].consentStatus;
+                                        if(iridionConsentStatus === undefined || window.localStorage.ucIridionConsent === "false"){
+                                            setIridionConsent(true);
+                                        }
+                                        
+                                        return true;
                                     }
                                 }
-
-                                return true;
                             }
                         }
                     }
