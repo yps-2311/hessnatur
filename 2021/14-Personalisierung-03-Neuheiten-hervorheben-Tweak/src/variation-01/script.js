@@ -17,7 +17,7 @@
 
 	WATO.ps03tweak(1);
 
-	// Econda ID 134
+	// window.iridion.econda.push(["SprintPS03tweak", "V1"]);
 
 	var locate = window.location;
 
@@ -37,7 +37,7 @@
 									'<div id="kk_likethisproduct" '+
 									'class="flickity-productslider js-ecReco" '+
 									'data-accountid="00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f" '+
-									'data-wid="134" '+
+									'data-wid="163" '+
 									'data-count="20" '+
 									'data-product="sku:'+WATO.qs('meta[property="product:upc"]').getAttribute('content').substring(0,7)+'">'+
 										'Loading...'+

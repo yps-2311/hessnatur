@@ -12,6 +12,7 @@
     .carousel-cell {
         width: 22%;
         height: calc(29vw);
+        max-height: 532px;
         text-decoration: none;
         margin-right: 1px;
     }
@@ -84,8 +85,9 @@
 }
 .kk_blackbox {
     padding: 57px 17px 0;
-    background-color: #000;
-    max-height: calc(22.85vw) !important;
+    background-color: #000 !important;
+    height: calc(22.85vw) !important;
+    max-height: 442px !important;
     h4 {
         font-family: "Roboto Condensed Bold";
         font-weight: normal;
@@ -121,6 +123,19 @@ a.kk_subline {
 }
 
 
+@media (min-width: 1920px) {
+    .kk_blackbox h4, 
+    .kk_number {
+        font-size: 3rem;
+        line-height: 3.5rem;
+    }
+    .kk_subline {
+        font-size: 1.6rem;
+        line-height: 1.8rem;
+    }
+}
+
+
 
 .kk_load {
     display: flex;
@@ -130,7 +145,7 @@ a.kk_subline {
 .kk_cprod {
     cursor: pointer;
     background-color: #f7f7f7;
-    height: 400px;
+    height: 400px !important;
     margin: 0 1px 102px 0;
     position: relative;
     display: block;
@@ -152,7 +167,7 @@ a.kk_subline {
     top: 25%;
     left: 0;
     z-index: 9;
-    background: #f7f7f7;
+    // background: #f7f7f7;
 
     // https://loading.io/css/
     .lds-ring {

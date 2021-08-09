@@ -9,11 +9,11 @@
  * @description
  */
 
-// try {
-//     window.iridion.econda.push(["SprintPS01", "V0"]);
-// } catch (error) {
-//     // console.log('Error: ', error);
-// }
+try {
+    window.iridion.econda.push(["SprintPS03tweak", "V0"]);
+} catch (error) {
+    // console.log('Error: ', error);
+}
 // try {
 //     // window.iridion.push(["segment", ((!window.localStorage.getItem("kk_hasbought") && document.location.search.indexOf("show=neukunde") === -1) ? "32812" : "32813")]);
 
@@ -26,12 +26,10 @@
 //     console.log('Error: ', error);
 // }
 
-(function(WATO) {
-    "use strict";
+// (function(WATO) {
+//     "use strict";
 
-    window.iridion.econda.push(["SprintPS03", "V0"]);
+    // WATO.ps03setSegment();
+    // WATO.ps03desktop();
 
-    WATO.ps03setSegment();
-    WATO.ps03desktop();
-
-})(new window.WATO());
+// })(new window.WATO());

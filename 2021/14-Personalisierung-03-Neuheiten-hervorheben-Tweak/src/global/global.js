@@ -24,7 +24,8 @@
 			econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f',
 			UrlHref = window.location.href,
 			UrlPathname = window.location.pathname,
-			imgs7 = "https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/";
+			imgs7 = "https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/",
+			productIDs = [];
 
 		function getCompareString(categoryString) {
 			// Wenn die Hauptkategorie übereinstimmt +2 Punkte 
@@ -77,13 +78,13 @@
 		// 	};
 		// }
 
-		// function goalPush(key, sendOnNextPageView){
-		// 	if(sendOnNextPageView){
-		// 		window.iridion.push(['goal', key, '', true]);
-		// 	}else{
-		// 		window.iridion.push(['goal', key]);
-		// 	}
-		// }
+		function goalPush(key, sendOnNextPageView){
+			if(sendOnNextPageView){
+				window.iridion.push(['goal', key, '', true]);
+			}else{
+				window.iridion.push(['goal', key]);
+			}
+		}
 
 		if(UrlPathname.indexOf("/c/") !== -1){
 
@@ -92,7 +93,7 @@
 				headerText = {
 					Interessent: ['Neu bei uns eingetroffen.', 'Lassen Sie sich von unseren neuen Outfits inspirieren.'],
 					Neukunde: ['Neu seit Ihrem letzen Besuch.', 'Neue Outfits Im Bereich '+UrlPathname.split("/")[2]],
-					Bestandskunde: ['Neuheiten passend zu Artikeln die Sie häufig kaufen:']
+					Bestandskunde: ['Neuheiten passend zu Artikeln, die Sie häufig kaufen:']
 				},
 				econdaWidgetIDs = {
 					Interessent: 128,
@@ -100,12 +101,21 @@
 					Bestandskunde: 130
 				},
 				userTypeText = headerText[userType],
-				position = '.js-product-grid > *:nth-child(11) > div';
+				position = '.js-product-grid > *:nth-child(8) > div';
 
 			// Auf der Seite Trends soll die Reco eine Zeile weiter oben an gezeigt werden.
 			if(UrlPathname.indexOf("trends") !== -1){
-				position = ".js-product-grid > *:nth-child(8) > div";
+				position = ".js-product-grid > *:nth-child(5) > div";
 			}
+
+			WATO.elem('.footerWrapper', function(element){
+				if(element){
+					var appProducts = WATO.qsa('.gridviewProductItemWrapper .dropdown-pane');
+					for (var i = 0; i < appProducts.length; i++) {
+						productIDs.push(appProducts[i].getAttribute('id').substring(0,5));
+					}
+				}
+			});
 
 			WATO.elem(function(){
 				return 	typeof window.econda !== "undefined" && 
@@ -115,11 +125,18 @@
 				if(isLoadedEconda){
 					// Wenn Econda geladen ist kann der Call abgeschickt werden
 
-					WATO.ajax("widgets.crosssell.info/eps/crosssell/recommendations", function(callbackData){
+					WATO.ajaxCallback("widgets.crosssell.info/eps/crosssell/recommendations", function(callbackData){
 						var data = JSON.parse(callbackData.response),
 							items = data.items;
 						
 						console.log('data: ', data);
+
+						// Alle Produkte die bereits auf dieser Seite zu sehen sind werden aus der Liste entfernt
+						for (var j = 0; j < items.length; j++) {
+							if (productIDs.indexOf(items[j].id) > -1) {
+								items.splice(j, 1);
+							}
+						}
 
 						// Sortieren der Produkte nach Kategorie der aktuellen Seite.
 						// z.B. Wenn man auf Herren-Hemden ist werden bevorzugt Herren Produkte angezeigt
@@ -135,7 +152,7 @@
 								cbody.insertAdjacentHTML('beforeend',  
 									'<div class="carousel-cell kk_blackbox">'+
 										'<h4>'+userTypeText[0]+'</h4>'+
-										'<div class="kk_subline">'+userTypeText[1]+'</div>'+
+										(userTypeText[1] ? '<div class="kk_subline">'+userTypeText[1]+'</div>' : '' )+
 										'<span class="kk_number">1/3</span>'+
 									'</div>'
 								);
@@ -179,10 +196,45 @@
 									);
 								}
 
+								var selectedCategory = WATO.qs('.navigation-main > li > a.h-text-bold').getAttribute('href').replace("/de/",""),
+									newURL = "NEU";
+
+								switch (selectedCategory) {
+									case 'herren':
+										newURL = 'herren/bekleidung/c/neu-herren';
+										break;
+									case 'damen':
+										newURL = 'damen/bekleidung/c/neu-damen';
+										break;
+									case 'baby':
+									case 'junior':
+										newURL = 'baby/bekleidung/c/neu-junior';
+										break;
+									case 'home':
+										newURL = 'home/bekleidung/c/neu-home';
+										break;
+									default:
+										if(UrlPathname.indexOf('herren') !== -1){
+											newURL = 'herren/bekleidung/c/neu-herren';
+										}else if(UrlPathname.indexOf('damen') !== -1){
+											newURL = 'damen/bekleidung/c/neu-damen';
+										}else if(UrlPathname.indexOf('baby') !== -1 || UrlPathname.indexOf('junior') !== -1){
+											newURL = 'baby/bekleidung/c/neu-junior';
+										}else if(UrlPathname.indexOf('home') !== -1){
+											newURL = 'home/bekleidung/c/neu-home';
+										}
+										break;
+								}
+
+								// https://www.hessnatur.com/de/herren/bekleidung/c/neu-herren
+								// https://www.hessnatur.com/de/damen/bekleidung/c/neu-damen
+								// https://www.hessnatur.com/de/baby/bekleidung/c/neu-junior
+								// https://www.hessnatur.com/de/home/heimtextilien/c/neu-home
+
 								cbody.insertAdjacentHTML('beforeend',  
 									'<div class="carousel-cell kk_blackbox">'+
 										'<h4>Noch mehr Neuheiten entdecken?</h4>'+
-										'<a class="kk_subline" href="/de/NEU">> zu allen Neuheiten</a>'+
+										'<a class="kk_subline" href="/de/'+newURL+'">> zu allen Neuheiten</a>'+
 										'<span class="kk_number">3/3</span>'+
 									'</div>'
 								);
@@ -225,10 +277,12 @@
 											'</div></div>';
 
 					wrapperOfAllProductsParent.insertAdjacentHTML('beforebegin', 
-						'<div id="kk_crossprods" >'+
+						'<div id="kk_crossprods">'+
 							'<div class="kk_cbody main-carousel">'+
 								'<div class="kk_load">'+
-									loadingPlaceholder+
+									'<div class="kk_cprod kk_blackbox"><div class="kk-loader">' +
+									'<div class="lds-ring"><div></div><div></div><div></div><div></div></div>' +
+								'</div></div>'+
 									loadingPlaceholder+
 									loadingPlaceholder+
 									loadingPlaceholder+
@@ -241,14 +295,28 @@
 					// Fix: Wenn Tests oder Ausspielungen wie der PS01 in die Produktliste Elemente einfügen
 					// Kann es sein dass unser neuer Bereich nicht mehr an der korrekten Position steht.
 					// Dieses wird hier behoben, indem es neu plaziert wird.
-					var crossprodsBody = WATO.qs('#kk_crossprods .kk_cbody');
-					WATO.elem(function(){
-						return wrapperOfAllProductsParent !== crossprodsBody.parentNode;
-					}, function(element){
-						if(element){
-							wrapperOfAllProductsParent.insertAdjacentElement('beforebegin', crossprodsBody.parentNode);
+					WATO.elem('.gridviewProductItemWrapper.kk_kachel', function(kk_kachel){
+						if(kk_kachel){
+							var crossprodsBody = WATO.qs('#kk_crossprods'),
+								positionCorrection = ".js-product-grid > *:nth-child(11)";
+							
+							if(UrlPathname.indexOf("trends") !== -1){
+								positionCorrection = ".js-product-grid > *:nth-child(8)";
+							}
+							var elemCorrection = WATO.qs(positionCorrection);
+							if(elemCorrection){
+								elemCorrection.insertAdjacentElement('afterend', crossprodsBody);
+							}
 						}
 					});
+					// var crossprodsBody = WATO.qs('#kk_crossprods .kk_cbody');
+					// WATO.elem(function(){
+					// 	return wrapperOfAllProductsParent !== crossprodsBody.parentNode;
+					// }, function(element){
+					// 	if(element){
+					// 		wrapperOfAllProductsParent.insertAdjacentElement('beforebegin', crossprodsBody.parentNode);
+					// 	}
+					// });
 				}
 			});
 
@@ -263,6 +331,17 @@
 			// 		}
 			// 	});
 			// }
+		}else if(UrlPathname.indexOf("/p/") !== -1){
+
+			WATO.elem('img[src*="/overlay_neu.svg"]', function(hasNewBadge){
+				if(hasNewBadge){
+					
+					WATO.ajaxCallback('/cart/add', function(){
+						goalPush("ps03_newProductAddToCart");
+					});
+				}
+			});
+
 		}
 
 	};
