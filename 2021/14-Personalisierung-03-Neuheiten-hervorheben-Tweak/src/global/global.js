@@ -21,7 +21,8 @@
 
 	WATO.prototype.ps03tweak = function(){
 		var WATO = this,
-			econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f',
+			// econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f',
+			econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1',
 			UrlHref = window.location.href,
 			UrlPathname = window.location.pathname,
 			imgs7 = "https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/",
@@ -258,11 +259,41 @@
 					});
 
 					try {
+						console.log('userType: ', userType);
+
 						var widget = new window.econda.recengine.Widget({
 							accountId: econdaAccountID,
-							id: econdaWidgetIDs[userType]
+							id: 128,// econdaWidgetIDs[userType]
+							
+							context: {
+								categories: [{
+									type: 'productcategory',
+									path: ['Damen','Blusen']
+								}]
+							}
 						});
 						widget.render();
+
+
+						// var widget = new econda.recengine.Widget({
+						// 	element: document.getElementById('ecRecommendationsContainer_128'),
+						// 	renderer: {
+						// 	   type: 'template',
+						// 	   uri: '/path/to/my/template.html'
+						// 	},
+						// 	accountId: '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1',
+						// 	id: '128',
+						// 	// a context category of type brand named econda (replace with your category)
+						// 	context: {
+						// 		categories: [{
+						// 			type: 'brand',
+						// 			path: 'econda'
+						// 		}]
+						// 	}
+						//  });
+						//  widget.render();
+
+
 					} catch (error) {
 						// console.log('Error: ', error);
 					}
