@@ -917,7 +917,7 @@
             id = id[1];
             if (eco_data[id] && new Date().getTime() - eco_data[id].timestamp < 86400000) {
                 window.kk07_ecoData = eco_data[id];
-            } else {
+            } else if(id.length > 5){
                 WATO.xhr_get('https://products.hessnatur.com/products/' + id, function (data) {
                     if (data) {
                         var ecoData = data.products[0].ecological_data;

@@ -159,7 +159,16 @@
 
             WATO.elem('.pds-cockpit__addProductWrapper', function(addToCartBox){
                 if(addToCartBox){
-                    addToCartBox[0].insertAdjacentHTML('afterend', 
+                    addToCartBox = addToCartBox[0];
+
+                    if(WATO.qs('.payback__pds__logo', addToCartBox.nextElementSibling)){
+                        addToCartBox = addToCartBox.nextElementSibling;
+
+                        addToCartBox.style.display = "block";
+                        addToCartBox.style.marginTop = "15px";
+                    }
+
+                    addToCartBox.insertAdjacentHTML('afterend', 
                         '<div class="kk_cta_uvps">'+
                             '<ul>'+
                                 '<li>Kostenlose Rücksendung</li>'+

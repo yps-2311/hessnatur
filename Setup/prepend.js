@@ -335,11 +335,14 @@ window.iridion.econda = (function(window){
                 try {
                     var sortButton = document.querySelector('#tabSort-label'), //desktop__sort
                         interval2 = setInterval(function(){
-                            if(typeof sortButton !== "undefined"){
+                            if(typeof sortButton !== "undefined" && sortButton !== null){
                                 clearInterval(interval2);
-                                sortButton.addEventListener('click', function(){
-                                    goalPush('cat_click_sort');
-                                });
+                                try {
+                                    sortButton.addEventListener('click', function(){
+                                        goalPush('cat_click_sort');
+                                    });
+                                } catch (e) {
+                                }
                             }
                         }, 100);
                     setTimeout(function(){
