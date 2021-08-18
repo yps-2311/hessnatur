@@ -128,16 +128,16 @@
 
 					WATO.ajaxCallback("widgets.crosssell.info/eps/crosssell/recommendations", function(callbackData){
 						var data = JSON.parse(callbackData.response),
-							items = data.items;
-						
-						console.log('data: ', data);
+							items = data.items,
+							itemsTemp = [];
 
 						// Alle Produkte die bereits auf dieser Seite zu sehen sind werden aus der Liste entfernt
 						for (var j = 0; j < items.length; j++) {
-							if (productIDs.indexOf(items[j].id) > -1) {
-								items.splice(j, 1);
+							if (productIDs.indexOf(items[j].id) === -1) {
+								itemsTemp.push(items[j]);
 							}
 						}
+						items = itemsTemp;
 
 						// Sortieren der Produkte nach Kategorie der aktuellen Seite.
 						// z.B. Wenn man auf Herren-Hemden ist werden bevorzugt Herren Produkte angezeigt
@@ -261,17 +261,46 @@
 					try {
 						console.log('userType: ', userType);
 
+						function ucFirst(string) {
+							return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
+						}
+
+						// var metaTag = WATO.qs('meta[property="og:title"]').getAttribute('content'),
+						// 	metaSplit = metaTag.split(' '),
+						var menuSelection = WATO.qs('.sidebarNav--nav .h-text-bold'),
+							menuSplit = menuSelection ? menuSelection.textContent.trim().split(' ') : [],
+							mainCat = ucFirst(window.location.pathname.replace("/de/", "").split("/")[0]),
+							pathWidget = [mainCat];
+
+						// if(menuSplit.length > 0){
+						// 	pathWidget.push(menuSplit[0]);
+						// }
+						// console.log('pathWidget: ', pathWidget);
+
+						// Fehler 
+						// Damen Blazer
+						// Damen Jeans
+						// Damen Outdoor
+						// Damen Loungewear
+
 						var widget = new window.econda.recengine.Widget({
 							accountId: econdaAccountID,
-							id: 128,// econdaWidgetIDs[userType]
+							id: econdaWidgetIDs[userType],// 
 							
 							context: {
 								categories: [{
 									type: 'productcategory',
-									path: ['Damen','Blusen']
+									// path: ['Home','Spannbetttücher-Laken']
+									// path: ['Damen','Jacken']
+									// path: ['Damen','Loungewear-Yoga', 'Oberteile']
+									// path: ['Herren','Strümpfe']
+									// path: ['Baby', 'Strumpfhosen/Leggings']
+									// path: pathWidget
+									path: mainCat
 								}]
 							}
 						});
+
 						widget.render();
 
 
@@ -295,7 +324,7 @@
 
 
 					} catch (error) {
-						// console.log('Error: ', error);
+						console.log('Error: ', error);
 					}
 				}
 			});
