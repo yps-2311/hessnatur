@@ -76,13 +76,18 @@
         }
     });
 
-    WATO.ajax('/view/ProductReferencesComponentController/reload', function(){
-        
+    function changeDescImg() {
         WATO.elem('.row > #kk-prod-desc-img', function(originalImg) {
             if(originalImg){
                 WATO.qs('.column > #kk-prod-desc-img').setAttribute('src', originalImg[0].getAttribute('src'));
             }
         });
+    }
 
+    WATO.ajax('/view/ProductReferencesComponentController/reload', function(){
+        changeDescImg();
+        setTimeout(function(){
+            changeDescImg();
+        }, 1000);
     });
 })(new window.WATO());
