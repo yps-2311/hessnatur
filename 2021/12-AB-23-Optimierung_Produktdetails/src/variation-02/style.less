@@ -1,0 +1,158 @@
+/* IMPORT VAR LESS FILE */
+@import "../global/vars.less";
+
+/* IMPORT GLOBAL LESS FILES */
+@import "../global/global.less";
+
+/* DEFINE VARIATION CSS */
+
+// hide accordion tabs
+#infoTabs {
+    display: none !important;
+}
+
+.kk-ab23 {
+
+    .accordion-item > a {
+        display: block !important;
+    
+        // margin-bottom: 30px;
+        font-size: 28px;
+        line-height: 28px;
+    
+        // &:before {
+        //     display: none;
+        // }
+    }
+    
+    .accordion-content {
+        padding: 40px 0 70px 0;
+    
+        h4 {
+            display: none;
+        }
+    }
+
+    .accordion-title {
+        padding-left: 2.69231rem;
+        padding-right: 0;
+        z-index: 9;
+        font-family: "Roboto Condensed Bold","Roboto",Helvetica,Arial,"Archer A",sans-serif;
+    
+        &:before {
+            left: 0;
+            right: auto;
+    
+            width: 18px;
+            height: 12px;
+            background-image: url(//media.hessnatur.com/kk/2021/ab23-optimierung-produktdetailseite/kkab23-close.svg);
+        }
+    }
+
+    .accordion-content.kk_show {
+        display: none !important;
+        z-index: 1;
+
+    }
+    
+    .is-active > .accordion-content.kk_show {
+        display: block !important
+    }
+
+    .is-active > .accordion-title:before {
+        // width: 18px;
+        // height: 12px;
+        background-image: url(//media.hessnatur.com/kk/2021/ab23-optimierung-produktdetailseite/kkab23-open.svg);
+    }
+    
+    // #Produktbeschreibung img {
+    //     margin-top: -135px !important;
+    // }
+
+    #Material > * {
+        display: none;
+
+        &:nth-child(2) {
+            display: block;
+        }
+    }
+
+    #Produktbeschreibung,
+    #Produktbeschreibung-label {
+        display: none !important;
+    }
+}
+
+#kk-productInfoAccordion {
+
+    .productInfosItem:last-child {
+        min-width: 400px;
+
+        a {
+            padding-left: 2.30769rem;
+        }
+    }
+
+    & > .column > .row > .column {
+        display: flex;
+        flex-direction: column;
+        // flex-basis: 100%;
+        // flex: 1;
+
+        // display: flex;
+        // flex-direction: column;
+        -ms-flex: 0 0 40%;
+        flex: 0 0 40%;
+        max-width: 40%;
+        margin-right: 10%;
+    }
+
+    #kk-prod-desc-img {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 100%;
+        flex: 1;
+        max-width: 500px;
+        
+        // safari v. 13.1.1 bugfix
+        width: 100%;
+        height: intrinsic;
+
+        // bugfix Artikel 30524 mit Gefahrenhinweis
+        min-width: 30%;
+    }
+
+
+    h4 {
+        position: relative;
+        font-size: 28px;
+        line-height: 28px;
+        padding: 1.53846rem 0;
+        padding-left: 2.69231rem;
+        border-top: 1px solid #e5e4e3;
+        // border-bottom: 1px solid #e5e4e3;
+
+        &:before {
+            content: " ";
+            position: absolute;
+            top: 50%;
+            margin-top: -.5rem;
+            left: 0;
+            right: auto;
+            width: 18px;
+            height: 12px;
+            background-image: url(//media.hessnatur.com/kk/2021/ab23-optimierung-produktdetailseite/kkab23-open.svg);
+        }
+    }
+
+    .pds-productDescription__text {
+        margin-bottom: 30px;
+        letter-spacing: .04em;
+    }
+
+    ul.pds-cockpit__shortDescription li {
+        letter-spacing: .04em;
+        margin-bottom: 14px;
+        background: #fff url(https://media.hessnatur.com/kk/100Prozent/sprint17/check.svg?format=svg) no-repeat left center;
+    }
+}
