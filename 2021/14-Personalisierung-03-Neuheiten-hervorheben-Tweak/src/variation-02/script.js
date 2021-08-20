@@ -1,6 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
-// @ codekit-prepend "../../../debugging/enabled.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -16,10 +15,12 @@
 	/*jshint loopfunc: true */
 
 	WATO.ps03tweak(1);
+	WATO.setSegmentByProfile();
+    WATO.ps03globalgoals();
 
 	var locate = window.location;
 
-	if(locate.pathname.indexOf("/p/") !== -1 && locate.search.indexOf("cs=see") !== -1){
+	if(locate.pathname.indexOf("/p/") !== -1 && locate.search.indexOf("ps03=true") !== -1){
 		// Reco nach oben verschieben
 		WATO.elem('.js-completeTheLookWrapper', function(ctl){
 			if(ctl){

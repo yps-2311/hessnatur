@@ -1,6 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
-// @ codekit-prepend "../../../debugging/enabled.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -16,12 +15,14 @@
 	/*jshint loopfunc: true */
 
 	WATO.ps03tweak(1);
+	WATO.setSegmentByProfile();
+    WATO.ps03globalgoals();
 
-	// window.iridion.econda.push(["SprintPS03tweak", "V1"]);
+	window.iridion.econda.push(["SprintPS03tweak", "V1"]);
 
 	var locate = window.location;
 
-	if(locate.pathname.indexOf("/p/") !== -1 && locate.search.indexOf("cs=see") !== -1){
+	if(locate.pathname.indexOf("/p/") !== -1 && locate.search.indexOf("ps03=true") !== -1){
 
 		WATO.elem('.pds__imageAndCockpitWrapper + .small-collapse > .small-12', function(prodInfo){
 			if(prodInfo){
@@ -69,7 +70,7 @@
 										, c = void 0 !== l.oldprice
 										, u = void 0 !== l.basicprice;
 									s += '<div class="' + (o ? "carousel-cell" : "productitem text-center small-8 medium-5 large-3 columns") + '">',
-									s += '<a href="' + l.deeplink + '" class="item__image">',
+									s += '<a href="' + (l.deeplink ? l.deeplink : '//www.hessnatur.com/de/p/'+l.sku) + '" class="item__image">',
 									s += '<img src="' + l.iconurl + '" />',
 									s += '<div class="item__desc h-smallOffset-top-outer">',
 									s += '<h4 class="desc-name">' + i.html(l.name) + "</h4>",

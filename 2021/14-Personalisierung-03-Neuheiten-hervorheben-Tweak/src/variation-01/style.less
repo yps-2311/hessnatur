@@ -2,7 +2,7 @@
 @import "../global/vars.less";
 
 /* IMPORT GLOBAL LESS FILES */
-@import "../global/global.less";
+// @import "../global/global.less";
 
 /* DEFINE VARIATION CSS */
 
@@ -11,4 +11,29 @@
 // V1
 .kk_quali + .small-12.columns.js-product-reference {
     margin-top: -70px;
+    .desc-price {
+        display: flex;
+        .price.full {
+            order: -1;
+        }
+        .price:nth-child(2) {
+            color: #e53e3e;
+            margin: 0 3px 0 0 !important;
+            order: -4;
+        }
+        .price.special {
+            order: -3;
+            margin-right: 15px;
+        }
+        .price:last-child {
+            order: -2;
+        }
+    }
 }
+
+@media (max-width: 1100px) {
+    .kk_quali + .small-12.columns.js-product-reference {
+        display: none !important;
+    }
+}
+

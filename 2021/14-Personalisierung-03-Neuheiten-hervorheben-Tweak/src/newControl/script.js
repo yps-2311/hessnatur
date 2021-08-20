@@ -9,11 +9,7 @@
  * @description
  */
 
-try {
-    window.iridion.econda.push(["SprintPS03tweak", "V0"]);
-} catch (error) {
-    // console.log('Error: ', error);
-}
+
 // try {
 //     // window.iridion.push(["segment", ((!window.localStorage.getItem("kk_hasbought") && document.location.search.indexOf("show=neukunde") === -1) ? "32812" : "32813")]);
 
@@ -26,10 +22,17 @@ try {
 //     console.log('Error: ', error);
 // }
 
-// (function(WATO) {
-//     "use strict";
+(function(WATO) {
+    "use strict";
 
-    // WATO.ps03setSegment();
-    // WATO.ps03desktop();
+    try {
+        window.iridion.econda.push(["SprintPS03tweak", "V0"]);
+    } catch (error) {
+        // console.log('Error: ', error);
+    }
 
-// })(new window.WATO());
+	WATO.setSegmentByProfile();
+    WATO.ps03globalgoals();
+    
+
+})(new window.WATO());

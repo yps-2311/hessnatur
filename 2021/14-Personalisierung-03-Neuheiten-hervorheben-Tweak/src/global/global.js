@@ -6,6 +6,7 @@
  * @ codekit-append "pds.js"; 
  */
 
+
 (function(WATO){
     "use strict";
 
@@ -19,6 +20,62 @@
 		// }
 	};
 
+	WATO.prototype.setSegmentByProfile = function() {
+
+		function doSomeSegment(id, key) {
+			if(!key){
+				window.iridion.push(["segment", id]);
+			}else if(key === 1 && window.iridion.push(['hasSegment', id])){
+				window.iridion.push(["removeSegment", id]);
+			}else if(key === 2){
+				return window.iridion.push(['hasSegment', id]);
+			}
+		}
+		var variation = this.getProfileValue('customerType') || "Interessent";
+		if(variation === "Interessent"){
+			// Interessent
+			if(!doSomeSegment("32862", 2)){
+				doSomeSegment("32862");
+			}
+		}else if(variation === "Neukunde"){
+			// Neukunde
+			if(!doSomeSegment("32863", 2)){
+				doSomeSegment("32862", 1);
+				doSomeSegment("32863");
+			}
+		}else if(variation === "Bestandskunde"){
+			// Bestandskunde
+			if(!doSomeSegment("32860", 2)){
+				doSomeSegment("32862", 1);
+				doSomeSegment("32863", 1);
+				doSomeSegment("32860");
+			}
+		}
+	};
+	WATO.prototype.ps03globalgoals = function(){
+
+		if(window.location.pathname.indexOf("/p/") !== -1){
+			var WATO = this;
+
+			function goalPush(key, sendOnNextPageView){
+				if(sendOnNextPageView){
+					window.iridion.push(['goal', key, '', true]);
+				}else{
+					window.iridion.push(['goal', key]);
+				}
+			}
+
+			WATO.elem('img[src*="/overlay_neu.svg"]', function(hasNewBadge){
+				if(hasNewBadge){
+					
+					WATO.ajaxCallback('/cart/add', function(){
+						goalPush("ps03_newProductAddToCart");
+					});
+				}
+			});
+
+		}
+	};
 	WATO.prototype.ps03tweak = function(){
 		var WATO = this,
 			// econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f',
@@ -42,6 +99,10 @@
 				temp++;
 			}
 			return temp;
+		}
+
+		function ucFirst(string) {
+			return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
 		}
 
 		function compare(a, b) {
@@ -79,29 +140,21 @@
 		// 	};
 		// }
 
-		function goalPush(key, sendOnNextPageView){
-			if(sendOnNextPageView){
-				window.iridion.push(['goal', key, '', true]);
-			}else{
-				window.iridion.push(['goal', key]);
-			}
-		}
-
 		if(UrlPathname.indexOf("/c/") !== -1){
 
 			// Kategorieseiten
-			var userType = WATO.getProfileValue('customerType') || "Interessent", // "Neukunde",
-				headerText = {
-					Interessent: ['Neu bei uns eingetroffen.', 'Lassen Sie sich von unseren neuen Outfits inspirieren.'],
-					Neukunde: ['Neu seit Ihrem letzen Besuch.', 'Neue Outfits Im Bereich '+UrlPathname.split("/")[2]],
-					Bestandskunde: ['Neuheiten passend zu Artikeln, die Sie häufig kaufen:']
-				},
-				econdaWidgetIDs = {
-					Interessent: 128,
-					Neukunde: 129,
-					Bestandskunde: 130
-				},
-				userTypeText = headerText[userType],
+			// var userType = "Interessent", // WATO.getProfileValue('customerType') || "Interessent", // "Neukunde",
+				// headerText = {
+				// 	Interessent: ['Neu bei uns eingetroffen.', 'Lassen Sie sich von unseren neuen Outfits inspirieren.'],
+				// 	Neukunde: ['Neu seit Ihrem letzen Besuch.', 'Neue Outfits Im Bereich '+UrlPathname.split("/")[2]],
+				// 	Bestandskunde: ['Neuheiten passend zu Artikeln, die Sie häufig kaufen:']
+				// },
+				// econdaWidgetIDs = {
+				// 	Interessent: 128,
+				// 	Neukunde: 129,
+				// 	Bestandskunde: 130
+				// },
+			var	userTypeText = ['Neu bei uns eingetroffen.', 'Lassen Sie sich von unseren neuen Outfits inspirieren.'], //headerText[userType],
 				position = '.js-product-grid > *:nth-child(8) > div';
 
 			// Auf der Seite Trends soll die Reco eine Zeile weiter oben an gezeigt werden.
@@ -125,6 +178,16 @@
 			}, function(isLoadedEconda){
 				if(isLoadedEconda){
 					// Wenn Econda geladen ist kann der Call abgeschickt werden
+
+
+					var tempCat = window.location.pathname.replace("/de/", "").split("/"),
+						mainCat = tempCat[0] === "sale" ? ucFirst(tempCat[1]) : ucFirst(tempCat[0]);
+
+					if(mainCat === "Junior" || mainCat === "Babys"){
+						mainCat = "Baby";
+					}
+						
+					console.log('mainCat: ', mainCat);
 
 					WATO.ajaxCallback("widgets.crosssell.info/eps/crosssell/recommendations", function(callbackData){
 						var data = JSON.parse(callbackData.response),
@@ -183,7 +246,7 @@
 									}
 
 									cbody.insertAdjacentHTML('beforeend',  
-										'<a class="carousel-cell" href="'+item.deeplink+'?cs=see">'+
+										'<a class="carousel-cell" href="'+item.deeplink+'?ps03=true">'+
 											'<div class="kk_cimg">'+
 												'<img src="'+imgURL+'">'+
 												'<div class="kk_badge">'+
@@ -197,21 +260,22 @@
 									);
 								}
 
-								var selectedCategory = WATO.qs('.navigation-main > li > a.h-text-bold').getAttribute('href').replace("/de/",""),
-									newURL = "NEU";
+								// var tempMainCat = WATO.qs('.navigation-main > li > a.h-text-bold'),
+								// 	selectedCategory = tempMainCat ? tempMainCat.getAttribute('href').replace("/de/","") : ,
+								var	newURL = "NEU";
 
-								switch (selectedCategory) {
-									case 'herren':
+								switch (mainCat) {
+									case 'Herren':
 										newURL = 'herren/bekleidung/c/neu-herren';
 										break;
-									case 'damen':
+									case 'Damen':
 										newURL = 'damen/bekleidung/c/neu-damen';
 										break;
-									case 'baby':
-									case 'junior':
+									case 'Baby':
+									// case 'Junior':
 										newURL = 'baby/bekleidung/c/neu-junior';
 										break;
-									case 'home':
+									case 'Home':
 										newURL = 'home/bekleidung/c/neu-home';
 										break;
 									default:
@@ -259,33 +323,21 @@
 					});
 
 					try {
-						console.log('userType: ', userType);
-
-						function ucFirst(string) {
-							return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
-						}
+						
 
 						// var metaTag = WATO.qs('meta[property="og:title"]').getAttribute('content'),
 						// 	metaSplit = metaTag.split(' '),
-						var menuSelection = WATO.qs('.sidebarNav--nav .h-text-bold'),
-							menuSplit = menuSelection ? menuSelection.textContent.trim().split(' ') : [],
-							mainCat = ucFirst(window.location.pathname.replace("/de/", "").split("/")[0]),
-							pathWidget = [mainCat];
+						// var menuSelection = WATO.qs('.sidebarNav--nav .h-text-bold'),
+							// menuSplit = menuSelection ? menuSelection.textContent.trim().split(' ') : [],
+
+						// pathWidget = [mainCat];
 
 						// if(menuSplit.length > 0){
 						// 	pathWidget.push(menuSplit[0]);
-						// }
-						// console.log('pathWidget: ', pathWidget);
-
-						// Fehler 
-						// Damen Blazer
-						// Damen Jeans
-						// Damen Outdoor
-						// Damen Loungewear
 
 						var widget = new window.econda.recengine.Widget({
 							accountId: econdaAccountID,
-							id: econdaWidgetIDs[userType],// 
+							id: 128, // econdaWidgetIDs[userType]
 							
 							context: {
 								categories: [{
@@ -391,17 +443,6 @@
 			// 		}
 			// 	});
 			// }
-		}else if(UrlPathname.indexOf("/p/") !== -1){
-
-			WATO.elem('img[src*="/overlay_neu.svg"]', function(hasNewBadge){
-				if(hasNewBadge){
-					
-					WATO.ajaxCallback('/cart/add', function(){
-						goalPush("ps03_newProductAddToCart");
-					});
-				}
-			});
-
 		}
 
 	};
