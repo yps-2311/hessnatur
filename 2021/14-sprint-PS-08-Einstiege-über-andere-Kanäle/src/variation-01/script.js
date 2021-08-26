@@ -20,32 +20,33 @@
         badgeSaleUrl = 'https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/overlay_sale.svg',
         badgeKundenfavoritUrl = 'https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2021/ps08-einstiege-aus-anderen-kan%C3%A4len/favorit.svg',
         badgeNeuUrl = 'https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/overlay_neu.svg',
+        badgeAktionUrl = 'https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/overlay_15Prozent.svg',
 
         // Table with all messages to displaying
         messageByCat = {
             'baby': {
-                'Aktion': [badgeSaleUrl, 'Bio-Kindermode aus Naturfasern<br>15% Rabatt mit Code JUNIOR21'],
+                'Aktion': [badgeAktionUrl, 'Bio-Kindermode aus Naturfasern'],
                 'Sale': [badgeSaleUrl, 'Bio-Kindermode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
                 'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Kindermode aus Naturfasern<br><b>Unserer Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Bio-Kindermode aus Naturfasern<br><b>Neu im Sortiment</b>'],
                 'Allgemein': ['Nachhaltig', 'Bio-Kindermode aus Naturfasern<br><b>Optimale Preis/Leistung</b>']
             },
             'home': {
-                'Aktion': [badgeSaleUrl, 'Gut für Mensch & Natur<br>15% sparen mit Code HOME21'],
+                'Aktion': [badgeAktionUrl, 'Gut für Mensch & Natur'],
                 'Sale': [badgeSaleUrl, 'Gut für Mensch & Natur<br><b>Jetzt zum reduzierten Preis</b>'],
                 'Kundenfavorit': [badgeKundenfavoritUrl, 'Gut für Mensch & Natur<br><b>Unserer Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Gut für Mensch & Natur<br><b>Neu im Sortiment</b>'],
                 'Allgemein': ['Nachhaltig', 'Gut für Mensch & Natur<br><b>Optimale Preis/Leistung</b>']
             },
             'herren': {
-                'Aktion': [badgeSaleUrl, 'Bio-Mode aus Naturfasern<br>15% Rabatt mit Code OUTDOOR21'],
+                'Aktion': [badgeAktionUrl, 'Bio-Mode aus Naturfasern'],
                 'Sale': [badgeSaleUrl, 'Bio-Mode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
                 'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Mode aus Naturfasern<br><b>Unserer Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Bio-Mode aus Naturfasern<br><b>Neu im Sortiment</b>'],
                 'Allgemein': ['Nachhaltig', 'Bio-Mode aus Naturfasern<br><b>Optimale Preis/Leistung</b>']
             },
             'damen': {
-                'Aktion': [badgeSaleUrl, 'Bio-Mode aus Naturfasern<br>15% Rabatt mit Code OUTDOOR21'],
+                'Aktion': [badgeAktionUrl, 'Bio-Mode aus Naturfasern'],
                 'Sale': [badgeSaleUrl, 'Bio-Mode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
                 'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Mode aus Naturfasern<br><b>Unserer Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Bio-Mode aus Naturfasern<br><b>Neu im Sortiment</b>'],
@@ -164,6 +165,20 @@
         window.iridion.push(['goal', key]);
     }
 
+    function removeClass(selector){
+
+        WATO.elem(selector, function (elem) {
+            if (elem){
+                Array.prototype.forEach.call(elem, function (el) {
+                    el.classList.remove('kk-hidden');
+                    el.classList.add('kk-visible');
+                })
+            }
+        })
+
+    }
+
+
     console.log('1');
 
     document.documentElement.classList.add('kk-ps08');
@@ -228,33 +243,43 @@
                                 }
 
                                 console.log('badges:', badges);
-                                badgesContainer.classList.add('kk-hidden');
+                                imgElem.classList.add('kk-hidden');
                             });
 
 
-                            if (badges.includes('aktion')) {
+                            if (badges.includes('15prozent')) {
                                 boxBadgeUrl = messageByCat[currentCategory]['Aktion'][0];
                                 boxTxtContent = messageByCat[currentCategory]['Aktion'][1];
-                                WATO.qs('img[src*="aktion"]').classList.add('kk-hidden');
+                                // WATO.qs('img[src*="15Prozent"]').classList.add('kk-hidden');
+                                removeClass('.js-badges-container img:not(img[src*="15Prozent"])');
                             } else if (badges.includes('sale')) {
                                 console.log('solde', currentCategory);
                                 console.log('boxBadgeUrl', messageByCat[currentCategory][1]);
                                 boxBadgeUrl = messageByCat[currentCategory]['Sale'][0];
-
                                 boxTxtContent = messageByCat[currentCategory]['Sale'][1];
-                                WATO.qs('img[src*="sale"]').classList.add('kk-hidden');
+
+                                // WATO.qs('img[src*="sale"]').classList.add('kk-hidden');
+                                removeClass('.js-badges-container img:not(img[src*="sale"])');
+
                             } else if (badges.includes('Kundenfavorit')) {
                                 boxBadgeUrl = messageByCat[currentCategory]['Kundenfavorit'][0];
                                 boxTxtContent = messageByCat[currentCategory]['Kundenfavorit'][1];
-                                WATO.qs('img[src*="favorit"]').classList.add('kk-hidden');
+
+                                // WATO.qs('img[src*="favorit"]').classList.add('kk-hidden');
+                                removeClass('.js-badges-container img:not(img[src*="favorit"])');
+
                             } else if (badges.includes('neu')) {
                                 boxBadgeUrl = messageByCat[currentCategory]['Neu'][0];
                                 boxTxtContent = messageByCat[currentCategory]['Neu'][1];
-                                WATO.qs('img[src*="neu"]').classList.add('kk-hidden');
+
+                                // WATO.qs('img[src*="neu"]').classList.add('kk-hidden');
+                                removeClass('.js-badges-container img:not(img[src*="neu"])');
+
                             } else {
                                 boxBadgeUrl = messageByCat[currentCategory]['Allgemein'][0];
                                 boxTxtContent = messageByCat[currentCategory]['Allgemein'][1];
                                 WATO.qs('.kk-nachhaltig').classList.add('kk-hidden');
+                                removeClass('.js-badges-container img');
                             }
 
                             badgesContainer.classList.remove('kk-hidden');
