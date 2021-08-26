@@ -22,6 +22,7 @@
     WATO.elem('.js_backstopWrapper > .h-disp-block a[href*="berater"], .js_backstopWrapper > .h-disp-block a', function(berater){
         if(berater){
             berater[0].addEventListener('click', function(){
+                window.iridion.push(['segment', '32888']);
                 window.iridion.push(['goal', 'ps19_beraterBannerClick', '', true]);
             });
         }
