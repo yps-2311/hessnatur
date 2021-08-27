@@ -52,6 +52,7 @@
 			}
 		}
 	};
+
 	WATO.prototype.ps03globalgoals = function(){
 
 		if(window.location.pathname.indexOf("/p/") !== -1){
@@ -76,6 +77,7 @@
 
 		}
 	};
+	
 	WATO.prototype.ps03tweak = function(){
 		var WATO = this,
 			// econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f',
