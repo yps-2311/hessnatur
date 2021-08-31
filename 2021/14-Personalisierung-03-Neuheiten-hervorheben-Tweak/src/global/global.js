@@ -31,6 +31,7 @@
 				return window.iridion.push(['hasSegment', id]);
 			}
 		}
+
 		var variation = this.getProfileValue('customerType') || "Interessent";
 		if(variation === "Interessent"){
 			// Interessent
@@ -79,10 +80,25 @@
 			WATO.elem('img[src*="/overlay_neu.svg"]', function(hasNewBadge){
 				if(hasNewBadge){
 					WATO.ajaxCallback('/cart/add', function(){
-						pushGoal('ps03_newProductAddToCart');
+						pushGoal('newProductAddToCart');
 					});
 				}
 			});
+
+			WATO.elem('#kk_ctlwrapper', (slider) => {
+				if(!slider)return;
+
+				[...slider].map((product, index) => {
+					product.setAttribute('data-index', (index+1));
+					product.addEventListener('click', () => {
+						// KK: PS03: Klick auf das 1. Produkt aus CTL-Element
+						// KK: PS03: Klick auf das 2. Produkt aus CTL-Element
+						// KK: PS03: Klick auf das 3. Produkt aus CTL-Element
+						pushGoalAgain('click_ctl_' + product.getAttribute('data-index'));
+					});
+				});
+			});
+
 		} else if(PATHNAME.indexOf("/c/") !== -1){
 
 			WATO.ready(() => {
@@ -90,7 +106,7 @@
 					if(index >= 9)return;
 					product.addEventListener('click', () => {
 						// KK: PS03: Klick auf eines der ersten 9 Produkte
-						pushGoalAgain('ps03_click_9_products');
+						pushGoalAgain('click_9_products');
 					});
 				});
 			});
@@ -264,7 +280,7 @@
 								WATO.elem('#kk_crossprods .kk_blackbox:last-child a', function(textlink){
 									if(!textlink) return;
 									textlink[0].addEventListener('click', () => {
-										pushGoal('ps03_click_textlink');
+										pushGoal('click_textlink');
 									});
 								});
 
@@ -365,6 +381,8 @@
 									return typeof window.Flickity !== "undefined";
 								}, function(){
 
+									var scrollGoalSend = false;
+
 									// Slider init
 									new window.Flickity(cbody, {
 										cellAlign: 'left',
@@ -380,16 +398,22 @@
 										// KK: PS03: Klick auf das 3. Produkt aus Slide-Element
 										// KK: PS03: Klick auf das 4. Produkt aus Slide-Element
 										pushGoalAgain('click_slide_' + cellIndex);
+									}).on('scroll', function() {
+										if(!scrollGoalSend){
+											scrollGoalSend = true;
+											// KK: PS03: Klick auf Pfeil auf der rechten / linken Seite - PDL
+											pushGoal('click_slide_change');
+										}
 									});
 
-									WATO.elem('#kk_crossprods > .main-carousel > button', (buttons) => {
-										[...buttons].map((button) => {
-											button.addEventListener('click', () => {
-												// KK: PS03: Klick auf Pfeil auf der rechten / linken Seite - PDL
-												pushGoal('click_slide_change');
-											});
-										});
-									});
+									// WATO.elem('#kk_crossprods > .main-carousel > button', (buttons) => {
+									// 	[...buttons].map((button) => {
+									// 		button.addEventListener('click', () => {
+									// 			// KK: PS03: Klick auf Pfeil auf der rechten / linken Seite - PDL
+									// 			pushGoal('click_slide_change');
+									// 		});
+									// 	});
+									// });
 								});
 							}
 						});

@@ -25,14 +25,8 @@
 (function(WATO) {
     "use strict";
 
-    try {
-        window.iridion.econda.push(["SprintPS03tweak", "V0"]);
-    } catch (error) {
-        // console.log('Error: ', error);
-    }
+    window.iridion.econda.push(["SprintPS03tweak", "V0"]);
 
 	WATO.setSegmentByProfile();
     WATO.ps03globalgoals();
-    
-
 })(new window.WATO());

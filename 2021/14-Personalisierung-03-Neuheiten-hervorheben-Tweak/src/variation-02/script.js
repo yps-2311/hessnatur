@@ -12,6 +12,8 @@
 (function(WATO) {
     "use strict";
 
+	window.iridion.econda.push(["SprintPS03tweak", "V2"]);
+
 	/*jshint loopfunc: true */
 
 	WATO.ps03tweak(1);
@@ -28,5 +30,4 @@
 			}
 		});
 	}
-	
 })(new window.WATO());

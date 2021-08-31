@@ -11,13 +11,28 @@
 
 (function(WATO, window) {
     "use strict";
+	
+	window.iridion.econda.push(["SprintPS03tweak", "V1"]);
 
 	/*jshint loopfunc: true */
 	WATO.ps03tweak(1);
 	WATO.setSegmentByProfile();
     WATO.ps03globalgoals();
+
+	function pushGoal(key, value) {
+
+		var payload = ['goal', 'ps03_' + key];
+
+		if(value){
+			payload.push(value);
+		}
+
+		window.iridion.push(payload);
+	}
 	
-	window.iridion.econda.push(["SprintPS03tweak", "V1"]);
+	function pushGoalAgain(key) {
+		window.iridion.push(['goal', 'ps03_' + key, '', true]);
+	}
 
 	var locate = window.location;
 
@@ -97,7 +112,33 @@
 								var d = a;
 								$(t).html(d);
 								// $(t).flickity(ACC.productSlider.getFlickityOptions())
-								new window.Flickity(t, window.ACC.productSlider.getFlickityOptions());
+								var flickotySlider = new window.Flickity(t, window.ACC.productSlider.getFlickityOptions());
+
+								flickotySlider.on('staticClick', function(event, pointer, cellElement, cellIndex){
+									// KK: PS03: Klick auf das 1. Produkt aus Reco-Element
+									// KK: PS03: Klick auf das 2. Produkt aus Reco-Element
+									// KK: PS03: Klick auf das 3. Produkt aus Reco-Element
+									// KK: PS03: Klick auf das 4. Produkt aus Reco-Element
+									pushGoalAgain('click_product_' + (cellIndex + 1));
+								});
+								
+								var scrollGoalSend = false;
+								flickotySlider.on('scroll', function() {
+									if(!scrollGoalSend){
+										scrollGoalSend = true;
+										// KK: PS03: Klick auf Pfeil auf linken / rechten Seite - PDS - V1
+										pushGoal('click_product_change');
+									}
+								});
+
+								// WATO.elem('#kk_likethisproduct > button', (buttons) => {
+								// 	[...buttons].map((button) => {
+								// 		button.addEventListener('click', () => {
+								// 			// KK: PS03: Klick auf Pfeil auf linken / rechten Seite - PDS - V1
+								// 			pushGoal('click_product_change');
+								// 		});
+								// 	});
+								// });
 							};
 							
 							var n = $("#kk_likethisproduct"), 
