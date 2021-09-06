@@ -85,20 +85,24 @@
 				}
 			});
 
-			WATO.elem('#kk_ctlwrapper', (slider) => {
-				if(!slider)return;
-
-				[...slider].map((product, index) => {
-					product.setAttribute('data-index', (index+1));
-					product.addEventListener('click', () => {
-						// KK: PS03: Klick auf das 1. Produkt aus CTL-Element
-						// KK: PS03: Klick auf das 2. Produkt aus CTL-Element
-						// KK: PS03: Klick auf das 3. Produkt aus CTL-Element
-						pushGoalAgain('click_ctl_' + product.getAttribute('data-index'));
-					});
+			WATO.elem(() => {
+				return WATO.qs('#kk_ctlwrapper') && typeof jQuery === "function"
+			}, (result) => {
+				if(!result) return;
+				var scrollGoalSend = false;
+				jQuery('#kk_ctlwrapper').on('staticClick.flickity', function(event, pointer, cellElement, cellIndex) {
+					// KK: PS03: Klick auf das 1. Produkt aus CTL-Element
+					// KK: PS03: Klick auf das 2. Produkt aus CTL-Element
+					// KK: PS03: Klick auf das 3. Produkt aus CTL-Element
+					pushGoalAgain('click_ctl_' + (cellIndex+1));
+				}).on('scroll.flickity', function() {
+					if(!scrollGoalSend){
+						scrollGoalSend = true;
+						// KK: PS03: Klick auf Pfeil auf linken / rechten Seite - PDS - V2
+						pushGoal('click_slide_change_v2');
+					}
 				});
 			});
-
 		} else if(PATHNAME.indexOf("/c/") !== -1){
 
 			WATO.ready(() => {
