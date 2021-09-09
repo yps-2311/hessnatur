@@ -225,71 +225,72 @@
                         });
 
 
-                        if (!badgeClosedCookie) {
-
-                            WATO.qsa('img', badgesContainer).forEach(function (imgElem) {
-
-                                //get type of currents badges
-                                try {
-                                    var imgPath = imgElem.src.split('/'); // for exemple path of sale badge 'https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/overlay_sale.svg' => result : overlay_sale.svg
-
-                                    imgPath = imgPath[imgPath.length - 1].split('_'); // get name of badge with extension 'overlay_sale.svg' => sale.svg
-                                    imgPath = imgPath[imgPath.length - 1].split('.');// get name of badge => sale
-
-                                    badges += imgPath[0].toLowerCase() + ',';
-
-                                } catch (e) {
-                                    console.log(e);
-                                }
-
-                                console.log('badges:', badges);
-                                imgElem.classList.add('kk-hidden');
-                            });
 
 
-                            if (badges.includes('15prozent')) {
-                                boxBadgeUrl = messageByCat[currentCategory]['Aktion'][0];
-                                boxTxtContent = messageByCat[currentCategory]['Aktion'][1];
-                                // WATO.qs('img[src*="15Prozent"]').classList.add('kk-hidden');
-                                removeClass('.js-badges-container img:not(img[src*="15Prozent"])');
-                            } else if (badges.includes('sale')) {
-                                console.log('solde', currentCategory);
-                                console.log('boxBadgeUrl', messageByCat[currentCategory][1]);
-                                boxBadgeUrl = messageByCat[currentCategory]['Sale'][0];
-                                boxTxtContent = messageByCat[currentCategory]['Sale'][1];
+                        WATO.qsa('img', badgesContainer).forEach(function (imgElem) {
 
-                                // WATO.qs('img[src*="sale"]').classList.add('kk-hidden');
-                                removeClass('.js-badges-container img:not(img[src*="sale"])');
+                            //get type of currents badges
+                            try {
+                                var imgPath = imgElem.src.split('/'); // for exemple path of sale badge 'https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/overlay_sale.svg' => result : overlay_sale.svg
 
-                            } else if (badges.includes('Kundenfavorit')) {
-                                boxBadgeUrl = messageByCat[currentCategory]['Kundenfavorit'][0];
-                                boxTxtContent = messageByCat[currentCategory]['Kundenfavorit'][1];
+                                imgPath = imgPath[imgPath.length - 1].split('_'); // get name of badge with extension 'overlay_sale.svg' => sale.svg
+                                imgPath = imgPath[imgPath.length - 1].split('.');// get name of badge => sale
 
-                                // WATO.qs('img[src*="favorit"]').classList.add('kk-hidden');
-                                removeClass('.js-badges-container img:not(img[src*="favorit"])');
+                                badges += imgPath[0].toLowerCase() + ',';
 
-                            } else if (badges.includes('neu')) {
-                                boxBadgeUrl = messageByCat[currentCategory]['Neu'][0];
-                                boxTxtContent = messageByCat[currentCategory]['Neu'][1];
-
-                                // WATO.qs('img[src*="neu"]').classList.add('kk-hidden');
-                                removeClass('.js-badges-container img:not(img[src*="neu"])');
-
-                            } else {
-                                boxBadgeUrl = messageByCat[currentCategory]['Allgemein'][0];
-                                boxTxtContent = messageByCat[currentCategory]['Allgemein'][1];
-                                WATO.qs('.kk-nachhaltig').classList.add('kk-hidden');
-                                removeClass('.js-badges-container img');
+                            } catch (e) {
+                                console.log(e);
                             }
 
-                            badgesContainer.classList.remove('kk-hidden');
+                            console.log('badges:', badges);
+                            imgElem.classList.add('kk-hidden');
+                        });
 
-                            boxBadgeUrl = boxBadgeUrl === 'Nachhaltig' ? '<div class="kk-badge">' + boxBadgeUrl + '</div>' : '<img class="kk-badge" src="' + boxBadgeUrl + '"/>';
 
-                            if (window.innerWidth > 540) {
-                                WATO.qs('.pds-cockpit__productName', badgesContainer.closest('.pds-cockpit__wrapper')).insertAdjacentHTML("afterend",
-                                    '<div class="kk-box">' + boxBadgeUrl + '<div>' + boxTxtContent + '</div></div>');
-                            } else {
+                        if (badges.includes('15prozent')) {
+                            boxBadgeUrl = messageByCat[currentCategory]['Aktion'][0];
+                            boxTxtContent = messageByCat[currentCategory]['Aktion'][1];
+                            // WATO.qs('img[src*="15Prozent"]').classList.add('kk-hidden');
+                            removeClass('.js-badges-container img:not(img[src*="15Prozent"])');
+                        } else if (badges.includes('sale')) {
+                            console.log('solde', currentCategory);
+                            console.log('boxBadgeUrl', messageByCat[currentCategory][1]);
+                            boxBadgeUrl = messageByCat[currentCategory]['Sale'][0];
+                            boxTxtContent = messageByCat[currentCategory]['Sale'][1];
+
+                            // WATO.qs('img[src*="sale"]').classList.add('kk-hidden');
+                            removeClass('.js-badges-container img:not(img[src*="sale"])');
+
+                        } else if (badges.includes('Kundenfavorit')) {
+                            boxBadgeUrl = messageByCat[currentCategory]['Kundenfavorit'][0];
+                            boxTxtContent = messageByCat[currentCategory]['Kundenfavorit'][1];
+
+                            // WATO.qs('img[src*="favorit"]').classList.add('kk-hidden');
+                            removeClass('.js-badges-container img:not(img[src*="favorit"])');
+
+                        } else if (badges.includes('neu')) {
+                            boxBadgeUrl = messageByCat[currentCategory]['Neu'][0];
+                            boxTxtContent = messageByCat[currentCategory]['Neu'][1];
+
+                            // WATO.qs('img[src*="neu"]').classList.add('kk-hidden');
+                            removeClass('.js-badges-container img:not(img[src*="neu"])');
+
+                        } else {
+                            boxBadgeUrl = messageByCat[currentCategory]['Allgemein'][0];
+                            boxTxtContent = messageByCat[currentCategory]['Allgemein'][1];
+                            WATO.qs('.kk-nachhaltig').classList.add('kk-hidden');
+                            removeClass('.js-badges-container img');
+                        }
+
+                        badgesContainer.classList.remove('kk-hidden');
+
+                        boxBadgeUrl = boxBadgeUrl === 'Nachhaltig' ? '<div class="kk-badge">' + boxBadgeUrl + '</div>' : '<img class="kk-badge" src="' + boxBadgeUrl + '"/>';
+
+                        if (window.innerWidth > 540) {
+                            WATO.qs('.pds-cockpit__productName', badgesContainer.closest('.pds-cockpit__wrapper')).insertAdjacentHTML("afterend",
+                                '<div class="kk-box">' + boxBadgeUrl + '<div>' + boxTxtContent + '</div></div>');
+                        } else {
+                            if (!badgeClosedCookie) {
                                 WATO.elem('.kk_slider', function (pdsWrapper) {
                                     if (pdsWrapper) {
                                         pdsWrapper = pdsWrapper[0];
@@ -305,23 +306,25 @@
                                                 WATO.setCookie('kk_ps08_close_badge_counter', '0', '', true);
                                             } else {
                                                 badgeClosedCookieCounter = parseInt(badgeClosedCookieCounter) + 1;
-                                                WATO.setCookie('kk_ps08_close_badge_counter', badgeClosedCookieCounter , '', true);
+                                                WATO.setCookie('kk_ps08_close_badge_counter', badgeClosedCookieCounter, '', true);
                                             }
-                                            if(parseInt(badgeClosedCookieCounter) > 1) {
+                                            if (parseInt(badgeClosedCookieCounter) > 1) {
                                                 WATO.setCookie('kk_ps08_close_badge', 'true', '', true);
                                             }
-
+                                            WATO.qs('.kk-hidden', badgesContainer).classList.add('kk-visible');
                                             WATO.qs('.kk-hidden', badgesContainer).classList.remove('kk-hidden');
                                             goalPush('ps08_close_message');
                                         })
                                     }
                                 })
-
+                            } else {
+                                removeClass('.pds-cockpit__badge');
                             }
 
                         }
 
                     }
+
                 })
             }
         });
