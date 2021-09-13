@@ -9,6 +9,9 @@
 /*jshint loopfunc: true */
 window.iridion = window.iridion || [];
 
+
+//HTML Tag nach Variante..
+
 (function(WATO){
 	"use strict";
 
@@ -23,7 +26,7 @@ window.iridion = window.iridion || [];
 
 	function pushGoal(key, value, sendOnNextPageView) {
 
-		var props = ['goal', 'ps06_' + key];
+		var props = ['goal', 'ps06_tweak_' + key];
 
 		if(value){
 			props.push(value);
@@ -142,11 +145,14 @@ window.iridion = window.iridion || [];
 
 	WATO.prototype.PS06_Tweak = function(CATEGORY_AFFINITY, CATEGORIES, DATA, variation){
 
-		if(!CATEGORY_AFFINITY || CATEGORY_AFFINITY===1){
+		if(!CATEGORY_AFFINITY || CATEGORY_AFFINITY === 1){
 			CATEGORY_AFFINITY = "damen";
 		}
 
 		CATEGORY_AFFINITY = CATEGORY_AFFINITY.replace(/"/g, '');
+
+		console.log("PS06 Tweak");
+	
 
 		var IMG_PATH = "https://media.hessnatur.com/kk/2021/ps06-startseite/";
 		var DOMAIN = "https://www.hessnatur.com/de/";
@@ -154,7 +160,7 @@ window.iridion = window.iridion || [];
 
 		//sets count of items inside Popularity Slider
 		var MaxPopularityCounter = 6;
-		var MaxTendenciesCounter = 4;
+		//var MaxTendenciesCounter = 4;
 
 		var userAlignment = CATEGORIES[0][1].split('/')[0];
 		if(userAlignment === "baby"){
@@ -231,32 +237,32 @@ window.iridion = window.iridion || [];
 			}
 		}
 	
-		function insertTendencies(dataTendencies) {
+		function insertTendencies(items) {
 			
 			var result = '';
-			var count=0;
 	
-			for(var category in dataTendencies){
+			for(var item in items){
 				
-			var product = dataTendencies[category].response;
+			//var product = dataTendencies[category].response;
 	
-			if (product && product.availableAT && count < MaxTendenciesCounter) {
+			if (/*product*/item /*&& product.availableAT && count < MaxTendenciesCounter*/) {
+				console.log("myitem", item);
+				
 
-				var price = product.price.toFixed(2);
-				var prevPrice = product.price_prev;
-				var link = product.permalink;
-				var image = product.imageOnlyProduct;
-				var name = product.name;
-				var tendency = "Kundenfavorit";
+				var price = items[item].price/*.toFixed(2)*/;
+				var prevPrice = items[item].price_prev;
+				var link = items[item].deeplink/*permalink*/;
+				var image = items[item].iconurl;
+				var name = items[item].name;
+				//var tendency = "Kundenfavorit";
 
-				var desc = link.split("/")[4].replaceAll('-','_');
-				var cardPara = image.split('/');
-				cardPara = cardPara[cardPara.length-1];
-				var imageUrl = 'https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/'+desc+'-'+cardPara+'.jpg';
+				//var desc = link.split("/")[4].replaceAll('-','_');
+				//var cardPara = image.split('/');
+				//cardPara = cardPara[cardPara.length-1];
+				//var imageUrl = 'https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/'+desc+'-'+cardPara+'.jpg';
 	
 				var isNormal =  "show";
 				var isReduced =  "";
-				var hasFavorite = false;
 	
 				if(!prevPrice){
 					isReduced = "hide";
@@ -265,38 +271,32 @@ window.iridion = window.iridion || [];
 					prevPrice.toFixed(2);
 					}
 		
-					var mergedProducts = '';
-					var badges = dataTendencies[category].badges;
-					for(var index in badges){
-						if(badges[index] !== "kundenfavorit"){
-							mergedProducts+='<span class="kk_'+badges[index]+'">'+badges[index]+'</span><span>&nbsp;&nbsp;</span>';
-						}
-						else{
-							hasFavorite=true;
-						}
-					}
+					/*
 					var variants = ((variation === 2 && hasFavorite)? '<div class="kk_tendency-header kk_grid">'+
 												'<div>'+
 													tendency+
 												'</div>'+
 											'</div>':"");
+					*/
 		
 					result = result.concat(
 						'<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns" style="position: absolute; left: 0%;">'+
-							variants+
-							'<a href=' + link + ' class="item__image"><img src=' + imageUrl + '>'+
+							//variants+
+							'<a href=' + link + ' class="item__image"><img src=' + image/*Url*/ + '>'+
 								'<div class="item__desc h-smallOffset-top-outer">'+
+								/*
 									'<div class="kk_badge kk_flex">' +
 										mergedProducts + 
 										'<span>&nbsp;&nbsp;</span>' +
 									'</div>' +
+									*/
 									'<h4 class="item_desc desc-name">' + name + '</h4>' + 
 									'<div class="desc-price kk_flex">' +
 										'<span class="price ' + isReduced + ' special full ">'+prevPrice+' €</span>' +
 										'<span class="' + isReduced + '">&nbsp;&nbsp;</span>' +
 										'<span class="price hide" style="margin-left: 3px">ab </span>' +
-										'<span class="price ' + isReduced + ' special">'+ price +' €</span>' +
-										'<span class="price light ' + isNormal + '">' + price + ' €</span>' +
+										'<span class="price ' + isReduced + ' special">'+ price +'</span>' +
+										'<span class="price light ' + isNormal + '">' + price + '</span>' +
 										'<div class="product-basic-price basicPrice">' +
 										'</div>' +
 									'</div>' +
@@ -304,7 +304,6 @@ window.iridion = window.iridion || [];
 							'</a>' +
 						'</div>'
 					);
-					count++;
 				}
 			}
 			return result;
@@ -343,8 +342,6 @@ window.iridion = window.iridion || [];
 				}
 			}
 		}
-		
-		var response=0;
 	
 		WATO.elem(".lpmHero", function (headline) {
 	
@@ -374,87 +371,109 @@ window.iridion = window.iridion || [];
 			}
 		});
 
-		for(var id in DATA ){
-			WATO.xhr_get("https://products.hessnatur.com/products/" + id, function (rawData) {
-					try {
-						if(rawData.products && rawData.products.length>0){
-							var sku = rawData.products[0].sku;
-						
-							DATA[sku].response = rawData.products[0];
-							response++;
-						}
-						else {
-							delete DATA[id];
-						}
-						
-					} catch (error) {
-						pushGoal('fetch_error', error.toString());
-					}
-			});
-		}
-		WATO.elem(function(){
-			return  response === Object.keys(DATA).length;
-		},
-		function(done){
-			if(done){
+		WATO.elem('#kk_popularities_content',function(popularities){
+			if(popularities){
 
-				WATO.elem('#kk_popularities_content',function(popularities){
-					if(popularities){
+				WATO.elem(function(){
+					return typeof window.Flickity !== "undefined";
+				}, function(){
 
-						WATO.elem(function(){
-							return typeof window.Flickity !== "undefined";
-						}, function(){
+					popularities = popularities[0];
 
-							popularities = popularities[0];
-
-							popularities.innerHTML = '';
-							popularities.style.opacity = "0";
-							insertPopularities(popularities);
+					popularities.innerHTML = '';
+					popularities.style.opacity = "0";
+					insertPopularities(popularities);
+					
+					WATO.elem(function(){
+						return 	WATO.qs('a > img', popularities).clientHeight > 0;
+					}, function(oneImgReady){
+						if(oneImgReady && window.innerWidth >= 600){
+							initFlickity(popularities);
 							
-							WATO.elem(function(){
-								return 	WATO.qs('a > img', popularities).clientHeight > 0;
-							}, function(oneImgReady){
-								if(oneImgReady && window.innerWidth >= 600){
-									initFlickity(popularities);
-									
-								}
-								else{
-									//console.log('popularities.childNodes', popularities.childNodes);
-									popularities.childNodes.forEach(function(node,index){
-										node.addEventListener('click',function(){
-											//console.log(popularities.children[index],index,"chuldren");
-											pushGoal('click_category' + index, false, true);
-											pushGoal('click_slider', false, true);
-										})
-									})
-								}
-								popularities.style.opacity = "1";
-							});	
-						});
-					}
+						}
+						else{
+							//console.log('popularities.childNodes', popularities.childNodes);
+							popularities.childNodes.forEach(function(node,index){
+								node.addEventListener('click',function(){
+									//console.log(popularities.children[index],index,"chuldren");
+									pushGoal('click_category' + index, false, true);
+									pushGoal('click_slider', false, true);
+								})
+							})
+						}
+						popularities.style.opacity = "1";
+					});	
 				});
+			}
+		});
 
+		var econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1';
+		var econdaId=96;
+		var alreadyInitialized=false;
+
+		if(CATEGORY_AFFINITY === "herren")econdaId=93;
+		if(CATEGORY_AFFINITY === "baby")econdaId=94;
+		if(CATEGORY_AFFINITY === "home")econdaId=95;	
+
+		
+		WATO.elem(function(){
+			return (
+				typeof window.econda !== "undefined" && 
+				typeof window.econda.recengine !== "undefined" && 
+				typeof window.econda.recengine.Widget !== "undefined"
+			);
+		},function(){
+			console.log("c1");
+
+
+			WATO.ajaxCallback(`https://widgets.crosssell.info/eps/crosssell/recommendations/${econdaAccountID}.do?`, function (rawData) {
+
+				console.log("callback");
+
+				if(alreadyInitialized){
+					return;
+				} else {
+					alreadyInitialized=true
+				}
+	
+				var data = JSON.parse(rawData.response),
+				items=data.items;
+			
 				WATO.elem('#kk_Tendencies_content',function(slide){
 					if(slide){
 						slide=slide[0];
 
 						slide.innerHTML = '';
 						slide.style.opacity = "0";
-						slide.insertAdjacentHTML("afterbegin", insertTendencies(DATA));
+						slide.insertAdjacentHTML("afterbegin", insertTendencies(items));
 						
 						WATO.elem(function(){
-							return typeof window.Flickity !== "undefined" && WATO.qs('a > img', slide).clientHeight > 0;
+							return typeof window.Flickity !== "undefined" && WATO.qsa('a > img', slide)[items.length-1].clientHeight > 0;
 						}, function(oneImgReady){
 
 							if(oneImgReady){
-								initFlickity(slide,'.kk_productitem_tendency',"#kk_Tendencies_content .flickity-viewport");
+								initFlickity(slide);
 								slide.style.opacity = "1";
 							}
 						});
 						
 					}
 				});
-			}//done
+			});
+	
+			try{
+				var widget = new window.econda.recengine.Widget({
+					accountId: econdaAccountID,
+					id: econdaId
+				});
+			
+			widget.render();
+
+			} catch (error) {
+				console.log("error:",error);
+			}
+
+			
 		});
 
 		WATO.elem(".lpmSeparator", function(spaceing) {

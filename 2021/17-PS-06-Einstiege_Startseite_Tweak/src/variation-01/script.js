@@ -12,43 +12,13 @@
  (function (WATO) {
     "use strict";
 
-    window.iridion.econda.push(["PS06_restart", "V1"]);
-
-    // v1=modisch
+    //window.iridion.econda.push(["PS06_tweak", "V1"]);
 
     // response > "damen" | "herren" | "baby OR junior" | "home"
     var CATEGORY_AFFINITY = window.iridion.push(['profile', 'getValue', 'categoryAffinity']);
-
-    var econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1'
-
-    var widget = new window.econda.recengine.Widget({
-        accountId: econdaAccountID,
-        id: 128, // econdaWidgetIDs[userType]
-        
-        context: {
-            categories: [{
-                type: 'productcategory',
-                // path: ['Home','Spannbetttücher-Laken']
-                // path: ['Damen','Jacken']
-                // path: ['Damen','Loungewear-Yoga', 'Oberteile']
-                // path: ['Herren','Strümpfe']
-                // path: ['Baby', 'Strumpfhosen/Leggings']
-                // path: pathWidget
-                path: mainCat
-            }]
-        }
-    });
-
-    widget.render();
-
-
-    console.log("widget",widget);
-      
-      
-      
-
     
     var DATA = {
+        /*
         "5112713": {
             "badges": [
                 "sale"
@@ -96,11 +66,11 @@
                 "sale"
             ],
             "response": {}
-        }
+        }*/
     };
 
     var CATEGORIES = WATO.PS06_Tweak_Categories(CATEGORY_AFFINITY);
-
+    /*
     if(CATEGORY_AFFINITY){
         if(CATEGORY_AFFINITY === "herren"){
 
@@ -230,7 +200,7 @@
             };
 
         }
-    }
+    }*/
 
     WATO.PS06_Tweak(CATEGORY_AFFINITY, CATEGORIES, DATA, 1);
 
