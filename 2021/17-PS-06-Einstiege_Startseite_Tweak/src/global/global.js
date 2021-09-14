@@ -25,6 +25,7 @@ window.iridion = window.iridion || [];
     }
 
 	function pushGoal(key, value, sendOnNextPageView) {
+		console.log("pushGoal", key, value, sendOnNextPageView);
 
 		var props = ['goal', 'ps06_tweak_' + key];
 
@@ -53,6 +54,7 @@ window.iridion = window.iridion || [];
 		
 		var sendClickNavigation = false;
 
+		// hover on navigation, desktop
 		WATO.elem('#mainNavPrgRedirectionForm > ul > li:nth-child(7)', function(){
 
 			var navElements=WATO.qsa('#mainNavPrgRedirectionForm > ul > li');
@@ -91,6 +93,14 @@ window.iridion = window.iridion || [];
 						pushGoal('click_navigation');
 					});
 				}
+			}
+		});
+
+		WATO.elem("#search_form", function(searchForm){
+			if(searchForm){
+				searchForm[0].addEventListener("submit",function(){
+					pushGoal('search_form');
+				})
 			}
 		});
 	};
@@ -481,6 +491,8 @@ window.iridion = window.iridion || [];
 				spaceing[1].style.display = "none";
 			}
 		});
+
+		
 	};
 	
 })(window.WATO);

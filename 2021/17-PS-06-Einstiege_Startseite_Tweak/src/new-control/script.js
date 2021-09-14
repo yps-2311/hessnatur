@@ -12,8 +12,8 @@
  (function (WATO) {
     "use strict";
 
-    window.iridion.econda.push(["PS06_restart", "V0"]);
+    window.iridion.econda.push(["PS06_3_Tweak", "V0"]);
 
-    WATO.PS06_Tweak();
+    WATO.PS06_Tweak_Goals();
 
 })(new window.WATO());
