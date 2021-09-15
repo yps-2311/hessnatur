@@ -114,7 +114,6 @@
 
 
     function getCategory() {
-        console.log('3');
         function checkPath(key) {
             return PATHNAME.indexOf(key) !== -1
         }
@@ -155,7 +154,6 @@
 
         if( !category && typeof window.basketTrackingObject !== "undefined" && window.basketTrackingObject.category_id){
             category = getCat(window.basketTrackingObject.category_id);
-            console.log('category id: ' + window.basketTrackingObject.category_id);
         }
 
         return category;
@@ -178,17 +176,12 @@
 
     }
 
-
-    console.log('1');
-
     document.documentElement.classList.add('kk-ps08');
 
     function displyBadges() {
-        console.log('2');
         WATO.elem(function () {
             try {
                 currentCategory = getCategory();
-                console.log('response current category', currentCategory);
                 return !!currentCategory;
             }
             catch (e) {
@@ -197,8 +190,7 @@
             return false;
         }, function (cat_found) {
             if (cat_found) {
-                console.log('4');
-                console.log('current category founded :', currentCategory);
+
                 WATO.elem('.js-badges-container', function (badgesContainer) {
                     if (badgesContainer) {
 
@@ -209,13 +201,10 @@
                         var badges = '', // list of badges linked to the product
                             idProduct;
 
-                        console.log('favProducts', favProducts);
-
                         WATO.elem('input[name="ff_id"]', function (inputId) {
                             if (inputId){
 
                                 idProduct = inputId[0].value;
-                                console.log('id product', idProduct);
                                 if (favProducts && favProducts.indexOf(idProduct) !== -1) {
 
                                     badgesContainer.insertAdjacentHTML('beforeend', '<img class="kk-badge" src="' + messageByCat[currentCategory]['Kundenfavorit'][0] + '"/>');
@@ -242,7 +231,6 @@
                                 console.log(e);
                             }
 
-                            console.log('badges:', badges);
                             imgElem.classList.add('kk-hidden');
                         });
 
@@ -253,8 +241,6 @@
                             // WATO.qs('img[src*="15Prozent"]').classList.add('kk-hidden');
                             removeClass('.js-badges-container img:not(img[src*="15Prozent"])');
                         } else if (badges.includes('sale')) {
-                            console.log('solde', currentCategory);
-                            console.log('boxBadgeUrl', messageByCat[currentCategory][1]);
                             boxBadgeUrl = messageByCat[currentCategory]['Sale'][0];
                             boxTxtContent = messageByCat[currentCategory]['Sale'][1];
 
@@ -299,9 +285,7 @@
                                             '</div><img class="kk-btn-close" src="https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2021/ps08-einstiege-aus-anderen-kan%C3%A4len/close.svg"/> </div>');
 
                                         WATO.qs('.kk-btn-close').addEventListener('click', function (e) {
-                                            console.log('badge closed');
                                             this.parentElement.classList.add('slide-out');
-                                            console.log('badgeClosedCookieCounter :', badgeClosedCookieCounter);
                                             if (!badgeClosedCookieCounter) {
                                                 WATO.setCookie('kk_ps08_close_badge_counter', '0', '', true);
                                             } else {
