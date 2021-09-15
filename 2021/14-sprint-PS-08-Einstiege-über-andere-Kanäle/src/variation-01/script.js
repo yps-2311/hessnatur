@@ -27,30 +27,30 @@
             'baby': {
                 'Aktion': [badgeAktionUrl, 'Bio-Kindermode aus Naturfasern'],
                 'Sale': [badgeSaleUrl, 'Bio-Kindermode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
-                'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Kindermode aus Naturfasern<br><b>Unserer Topseller des Monats</b>'],
+                'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Kindermode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Bio-Kindermode aus Naturfasern<br><b>Neu im Sortiment</b>'],
-                'Allgemein': ['Nachhaltig', 'Bio-Kindermode aus Naturfasern<br><b>Optimale Preis/Leistung</b>']
+                'Allgemein': ['Nachhaltig', 'Bio-Kindermode aus Naturfasern<br><b>In höchster Qualität</b>']
             },
             'home': {
                 'Aktion': [badgeAktionUrl, 'Gut für Mensch & Natur'],
                 'Sale': [badgeSaleUrl, 'Gut für Mensch & Natur<br><b>Jetzt zum reduzierten Preis</b>'],
-                'Kundenfavorit': [badgeKundenfavoritUrl, 'Gut für Mensch & Natur<br><b>Unserer Topseller des Monats</b>'],
+                'Kundenfavorit': [badgeKundenfavoritUrl, 'Gut für Mensch & Natur<br><b>Ein Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Gut für Mensch & Natur<br><b>Neu im Sortiment</b>'],
-                'Allgemein': ['Nachhaltig', 'Gut für Mensch & Natur<br><b>Optimale Preis/Leistung</b>']
+                'Allgemein': ['Nachhaltig', 'Gut für Mensch & Natur<br><b>In höchster Qualität</b>']
             },
             'herren': {
                 'Aktion': [badgeAktionUrl, 'Bio-Mode aus Naturfasern'],
                 'Sale': [badgeSaleUrl, 'Bio-Mode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
-                'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Mode aus Naturfasern<br><b>Unserer Topseller des Monats</b>'],
+                'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Mode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Bio-Mode aus Naturfasern<br><b>Neu im Sortiment</b>'],
-                'Allgemein': ['Nachhaltig', 'Bio-Mode aus Naturfasern<br><b>Optimale Preis/Leistung</b>']
+                'Allgemein': ['Nachhaltig', 'Bio-Mode aus Naturfasern<br><b>In höchster Qualität</b>']
             },
             'damen': {
                 'Aktion': [badgeAktionUrl, 'Bio-Mode aus Naturfasern'],
                 'Sale': [badgeSaleUrl, 'Bio-Mode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
-                'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Mode aus Naturfasern<br><b>Unserer Topseller des Monats</b>'],
+                'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Mode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Bio-Mode aus Naturfasern<br><b>Neu im Sortiment</b>'],
-                'Allgemein': ['Nachhaltig', 'Bio-Mode aus Naturfasern<br><b>Optimale Preis/Leistung</b>']
+                'Allgemein': ['Nachhaltig', 'Bio-Mode aus Naturfasern<br><b>In höchster Qualität</b>']
             }
         },
 
