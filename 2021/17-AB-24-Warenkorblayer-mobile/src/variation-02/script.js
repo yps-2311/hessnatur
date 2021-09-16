@@ -76,7 +76,7 @@
 					removeClass(document.documentElement,'kk_modalIsOpen');
 				}, 3000);
 				cartLayer.parentNode.removeChild(cartLayer);
-			}
+			};
 
 		// Layer schließen
 		cartLayer.addEventListener('click', function(e){
