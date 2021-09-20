@@ -322,7 +322,7 @@
 												'<img src="' + imgURL + '">'+
 												'<div class="kk_badge">'+
 													(item.isVegan === "true" ? '<img src="' + imgs7 + 'overlay_vegan.svg" alt="Vegan">' : '') +
-													(item.new === "1" ? '<img src="' + imgs7 + 'overlay_neu.svg" alt="Neu">' : '') +
+													((new Date().getTime() - new Date(item.g_ab).getTime()) / (1000 * 3600 * 24) < 45 ? '<img src="'+imgs7+'overlay_neu.svg" alt="Neu">' : '')+
 												'</div>'+
 											'</div>'+
 											'<div class="kk_title">' + item.name + '</div>'+
