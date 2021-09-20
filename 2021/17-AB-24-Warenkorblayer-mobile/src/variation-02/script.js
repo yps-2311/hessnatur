@@ -54,7 +54,7 @@
 					'<div class="row kk_goodchoice"><b>Gute Wahl,&nbsp;</b>der Artikel liegt in Ihrem Warenkorb.</div>'+
 					(diesesProduct ? diesesProduct.outerHTML : '')+
 					(ctlItems.length > 0 ? // Nur anzeigen wenn es CLT gibt
-						'<h4 class="columns">Zum kompletten Outfit</h4>'+
+						'<h4 class="columns">komplettes Outfit</h4>'+
 						'<div class="kk_basket_ctl columns">'+
 							allItemsHTML+
 						'</div>'
