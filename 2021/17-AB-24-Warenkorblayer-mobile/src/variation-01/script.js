@@ -18,6 +18,9 @@
 
 	WATO.ab24goals();
 
+	var htmlElement = window.document.documentElement,
+		productsInCart = JSON.parse(window.localStorage.getItem("kk_cart_ctl")) || {};
+
 	function addClass(elem, thisclassname) {
 		if(elem){
 			elem.classList.add(thisclassname);
@@ -29,10 +32,42 @@
 		}
 	}
 
-	var htmlElement = window.document.documentElement,
-		productsInCart = JSON.parse(window.localStorage.getItem("kk_cart_ctl")) || {};
+	function openCTL(e) {
+		var thisTarget = typeof e.target !== "undefined" ? e.target : e;
 
-	function setCTL() {
+		thisTarget.classList.toggle('kk_open');
+
+		var cltWrapper = thisTarget.nextElementSibling,
+			existsData = productsInCart[parseInt(cltWrapper.getAttribute('data-id'))];
+
+		if(!cltWrapper.innerHTML.length && existsData){
+			existsData.forEach(function(thisID){
+
+				WATO.xhr_get('https://products.hessnatur.com/products/' + thisID, function (dataCTLProduct) {
+					if (dataCTLProduct) {
+						var ctlJSON = JSON.parse(dataCTLProduct).products[0];
+
+						cltWrapper.insertAdjacentHTML('beforeend', 
+							'<a href="'+ctlJSON.permalink+'" class="item__image">'+
+								'<img src="'+(typeof ctlJSON.imageOnlyProduct !== "undefined" ? ctlJSON.imageOnlyProduct : ctlJSON.image)+'" alt="'+ctlJSON.name+'" title="'+ctlJSON.name+'">'+
+								'<div class="item__desc h-smallOffset-top-outer text-left">'+
+									'<span class="desc-name">'+ctlJSON.name+
+									'<div class="desc-price">'+
+										'<span class="price light">'+String(ctlJSON.price).replace(".",",")+'&nbsp;€</span>'+
+									'</div>'+
+								'</div>'+
+							'</a>'
+						);
+						WATO.qs('.item__image:last-child', cltWrapper).addEventListener('click', function(){
+							WATO.goalPush("kk_ab24_ctlprod", true);
+						});
+					}
+				});
+			});
+		}
+	}
+
+	function setCTL(isAddedToCart) {
 		// Complete the Look unter die Produkte im Mini-WK bauen
 		WATO.elem('#offCanvasMiniCartWrapper > .scrollContainer > .columns > .columns > .row:not(.collapse)', function(productList){
 			if(productList){
@@ -44,50 +79,24 @@
 					if(productsInCart && productsInCart[parseInt(productID)]){
 						WATO.qs('.h-list--horizontal', product).insertAdjacentHTML('afterend', 
 							'<div class="kk_cltwrapper">'+
-								'<div class="kk_clt_title">Komplettes Outfit ansehen</div>'+
+								'<div class="kk_clt_title"></div>'+ // Komplettes Outfit ansehen
 								'<div class="kk_basket_ctl" data-id="'+productID+'"></div>'+
 							'</div>'
 						);
 
-						WATO.qs('.kk_clt_title', product).addEventListener('click', function(e){
-							e.target.classList.toggle('kk_open');
+						// Beim in den Warenkorb legen wird das erste CTL angezeigt
+						if(i === 0 && isAddedToCart){
+							openCTL(WATO.qs('.kk_clt_title'));
+						}
 
-							var cltWrapper = e.target.nextElementSibling,
-								existsData = productsInCart[parseInt(cltWrapper.getAttribute('data-id'))];
-
-							if(!cltWrapper.innerHTML.length && existsData){
-								existsData.forEach(function(thisID){
-
-									WATO.xhr_get('https://products.hessnatur.com/products/' + thisID, function (dataCTLProduct) {
-										if (dataCTLProduct) {
-											var ctlJSON = JSON.parse(dataCTLProduct).products[0];
-
-											cltWrapper.insertAdjacentHTML('beforeend', 
-												'<a href="'+ctlJSON.permalink+'" class="item__image">'+
-													'<img src="'+ctlJSON.image+'" alt="'+ctlJSON.name+'" title="'+ctlJSON.name+'">'+
-													'<div class="item__desc h-smallOffset-top-outer text-left">'+
-														'<span class="desc-name">'+ctlJSON.name+
-														'<div class="desc-price">'+
-															'<span class="price light">'+String(ctlJSON.price).replace(".",",")+'&nbsp;€</span>'+
-														'</div>'+
-													'</div>'+
-												'</a>'
-											);
-											WATO.qs('.item__image:last-child', cltWrapper).addEventListener('click', function(){
-												WATO.goalPush("kk_ab24_ctlprod", true);
-											});
-										}
-									});
-								});
-							}
-						});
+						WATO.qs('.kk_clt_title', product).addEventListener('click', openCTL);
 					}
 				}
 			}
 		});
 	}
 	
-	WATO.ajax('/de/cart/add', function(){
+	WATO.ajax('/cart/add', function(){
 		// Add to Cart
 
 		var miniCartWrapper = WATO.qs('#offCanvasMiniCartWrapper'),
@@ -96,45 +105,53 @@
 			prodID7 = prodID + (selectedColor ? selectedColor.getAttribute('data-color') : '');
 
 		// Grüne Info dass ein Produkt in den WK gelegt wurde
-		WATO.qs('.scrollContainer', miniCartWrapper).insertAdjacentHTML('beforebegin', 
-			'<div class="row kk_goodchoice"><b>Gute Wahl,</b>&nbsp;der Artikel liegt in Ihrem Warenkorb.</div>'
-		);
+		if(!WATO.qs('.kk_goodchoice', miniCartWrapper.parentNode)){
+			WATO.qs('.scrollContainer', miniCartWrapper).insertAdjacentHTML('beforebegin', 
+				'<div class="row kk_goodchoice"><b>Gute Wahl,</b>&nbsp;der Artikel liegt in Ihrem Warenkorb.</div>'
+			);
 
-		// CLT Produkte dem LS hinzufügen
-		WATO.elem('#look .item__image', function(ctlItems){
-			if(ctlItems){
-				var ctlIDs = [];
-				for (var i = 0; i < ctlItems.length; i++) {
-					ctlIDs.push(parseInt(ctlItems[i].getAttribute('href').split("/p/")[1].substring(0,7)));
+			// CLT Produkte dem LS hinzufügen
+			WATO.elem('#look .item__image', function(ctlItems){
+				if(ctlItems){
+					var ctlIDs = [];
+					for (var i = 0; i < ctlItems.length; i++) {
+						ctlIDs.push(parseInt(ctlItems[i].getAttribute('href').split("/p/")[1].substring(0,7)));
+					}
+					productsInCart[prodID7] = ctlIDs;
 				}
-				productsInCart[prodID7] = ctlIDs;
-			}
-		});
-
-		// Im LS gespeichert
-		window.localStorage.setItem("kk_cart_ctl", JSON.stringify(productsInCart));
-
-		// Bei Interaktion mit dem WK soll dieser offen bleiben und 
-		// nicht wie Control-Verhalten nach 3 Sek sich eingenständig schließen
-		if(!miniCartWrapper.classList.contains('kk_haslistener')){
-			miniCartWrapper.addEventListener('touchstart', function(){
-
-				addClass(miniCartWrapper,'kk_haslistener');
-				addClass(htmlElement,'kk_minicartopen');
-
-				WATO.qs('.close-button', miniCartWrapper).addEventListener('click', function(){
-					removeClass(htmlElement,'kk_minicartopen');
-				});
-				WATO.qs('#offCanvasRight + .off-canvas-content').addEventListener('click', function(){
-					removeClass(htmlElement,'kk_minicartopen');
-				});
 			});
+
+			// Im LS gespeichert
+			window.localStorage.setItem("kk_cart_ctl", JSON.stringify(productsInCart));
+
+			// Bei Interaktion mit dem WK soll dieser offen bleiben und 
+			// nicht wie Control-Verhalten nach 3 Sek sich eingenständig schließen
+			if(!miniCartWrapper.classList.contains('kk_haslistener')){
+				miniCartWrapper.addEventListener('touchstart', function(){
+
+					addClass(miniCartWrapper,'kk_haslistener');
+					addClass(htmlElement,'kk_minicartopen');
+
+					WATO.qs('.close-button', miniCartWrapper).addEventListener('click', function(){
+						removeClass(htmlElement,'kk_minicartopen');
+					});
+					WATO.qs('#offCanvasRight + .off-canvas-content').addEventListener('click', function(){
+						removeClass(htmlElement,'kk_minicartopen');
+					});
+				});
+			}
+
+			setCTL(true);
 		}
+	});
 
-		setCTL();
-	});	
+	WATO.ajax('/cart/quickUpdate', function(){
+		setTimeout(function(){
+			setCTL(false);
+		}, 500);
+	});
 
-	setCTL();
+	setCTL(false);
 
 
 })(new window.WATO(), window);

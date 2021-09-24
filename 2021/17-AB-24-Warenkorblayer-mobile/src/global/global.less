@@ -22,7 +22,7 @@
     flex-direction: row;
     .item__image {
         width: 32%;
-        padding-bottom: 7px;
+        padding-bottom: 10px;
         position: relative !important;
         left: auto !important;
         img {
@@ -35,19 +35,23 @@
         }
         .desc-name {
             margin-bottom: 0;
-            font-size: 9px;
-            line-height: 12px;
+            font-size: 10px;
+            line-height: 1rem;
             letter-spacing: 0;
             display: block;
         }
         .desc-price {
             margin-top: 0;
             .price {
-                line-height: 12px;
-                font-size: 9px;
+                font-size: 10px;
+                line-height: 1rem;
                 font-weight: bold;
                 letter-spacing: 0;
             }
+        }
+        &:nth-child(4),
+        &:nth-child(5) {
+            display: none !important;
         }
     }
 }
