@@ -221,6 +221,11 @@ window.iridion.econda = (function(window){
         window.iridion.push(['profile', 'setValue', key, value]);
     }
 
+    // added DL, 27.09.21
+    function getProfileValue(key) {
+        return window.iridion.push(['profile', 'getValue', key]);
+    }
+
     // check for crazy user and disable iridion
     try {
 
@@ -253,6 +258,28 @@ window.iridion.econda = (function(window){
                     if(this.readyState === 4 && uri.indexOf("https://www.hessnatur.com/de/cart/add") !== -1){
 
                         goalPush('click_addToCart');
+
+                        // added DL, 27.09.21
+                        try {
+                            if(!!document.querySelector('img[src="https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/overlay_neu.svg"]')){
+
+                                var isOtherNewProductsIsCart = getProfileValue('newItemsInCart'),
+                                    thisProductID = document.location.pathname.split("/p/")[1].substring(0,5);
+
+                                if(isOtherNewProductsIsCart && isOtherNewProductsIsCart.length > 0 && isOtherNewProductsIsCart !== "[]"){
+                                    isOtherNewProductsIsCart = isOtherNewProductsIsCart;
+                                }else{
+                                    isOtherNewProductsIsCart = [];
+                                }
+
+                                isOtherNewProductsIsCart.push(thisProductID);
+
+                                setProfileValue('newItemsInCart', isOtherNewProductsIsCart);
+                            }
+                        } catch (error) {
+                            console.log('Error: ', error);
+                        }
+
                     }
                 }, false);
 
@@ -382,6 +409,15 @@ window.iridion.econda = (function(window){
 
             // Neukunde Regestrierung
             goalPush('page_reg');
+        }else if(URL.indexOf("/newsletter/abmeldung") !== -1){
+
+            // PageView: Newsletter Abmeldung - NEU von DL 27.09.21
+            goalPush('page_newsletter_deregistration');
+
+        }else if(URL.indexOf("/newsletter/doi/einstellungen") !== -1){
+
+            // PageView: Douple-Opt-In akzeptiert - NEU von DL 27.09.21
+            goalPush('page_newsletter_success');
         }else if(URL.indexOf("/login") !== -1){
 
             // Login Regestrierung
@@ -457,7 +493,7 @@ window.iridion.econda = (function(window){
                         var wa_price = 0,
                             wa_buyid = "";
     
-                        if(window.emospro.billing && window.emospro.billing.length > 3){
+                        if(typeof window.emospro.billing !== "undefined" && window.emospro.billing.length > 3){
                             clearInterval(wa_interval);
                             wa_price = window.emospro.billing[3];
                             wa_buyid = window.emospro.billing[0];
@@ -472,6 +508,29 @@ window.iridion.econda = (function(window){
                         }else{
                             goalPush('error_revenue');
                         }
+
+                         // added DL, 27.09.21
+                        try {
+                            var productsBuyed = window.emospro.ec_Event,
+                                productsNew = getProfileValue('newItemsInCart');
+
+                            if(productsNew){
+                                productsNew = productsNew;
+
+                                for (var j = 0; j < productsBuyed.length; j++) {
+                                    for (var k = 0; k < productsNew.length; k++) {
+                                        if(productsBuyed[j].sku.indexOf(productsNew[k]) !== -1){
+                                            console.log("product is new");
+                                            goalPush('buyed_new_product');
+                                            setProfileValue('newItemsInCart', []);
+                                        }
+                                    }
+                                }
+                            }
+                        } catch (error) {
+                            console.log('Error: ', error);
+                        }
+
                     }
                 } catch (error) {
                     // console.log(error);
@@ -492,12 +551,9 @@ window.iridion.econda = (function(window){
 
             setProfileValue('hasbought', 'true');
         }
-
-        // TODO hochladen und testen
         
         // Wenn ein User über einen Newsletter kommt wird er mit diesem Cookie markiert
-        if(
-            window.document.location.search.indexOf("layer=") !== -1 ||
+        if(window.document.location.search.indexOf("layer=") !== -1 ||
             location.pathname === "/de/newsletter/doi/einstellungen"            // MV, 30.06.2021
         ){
             window.document.cookie = "kk_newsletter=true; expires=Thu, 18 Dec 2022 12:00:00 UTC; path=/";
@@ -599,5 +655,5 @@ window.iridion.econda = (function(window){
     }
 })(window);
 
-
-// !function(){if(-1!==document.URL.indexOf("//sf.acc.hess-webshop-dev-760c.gcp.get-cloud.io"))try{var e=localStorage.getItem("ucSettings"),t=function(e){window.localStorage.setItem("ucIridionConsent",e),window.iridion.push(["consent",{cookies:e,profile:e,tracking:e}])};if(e)for(var n in e=JSON.parse(e)){var o=e[n].ucConsents,r=o.consentTemplates,i=o.consents;for(var a in r)for(var c in r[a])if("Iridion"===r[a][c].dataProcessor)for(var s=0;s<i.length;s++)if(i[s].templateId===a){var d=window.localStorage.ucIridionConsent;return i[s].consentStatus?(void 0!==d&&"false"!==window.localStorage.ucIridionConsent||t(!0),!0):(void 0!==d&&"true"!==d||t(!1),!1)}}}catch(e){console.log(e)}else window.iridion.push(["consent",{cookies:!0,profile:!0,tracking:!0}])}(),window.iridion.tracking=window.controllerName||window.document.location.pathname,window.iridion.econda=window.iridion.econda||[],window.iridion.econda=function(e){"use strict";var t=[],n=!1;function o(){e.iridion=e.iridion||[],e.iridion.push(["goal","error_econda"])}function r(){try{for(var n=0;n<t.length;n++)-1!==document.cookie.indexOf("iridion_user")&&e.emos3.send(t[n]);t=[]}catch(e){o()}}function i(){return void 0!==e.emos3&&"function"==typeof e.emos3.send&&(n=!0,!0)}if(i())r();else var a=e.setInterval((function(){i()&&(clearInterval(a),r())}),20);return{push:function(e){try{t.push({type:"event",abtest:[e]}),n&&r()}catch(e){o()}}}}(window),function(e){function t(t){e.iridion.push(["goal",t])}function n(e){(document.attachEvent?"complete"===document.readyState:"loading"!==document.readyState)?e():document.addEventListener("DOMContentLoaded",e)}function o(e){for(var t=document.cookie.split(";"),n=0;n<t.length;n++)if(t[n].substr(0,t[n].indexOf("=")).replace(/^\s+|\s+$/g,"")===e)return decodeURIComponent(t[n].substr(t[n].indexOf("=")+1))}function r(t){e.iridion.push(["segment",String(t)])}function i(t,n){e.iridion.push(["profile","setValue",t,n])}Element.prototype.matches||(Element.prototype.matches=Element.prototype.msMatchesSelector||Element.prototype.webkitMatchesSelector),Element.prototype.closest||(Element.prototype.closest=function(e){var t=this;do{if(t.matches(e))return t;t=t.parentElement||t.parentNode}while(null!==t&&1===t.nodeType);return null});try{var a=o("iridion_user");a&&-1!==a.indexOf("1521023056101454")&&(e.document.cookie="iridion_exclude=true; expires=Thu, 18 Dec 2022 12:00:00 UTC; domain=.hessnatur.com; path=/")}catch(e){}try{var c=document.URL,s=e.location.pathname;if(new RegExp(/.*hessnatur.com\/de\/?($|((\?|\#).*))/).test(c))t("page_home");else if(-1!==c.indexOf("/p/")){t("page_pds");var d=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(e,n,o,r,i){this.addEventListener("loadend",(function(){4===this.readyState&&-1!==n.indexOf("https://www.hessnatur.com/de/cart/add")&&t("click_addToCart")}),!1),d.call(this,e,n,o,r,i)}}else if("/de/NEU"===s||"/de/damen"===s||"/de/herren"===s||"/de/outdoor"===s||"/de/baby"===s||"/de/home"===s||"/de/sale"===s)t("page_lp_cat"),-1!==s.indexOf("damen")?i("categoryAffinity","damen"):-1!==s.indexOf("herren")&&i("categoryAffinity","herren");else if(-1!==c.indexOf("/c/"))t("page_cat"),n((function(){try{var e=document.querySelector("#tabFilter-label"),n=setInterval((function(){if(void 0!==e){clearInterval(n);try{var o=e.querySelector("strong");void 0!==o&&(-1===o.innerHTML.indexOf("(0)")&&-1===o.innerHTML.indexOf(">0<")&&t("filter_genutzt"),e.addEventListener("click",(function(){t("filter_click")})))}catch(e){}}}),100);setTimeout((function(){clearInterval(n)}),1e4)}catch(e){t("error_setup"),t("error_setup1a")}try{var o=document.querySelector("#tabSort-label"),r=setInterval((function(){void 0!==o&&(clearInterval(r),o.addEventListener("click",(function(){t("cat_click_sort")})))}),100);setTimeout((function(){clearInterval(r)}),1e4)}catch(e){t("error_setup"),t("error_setup2a")}}));else if(-1!==c.indexOf("/de/cart"))t("page_cart"),document.addEventListener("click",(function(n){var o=n.target;o.closest("#hessnaturVoucherForm .quickadd__button")?e.iridion.push(["goal","aktionscode","",!0]):o.closest(".js-entry-edit-save")&&t("nutzeEinstellungen")}));else if(-1!==c.indexOf("/register/guest-update"))t("page_guest");else if(-1!==c.indexOf("/register"))t("page_reg");else if(-1!==c.indexOf("/login")){t("page_signin");var l=setInterval((function(){var n=e.document.querySelector("#loginForm .text-right .button");n&&(clearInterval(l),n.addEventListener("click",(function(){t("page_login")})))}),100);setTimeout((function(){clearInterval(l)}),5e3)}else if(-1!==c.indexOf("/merkzettel"))t("click_merken");else if(-1!==c.indexOf("/addresses/add-delivery-address"))t("page_address");else if(-1!==c.indexOf("/payment/add-payment-method"))t("page_pay");else if(-1!==c.indexOf("/search"))t("page_suche");else if(-1!==c.indexOf("/summary")){t("page_sum");try{n((function(){var t=e.document.querySelectorAll("#checkoutContentPanel > div > .row > div .h-smallOffset-bottom-inner");0!==t.length&&-1!==t[0].textContent.trim().toLowerCase().indexOf("rechnung")&&(e.localStorage.setItem("kk_buytype","rechnung"),i("kk_buytype","rechnung"))}))}catch(e){t("error_setup"),t("error_setup3")}}else if(-1!==c.indexOf("/checkout/orderConfirmation")){t("page_conv"),e.localStorage.setItem("kk_hasbought",!0),e.localStorage.removeItem("kk_upsell_hide");var u=setInterval((function(){try{if(void 0!==e.emospro){var n=0,o="";e.emospro.billing&&e.emospro.billing.length>3&&(clearInterval(u),n=e.emospro.billing[3],o=e.emospro.billing[0]),0===n&&e.emospro.ec_Event&&e.emospro.ec_Event.length>0&&(clearInterval(u),n=e.emospro.ec_Event[0].price),0!==parseInt(n)?e.iridion.push(["revenue",n,o]):t("error_revenue")}}catch(e){t("error_revenue")}}),100);setTimeout((function(){clearInterval(u)}),3e3),"rechnung"===e.localStorage.getItem("kk_buytype")&&(e.iridion.push(["segment","32785"]),e.localStorage.removeItem("kk_buytype"),i("kk_buytype","false")),i("hasbought","true")}-1===e.document.location.search.indexOf("layer=")&&"/de/newsletter/doi/einstellungen"!==location.pathname||(e.document.cookie="kk_newsletter=true; expires=Thu, 18 Dec 2022 12:00:00 UTC; path=/"),n((function(){try{for(var e=document.querySelectorAll(".breadcrumbs *"),n=e.length,o=0;o<n;o++)e[o].addEventListener("click",(function(){t("breadcrumb")}));document.querySelector('a[data-toggle="offCanvasLeft"]')&&document.querySelector('a[data-toggle="offCanvasLeft"]').addEventListener("click",(function(){t("burgermenu")}))}catch(e){t("error_setup"),t("error_setup4")}})),e.localStorage.getItem("kk_hasbought")&&i("hasbought","true")}catch(e){t("error_setup"),t("error_setup5")}try{var f=e.document.referrer,p=e.document.location,m=e.document.cookie;-1!==f.indexOf(".google.")||-1!==f.indexOf(".bing.")?r(32804):-1!==f.indexOf(".facebook.")||-1!==f.indexOf(".instagram.")?r(32805):-1!==f.indexOf(".hessnatur.com/magazin/")&&r(32806),-1===p.pathname.indexOf("/newsletter/doi/einstellungen")&&-1===p.search.indexOf("?newsletter=")||r(32803),n((function(){for(var t=e.document.querySelectorAll('.js-product-reference[data-componentid="CrossSellingEconda"] .item__image'),n=0;n<t.length;n++)t[n].addEventListener("click",(function(){r(32802)}))})),-1===m.indexOf("kk_visitor_firstsession")?-1===m.indexOf("kk_visitor_returning")?(r(32800),e.document.cookie="kk_visitor_firstsession="+new Date+";domain=.hessnatur.com;path=/",e.document.cookie="kk_visitor_returning=true;domain=.hessnatur.com;path=/;expires=Thu, 18 Dec 2025 12:00:00 UTC"):(r(32801),g=32800,e.iridion.push(["removeSegment",String(g)])):new Date-new Date(o("kk_visitor_firstsession"))<144e5||(e.document.cookie="kk_visitor_firstsession=false;domain=.hessnatur.com;path=/;expires=Thu, 18 Dec 2000 12:00:00 UTC")}catch(e){t("error_setup"),t("error_setup6")}var g}(window);
+// Backup vom 27.09.21
+// !function(){try{var e=localStorage.getItem("ucSettings"),t=function(e){window.localStorage.setItem("ucIridionConsent",e),window.iridion.push(["consent",{cookies:e,profile:e,tracking:e}])};if(e)for(var n in e=JSON.parse(e)){var o=e[n].ucConsents,r=o.consentTemplates,i=o.consents;for(var a in r)for(var c in r[a])if("Iridion"===r[a][c].dataProcessor)for(var s=0;s<i.length;s++)if(i[s].templateId===a){var d=window.localStorage.ucIridionConsent;return i[s].consentStatus?(void 0!==d&&"false"!==window.localStorage.ucIridionConsent||t(!0),!0):(void 0!==d&&"true"!==d||t(!1),!1)}}}catch(e){console.log(e)}}(),window.iridion.tracking=window.controllerName||window.document.location.pathname,window.iridion.econda=window.iridion.econda||[],window.iridion.econda=function(e){"use strict";var t=[],n=!1;function o(){e.iridion=e.iridion||[],e.iridion.push(["goal","error_econda"])}function r(){try{for(var n=0;n<t.length;n++)-1!==document.cookie.indexOf("iridion_user")&&e.emos3.send(t[n]);t=[]}catch(e){o()}}function i(){return void 0!==e.emos3&&"function"==typeof e.emos3.send&&(n=!0,!0)}if(i())r();else var a=e.setInterval((function(){i()&&(clearInterval(a),r())}),20);return{push:function(e){try{t.push({type:"event",abtest:[e]}),n&&r()}catch(e){o()}}}}(window),function(e){function t(t){e.iridion.push(["goal",t])}function n(e){(document.attachEvent?"complete"===document.readyState:"loading"!==document.readyState)?e():document.addEventListener("DOMContentLoaded",e)}function o(e){for(var t=document.cookie.split(";"),n=0;n<t.length;n++)if(t[n].substr(0,t[n].indexOf("=")).replace(/^\s+|\s+$/g,"")===e)return decodeURIComponent(t[n].substr(t[n].indexOf("=")+1))}function r(t){e.iridion.push(["segment",String(t)])}function i(t,n){e.iridion.push(["profile","setValue",t,n])}Element.prototype.matches||(Element.prototype.matches=Element.prototype.msMatchesSelector||Element.prototype.webkitMatchesSelector),Element.prototype.closest||(Element.prototype.closest=function(e){var t=this;do{if(t.matches(e))return t;t=t.parentElement||t.parentNode}while(null!==t&&1===t.nodeType);return null});try{var a=o("iridion_user");a&&-1!==a.indexOf("1521023056101454")&&(e.document.cookie="iridion_exclude=true; expires=Thu, 18 Dec 2022 12:00:00 UTC; domain=.hessnatur.com; path=/")}catch(e){}try{var c=document.URL,s=e.location.pathname;if(new RegExp(/.*hessnatur.com\/de\/?($|((\?|\#).*))/).test(c))t("page_home");else if(-1!==c.indexOf("/p/")){t("page_pds");var d=XMLHttpRequest.prototype.open;XMLHttpRequest.prototype.open=function(e,n,o,r,i){this.addEventListener("loadend",(function(){4===this.readyState&&-1!==n.indexOf("https://www.hessnatur.com/de/cart/add")&&t("click_addToCart")}),!1),d.call(this,e,n,o,r,i)}}else if("/de/NEU"===s||"/de/damen"===s||"/de/herren"===s||"/de/outdoor"===s||"/de/baby"===s||"/de/home"===s||"/de/sale"===s)t("page_lp_cat"),-1!==s.indexOf("damen")?i("categoryAffinity","damen"):-1!==s.indexOf("herren")&&i("categoryAffinity","herren");else if(-1!==c.indexOf("/c/"))t("page_cat"),n((function(){try{var e=document.querySelector("#tabFilter-label"),n=setInterval((function(){if(void 0!==e){clearInterval(n);try{var o=e.querySelector("strong");void 0!==o&&(-1===o.innerHTML.indexOf("(0)")&&-1===o.innerHTML.indexOf(">0<")&&t("filter_genutzt"),e.addEventListener("click",(function(){t("filter_click")})))}catch(e){}}}),100);setTimeout((function(){clearInterval(n)}),1e4)}catch(e){t("error_setup"),t("error_setup1a")}try{var o=document.querySelector("#tabSort-label"),r=setInterval((function(){if(null!=o){clearInterval(r);try{o.addEventListener("click",(function(){t("cat_click_sort")}))}catch(e){}}}),100);setTimeout((function(){clearInterval(r)}),1e4)}catch(e){t("error_setup"),t("error_setup2a")}}));else if(-1!==c.indexOf("/de/cart"))t("page_cart"),document.addEventListener("click",(function(n){var o=n.target;o.closest("#hessnaturVoucherForm .quickadd__button")?e.iridion.push(["goal","aktionscode","",!0]):o.closest(".js-entry-edit-save")&&t("nutzeEinstellungen")}));else if(-1!==c.indexOf("/register/guest-update"))t("page_guest");else if(-1!==c.indexOf("/register"))t("page_reg");else if(-1!==c.indexOf("/login")){t("page_signin");var l=setInterval((function(){var n=e.document.querySelector("#loginForm .text-right .button");n&&(clearInterval(l),n.addEventListener("click",(function(){t("page_login")})))}),100);setTimeout((function(){clearInterval(l)}),5e3)}else if(-1!==c.indexOf("/merkzettel"))t("click_merken");else if(-1!==c.indexOf("/addresses/add-delivery-address"))t("page_address");else if(-1!==c.indexOf("/payment/add-payment-method"))t("page_pay");else if(-1!==c.indexOf("/search"))t("page_suche");else if(-1!==c.indexOf("/summary")){t("page_sum");try{n((function(){var t=e.document.querySelectorAll("#checkoutContentPanel > div > .row > div .h-smallOffset-bottom-inner");0!==t.length&&-1!==t[0].textContent.trim().toLowerCase().indexOf("rechnung")&&(e.localStorage.setItem("kk_buytype","rechnung"),i("kk_buytype","rechnung"))}))}catch(e){t("error_setup"),t("error_setup3")}}else if(-1!==c.indexOf("/checkout/orderConfirmation")){t("page_conv"),e.localStorage.setItem("kk_hasbought",!0),e.localStorage.removeItem("kk_upsell_hide");var u=setInterval((function(){try{if(void 0!==e.emospro){var n=0,o="";e.emospro.billing&&e.emospro.billing.length>3&&(clearInterval(u),n=e.emospro.billing[3],o=e.emospro.billing[0]),0===n&&e.emospro.ec_Event&&e.emospro.ec_Event.length>0&&(clearInterval(u),n=e.emospro.ec_Event[0].price),0!==parseInt(n)?e.iridion.push(["revenue",n,o]):t("error_revenue")}}catch(e){t("error_revenue")}}),100);setTimeout((function(){clearInterval(u)}),3e3),"rechnung"===e.localStorage.getItem("kk_buytype")&&(e.iridion.push(["segment","32785"]),e.localStorage.removeItem("kk_buytype"),i("kk_buytype","false")),i("hasbought","true")}-1===e.document.location.search.indexOf("layer=")&&"/de/newsletter/doi/einstellungen"!==location.pathname||(e.document.cookie="kk_newsletter=true; expires=Thu, 18 Dec 2022 12:00:00 UTC; path=/"),n((function(){try{for(var e=document.querySelectorAll(".breadcrumbs *"),n=e.length,o=0;o<n;o++)e[o].addEventListener("click",(function(){t("breadcrumb")}));document.querySelector('a[data-toggle="offCanvasLeft"]')&&document.querySelector('a[data-toggle="offCanvasLeft"]').addEventListener("click",(function(){t("burgermenu")}))}catch(e){t("error_setup"),t("error_setup4")}})),e.localStorage.getItem("kk_hasbought")&&i("hasbought","true")}catch(e){t("error_setup"),t("error_setup5")}try{var f=e.document.referrer,m=e.document.location,p=e.document.cookie;-1!==f.indexOf(".google.")||-1!==f.indexOf(".bing.")?r(32804):-1!==f.indexOf(".facebook.")||-1!==f.indexOf(".instagram.")?r(32805):-1!==f.indexOf(".hessnatur.com/magazin/")&&r(32806),-1===m.pathname.indexOf("/newsletter/doi/einstellungen")&&-1===m.search.indexOf("?newsletter=")||r(32803),n((function(){for(var t=e.document.querySelectorAll('.js-product-reference[data-componentid="CrossSellingEconda"] .item__image'),n=0;n<t.length;n++)t[n].addEventListener("click",(function(){r(32802)}))})),-1===p.indexOf("kk_visitor_firstsession")?-1===p.indexOf("kk_visitor_returning")?(r(32800),e.document.cookie="kk_visitor_firstsession="+new Date+";domain=.hessnatur.com;path=/",e.document.cookie="kk_visitor_returning=true;domain=.hessnatur.com;path=/;expires=Thu, 18 Dec 2025 12:00:00 UTC"):(r(32801),g=32800,e.iridion.push(["removeSegment",String(g)])):new Date-new Date(o("kk_visitor_firstsession"))<144e5||(e.document.cookie="kk_visitor_firstsession=false;domain=.hessnatur.com;path=/;expires=Thu, 18 Dec 2000 12:00:00 UTC")}catch(e){t("error_setup"),t("error_setup6")}var g}(window);
