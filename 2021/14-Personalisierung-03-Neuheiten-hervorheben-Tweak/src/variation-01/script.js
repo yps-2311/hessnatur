@@ -12,10 +12,11 @@
 (function(WATO, window) {
     "use strict";
 	
+	
 	window.iridion.econda.push(["SprintPS03tweak", "V1"]);
 
 	/*jshint loopfunc: true */
-	WATO.ps03tweak(1);
+	WATO.ps03tweak();
 	WATO.setSegmentByProfile();
     WATO.ps03globalgoals();
 
@@ -120,16 +121,22 @@
 									// KK: PS03: Klick auf das 3. Produkt aus Reco-Element
 									// KK: PS03: Klick auf das 4. Produkt aus Reco-Element
 									pushGoalAgain('click_product_' + (cellIndex + 1));
+									window.iridion.push(["segment", '32891']);
 								});
+
+								flickotySlider.on('dragStart', function() {
+									pushGoal('click_product_change');
+								});
+
 								
-								var scrollGoalSend = false;
-								flickotySlider.on('scroll', function() {
-									if(!scrollGoalSend){
-										scrollGoalSend = true;
-										// KK: PS03: Klick auf Pfeil auf linken / rechten Seite - PDS - V1
-										pushGoal('click_product_change');
-									}
-								});
+								// var scrollGoalSend = false;
+								// flickotySlider.on('scroll', function() {
+								// 	if(!scrollGoalSend){
+								// 		scrollGoalSend = true;
+								// 		// KK: PS03: Klick auf Pfeil auf linken / rechten Seite - PDS - V1
+								// 		pushGoal('click_product_change');
+								// 	}
+								// });
 
 								// WATO.elem('#kk_likethisproduct > button', (buttons) => {
 								// 	[...buttons].map((button) => {
@@ -166,6 +173,22 @@
 								});
 
 							l.render();
+
+							WATO.elem('#kk_likethisproduct .flickity-prev-next-button.previous', function(prevBtn){
+								if(prevBtn){
+									prevBtn[0].addEventListener('click', function(){
+										pushGoal('click_product_change');
+									});
+								}
+							});
+							WATO.elem('#kk_likethisproduct .flickity-prev-next-button.next', function(nextBtn){
+								if(nextBtn){
+									nextBtn[0].addEventListener('click', function(){
+										pushGoal('click_product_change');
+									});
+								}
+							});
+
 						}
 					}
 				});

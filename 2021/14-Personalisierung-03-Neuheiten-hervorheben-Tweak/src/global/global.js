@@ -64,45 +64,95 @@
 				payload.push(value);
 			}
 
+			console.log('payload: ', payload);
 			window.iridion.push(payload);
 		}
 
 		function pushGoalAgain(key) {
 			window.iridion.push(['goal', 'ps03_' + key, '', true]);
 		}
-
+		function setSegment(key) {
+			if(window.iridion.push(['hasSegment', key])){
+				window.iridion.push(["segment", key]);
+			}
+		}
 		
 		var WATO = this,
 			PATHNAME = location.pathname; 
 
 		if(PATHNAME.indexOf("/p/") !== -1){
+			console.log("PDS");
 
 			WATO.elem('img[src*="/overlay_neu.svg"]', function(hasNewBadge){
+				console.log("hasNewBadge ", hasNewBadge);
 				if(hasNewBadge){
 					WATO.ajaxCallback('/cart/add', function(){
+						console.log("ajax /cart/add");
 						pushGoal('newProductAddToCart');
 					});
 				}
 			});
 
-			WATO.elem(() => {
-				return WATO.qs('#kk_ctlwrapper') && typeof jQuery === "function"
-			}, (result) => {
-				if(!result) return;
-				var scrollGoalSend = false;
-				jQuery('#kk_ctlwrapper').on('staticClick.flickity', function(event, pointer, cellElement, cellIndex) {
-					// KK: PS03: Klick auf das 1. Produkt aus CTL-Element
-					// KK: PS03: Klick auf das 2. Produkt aus CTL-Element
-					// KK: PS03: Klick auf das 3. Produkt aus CTL-Element
-					pushGoalAgain('click_ctl_' + (cellIndex+1));
-				}).on('scroll.flickity', function() {
-					if(!scrollGoalSend){
-						scrollGoalSend = true;
-						// KK: PS03: Klick auf Pfeil auf linken / rechten Seite - PDS - V2
-						pushGoal('click_slide_change_v2');
+			// WATO.elem(() => {
+			// 	return WATO.qs('#kk_ctlwrapper') && typeof jQuery === "function"
+			// }, (result) => {
+			// 	if(!result) return;
+			// 	var scrollGoalSend = false;
+			// 	jQuery('#kk_ctlwrapper').on('staticClick.flickity', function(event, pointer, cellElement, cellIndex) {
+			// 		// KK: PS03: Klick auf das 1. Produkt aus CTL-Element
+			// 		// KK: PS03: Klick auf das 2. Produkt aus CTL-Element
+			// 		// KK: PS03: Klick auf das 3. Produkt aus CTL-Element
+			// 		pushGoalAgain('click_ctl_' + (cellIndex+1));
+			// 	}).on('scroll.flickity', function() {
+			// 		if(!scrollGoalSend){
+			// 			scrollGoalSend = true;
+			// 			// KK: PS03: Klick auf Pfeil auf linken / rechten Seite - PDS - V2
+			// 			pushGoal('click_slide_change_v2');
+			// 		}
+			// 	});
+			// });
+
+			WATO.elem('#look .item__image', function(productItems){
+				if(productItems){
+					for (var l = 0; l < productItems.length; l++) {
+						var productItem = productItems[l];
+						productItem.setAttribute('data-index', (l+1));
+						productItem.addEventListener('click', function(){
+							pushGoalAgain('click_ctl_' + this.getAttribute('data-index'));
+							setSegment('32891');
+						});
 					}
-				});
+				}
 			});
+			// WATO.elem(() => {
+			// 	return WATO.qs('#kk_ctlwrapper') && typeof jQuery === "function"
+			// }, (result) => {
+			// 	if(!result) return;
+			// 	jQuery('#kk_ctlwrapper').on('drag', function() {
+			// 		console.log("touchstart");
+			// 		// pushGoal('click_slide_change_v2');
+			// 	});
+			// });
+
+
+
+			// PS 03 - Segment: hat auf ein Produkt aus Slider geklickt
+			console.log('document.location.search.indexOf("ps03=true") !== -1: ', document.location.search.indexOf("ps03=true") !== -1);
+			if(document.location.search.indexOf("ps03=true") !== -1){
+				setSegment('32889');
+			}
+
+			// PS 03 - Segment: Reco-Produkt auf PDS geklickt
+			WATO.elem('#ecRecommendationsContainer .item__image', function(productItemsReco){
+				if(productItemsReco){
+					for (var m = 0; m < productItemsReco.length; m++) {
+						productItemsReco[m].addEventListener('click', function(){
+							setSegment('32890');
+						});
+					}
+				}
+			});
+
 		} else if(PATHNAME.indexOf("/c/") !== -1){
 
 			WATO.ready(() => {
@@ -240,7 +290,6 @@
 			}, function(isLoadedEconda){
 				if(isLoadedEconda){
 					// Wenn Econda geladen ist kann der Call abgeschickt werden
-
 
 					var tempCat = window.location.pathname.replace("/de/", "").split("/"),
 						mainCat = tempCat[0] === "sale" ? ucFirst(tempCat[1]) : ucFirst(tempCat[0]);
@@ -402,11 +451,19 @@
 										// KK: PS03: Klick auf das 3. Produkt aus Slide-Element
 										// KK: PS03: Klick auf das 4. Produkt aus Slide-Element
 										pushGoalAgain('click_slide_' + cellIndex);
-									}).on('scroll', function() {
+									}).on('dragStart', function() {
 										if(!scrollGoalSend){
 											scrollGoalSend = true;
 											// KK: PS03: Klick auf Pfeil auf der rechten / linken Seite - PDL
 											pushGoal('click_slide_change');
+										}
+									});
+									WATO.elem('#kk_crossprods button.next', function(nextButton){
+										if(nextButton){
+											nextButton[0].addEventListener('click', function(){
+												// KK: PS03: Klick auf Pfeil auf der rechten / linken Seite - PDL
+												pushGoal('click_slide_change');
+											});
 										}
 									});
 

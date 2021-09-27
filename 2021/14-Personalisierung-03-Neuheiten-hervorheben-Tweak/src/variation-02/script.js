@@ -16,7 +16,7 @@
 
 	/*jshint loopfunc: true */
 
-	WATO.ps03tweak(1);
+	WATO.ps03tweak();
 	WATO.setSegmentByProfile();
     WATO.ps03globalgoals();
 
