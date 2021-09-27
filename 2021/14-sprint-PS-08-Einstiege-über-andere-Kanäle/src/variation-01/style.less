@@ -22,15 +22,20 @@
     }
   }
   .js_backstopWrapper .pds-cockpit__ratingSummaryWrapper {
-    flex: 0 0 35%;
-    max-width: 35%;
+    @media (max-width: 480px){
+      flex: 0 0 35%;
+      max-width: 35%;
+    }
+
   }
   .js-badges-container {
     align-items: center;
-    flex: 0 0 65% !important;
-    max-width: 65% !important;
     display: flex;
     flex-wrap: wrap;
+    @media (max-width: 480px){
+      flex: 0 0 65% !important;
+      max-width: 65% !important;
+    }
     .pds-cockpit__badge {
       margin-right: 6px;
       opacity: 0;

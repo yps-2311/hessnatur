@@ -16,6 +16,7 @@
 
         boxTxtContent,
         boxBadgeUrl,
+        segmentID,
 
         badgeSaleUrl = 'https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/overlay_sale.svg',
         badgeKundenfavoritUrl = 'https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2021/ps08-einstiege-aus-anderen-kan%C3%A4len/favorit.svg',
@@ -25,7 +26,7 @@
         // Table with all messages to displaying
         messageByCat = {
             'baby': {
-                'Aktion': [badgeAktionUrl, 'Bio-Kindermode aus Naturfasern'],
+                'Aktion': [badgeAktionUrl, 'Bio-Kindermode aus Naturfasern<br><b>15% Rabatt mit Code KIDS21</b>'],
                 'Sale': [badgeSaleUrl, 'Bio-Kindermode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
                 'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Kindermode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Bio-Kindermode aus Naturfasern<br><b>Neu im Sortiment</b>'],
@@ -235,42 +236,48 @@
                         });
 
 
+
                         if (badges.includes('15prozent')) {
                             boxBadgeUrl = messageByCat[currentCategory]['Aktion'][0];
                             boxTxtContent = messageByCat[currentCategory]['Aktion'][1];
-                            // WATO.qs('img[src*="15Prozent"]').classList.add('kk-hidden');
+
                             removeClass('.js-badges-container img:not(img[src*="15Prozent"])');
+                            segmentID = '32896';
+
                         } else if (badges.includes('sale')) {
                             boxBadgeUrl = messageByCat[currentCategory]['Sale'][0];
                             boxTxtContent = messageByCat[currentCategory]['Sale'][1];
+                            segmentID = '32895';
 
-                            // WATO.qs('img[src*="sale"]').classList.add('kk-hidden');
                             removeClass('.js-badges-container img:not(img[src*="sale"])');
 
                         } else if (badges.includes('Kundenfavorit')) {
                             boxBadgeUrl = messageByCat[currentCategory]['Kundenfavorit'][0];
                             boxTxtContent = messageByCat[currentCategory]['Kundenfavorit'][1];
+                            segmentID = '32894';
 
-                            // WATO.qs('img[src*="favorit"]').classList.add('kk-hidden');
                             removeClass('.js-badges-container img:not(img[src*="favorit"])');
 
                         } else if (badges.includes('neu')) {
                             boxBadgeUrl = messageByCat[currentCategory]['Neu'][0];
                             boxTxtContent = messageByCat[currentCategory]['Neu'][1];
+                            segmentID = '32892';
 
-                            // WATO.qs('img[src*="neu"]').classList.add('kk-hidden');
+
                             removeClass('.js-badges-container img:not(img[src*="neu"])');
 
                         } else {
                             boxBadgeUrl = messageByCat[currentCategory]['Allgemein'][0];
                             boxTxtContent = messageByCat[currentCategory]['Allgemein'][1];
                             WATO.qs('.kk-nachhaltig').classList.add('kk-hidden');
+                            segmentID = '32893';
+
                             removeClass('.js-badges-container img');
                         }
 
                         badgesContainer.classList.remove('kk-hidden');
 
-                        boxBadgeUrl = boxBadgeUrl === 'Nachhaltig' ? '<div class="kk-badge">' + boxBadgeUrl + '</div>' : '<img class="kk-badge" src="' + boxBadgeUrl + '"/>';
+                        boxBadgeUrl = boxBadgeUrl === 'Nachhaltig' ? '<div data-segment-id="'+ segmentID +'" class="kk-badge">' + boxBadgeUrl + '</div>' : '<img data-segment-id="'+ segmentID +'" class="kk-badge" src="' + boxBadgeUrl + '"/>';
 
                         if (window.innerWidth > 540) {
                             WATO.qs('.pds-cockpit__productName', badgesContainer.closest('.pds-cockpit__wrapper')).insertAdjacentHTML("afterend",
@@ -282,7 +289,7 @@
                                         pdsWrapper = pdsWrapper[0];
                                         pdsWrapper.insertAdjacentHTML("afterend",
                                             '<div class="kk-box">' + boxBadgeUrl + '<div>' + boxTxtContent +
-                                            '</div><img class="kk-btn-close" src="https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2021/ps08-einstiege-aus-anderen-kan%C3%A4len/close.svg"/> </div>');
+                                            '</div><img class="kk-btn-close" src="https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2021/ps08-einstiege-aus-anderen-kan%C3%A4len/close.svg"/></div>');
 
                                         WATO.qs('.kk-btn-close').addEventListener('click', function (e) {
                                             this.parentElement.classList.add('slide-out');
@@ -332,6 +339,28 @@
         removeElem(WATO.qs('.kk-nachhaltig'));
         removeElem(WATO.qs('.kk-badge'));
         displyBadges();
+    });
+
+    var observer = new window.IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+
+                console.log('segment :', entry.target, entry.target.dataset.segmentId );
+                window.iridion.push(['segment', entry.target.dataset.segmentId]);
+                observer.disconnect();
+
+            }
+        });
+    }, {
+        root: null,
+        rootMargin: "0px",
+        threshold: 1
+    });
+
+    WATO.elem('.kk-badge', function (badge) {
+        if (badge) {
+            observer.observe(badge[0]);
+        }
     });
 
 
