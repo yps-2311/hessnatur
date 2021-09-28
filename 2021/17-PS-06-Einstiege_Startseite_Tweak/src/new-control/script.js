@@ -15,5 +15,4 @@
     window.iridion.econda.push(["PS06_3_Tweak", "V0"]);
 
     WATO.PS06_Tweak_Goals();
-
 })(new window.WATO());

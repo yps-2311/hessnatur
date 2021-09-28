@@ -363,7 +363,7 @@ window.iridion = window.iridion || [];
 				headline[0].insertAdjacentHTML("afterend",
 					'<div id="kk_insertion">' +
 						'<div class="lpmSeparator">&nbsp;</div>' +
-						initKkHeadline("kk_Tendencies_header",(variation === 1 ? "Aktuelle Tendencies" : userAlignment + ' Basics aus Bio-Baumwolle')) +
+						initKkHeadline("kk_Tendencies_header",(variation === 1 ? "NACHHALTIGE PRODUKTE FÜR SIE AUSGEWÄHLT" : userAlignment + ' Basics aus Bio-Baumwolle')) +
 						initKkSliderContainer("kk_Tendencies_content") +
 						initKkHeadline("kk_popular_header","Beliebte Kategorien", ref, userAlignment) +
 						'<div id="kk_chosen_user" class="kk_container">' +

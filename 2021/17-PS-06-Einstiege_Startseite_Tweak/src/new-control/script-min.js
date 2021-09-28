@@ -1,1 +1,0 @@
-!function(i){"use strict";window.iridion.econda.push(["PS06_3_Tweak","V0"]),i.PS06_Tweak_Goals()}(new window.WATO);
