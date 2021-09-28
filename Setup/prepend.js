@@ -236,6 +236,15 @@ window.iridion.econda = (function(window){
             window.document.cookie = "iridion_exclude=true; expires=Thu, 18 Dec 2022 12:00:00 UTC; domain=.hessnatur.com; path=/";
         }
     } catch(e){}
+
+
+
+    try {
+        if(!getCookie('iridion_session_lp')) {
+            window.document.cookie = "iridion_session_lp="+window.location.pathname+"; domain=.hessnatur.com; path=/";
+            setSegment(32897);
+        }
+    } catch(e){}
     
     try {
 

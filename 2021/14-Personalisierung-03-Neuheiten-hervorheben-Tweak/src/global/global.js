@@ -54,7 +54,7 @@
 		}
 	};
 
-	WATO.prototype.ps03globalgoals = function(){
+	WATO.prototype.ps03globalgoals = function(variante){
 
 		function pushGoal(key, value) {
 
@@ -63,8 +63,6 @@
 			if(value){
 				payload.push(value);
 			}
-
-			console.log('payload: ', payload);
 			window.iridion.push(payload);
 		}
 
@@ -72,7 +70,7 @@
 			window.iridion.push(['goal', 'ps03_' + key, '', true]);
 		}
 		function setSegment(key) {
-			if(window.iridion.push(['hasSegment', key])){
+			if(!window.iridion.push(['hasSegment', key])){
 				window.iridion.push(["segment", key]);
 			}
 		}
@@ -81,13 +79,10 @@
 			PATHNAME = location.pathname; 
 
 		if(PATHNAME.indexOf("/p/") !== -1){
-			console.log("PDS");
 
 			WATO.elem('img[src*="/overlay_neu.svg"]', function(hasNewBadge){
-				console.log("hasNewBadge ", hasNewBadge);
 				if(hasNewBadge){
 					WATO.ajaxCallback('/cart/add', function(){
-						console.log("ajax /cart/add");
 						pushGoal('newProductAddToCart');
 					});
 				}
@@ -111,19 +106,8 @@
 			// 		}
 			// 	});
 			// });
+			
 
-			WATO.elem('#look .item__image', function(productItems){
-				if(productItems){
-					for (var l = 0; l < productItems.length; l++) {
-						var productItem = productItems[l];
-						productItem.setAttribute('data-index', (l+1));
-						productItem.addEventListener('click', function(){
-							pushGoalAgain('click_ctl_' + this.getAttribute('data-index'));
-							setSegment('32891');
-						});
-					}
-				}
-			});
 			// WATO.elem(() => {
 			// 	return WATO.qs('#kk_ctlwrapper') && typeof jQuery === "function"
 			// }, (result) => {
@@ -135,23 +119,43 @@
 			// });
 
 
+			// CTL Items
+			WATO.elem('#look .item__image', function(productItems){
+				if(productItems && variante !== 1){
+					for (var l = 0; l < productItems.length; l++) {
+						var productItem = productItems[l];
+						productItem.setAttribute('data-index', (l+1));
+						productItem.addEventListener('click', function(){
+							pushGoalAgain('click_ctl_' + this.getAttribute('data-index'));
+							setSegment('32891');
+						});
+					}
+				}
+			});
+
 
 			// PS 03 - Segment: hat auf ein Produkt aus Slider geklickt
-			console.log('document.location.search.indexOf("ps03=true") !== -1: ', document.location.search.indexOf("ps03=true") !== -1);
+			// console.log('PS 03 - Segment: hat auf ein Produkt aus Slider geklickt: ', document.location.search.indexOf("ps03=true") !== -1);
 			if(document.location.search.indexOf("ps03=true") !== -1){
 				setSegment('32889');
 			}
 
 			// PS 03 - Segment: Reco-Produkt auf PDS geklickt
-			WATO.elem('#ecRecommendationsContainer .item__image', function(productItemsReco){
-				if(productItemsReco){
-					for (var m = 0; m < productItemsReco.length; m++) {
-						productItemsReco[m].addEventListener('click', function(){
-							setSegment('32890');
-						});
-					}
-				}
-			});
+			// console.log('PS 03 - Segment: Reco-Produkt auf PDS geklickt: ', document.location.search.indexOf("emcs1=91_ARP_Produktdetailseite") !== -1);
+			// if(document.location.search.indexOf("emcs1=91_ARP_Produktdetailseite") !== -1){
+			// 	setSegment('32890');
+			// }
+			
+			// WATO.elem('#ecRecommendationsContainer .item__image', function(productItemsReco){
+			// 	if(productItemsReco){
+			// 		console.log('productItemsReco: ', productItemsReco);
+			// 		for (var m = 0; m < productItemsReco.length; m++) {
+			// 			productItemsReco[m].addEventListener('click', function(){
+			// 				setSegment('32890');
+			// 			});
+			// 		}
+			// 	}
+			// });
 
 		} else if(PATHNAME.indexOf("/c/") !== -1){
 
@@ -356,12 +360,12 @@
 														}
 													}
 												} catch(error) {
-													console.log('Error: ', error);
+													// console.log('Error: ', error);
 													window.iridion.push(['goal', 'error_setup', error.toString()]);
 												}
 											});
 										}).catch((error) => {
-											console.log('Error: ', error);
+											// console.log('Error: ', error);
 											window.iridion.push(['goal', 'error_setup', error.toString()]);
 										});
 
@@ -533,7 +537,7 @@
 
 
 					} catch (error) {
-						console.log('Error: ', error);
+						// console.log('Error: ', error);
 						window.iridion.push(['goal', 'error_setup', error.toString()]);
 					}
 				}

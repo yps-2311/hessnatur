@@ -121,13 +121,12 @@
 									// KK: PS03: Klick auf das 3. Produkt aus Reco-Element
 									// KK: PS03: Klick auf das 4. Produkt aus Reco-Element
 									pushGoalAgain('click_product_' + (cellIndex + 1));
-									window.iridion.push(["segment", '32891']);
+									window.iridion.push(["segment", '32890']);
 								});
 
 								flickotySlider.on('dragStart', function() {
 									pushGoal('click_product_change');
 								});
-
 								
 								// var scrollGoalSend = false;
 								// flickotySlider.on('scroll', function() {
