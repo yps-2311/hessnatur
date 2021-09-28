@@ -25,7 +25,6 @@ window.iridion = window.iridion || [];
     }
 
 	function pushGoal(key, value, sendOnNextPageView) {
-		console.log("pushGoal", key, value, sendOnNextPageView);
 
 		var props = ['goal', 'ps06_tweak_' + key];
 
@@ -161,8 +160,6 @@ window.iridion = window.iridion || [];
 
 		CATEGORY_AFFINITY = CATEGORY_AFFINITY.replace(/"/g, '');
 
-		console.log("PS06 Tweak");
-	
 
 		var IMG_PATH = "https://media.hessnatur.com/kk/2021/ps06-startseite/";
 		var DOMAIN = "https://www.hessnatur.com/de/";
@@ -256,9 +253,6 @@ window.iridion = window.iridion || [];
 			//var product = dataTendencies[category].response;
 	
 			if (/*product*/item /*&& product.availableAT && count < MaxTendenciesCounter*/) {
-				console.log("myitem", item);
-				
-
 				var price = items[item].price/*.toFixed(2)*/;
 				var prevPrice = items[item].price_prev;
 				var link = items[item].deeplink/*permalink*/;
@@ -399,9 +393,7 @@ window.iridion = window.iridion || [];
 					}, function(oneImgReady){
 						if(oneImgReady && window.innerWidth >= 600){
 							initFlickity(popularities);
-							
-						}
-						else{
+						} else{
 							//console.log('popularities.childNodes', popularities.childNodes);
 							popularities.childNodes.forEach(function(node,index){
 								node.addEventListener('click',function(){
@@ -433,12 +425,8 @@ window.iridion = window.iridion || [];
 				typeof window.econda.recengine.Widget !== "undefined"
 			);
 		},function(){
-			console.log("c1");
-
 
 			WATO.ajaxCallback(`https://widgets.crosssell.info/eps/crosssell/recommendations/${econdaAccountID}.do?`, function (rawData) {
-
-				console.log("callback");
 
 				if(alreadyInitialized){
 					return;
@@ -482,8 +470,6 @@ window.iridion = window.iridion || [];
 			} catch (error) {
 				console.log("error:",error);
 			}
-
-			
 		});
 
 		WATO.elem(".lpmSeparator", function(spaceing) {
