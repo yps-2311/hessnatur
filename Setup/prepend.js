@@ -241,10 +241,18 @@ window.iridion.econda = (function(window){
 
     try {
         if(!getCookie('iridion_session_lp')) {
-            window.document.cookie = "iridion_session_lp="+window.location.pathname+"; domain=.hessnatur.com; path=/";
-            setSegment(32897);
+            var pathNameURL = window.location.pathname;
+            window.document.cookie = "iridion_session_lp="+pathNameURL+"; domain=.hessnatur.com; path=/";
+
+            if(pathNameURL.indexOf("/p/") !== -1){
+                setSegment(32897);
+            }else{
+                removeSegment(32897);
+            }
         }
-    } catch(e){}
+    } catch(e){
+    }
+    
     
     try {
 

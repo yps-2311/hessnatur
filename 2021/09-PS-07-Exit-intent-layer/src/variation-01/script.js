@@ -40,6 +40,7 @@
 	// 		}
 	// 	}
 	// });
+	
 
 	if(window.innerWidth > 1023){
 
@@ -55,11 +56,11 @@
 					'<div class="reveal-overlay kk_nlmodal">'+
 						'<div id="availability-matrix" class="availability-matrix reveal" data-reveal="wlkcnt-reveal" data-close-on-click="true" data-animation-in="fade-in" data-animation-out="fade-out" role="dialog" aria-hidden="false" data-yeti-box="availability-matrix" data-resize="availability-matrix" style="display: block; top: 185px;" tabindex="-1">'+
 							'<div class="row">'+
-								'<div class="small-5">'+
-									'<img src="https://media.hessnatur.com/kk/2021/ps07-exitintent/modalbg.jpg">'+
+								'<div class="kk_left">'+
+									// '<img src="https://media.hessnatur.com/kk/2021/ps07-exitintent/modalbg.jpg">'+
 									'<div class="kk_badge">10 €<span>Gutschein</span></div>'+
 								'</div>'+
-								'<div class="column small-7">'+
+								'<div class="column kk_right">'+
 									'<p>Jetzt zum Newsletter anmelden</p>'+
 									'<h4>10 € GUTSCHEIN sichern</h4>'+
 									'<p>und über Angebote, Neuheiten & mehr<br>informiert werden.</p>'+
@@ -119,8 +120,6 @@
 
 					WATO.qs('.close-button', modal).addEventListener('click', function(){
 						var replacedNL = WATO.qs('#command', modal);
-
-						console.log("sdfasdfas");
 
 						pushGoal("kk_ps07_close");
 

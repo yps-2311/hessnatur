@@ -34,13 +34,13 @@
 		}, function(ouibounceReady){
 			if(ouibounceReady){
 
-				console.log("aggressive", true);
+				console.log("aggressive", false);
 
 				// Das Ouibounce-Script reagiert auf ein Exitintent 
 				// beim verlassen des Cursors nach oben aus dem Browser
 				window.ouibounce(false, {
 					callback,
-					aggressive: true,
+					aggressive: false,
 					cookieExpire: 30,
 					timer: 0
 				});
