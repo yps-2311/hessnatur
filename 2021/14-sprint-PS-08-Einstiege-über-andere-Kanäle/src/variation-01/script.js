@@ -166,13 +166,10 @@
 
     function removeClass(selector){
 
-        WATO.elem(selector, function (elem) {
-            if (elem){
-                Array.prototype.forEach.call(elem, function (el) {
-                    el.classList.remove('kk-hidden');
-                    el.classList.add('kk-visible');
-                })
-            }
+        WATO.qsa(selector).forEach(function (el) {
+            console.log(el,'visible');
+            el.classList.remove('kk-hidden');
+            el.classList.add('kk-visible');
         })
 
     }
@@ -214,9 +211,6 @@
                             }
                         });
 
-
-
-
                         WATO.qsa('img', badgesContainer).forEach(function (imgElem) {
 
                             //get type of currents badges
@@ -233,6 +227,7 @@
                             }
 
                             imgElem.classList.add('kk-hidden');
+
                         });
 
 
@@ -313,6 +308,11 @@
                             }
 
                         }
+                        WATO.elem('.kk-badge', function (badge) {
+                            if (badge) {
+                                observer.observe(badge[0]);
+                            }
+                        });
 
                     }
 
@@ -328,16 +328,14 @@
      * @param el
      */
     function removeElem(el){
-        if (el){
-            el.remove();
-        }
+        WATO.qs(el) !== null ? WATO.qs(el).remove() : console.log("can't remove it") ;
     }
 
     // Color change of the product
     WATO.ajax("reload?", function() {
-        removeElem( WATO.qs('.kk-box'));
-        removeElem(WATO.qs('.kk-nachhaltig'));
-        removeElem(WATO.qs('.kk-badge'));
+        removeElem('.kk-box');
+        removeElem('.kk-nachhaltig');
+        // removeElem('.kk-badge');
         displyBadges();
     });
 
@@ -347,7 +345,6 @@
 
                 console.log('segment :', entry.target, entry.target.dataset.segmentId );
                 window.iridion.push(['segment', entry.target.dataset.segmentId]);
-                observer.disconnect();
 
             }
         });
@@ -357,11 +354,6 @@
         threshold: 1
     });
 
-    WATO.elem('.kk-badge', function (badge) {
-        if (badge) {
-            observer.observe(badge[0]);
-        }
-    });
 
 
 })(new window.WATO());
