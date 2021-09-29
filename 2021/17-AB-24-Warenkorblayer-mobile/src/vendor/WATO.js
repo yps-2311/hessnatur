@@ -265,13 +265,13 @@
         XMLHttpRequest.prototype.open = function (method, uri, async, user, pass) {
 
             this.addEventListener("loadend", function () {
-                var _that = this;
-                if (_that.readyState === 4) {
+                // var _that = this;
+                if (this.readyState === 4) {
                     
                     if (uri.indexOf(url) !== -1) {
 
                         if (typeof callback === "function") {
-                            callback(_that);
+                            callback(); // _that
                         }
                     }
                 }

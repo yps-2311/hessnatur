@@ -37,37 +37,51 @@
 
 		thisTarget.classList.toggle('kk_open');
 
-		var cltWrapper = thisTarget.nextElementSibling,
-			existsData = productsInCart[parseInt(cltWrapper.getAttribute('data-id'))];
-
-		if(!cltWrapper.innerHTML.length && existsData){
-			existsData.forEach(function(thisID){
-
-				WATO.xhr_get('https://products.hessnatur.com/products/' + thisID, function (dataCTLProduct) {
-					if (dataCTLProduct) {
-						var ctlJSON = JSON.parse(dataCTLProduct).products[0];
-
-						cltWrapper.insertAdjacentHTML('beforeend', 
-							'<a href="'+ctlJSON.permalink+'" class="item__image">'+
-								'<img src="'+(typeof ctlJSON.imageOnlyProduct !== "undefined" ? ctlJSON.imageOnlyProduct : ctlJSON.image)+'" alt="'+ctlJSON.name+'" title="'+ctlJSON.name+'">'+
-								'<div class="item__desc h-smallOffset-top-outer text-left">'+
-									'<span class="desc-name">'+ctlJSON.name+
-									'<div class="desc-price">'+
-										'<span class="price light">'+String(ctlJSON.price).replace(".",",")+'&nbsp;€</span>'+
+		if(!thisTarget.classList.contains('kk_requestIsSent')){
+			addClass(thisTarget, "kk_requestIsSent");
+	
+			var cltWrapper = thisTarget.nextElementSibling,
+				existsData = productsInCart[parseInt(cltWrapper.getAttribute('data-id'))];
+	
+			if(!cltWrapper.innerHTML.length && existsData){
+				existsData.forEach(function(thisID){
+	
+					WATO.xhr_get('https://products.hessnatur.com/products/' + thisID, function (dataCTLProduct) {
+						if (dataCTLProduct) {
+							var ctlJSON = JSON.parse(dataCTLProduct).products[0],
+								discountPrice = String(ctlJSON.price_prev).replace(".",","),
+								normalPrice = String(ctlJSON.price).replace(".",",");
+	
+							cltWrapper.insertAdjacentHTML('beforeend', 
+								'<a href="'+ctlJSON.permalink+'" class="item__image">'+
+									'<img src="'+(typeof ctlJSON.imageOnlyProduct !== "undefined" ? ctlJSON.imageOnlyProduct : ctlJSON.image)+'" alt="'+ctlJSON.name+'" title="'+ctlJSON.name+'">'+
+									'<div class="item__desc h-smallOffset-top-outer text-left">'+
+										'<span class="desc-name">'+ctlJSON.name+
+										'<div class="desc-price">'+
+											(
+												discountPrice !== "0" ? 
+												'<span class="price light special">Ab&nbsp;'+String(normalPrice).replace(".",",")+'&nbsp;€</span>'+
+												'<span class="price light full">'+discountPrice+'&nbsp;€</span>' : 
+												'<span class="price light">'+normalPrice+'&nbsp;€</span>'
+											)+
+										'</div>'+
 									'</div>'+
-								'</div>'+
-							'</a>'
-						);
-						WATO.qs('.item__image:last-child', cltWrapper).addEventListener('click', function(){
-							WATO.goalPush("kk_ab24_ctlprod", true);
-						});
-					}
+								'</a>'
+							);
+							WATO.qs('.item__image:last-child', cltWrapper).addEventListener('click', function(){
+								WATO.goalPush("kk_ab24_ctlprod", true);
+							});
+						}
+					});
 				});
-			});
+			}
 		}
+
+		
 	}
 
 	function setCTL(isAddedToCart) {
+		console.log("setCTL");
 		// Complete the Look unter die Produkte im Mini-WK bauen
 		WATO.elem('#offCanvasMiniCartWrapper > .scrollContainer > .columns > .columns > .row:not(.collapse)', function(productList){
 			if(productList){
@@ -76,7 +90,7 @@
 					var product = productList[i],
 						productID = WATO.qs('.flyout-image a', product).getAttribute('href').split("/p/")[1].substring(0,7);
 
-					if(productsInCart && productsInCart[parseInt(productID)]){
+					if(productsInCart && productsInCart[parseInt(productID)] && !WATO.qs('.kk_cltwrapper', product)){
 						WATO.qs('.h-list--horizontal', product).insertAdjacentHTML('afterend', 
 							'<div class="kk_cltwrapper">'+
 								'<div class="kk_clt_title"></div>'+ // Komplettes Outfit ansehen

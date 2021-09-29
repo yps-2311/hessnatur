@@ -54,6 +54,9 @@
 					'<div class="row kk_goodchoice"><b>Gute Wahl,&nbsp;</b>der Artikel liegt in Ihrem Warenkorb.</div>'+
 					(diesesProduct ? diesesProduct.outerHTML : '')+
 					(ctlItems.length > 0 ? // Nur anzeigen wenn es CLT gibt
+						'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="19" xmlns:v="https://vecta.io/nano">'+
+							'<path d="M28.469 13.401C26.59 8.559 22.659 4.507 17.86 2.52 12.323.227 5.628.351.384 3.39c-.678.393-.177 1.459.561 1.243 5.166-1.51 10.783-1.94 15.835.272 4.097 1.794 7.377 5.083 9.07 9.148-.495-.251-1-.486-1.52-.7-1.56-.64-2.746 1.488-1.235 2.353l4.782 2.74c.59.338 1.515.083 1.794-.559.796-1.831 1.415-3.722 1.824-5.676.351-1.674-2.238-2.275-2.589-.598a27.56 27.56 0 0 1-.438 1.789z" fill="#393939" fill-rule="evenodd"/>'+
+						'</svg>'+
 						'<h4 class="columns">komplettes Outfit</h4>'+
 						'<div class="kk_basket_ctl columns">'+
 							allItemsHTML+
