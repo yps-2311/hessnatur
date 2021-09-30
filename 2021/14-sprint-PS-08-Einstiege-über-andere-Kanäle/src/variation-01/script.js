@@ -308,7 +308,7 @@
                             }
 
                         }
-                        WATO.elem('.kk-badge', function (badge) {
+                        WATO.elem('.kk-badge:not(.kk-hidden)', function (badge) {
                             if (badge) {
                                 observer.observe(badge[0]);
                             }
