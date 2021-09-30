@@ -25,7 +25,6 @@ window.iridion = window.iridion || [];
     }
 
 	function pushGoal(key, value, sendOnNextPageView) {
-		console.log("pushGoal", key, value, sendOnNextPageView);
 
 		var props = ['goal', 'ps06_tweak_' + key];
 
@@ -161,8 +160,6 @@ window.iridion = window.iridion || [];
 
 		CATEGORY_AFFINITY = CATEGORY_AFFINITY.replace(/"/g, '');
 
-		console.log("PS06 Tweak");
-	
 
 		var IMG_PATH = "https://media.hessnatur.com/kk/2021/ps06-startseite/";
 		var DOMAIN = "https://www.hessnatur.com/de/";
@@ -362,7 +359,7 @@ window.iridion = window.iridion || [];
 				headline[0].insertAdjacentHTML("afterend",
 					'<div id="kk_insertion">' +
 						'<div class="lpmSeparator">&nbsp;</div>' +
-						initKkHeadline("kk_Tendencies_header",(variation === 1 ? "Aktuelle Tendencies" : userAlignment + ' Basics aus Bio-Baumwolle')) +
+						initKkHeadline("kk_Tendencies_header",(variation === 1 ? "NACHHALTIGE PRODUKTE FÜR SIE AUSGEWÄHLT" : userAlignment + ' Basics aus Bio-Baumwolle')) +
 						initKkSliderContainer("kk_Tendencies_content") +
 						initKkHeadline("kk_popular_header","Beliebte Kategorien", ref, userAlignment) +
 						'<div id="kk_chosen_user" class="kk_container">' +
@@ -398,9 +395,7 @@ window.iridion = window.iridion || [];
 					}, function(oneImgReady){
 						if(oneImgReady && window.innerWidth >= 600){
 							initFlickity(popularities);
-							
-						}
-						else{
+						} else{
 							//console.log('popularities.childNodes', popularities.childNodes);
 							popularities.childNodes.forEach(function(node,index){
 								node.addEventListener('click',function(){
@@ -432,12 +427,8 @@ window.iridion = window.iridion || [];
 				typeof window.econda.recengine.Widget !== "undefined"
 			);
 		},function(){
-			console.log("c1");
-
 
 			WATO.ajaxCallback(`https://widgets.crosssell.info/eps/crosssell/recommendations/${econdaAccountID}.do?`, function (rawData) {
-
-				console.log("callback");
 
 				if(alreadyInitialized){
 					return;
@@ -481,8 +472,6 @@ window.iridion = window.iridion || [];
 			} catch (error) {
 				console.log("error:",error);
 			}
-
-			
 		});
 
 		WATO.elem(".lpmSeparator", function(spaceing) {
