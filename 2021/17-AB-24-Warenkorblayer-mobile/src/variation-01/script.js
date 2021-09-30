@@ -31,6 +31,11 @@
 			elem.classList.remove(thisclassname);
 		}
 	}
+	function setSegment(thisID) {
+		if(!window.iridion.push(['hasSegment', String(thisID)])){
+			window.iridion.push(['segment', String(thisID)]);
+		}
+    }
 
 	function openCTL(e) {
 		var thisTarget = typeof e.target !== "undefined" ? e.target : e;
@@ -85,22 +90,46 @@
 		// Complete the Look unter die Produkte im Mini-WK bauen
 		WATO.elem('#offCanvasMiniCartWrapper > .scrollContainer > .columns > .columns > .row:not(.collapse)', function(productList){
 			if(productList){
+				console.log('productList: ', productList);
 
 				for (var i = 0; i < productList.length; i++) {
 					var product = productList[i],
-						productID = WATO.qs('.flyout-image a', product).getAttribute('href').split("/p/")[1].substring(0,7);
+						productID = WATO.qs('.flyout-image a', product).getAttribute('href').split("/p/")[1].substring(0,7),
+						ctlProductIDs = productsInCart[parseInt(productID)];
+					
+					console.log('product: ', product);
+					console.log('ctlProductIDs: ', ctlProductIDs);
+					console.log(1);
 
-					if(productsInCart && productsInCart[parseInt(productID)] && !WATO.qs('.kk_cltwrapper', product)){
+					if(productsInCart && ctlProductIDs && !WATO.qs('.kk_cltwrapper', product)){
+						console.log(2);
 						WATO.qs('.h-list--horizontal', product).insertAdjacentHTML('afterend', 
 							'<div class="kk_cltwrapper">'+
 								'<div class="kk_clt_title"></div>'+ // Komplettes Outfit ansehen
 								'<div class="kk_basket_ctl" data-id="'+productID+'"></div>'+
 							'</div>'
 						);
-
-						// Beim in den Warenkorb legen wird das erste CTL angezeigt
+						
 						if(i === 0 && isAddedToCart){
+							// Beim in den Warenkorb legen wird das erste CTL angezeigt
 							openCTL(WATO.qs('.kk_clt_title'));
+
+							console.log('ctlProductIDs.length: ', ctlProductIDs.length);
+							if(ctlProductIDs){
+								switch (ctlProductIDs.length) {
+									case 1:
+										setSegment("32898");
+										break;
+									case 2:
+										setSegment("32899");
+										break;
+									case 3:
+									case 4:
+									case 5:
+										setSegment("32900");
+										break;
+								}
+							}
 						}
 
 						WATO.qs('.kk_clt_title', product).addEventListener('click', openCTL);
@@ -166,6 +195,30 @@
 	});
 
 	setCTL(false);
+
+	WATO.elem('#offCanvasRight', function(offCanvasRight){
+		if(offCanvasRight){
+			offCanvasRight = offCanvasRight[0];
+
+			// eine Instanz des Observers erzeugen
+			var observer = new MutationObserver(function(mutations) {
+				mutations.forEach(function(mutation) {
+					console.log(mutation.type);
+					if(offCanvasRight.classList.contains('is-open')){
+						addClass(htmlElement, 'kk_noscroll');
+					}else{
+						removeClass(htmlElement, 'kk_noscroll');
+					}
+				});
+			});
+
+			// Konfiguration des Observers: alles melden - Änderungen an Daten, Kindelementen und Attributen
+			var config = { attributes: true, childList: false, characterData: false };
+
+			// eigentliche Observierung starten und Zielnode und Konfiguration übergeben
+			observer.observe(offCanvasRight, config);
+		}
+	});
 
 
 })(new window.WATO(), window);

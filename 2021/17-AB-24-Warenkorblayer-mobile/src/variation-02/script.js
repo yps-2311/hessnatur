@@ -28,6 +28,11 @@
 			elem.classList.remove(thisclassname);
 		}
 	}
+	function setSegment(thisID) {
+		if(!window.iridion.push(['hasSegment', String(thisID)])){
+			window.iridion.push(['segment', String(thisID)]);
+		}
+    }
 
 	// V2
 	WATO.ajax('/de/cart/add', function(){
@@ -39,6 +44,20 @@
 		
 		for (var i = 0; i < ctlItems.length; i++) {
 			allItemsHTML += ctlItems[i].outerHTML;
+		}
+
+		switch (ctlItems.length) {
+			case 1:
+				setSegment("32898");
+				break;
+			case 2:
+				setSegment("32899");
+				break;
+			case 3:
+			case 4:
+			case 5:
+				setSegment("32900");
+				break;
 		}
 
 		// Diese Klasse sorgt dafür dass im Hintergrund der Mini-WK nicht automatisch ausklappt
