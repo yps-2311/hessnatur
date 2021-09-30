@@ -98,7 +98,7 @@ window.iridion = window.iridion || [];
 
 		WATO.elem("#search_form", function(searchForm){
 			if(searchForm){
-				searchForm[0].addEventListener("submit",function(){
+				searchForm[0].addEventListener("keydown",function(){
 					pushGoal('search_form');
 				})
 			}
@@ -256,7 +256,6 @@ window.iridion = window.iridion || [];
 			//var product = dataTendencies[category].response;
 	
 			if (/*product*/item /*&& product.availableAT && count < MaxTendenciesCounter*/) {
-				console.log("myitem", item);
 				
 
 				var price = items[item].price/*.toFixed(2)*/;

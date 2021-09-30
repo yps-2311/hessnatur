@@ -1,5 +1,5 @@
 // load core and global js
-//@ codekit-prepend "../global/global.js";
+//@codekit-prepend "../global/global.js";
 
 //@code-kit append "request.min.js";
 /**
