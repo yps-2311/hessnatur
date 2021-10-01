@@ -49,6 +49,7 @@
 			if(!WATO.qs('.kk_nlmodal')){
 
 				// Segment: Wollte Seite verlassen (exit intent)
+				console.log("segment: ", "32875");
 				window.iridion.push(["segment", "32875"]);
 
 				// Modal wird eingebaut

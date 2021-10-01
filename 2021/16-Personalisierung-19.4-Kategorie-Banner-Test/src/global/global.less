@@ -5,4 +5,244 @@
 // Beispiel für die Verwendung der Variable base-url
 // background: url('@{base-url}sprite.png') no-repeat 0 0;
 
+/** BADGES **/
+// @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400&display=swap');
+
+.kk-ab19 {
+    .footerSmoBoxWrapper,
+    #toggleModel {
+        display: none;
+    }
+
+    .breadcrumb-productList .js-filter-form {
+        max-width: 30%;
+    }
+}
+
+#kk-header {
+    // min-height: 215px;
+    background: #fafafa;
+
+    .column {
+        display: flex;
+        align-items: center;
+    }
+}
+
+#kk-headline {
+    text-transform: uppercase;
+    font-family: @font-bold;
+    font-size: 2.5rem;
+    // font-size: 4rem;
+    line-height: 2.5rem;
+    // line-height: 4rem;
+    // width: 70%;
+    flex: 1 1 0px;
+}
+
+#kk-intro {
+    // padding-left: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    max-width: calc(30% + 172px);
+
+    & > div {
+        position: relative;
+    }
+
+    h1 {
+        display: none;
+    }
+
+    p {
+        line-height: 21px;
+        max-height: 85px;
+        // font-family: @font-normal;
+    }
+
+    a {
+        position: absolute;
+        right: 20px;
+        bottom: -35px;
+        font-size: 1.2rem;
+        font-family: @font-bold;
+        text-decoration: underline;
+    }
+}
+
+#kk-select {
+    // padding-right: 0;
+
+    li {
+        padding-right: 8px;
+
+        &:nth-child(1) {
+            padding-right: 12px;
+        }
+
+        label {
+            cursor: pointer;
+        }
+    }
+
+    .changeArticleViewItem {
+        display: block;
+        height: 1.53846rem;
+        width: 1.53846rem;
+        margin-top: .46154rem;
+        margin-right: 0;
+    }
+
+    .changeArticleViewItem.-icon-model {
+        background: url(https://www.hessnatur.com/_ui/responsive/common/images/icons/icon_personView.png) no-repeat 0 100%
+    }
+    
+    .changeArticleViewItem.-icon-article {
+        background: url(https://www.hessnatur.com/_ui/responsive/common/images/icons/icon_shirtView.png) no-repeat 0 100%
+    }
+    
+    .changeArticleViewItem:hover {
+        background-position: left -1.53846rem;
+        font-weight: 700
+    }
+    
+    .changeArticleViewItem:focus {
+        text-decoration: none
+    }
+
+    .kk-model-active {
+        background-position: left -1.53846rem !important;
+        font-weight: 700;
+    }
+    
+    .kk-article-active {
+        background-position: left -1.53846rem !important;
+        font-weight: 700
+    }
+}
+
+/** SEO CONTENT **/
+#kk-more {
+    position: absolute;
+    top: -240px;
+}
+
+#kk-seo {
+    position: relative;
+    margin-top: 100px;
+
+    ul li {
+        line-height: 1.69231rem;
+        letter-spacing: .005rem;
+
+        ul.nested {
+            margin-left: 1.53846rem;
+            margin-bottom: 1.53846rem;
+                
+            li, a {
+                line-height: 1.69231rem;
+                letter-spacing: .005rem;
+                color: #393939;
+            }
+        }
+    }
+
+    ul:not(.menu) li {
+        position: relative;
+        list-style: none;
+        line-height: 1.5rem;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        // font-family: @font-normal;
+
+        &:before {
+            content: " ";
+            position: absolute;
+            top: 4px;
+            left: -17px;
+            width: 15px;
+            height: 15px;
+            background: url('@{base-url}check.svg') no-repeat 0 0;
+        }
+    }
+
+    .column {
+        position: relative;
+        margin-bottom: 65px;
+
+        &:nth-child(1):before,
+        &:nth-child(2) > div:before {
+            position: absolute;
+            top: -70px;
+            content: " ";
+            width: 100%;
+            height: 1px;
+            background:#e5e4e3;
+        }
+    
+        h1, h2 {
+            margin-bottom: 1.1rem;
+            font-size: 2rem;
+            font-family: @font-bold;
+        }
+    
+        p {
+            line-height: 21px;
+            // font-family: @font-normal;
+        }
+    }
+
+    .kk-seo-img div {
+        position: relative;
+        height: 100%;
+        min-height: 150px;
+        background-repeat: no-repeat;
+        background-size: 100% auto;
+    
+        &.kk-seo-right {
+            background-position: right 0;
+        }
+    }
+}
+
+@media (max-width: 1205px) {
+    #kk-intro {
+        max-width: calc(27.3% + 172px);
+    }
+}
+@media (max-width: 680px) {
+    #kk-header {
+        // min-height: 205px;
+        flex-direction: row;
+    }
+
+    #kk-headline {
+        font-size: 3rem;
+        flex: auto;
+    }
+
+    #kk-intro {
+        padding-left: .76923rem !important;
+        justify-content: flex-start;
+
+        a {
+            left: 0;
+            right: auto;
+            font-size: 1rem;
+        }
+    } 
+
+    #kk-seo .column {
+        &.kk-seo-img {
+            margin-bottom: 25px;
+        }
+
+        &:nth-child(1):before,
+        &:nth-child(2) > div:before {
+            top: -60px;
+        }
+    }
+}
 

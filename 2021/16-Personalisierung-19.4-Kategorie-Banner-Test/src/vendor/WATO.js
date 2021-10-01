@@ -258,22 +258,20 @@
      * @param {string} url -
      * @param {function} callback -
      */
-    window.WATO.prototype.ajax = function (url, callback) {
+    /*
+    window.WATO.prototype.ajax = function(url, callback) {
 
         var request = XMLHttpRequest.prototype.open;
 
-        XMLHttpRequest.prototype.open = function (method, uri, async, user, pass) {
+        XMLHttpRequest.prototype.open = function(method, uri, async, user, pass) {
 
-            this.addEventListener("loadend", function () {
-                var _that = this;
-                if (_that.readyState === 4) {
-                    
+            this.addEventListener("loadend", function() {
+
+                if (this.readyState === 4) {
+
                     if (uri.indexOf(url) !== -1) {
-
-                        if (typeof callback === "function") {
-
-                            callback(_that);
-                        }
+                        
+                        callback();
                     }
                 }
             }, false);
@@ -281,6 +279,7 @@
             request.call(this, method, uri, async, user, pass);
         };
     };
+    */
 
     /**
      * @function getCookie
@@ -354,7 +353,7 @@
      * @param {number} width -
      * @param {function} callback
      */
-    
+    /*
 	window.WATO.prototype.exclude = function(width, callback){
 		
 		function _checkWidth() {
@@ -381,7 +380,7 @@
 			};
 		}
 	};
-	
+	*/
 
     /**
      * @function storageAvailable
@@ -415,12 +414,12 @@
      *
      * @author Lukas Dziambor
      */
-    
+    /*
 	window.WATO.prototype.reload = function(){
         location.reload();
         location.href=location.href.split('#')[0];
 	};
-    
+    */
 
     /**
      * @function offsetY
@@ -511,16 +510,16 @@
      * 
      * @author Lukas Dziambor
      */
-    
-	window.WATO.prototype.xhr_get = function(url, callback) {
+    /*
+	window.WATO.prototype.xhr_get = function(url, callback, scopedData) {
         var request = new XMLHttpRequest();
         request.open('GET', url, true);
         
         request.onload = function() {
           if (this.readyState === 4 && this.status >= 200 && this.status < 400) {
             try {
-                // var data = JSON.parse(this.response);
-                callback(this.response);
+                var data = JSON.parse(this.response);
+                callback(data, scopedData);
             }
             catch(e) {
                 callback(false);    
@@ -538,7 +537,7 @@
         // request.withCredentials = true;
         request.send();
     };
-    
+    */
 
     /**
      * @function xhr_post
