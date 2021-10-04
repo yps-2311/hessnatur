@@ -37,6 +37,17 @@
 		}
     }
 
+	function replaceImgInCart() {
+		var allCartImgs = WATO.qsa('#offCanvasMiniCartWrapper img');
+
+		for (var k = 0; k < allCartImgs.length; k++) {
+			var thisImgSrc = allCartImgs[k].getAttribute('src');
+			if(thisImgSrc.indexOf("hyb_redes_layer_thumb") !== -1){
+				allCartImgs[k].setAttribute('src', thisImgSrc.replace('hyb_redes_layer_thumb','hyb_redes_reco'));
+			}
+		}
+	}
+
 	function openCTL(e) {
 		var thisTarget = typeof e.target !== "undefined" ? e.target : e;
 
@@ -61,6 +72,11 @@
 								'<a href="'+ctlJSON.permalink+'" class="item__image">'+
 									'<img src="'+(typeof ctlJSON.imageOnlyProduct !== "undefined" ? ctlJSON.imageOnlyProduct : ctlJSON.image)+'" alt="'+ctlJSON.name+'" title="'+ctlJSON.name+'">'+
 									'<div class="item__desc h-smallOffset-top-outer text-left">'+
+										(
+											ctlJSON.sale ? 
+											'<p class="item__sale h4">Sale</p>'
+											: ''
+										)+
 										'<span class="desc-name">'+ctlJSON.name+
 										'<div class="desc-price">'+
 											(
@@ -87,34 +103,33 @@
 
 	function setCTL(isAddedToCart) {
 		console.log("setCTL");
+
 		// Complete the Look unter die Produkte im Mini-WK bauen
 		WATO.elem('#offCanvasMiniCartWrapper > .scrollContainer > .columns > .columns > .row:not(.collapse)', function(productList){
 			if(productList){
-				console.log('productList: ', productList);
+
+				replaceImgInCart();
+
+				var isTheAddedProductCTLOpen = false;
 
 				for (var i = 0; i < productList.length; i++) {
 					var product = productList[i],
 						productID = WATO.qs('.flyout-image a', product).getAttribute('href').split("/p/")[1].substring(0,7),
 						ctlProductIDs = productsInCart[parseInt(productID)];
-					
-					console.log('product: ', product);
-					console.log('ctlProductIDs: ', ctlProductIDs);
-					console.log(1);
 
 					if(productsInCart && ctlProductIDs && !WATO.qs('.kk_cltwrapper', product)){
-						console.log(2);
 						WATO.qs('.h-list--horizontal', product).insertAdjacentHTML('afterend', 
 							'<div class="kk_cltwrapper">'+
 								'<div class="kk_clt_title"></div>'+ // Komplettes Outfit ansehen
 								'<div class="kk_basket_ctl" data-id="'+productID+'"></div>'+
 							'</div>'
 						);
-						
-						if(i === 0 && isAddedToCart){
-							// Beim in den Warenkorb legen wird das erste CTL angezeigt
-							openCTL(WATO.qs('.kk_clt_title'));
 
-							console.log('ctlProductIDs.length: ', ctlProductIDs.length);
+						if(productID.indexOf(isAddedToCart) !== -1 && !isTheAddedProductCTLOpen){
+							// Beim in den Warenkorb legen wird das erste CTL angezeigt
+							openCTL(WATO.qs('.kk_clt_title', product));
+							isTheAddedProductCTLOpen = true;
+
 							if(ctlProductIDs){
 								switch (ctlProductIDs.length) {
 									case 1:
@@ -184,7 +199,7 @@
 				});
 			}
 
-			setCTL(true);
+			setCTL(prodID7);
 		}
 	});
 
