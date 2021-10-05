@@ -49,9 +49,14 @@
 	}
 
 	function openCTL(e) {
-		var thisTarget = typeof e.target !== "undefined" ? e.target : e;
+		var isAddToCart = typeof e.target !== "undefined",
+			thisTarget = isAddToCart ? e.target : e;
 
-		thisTarget.classList.toggle('kk_open');
+		if(!isAddToCart) {
+			addClass(thisTarget, 'kk_open');
+		}else{
+			thisTarget.classList.toggle('kk_open');
+		}
 
 		if(!thisTarget.classList.contains('kk_requestIsSent')){
 			addClass(thisTarget, "kk_requestIsSent");
@@ -169,15 +174,17 @@
 			);
 
 			// CLT Produkte dem LS hinzufügen
-			WATO.elem('#look .item__image', function(ctlItems){
-				if(ctlItems){
-					var ctlIDs = [];
-					for (var i = 0; i < ctlItems.length; i++) {
-						ctlIDs.push(parseInt(ctlItems[i].getAttribute('href').split("/p/")[1].substring(0,7)));
-					}
-					productsInCart[prodID7] = ctlIDs;
+			var ctlItems = WATO.qsa('#look .item__image');
+
+			if (ctlItems.length) {
+				var ctlIDs = [];
+				for (var i = 0; i < ctlItems.length; i++) {
+					ctlIDs.push(parseInt(ctlItems[i].getAttribute('href').split("/p/")[1].substring(0,7)));
 				}
-			});
+				productsInCart[prodID7] = ctlIDs;
+				console.log('prodID7: ', prodID7);
+				console.log('productsInCart[prodID7]: ', productsInCart[prodID7]);
+			}
 
 			// Im LS gespeichert
 			window.localStorage.setItem("kk_cart_ctl", JSON.stringify(productsInCart));

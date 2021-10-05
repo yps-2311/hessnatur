@@ -32,7 +32,7 @@
 			// pushSegment();
 			if(_self.qsa('#look .item__image').lenght > 0){
 				// Produkt das ein CLT hat in den Warenkorb gelegt
-				// pushSegment();
+				pushSegment('32902');
 			}
 		});
 
