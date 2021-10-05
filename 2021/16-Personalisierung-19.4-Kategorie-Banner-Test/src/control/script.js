@@ -1,5 +1,5 @@
 // load core and global js
-// @ codekit-prepend "../global/global.js";
+// @codekit-prepend "../global/global.js";
 // @ codekit-prepend "../../../debugging/enabled.js";
 
 /**
@@ -12,8 +12,8 @@
 (function(WATO) {
     "use strict";
 
-   window.iridion.econda.push(["Sprint19", "C"]);
+//    window.iridion.econda.push(["Sprint19", "C"]);
 
-   WATO.sprint19goals();
+   WATO.sprint19_4goals();
 
 })(new window.WATO());

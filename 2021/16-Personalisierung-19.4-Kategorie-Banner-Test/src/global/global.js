@@ -113,14 +113,31 @@
 
     WATO.prototype.sprint19_4 = function(variation) {
         
-        window.iridion.econda.push(["Sprint19V2", variation]);
+        // window.iridion.econda.push(["Sprint19V2", variation]);
 
         document.documentElement.classList.add('kk-ab19');
-
 
         var WATO = this;
 
         WATO.sprint19_4goals();
+
+
+
+        // Addon: offset eines Elements ermitteln damit dorthin gescrollt werden kann.
+        function getOffset(obj) {
+            var curtop = 0;
+            if (obj.offsetParent) {
+                while (obj.offsetParent) {
+                    curtop += obj.offsetTop;
+                    obj = obj.offsetParent;
+                }
+            }
+            else if (obj.y){
+                curtop += obj.y;
+            }
+            
+            return curtop;
+        }
 
         var cutTxt = function(tag) {
 
@@ -319,8 +336,18 @@
                                                             '<a href="#kk-more">MEHR ERFAHREN</a>'
                                                         );
 
-                                                        WATO.qs('a[href="#kk-more"]', kkIntro.parentNode).addEventListener('click', function(){
+                                                        WATO.qs('a[href="#kk-more"]', kkIntro.parentNode).addEventListener('click', function(e){
+                                                            e.preventDefault();
+
+                                                            var seoText = getOffset(WATO.qs('#kk-more'));
+
+                                                            window.document.documentElement.scrollTop = seoText;
+                                                            window.document.body.scrollTop = seoText;
+
+                                                            window.iridion.push(['segment', '32901']);
+
                                                             WATO.goalPush('kk19_moreClick');
+
                                                         });
 
                                                     } catch(e){
