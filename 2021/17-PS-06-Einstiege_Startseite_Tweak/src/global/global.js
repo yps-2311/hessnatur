@@ -9,9 +9,15 @@
 /*jshint loopfunc: true */
 window.iridion = window.iridion || [];
 
+/*
+WATO.exclude(1023, function () {
+	//WATO.setCookie('kk-exclude', 'true', '.hessnatur.com', true);
+	console.log("reload");
+	WATO.reload();
+});
+*/
 
 //HTML Tag nach Variante..
-
 (function(WATO){
 	"use strict";
 
@@ -25,6 +31,8 @@ window.iridion = window.iridion || [];
     }
 
 	function pushGoal(key, value, sendOnNextPageView) {
+
+		//console.log("push Goal", value);
 
 		var props = ['goal', 'ps06_tweak_' + key];
 
@@ -164,6 +172,25 @@ window.iridion = window.iridion || [];
 		var IMG_PATH = "https://media.hessnatur.com/kk/2021/ps06-startseite/";
 		var DOMAIN = "https://www.hessnatur.com/de/";
 		var WATO = this;
+
+		var oldWidth = window.innerWidth || document.body.clientWidth;
+
+		window.addEventListener('resize', function(){
+			var newWidth= window.innerWidth || document.body.clientWidth;
+			if(oldWidth >= 600 && newWidth < 600 || oldWidth < 600 && newWidth >= 600){
+				WATO.reload();
+			}
+		});
+	
+		
+		/*
+		WATO.exclude(1023, function () {
+			//WATO.setCookie('kk-exclude', 'true', '.hessnatur.com', true);
+			console.log("reload");
+			WATO.reload();
+		});
+		*/
+	
 
 		//sets count of items inside Popularity Slider
 		var MaxPopularityCounter = 6;
