@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 // @ codekit-prepend "../../../debugging/enabled.js";
 
 /**
@@ -15,7 +15,7 @@
 
 	/*jshint loopfunc: true */
 
-	// window.iridion.econda.push(["SprintPS07", "V1"]);
+	window.iridion.econda.push(["SprintPS07", "V1"]);
 
 	function pushGoal(key, sendOnNextPageView){    
 		if(sendOnNextPageView){
@@ -49,7 +49,6 @@
 			if(!WATO.qs('.kk_nlmodal')){
 
 				// Segment: Wollte Seite verlassen (exit intent)
-				console.log("segment: ", "32875");
 				window.iridion.push(["segment", "32875"]);
 
 				// Modal wird eingebaut
@@ -88,6 +87,28 @@
 
 					cta = cta[0];
 
+					var closeModal = function(status){
+						var replacedNL = WATO.qs('#command', modal);
+
+						if(status !== "success") {
+							pushGoal("kk_ps07_close");
+						}
+
+						// Buttonbeschriftung wird entfernt
+						cta.value = "";
+
+						cta.removeEventListener('click', goalClickCta);
+						inputField.removeEventListener('click', goalClickEmail);
+
+						replacedNL.setAttribute('action', replacedNL.getAttribute('action').replace("Exitintent-Anmeldung", "Footer-Anmeldung"));
+
+						// Verschoben
+						WATO.qs('.footerNewsletterWrapper .h-largeOffset-bottom-inner').insertAdjacentElement('afterend', replacedNL);
+
+						// Modal wird entfernt
+						modal.parentNode.removeChild(modal);
+					}
+
 					// Buttonbeschriftung wird eingebaut in den Originalbutton
 					cta.value = "Jetzt anmelden";
 					cta.addEventListener('click', goalClickCta);
@@ -108,34 +129,25 @@
 						WATO.elem('.js-newsletter-form-error.success', function(success){
 							if(success){
 								originalNL.classList.add('kk_success');
+								setTimeout(function(){
+									closeModal("success");
+								}, 2000);
 							}
 						});
 					});
+
+					originalNL.setAttribute('action', originalNL.getAttribute('action').replace("Footer-Anmeldung", "Exitintent-Anmeldung"));
 
 					// Das Form aus dem Footer wird ins Modal verschoben
 					WATO.qs('.kk_formspace', modal).insertAdjacentElement('afterbegin', originalNL);
 
 					// Beim schließen des Modals wird das Form wirder an seine ursprüngliche Position verschoben
-					console.log("WATO.qs('.close-button', modal)", WATO.qs('.close-button', modal));
-
-
-					WATO.qs('.close-button', modal).addEventListener('click', function(){
-						var replacedNL = WATO.qs('#command', modal);
-
-						pushGoal("kk_ps07_close");
-
-						// Buttonbeschriftung wird entfernt
-						cta.value = "";
-
-						cta.removeEventListener('click', goalClickCta);
-						inputField.removeEventListener('click', goalClickEmail);
-
-						// Verschoben
-						WATO.qs('.footerNewsletterWrapper .h-largeOffset-bottom-inner').insertAdjacentElement('afterend', replacedNL);
-
-						// Modal wird entfernt
-						modal.parentNode.removeChild(modal);
+					modal.addEventListener('click', function(e){
+						if(e.target.classList.contains('kk_nlmodal')){
+							closeModal();
+						}
 					});
+					WATO.qs('.close-button', modal).addEventListener('click', closeModal);
 				});
 			}
 		});

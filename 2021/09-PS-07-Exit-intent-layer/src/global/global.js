@@ -34,7 +34,7 @@
 		}, function(ouibounceReady){
 			if(ouibounceReady){
 
-				console.log("aggressive", false);
+				// console.log("aggressive", false);
 
 				// Das Ouibounce-Script reagiert auf ein Exitintent 
 				// beim verlassen des Cursors nach oben aus dem Browser
@@ -47,6 +47,7 @@
 			}
 		});
 
+		
 
 	};
 	
