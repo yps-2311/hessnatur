@@ -37,8 +37,15 @@
 
         _self.ready(function(){
 
+            // PS19.4: Aktions Banner geklickt
+            clickgoal(".pusActionModule", "kk19_actionbanner", false);
+
+            // AB19.4 - Nutzung der Unterkategorie mobile
+            clickgoal(".kk_subfilters li", "kk19_subcategory_used", true);
+
             // KK: PS19 - Klicks der Left Hand Navigation
             clickgoal(".sidebarNav ul a", "kk19_leftnavi", true);
+            clickgoal(".navigation-main.mobileNavigationContainer > li:first-child", "kk19_leftnavi", false);
             
             // KK: PS19 - Nutzung der Filter
             _self.elem('.gridviewProductFilterDesktopWrapper button', function(filter){
@@ -54,7 +61,7 @@
             });
 
             // KK: PS19 - Klicks auf Banner (Katbanner)
-            clickgoal(".js_backstopWrapper > .h-disp-block > a", "kk19_katbanner", true);
+            // clickgoal(".js_backstopWrapper > .h-disp-block > a", "kk19_katbanner", true);
             
             // KK: PS19 - Klick auf eines der erste 6 Produkte
             _self.elem('.gridviewProductItemWrapper', function(products){
@@ -87,13 +94,13 @@
 
             clickgoal(".shrink .changeArticleViewItem", "kk19_changeview", true);
 
-            _self.elem('#desktop__sort', function(desktopSort){
-                if(desktopSort){
-                    desktopSort[0].addEventListener('change', function(){
-                        _self.goalPush('kk19_sortchange', true);
-                    });
-                }
-            });
+            // _self.elem('#desktop__sort', function(desktopSort){
+            //     if(desktopSort){
+            //         desktopSort[0].addEventListener('change', function(){
+            //             _self.goalPush('kk19_sortchange', true);
+            //         });
+            //     }
+            // });
             
             // KK: PS19 - Verweildauer des Besuchers
             var counter = 0,
@@ -339,14 +346,16 @@
                                                         WATO.qs('a[href="#kk-more"]', kkIntro.parentNode).addEventListener('click', function(e){
                                                             e.preventDefault();
 
+                                                            // Segment: AB 19.4: Klick auf Mehr erfahren
+                                                            window.iridion.push(['segment', '32901']);
+
+                                                            // AB19.4 Klick auf Mehr erfahren
+                                                            WATO.goalPush('kk19_moreClick');
+
                                                             var seoText = getOffset(WATO.qs('#kk-more'));
 
                                                             window.document.documentElement.scrollTop = seoText;
                                                             window.document.body.scrollTop = seoText;
-
-                                                            window.iridion.push(['segment', '32901']);
-
-                                                            WATO.goalPush('kk19_moreClick');
 
                                                         });
 
