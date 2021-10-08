@@ -33,6 +33,7 @@
 			window.iridion.push(['segment', String(thisID)]);
 		}
     }
+	
 
 	// V2
 	WATO.ajax('/de/cart/add', function(){

@@ -56,6 +56,7 @@
 			addClass(thisTarget, 'kk_open');
 		}else{
 			thisTarget.classList.toggle('kk_open');
+			WATO.goalPush("kk24_toggle_ctl");
 		}
 
 		if(!thisTarget.classList.contains('kk_requestIsSent')){
@@ -102,7 +103,6 @@
 				});
 			}
 		}
-
 		
 	}
 

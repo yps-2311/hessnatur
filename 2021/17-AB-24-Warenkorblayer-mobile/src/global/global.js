@@ -28,19 +28,21 @@
 
 		_self.ajax('/de/cart/add', function(){
 			// Add to Cart
-
-			// pushSegment();
-			if(_self.qsa('#look .item__image').lenght > 0){
+			if(_self.qsa('#look .item__image').length > 0){
 				// Produkt das ein CLT hat in den Warenkorb gelegt
 				pushSegment('32902');
 			}
 		});
 
-		_self.elem('#offCanvasMiniCartWrapper [href="/de/cart"]', function(element){
-			if(element){
+		_self.elem('#offCanvasMiniCartWrapper', function(offCanvasMiniCartWrapper){
+			if(offCanvasMiniCartWrapper){
 				// Button zum Warenkorb geklickt
-				element[0].addEventListener('click', function(){
-					_self.goalPush("kk_ab24_gocart", true);
+				offCanvasMiniCartWrapper[0].addEventListener('click', function(e){
+					var hrefFromButton = e.target.getAttribute('href');
+
+					if(hrefFromButton && hrefFromButton === "/de/cart"){
+						_self.goalPush("kk_ab24_gocart", true);
+					}
 				});
 			}
 		});
