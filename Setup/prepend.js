@@ -480,6 +480,12 @@ window.iridion.econda = (function(window){
 
             // Neukunde Regestrierung
             goalPush('page_reg');
+
+        }else if(URL.indexOf("/newsletter/registrierung/fast-geschafft") !== -1){
+            
+            // Neukunde Anmeldung (vor dem Douple-Opt-In) - NEU von DL 11.10.21
+            goalPush('page_newsletter_registration');
+
         }else if(URL.indexOf("/newsletter/abmeldung") !== -1){
 
             // PageView: Newsletter Abmeldung - NEU von DL 27.09.21
