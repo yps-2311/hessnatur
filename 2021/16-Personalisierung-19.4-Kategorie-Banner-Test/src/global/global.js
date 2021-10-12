@@ -48,6 +48,7 @@
             clickgoal(".navigation-main.mobileNavigationContainer > li:first-child", "kk19_leftnavi", false);
             
             // KK: PS19 - Nutzung der Filter
+            // Desktop
             _self.elem('.gridviewProductFilterDesktopWrapper button', function(filter){
                 if(filter){
                     for (var i = 0; i < filter.length; i++) {
@@ -59,6 +60,21 @@
                     }
                 }
             });
+            // Mobile
+            _self.elem('#tabFilter button', function(filter){
+                // console.log('filter: ', filter);
+                if(filter){
+                    for (var i = 0; i < filter.length; i++) {
+                        filter[i].addEventListener('click', function(e){
+                            var thisTarget = e.target.classList.contains('button') ? e.target: e.target.parentNode;
+                            if(_self.qs('.js-filter-close.hide', thisTarget)){
+                                _self.goalPush('kk19_usingfilter', true);
+                            }
+                        });
+                    }
+                }
+            });
+            
 
             // KK: PS19 - Klicks auf Banner (Katbanner)
             // clickgoal(".js_backstopWrapper > .h-disp-block > a", "kk19_katbanner", true);
@@ -114,6 +130,21 @@
                     clearInterval(interval);
                 }
             }, 10000);
+
+
+            _self.elem('#kk_toggleSEO', function(toggleSEO){
+                if(toggleSEO){
+                    toggleSEO[0].addEventListener('click', function(){
+
+                        // AB19.4 Klick auf Mehr erfahren
+                        _self.goalPush('kk19_moreClick');
+
+                        // Segment: AB 19.4: Klick auf Mehr erfahren
+                        window.iridion.push(['segment', '32901']);
+                    });
+
+                }
+            });
         });
     };
 

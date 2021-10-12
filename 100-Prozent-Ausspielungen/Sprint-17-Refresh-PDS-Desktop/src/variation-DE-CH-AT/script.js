@@ -912,12 +912,10 @@
         var eco_data = JSON.parse(window.localStorage.getItem('kk_ecological')) || {},
             excludedProducts = ['4782699', '4782600', '4783599', '4782200', '4782400', '4782800', '4782899', '4783500', '4783700', '4783799'],
             id = window.document.location.pathname.split("/p/");//document.URL.match(/(de|at|ch)\/.*\/p\/(\d+)/);
-
-        // ID fix: DL 11.10.2021
-        id = id.substring(0,7);
         
         if (id.length > 0 && excludedProducts.indexOf(id[1]) === -1) {
-            id = id[1];
+            id = id[1].substring(0,7); // ID fix: DL 11.10.2021
+
             if (eco_data[id] && new Date().getTime() - eco_data[id].timestamp < 86400000) {
                 window.kk07_ecoData = eco_data[id];
             } else if(id.length > 5){
