@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 // @ codekit-prepend "../../../debugging/enabled.js";
 
 /**
@@ -14,7 +14,7 @@
 
 	/*jshint loopfunc: true */
 
-	// window.iridion.econda.push(["SprintAB24", "V1"]);
+	window.iridion.econda.push(["SprintAB24", "V1"]);
 
 	WATO.ab24goals();
 
@@ -64,9 +64,10 @@
 	
 			var cltWrapper = thisTarget.nextElementSibling,
 				existsData = productsInCart[parseInt(cltWrapper.getAttribute('data-id'))];
+				// console.log('existsData: ', existsData);
 	
 			if(!cltWrapper.innerHTML.length && existsData){
-				existsData.forEach(function(thisID){
+				existsData.ctl.forEach(function(thisID){
 	
 					WATO.xhr_get('https://products.hessnatur.com/products/' + thisID, function (dataCTLProduct) {
 						if (dataCTLProduct) {
@@ -107,7 +108,7 @@
 	}
 
 	function setCTL(isAddedToCart) {
-		console.log("setCTL");
+		// console.log("setCTL");
 
 		// Complete the Look unter die Produkte im Mini-WK bauen
 		WATO.elem('#offCanvasMiniCartWrapper > .scrollContainer > .columns > .columns > .row:not(.collapse)', function(productList){
@@ -125,7 +126,7 @@
 					if(productsInCart && ctlProductIDs && !WATO.qs('.kk_cltwrapper', product)){
 						WATO.qs('.h-list--horizontal', product).insertAdjacentHTML('afterend', 
 							'<div class="kk_cltwrapper">'+
-								'<div class="kk_clt_title"></div>'+ // Komplettes Outfit ansehen
+								'<div class="kk_clt_title'+(ctlProductIDs.isHome ? ' kk_ishome' : '')+'"></div>'+ // Komplettes Outfit ansehen
 								'<div class="kk_basket_ctl" data-id="'+productID+'"></div>'+
 							'</div>'
 						);
@@ -135,8 +136,9 @@
 							openCTL(WATO.qs('.kk_clt_title', product));
 							isTheAddedProductCTLOpen = true;
 
+							// console.log('ctlProductIDs.ctl.length: ', ctlProductIDs.ctl.length);
 							if(ctlProductIDs){
-								switch (ctlProductIDs.length) {
+								switch (ctlProductIDs.ctl.length) {
 									case 1:
 										setSegment("32898");
 										break;
@@ -177,13 +179,20 @@
 			var ctlItems = WATO.qsa('#look .item__image');
 
 			if (ctlItems.length) {
-				var ctlIDs = [];
+				var ctlIDs = [],
+					isHomeCategory = (typeof window.basketTrackingObject !== "undefined" && typeof window.basketTrackingObject.category_id !== "undefined") ? window.basketTrackingObject.category_id === "SO-007" : false;
+					
+				// console.log('isHomeCategory: ', isHomeCategory);
+
 				for (var i = 0; i < ctlItems.length; i++) {
 					ctlIDs.push(parseInt(ctlItems[i].getAttribute('href').split("/p/")[1].substring(0,7)));
 				}
-				productsInCart[prodID7] = ctlIDs;
-				console.log('prodID7: ', prodID7);
-				console.log('productsInCart[prodID7]: ', productsInCart[prodID7]);
+				productsInCart[prodID7] = {
+					ctl: ctlIDs,
+					isHome: isHomeCategory
+				};
+				// console.log('prodID7: ', prodID7);
+				// console.log('productsInCart[prodID7]: ', productsInCart[prodID7]);
 			}
 
 			// Im LS gespeichert
@@ -225,7 +234,7 @@
 			// eine Instanz des Observers erzeugen
 			var observer = new MutationObserver(function(mutations) {
 				mutations.forEach(function(mutation) {
-					console.log(mutation.type);
+					// console.log(mutation.type);
 					if(offCanvasRight.classList.contains('is-open')){
 						addClass(htmlElement, 'kk_noscroll');
 					}else{
