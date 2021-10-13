@@ -76,19 +76,20 @@
 				);
 
 				var modal = WATO.qs('.kk_nlmodal'),
-					originalNL = WATO.qs('.footerNewsletterWrapper #command'),
+					originalNL = WATO.qs('.footerNewsletterWrapper #newsletterRegistrationForm'),
 					// cta = WATO.qs('.input-group-button', originalNL),
 					inputField = WATO.qs('.input-group-field', originalNL),
 					linkDatenschutz = WATO.qs('small .text-link', modal);
 
 				// poll on cta
-				WATO.elem('.footerNewsletterWrapper #command .newsletterRegistrationBtn', function(cta){
+				WATO.elem('.footerNewsletterWrapper #newsletterRegistrationForm .newsletterRegistrationBtn', function(cta){
 					if(!cta) return;
 
 					cta = cta[0];
 
 					var closeModal = function(status){
-						var replacedNL = WATO.qs('#command', modal);
+						// console.log("closeModal");
+						var replacedNL = WATO.qs('#newsletterRegistrationForm', modal);
 
 						if(status !== "success") {
 							pushGoal("kk_ps07_close");
