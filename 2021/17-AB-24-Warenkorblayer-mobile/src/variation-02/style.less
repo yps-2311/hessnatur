@@ -1,0 +1,120 @@
+/* IMPORT VAR LESS FILE */
+@import "../global/vars.less";
+
+/* IMPORT GLOBAL LESS FILES */
+// @import "../global/global.less";
+
+/* DEFINE VARIATION CSS */
+
+
+
+// V2
+
+.kk_cartlayer {
+    display: block !important;
+    h4 {
+        font-family: "Roboto Condensed Bold",Helvetica,Arial,Archer A,sans-serif;
+        font-style: normal;
+        font-size: 14px;
+        line-height: 16px;
+        padding-bottom: 5px;
+        margin: 0;
+    }
+    .reveal {
+        display: block;
+        top: 10vh;
+        left: 3vw;
+        right: 3vw;
+        width: 94vw;
+        background-color: #F7F6F5;
+    }
+    .columns {
+        background-color: #fff;
+    }
+    .kk_goodchoice {
+        margin: 0;
+        padding-right: 26px;
+        border-bottom: #F7F6F5 solid 2px;
+        & + .columns {
+            padding-top: 18px;
+            padding-bottom: 30px;
+            .js-quick-remove-entry {
+                display: none;
+            }
+            img {
+                max-height: 102px;
+            }
+            .flyout-image {
+                width: 20%;
+            }
+            .flyout-content {
+                margin-left: 25px;
+                width: 70%;
+            }
+            .flyOut-item-headline {
+                font-family: "Roboto Condensed Bold",Helvetica,Arial,Archer A,sans-serif;
+                font-style: normal;
+                font-size: 16px;
+                line-height: 16px;
+                padding-bottom: 12px;
+            }
+            small {
+                font-size: 13px;
+                line-height: 16px;
+            }
+            .float-right {
+                margin-top: 14px;
+            }
+            & + svg {
+                position: absolute;
+                left: 87px;
+                margin-top: -29px;
+            }
+        }
+    }
+    u {
+        text-align: center;
+        font-size: 14px;
+        padding: 18px 0 26px;
+        display: block;
+        cursor: pointer;
+    }
+    .kk_basket_ctl {
+        border-bottom: solid 1px #D7D6D6;
+        & + .columns {
+            padding-top: 18px;
+            background-color: transparent;
+            a {
+                margin: 0;
+            }
+        }
+        .desc-price {
+            .price.special {
+                margin-right: 5px !important;
+            }
+        }
+    }
+}
+
+.kk_modalIsOpen {
+    #offCanvasRight.position-right.off-canvas {
+        -webkit-transform: translateX(30rem) !important;
+        transform: translateX(30rem) !important;
+    }
+    .position-right ~ .off-canvas-content {
+        -webkit-transform: translateX(0) !important;
+        transform: translateX(0) !important;
+    }
+    .position-right.is-transition-push::after,
+    .position-right.is-open ~ .off-canvas-content::after {
+        display: none;
+    }
+}
+
+
+
+
+
+
+
+
