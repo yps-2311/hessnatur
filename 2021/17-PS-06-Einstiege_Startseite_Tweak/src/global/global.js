@@ -227,13 +227,13 @@ WATO.exclude(1023, function () {
 			if(window.innerWidth < 600){
 				return(
 					'<div id="'+headlineId+'" class="lpmTeaser__headline column">'+
-						'<p class="hn-headline hn-color-gray-800 hn-2xl large:hn-3xl">'+headlineText+'</p>'+
+						'<p class="hn-headline hn-color-gray-800 kk_headline">'+headlineText+'</p>'+
 					'</div>'
 				);	
 			} else if(window.innerWidth >= 600 && headlineId === "kk_popular_header"){
 				return(
 					'<div id="'+headlineId+'" class="lpmTeaser__headline --cell-padding">'+
-						'<p class="hn-headline hn-color-gray-800 hn-2xl large:hn-3xl">'+headlineText+'</p>'+
+						'<p class="hn-headline hn-color-gray-800 kk_headline">'+headlineText+'</p>'+
 						'<div class="kk_furtherArticles kk_isDesktop kk_justify-content-end">'+
 								'<a href='+link+'>'+
 									'<span class="hn-button-link">Alle Artikel für '+alignment+'</span>'+
@@ -246,7 +246,7 @@ WATO.exclude(1023, function () {
 			 else{
 				return(
 					'<div id="'+headlineId+'" class="lpmTeaser__headline --cell-padding">'+
-						'<p class="hn-headline hn-color-gray-800 hn-2xl large:hn-3xl">'+headlineText+'</p>'+
+						'<p class="hn-headline hn-color-gray-800 kk_headline">'+headlineText+'</p>'+
 					'</div>'
 				);	
 			}
@@ -261,9 +261,11 @@ WATO.exclude(1023, function () {
 					'<div class="small-12 js-product-reference">'+
 						'<div class="row js-productSliderWrapper h-xxLargeOffset-bottom-outer">'+
 							'<div class="small-12 h-no-padding-medium-down '+(window.innerWidth>600?"column":'')+'">'+
-								'<div class="flickity-productslider kk_slider '+(window.innerWidth>600?"--cell-padding":'')+'" id="'+contentId+'">'+
-									'...Loading'+
-								'</div>'+
+								'<div class="'+(window.innerWidth>600?"--cell-padding":'')+' kk_py-0">' +
+									'<div class="flickity-productslider kk_slider" id="'+contentId+'">'+
+										'...Loading'+
+									'</div>'+
+								'</div>' +
 							'</div>'+
 						'</div>'+
 					'</div>'
@@ -283,7 +285,7 @@ WATO.exclude(1023, function () {
 				
 
 				var price = items[item].price/*.toFixed(2)*/;
-				var prevPrice = items[item].price_prev;
+				var prevPrice = 20.20 //items[item].price_prev;
 				var link = items[item].deeplink/*permalink*/;
 				var image = items[item].iconurl;
 				var name = items[item].name;
@@ -298,7 +300,7 @@ WATO.exclude(1023, function () {
 				var isReduced =  "";
 	
 				if(!prevPrice){
-					isReduced = "hide";
+					//isReduced = "hide";
 				}else{
 					isNormal = "hide";
 					prevPrice.toFixed(2);
