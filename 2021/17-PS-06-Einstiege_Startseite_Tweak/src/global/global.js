@@ -285,7 +285,7 @@ WATO.exclude(1023, function () {
 				
 
 				var price = items[item].price/*.toFixed(2)*/;
-				var prevPrice = 20.20 //items[item].price_prev;
+				var prevPrice = items[item].price_prev;
 				var link = items[item].deeplink/*permalink*/;
 				var image = items[item].iconurl;
 				var name = items[item].name;
@@ -300,7 +300,7 @@ WATO.exclude(1023, function () {
 				var isReduced =  "";
 	
 				if(!prevPrice){
-					//isReduced = "hide";
+					isReduced = "hide";
 				}else{
 					isNormal = "hide";
 					prevPrice.toFixed(2);
