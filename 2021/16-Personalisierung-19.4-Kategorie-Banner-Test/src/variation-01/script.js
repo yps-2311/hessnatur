@@ -54,6 +54,11 @@
                                         iconHTML += '<span class="kk-vegan"><b>VEGAN</b></span>';
                                     }
 
+                                    if(iconImagePath.indexOf('_20Prozent.svg') !== -1){
+
+                                        iconHTML += '<span class="kk-sale"><b>-20%</b></span>';
+                                    }
+
                                     if(iconImagePath.indexOf('_sale.svg') !== -1){
 
                                         iconHTML += '<span class="kk-sale"><b>SALE</b></span>';
