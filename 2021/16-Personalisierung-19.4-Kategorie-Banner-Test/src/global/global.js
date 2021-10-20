@@ -365,7 +365,7 @@
                                                     try {
 
                                                         kkIntro.innerHTML = '<p>' + container.split('<p>')[1];
-                                                        console.log('kkIntro: ', kkIntro);
+                                                        // console.log('kkIntro: ', kkIntro);
 
                                                         // cut txt after 3 lines
                                                         cutTxt(WATO.qs('p', kkIntro));
