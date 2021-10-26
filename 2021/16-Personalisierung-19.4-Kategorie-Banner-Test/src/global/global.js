@@ -237,14 +237,19 @@
                         kkHeadline.textContent = h1.textContent;
                     } else {
 
-                        var sidebar = WATO.qs('.sidebarNav .h-text-decoration-none-hover.h-text-bold');
+                        var sidebar = WATO.qs('.sidebarNav .h-text-decoration-none-hover.h-text-bold'),
+                            sidebarNavHL = WATO.qs('.sidebarNav--headline'),
+                            breadcrumbCategory = WATO.qs('.breadcrumbs li:last-child span strong:first-child');
 
                         if(sidebar){
 
                             kkHeadline.textContent = sidebar.textContent;
-                        } else {
+                        } else if(sidebarNavHL){
                             
-                            kkHeadline.textContent = WATO.qs('.sidebarNav--headline').textContent;
+                            kkHeadline.textContent = sidebarNavHL.textContent;
+                        } else if(breadcrumbCategory){
+                            
+                            kkHeadline.textContent = breadcrumbCategory.textContent;
                         }
                     }
                 });
@@ -347,77 +352,82 @@
                                         }
                                     }
 
-                                    var newHTML = '';
+                                    var newHTML = '',
+                                        seoHTML = seoWrapper[0].innerHTML;
 
                                     // we need to wrap the text into seperate parts and add wrapper for product images
-                                    seoWrapper[0].innerHTML.split('<h2>').forEach(function(container, index) {
-                                        
-                                        if(index === 0){
 
-                                            WATO.elem('#kk-intro span', function(kkIntro){
-
-                                                if(kkIntro){
-                                                    kkIntro = kkIntro[0]
-
-                                                    kkIntro.parentNode.parentNode.parentNode.style.height = "215px";
-                                                    kkIntro.parentNode.parentNode.style.display = "flex";
-
-                                                    try {
-
-                                                        kkIntro.innerHTML = '<p>' + container.split('<p>')[1];
-                                                        // console.log('kkIntro: ', kkIntro);
-
-                                                        // cut txt after 3 lines
-                                                        cutTxt(WATO.qs('p', kkIntro));
+                                    if(seoHTML.indexOf('<h2>') !== -1) {
+                                        seoHTML.split('<h2>').forEach(function(container, index) {
+                                            
+                                            if(index === 0){
     
-                                                        kkIntro.insertAdjacentHTML('afterend', 
-                                                            '<a href="#kk-more">MEHR ERFAHREN</a>'
-                                                        );
-
-                                                        WATO.qs('a[href="#kk-more"]', kkIntro.parentNode).addEventListener('click', function(e){
-                                                            e.preventDefault();
-
-                                                            // Segment: AB 19.4: Klick auf Mehr erfahren
-                                                            window.iridion.push(['segment', '32901']);
-
-                                                            // AB19.4 Klick auf Mehr erfahren
-                                                            WATO.goalPush('kk19_moreClick');
-
-                                                            var seoText = getOffset(WATO.qs('#kk-more'));
-
-                                                            window.document.documentElement.scrollTop = seoText;
-                                                            window.document.body.scrollTop = seoText;
-
-                                                        });
-
-                                                    } catch(e){
-                                                        console.log('e: ', e);
+                                                WATO.elem('#kk-intro span', function(kkIntro){
+    
+                                                    if(kkIntro){
+                                                        kkIntro = kkIntro[0]
+    
+                                                        kkIntro.parentNode.parentNode.parentNode.style.height = "215px";
+                                                        kkIntro.parentNode.parentNode.style.display = "flex";
+    
+                                                        try {
+    
+                                                            kkIntro.innerHTML = '<p>' + container.split('<p>')[1];
+                                                            // console.log('kkIntro: ', kkIntro);
+    
+                                                            // cut txt after 3 lines
+                                                            cutTxt(WATO.qs('p', kkIntro));
+        
+                                                            kkIntro.insertAdjacentHTML('afterend', 
+                                                                '<a href="#kk-more">MEHR ERFAHREN</a>'
+                                                            );
+    
+                                                            WATO.qs('a[href="#kk-more"]', kkIntro.parentNode).addEventListener('click', function(e){
+                                                                e.preventDefault();
+    
+                                                                // Segment: AB 19.4: Klick auf Mehr erfahren
+                                                                window.iridion.push(['segment', '32901']);
+    
+                                                                // AB19.4 Klick auf Mehr erfahren
+                                                                WATO.goalPush('kk19_moreClick');
+    
+                                                                var seoText = getOffset(WATO.qs('#kk-more'));
+    
+                                                                window.document.documentElement.scrollTop = seoText;
+                                                                window.document.body.scrollTop = seoText;
+    
+                                                            });
+    
+                                                        } catch(e){
+                                                            console.log('e: ', e);
+                                                        }
                                                     }
-                                                }
-                                            });
-                                        }
-
-                                        if(DESKTOP_DEVICE && index === 1 && kkSEOImages[0] || (!DESKTOP_DEVICE && index <= 2)){
-                                            newHTML += getImgWrapper('left', kkSEOImages[0]);
-                                            kkSEOImages.shift();
-                                        }
-
-                                        newHTML += '<div class="column small-12 large-6">';
-
-                                        if(index !== 0) {
-                                            newHTML += '<h2>';
-                                        }
+                                                });
+                                            }
+    
+                                            if(DESKTOP_DEVICE && index === 1 && kkSEOImages[0] || (!DESKTOP_DEVICE && index <= 2)){
+                                                newHTML += getImgWrapper('left', kkSEOImages[0]);
+                                                kkSEOImages.shift();
+                                            }
+    
+                                            newHTML += '<div class="column small-12 large-6">';
+    
+                                            if(index !== 0) {
+                                                newHTML += '<h2>';
+                                            }
+                                            
+                                            newHTML += container; 
+                                            newHTML += '</div>';
+    
+                                            if(DESKTOP_DEVICE && kkSEOImages[0] && (index === 0 || index === 2)){
+                                                newHTML += getImgWrapper('right', kkSEOImages[0]);
+                                                kkSEOImages.shift();
+                                            }
+                                        });
                                         
-                                        newHTML += container; 
-                                        newHTML += '</div>';
-
-                                        if(DESKTOP_DEVICE && kkSEOImages[0] && (index === 0 || index === 2)){
-                                            newHTML += getImgWrapper('right', kkSEOImages[0]);
-                                            kkSEOImages.shift();
-                                        }
-                                    });
+                                        WATO.qs('#kk-seo .columns').innerHTML = '<div class="row">' + newHTML + '</div>';
+                                    }
                                     
-                                    WATO.qs('#kk-seo .columns').innerHTML = '<div class="row">' + newHTML + '</div>';
                                 }, 500);
                             }
                         });
