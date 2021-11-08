@@ -255,7 +255,7 @@
 						if(voucherSave){
 							_youSaved = _youSaved + voucherSave;
 						}
-						console.log('_youSaved: ', _youSaved);
+						// console.log('_youSaved: ', _youSaved);
 
 						goalPush("voucher_alles21");
 
@@ -272,7 +272,7 @@
 							kk_sum.classList.add('discountPrice');
 	
 							kk_sum.insertAdjacentHTML('afterend', ''+
-								'<div class="column shrink price strikeValue h-no-padding-left h-xsmallOffset-bottom-inner h-smallOffset-left-outer kk_sums">'+float2Price(price2Float(kk_sum.textContent) + _youSaved)+' €*</div>'
+								'<div class="column shrink price strikeValue h-no-padding-left h-xsmallOffset-bottom-inner h-smallOffset-left-outer kk_sums">'+float2Price(price2Float(kk_sum.textContent) + _youSavedOnlySale)+' €*</div>'
 							);
 						}
 	
@@ -299,8 +299,8 @@
 
 						for(var i=0; i < _productCount; i++) {
 							var x = _self.qs('.h-text-muted', _products[i]).textContent.replace("Artikel","").trim();
-							console.log('x: ', x);
-							console.log('promo: ', promo);
+							// console.log('x: ', x);
+							// console.log('promo: ', promo);
 							if(x && promo.indexOf(x) !== -1){
 								promo = promoProd[(upsellIndex ? 0 : 1)];
 								break;
@@ -468,7 +468,7 @@
 									}
 								}
 								catch(err) {
-									console.log(err);
+									// console.log(err);
 								}
 
 								return false;
