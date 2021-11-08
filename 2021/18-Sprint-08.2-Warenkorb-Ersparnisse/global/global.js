@@ -118,7 +118,7 @@
 					}
 				}
 	
-				var sumPrices = _self.qsa('.offset-price-left'),
+				var sumPrices = _self.qsa('.row:first-child .offset-price-left'),
 					kk_sum = sumPrices[0],
 					kk_total = sumPrices[1];
 	
@@ -271,15 +271,20 @@
 						if(_youSavedOnlySale > 0){
 							kk_sum.classList.add('discountPrice');
 	
+							// console.log('kk_sum: ', kk_sum);
 							kk_sum.insertAdjacentHTML('afterend', ''+
 								'<div class="column shrink price strikeValue h-no-padding-left h-xsmallOffset-bottom-inner h-smallOffset-left-outer kk_sums">'+float2Price(price2Float(kk_sum.textContent) + _youSavedOnlySale)+' €*</div>'
 							);
 						}
-	
-						_self.qs('.btn-deliverycosts').insertAdjacentHTML('afterend', ''+
-							'<br/>'+
-							'<div class="kk_save" style="display: inline-block; color: #393939"><span style="font-weight:300">Sie sparen mit dieser Bestellung</span> <span id="kk_yousave">'+float2Price(_youSaved)+'</span> €</div>'
-						);
+						try {
+							_self.qs('.btn-deliverycosts, .h-xsmallOffset-top-outer strong + strong').insertAdjacentHTML('afterend', ''+
+								'<br/>'+
+								'<div class="kk_save" style="display: inline-block; color: #393939"><span style="font-weight:300">Sie sparen mit dieser Bestellung</span> <span id="kk_yousave">'+float2Price(_youSaved)+'</span> €</div>'
+							);
+						} catch (error) {
+							// console.log('Error: ', error);
+						}
+						
 
 						if(isVoucher){
 							_self.qs('#kk_yousave').parentNode.insertAdjacentElement('beforebegin', isVoucher.parentNode.parentNode.parentNode);
@@ -553,7 +558,11 @@
 						'<div class="column shrink price strikeValue h-no-padding-left h-xsmallOffset-bottom-inner h-smallOffset-left-outer kk_sums">'+float2Price(price2Float(kk_total.textContent) + _youSaved)+' €*</div>'
 					);
 	
-					kk_total.closest('.h-xsmallOffset-bottom-outer:not(.column)').insertAdjacentHTML('afterbegin', '<div class="column small-12 large-10 large-offset-1"><hr></div>');
+					try {
+						kk_total.closest('.h-xsmallOffset-bottom-outer:not(.column)').insertAdjacentHTML('afterbegin', '<div class="column small-12 large-10 large-offset-1"><hr></div>');
+					} catch (error) {
+						// console.log('Error2: ', error);
+					}
 					
 				}
 				
