@@ -467,8 +467,6 @@ WATO.exclude(1023, function () {
 	
 				var data = JSON.parse(rawData.response),
 				items=data.items;
-				
-				console.log("my items", items);
 			
 				WATO.elem('#kk_Tendencies_content',function(slide){
 					if(slide){
