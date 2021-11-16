@@ -202,8 +202,6 @@
         }
     }*/
 
-    console.log("Affinity", CATEGORY_AFFINITY);
-
     WATO.PS06_Tweak(CATEGORY_AFFINITY, CATEGORIES, DATA, 1);
 
 })(new window.WATO());
