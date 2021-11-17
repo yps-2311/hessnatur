@@ -37,6 +37,7 @@
                             saved_data.user_id,
                             user_id,
                             iridion_session,
+                            saved_data.emos,
                             emos_jcvid,
                             window.navigator.userAgent,
                             decodeURIComponent(saved_data.url),
@@ -47,7 +48,7 @@
                     ]);
                 }
 
-                window.localStorage.kk21_messtest = JSON.stringify({ user_id, url: decodeURIComponent(document.URL), ...experiment_data, ts: Date.now() });
+                window.localStorage.kk21_messtest = JSON.stringify({ emos: emos_jcvid, user_id, url: decodeURIComponent(document.URL), ...experiment_data, ts: Date.now() });
             }
         } else {
             push(['messtest_no_iridion_user']);
