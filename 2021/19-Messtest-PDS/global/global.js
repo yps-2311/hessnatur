@@ -7,7 +7,7 @@
  */
 
 
-(function(WATO){
+(function(WATO, window){
 	"use strict";
 
 	/*jshint loopfunc: true */
@@ -19,7 +19,6 @@
 		function goalPush(key, sendOnNextPageView){
 			// Jedes Goal braucht nur einmal gesendet zu werden
 			if(goalSended.indexOf(key) === -1){
-				console.log('key: ', key);
 				if(sendOnNextPageView){
 					window.iridion.push(['goal', key, '', true]);
 				}else{
@@ -60,8 +59,8 @@
 						case isElementClicked(thisTarget, '.starRatingWrapper', 'pds_rating'):
 							break;
 
-						case isElementClicked(thisTarget, '.flickity-slider a', 'pds_magnifier'):
-							break;
+						// case isElementClicked(thisTarget, '.pds__imageAndCockpitWrapper .flickity-slider a, .pds__imageAndCockpitWrapper #zoomMedium, .main-carousel', 'pds_magnifier'):
+							// break;
 
 						case isElementClicked(thisTarget, '[href="/de/component/shippingInformations"]', 'pds_shippingcost'):
 							break;
@@ -75,8 +74,8 @@
 						case isElementClicked(thisTarget, '.pds__imageAndCockpitWrapper .flickity-prev-next-button', 'pds_arrows'):
 							break;
 
-						case isElementClicked(thisTarget, '.js-size-advisor', 'pds_sizeadvisor'):
-							break;
+						// case isElementClicked(thisTarget, '.js-size-advisor-wrapper', 'pds_sizeadvisor'):
+							// break;
 
 						case isElementClicked(thisTarget, '#addToWishlistButton', 'pds_wishlist'):
 							break;
@@ -84,7 +83,7 @@
 						case isElementClicked(thisTarget, '.js-jump-complete-look', 'pds_jumpctl'):
 							break;
 
-						case isElementClicked(thisTarget, '.pds__imageAndCockpitWrapper .carousel-nav .carousel-cell', 'pds_thumbnails'):
+						case isElementClicked(thisTarget, '.pds__imageAndCockpitWrapper .carousel-nav .carousel-cell, .kk_sliderThumbs', 'pds_thumbnails'):
 							break;
 
 						case isElementClicked(thisTarget, '[href="/de/groessenberatung"]', 'pds_masstabelle'):
@@ -92,10 +91,28 @@
 
 						case isElementClicked(thisTarget, '.certificateTextWrapper a', 'pds_certificate'):
 							break;
+						
+						case isElementClicked(thisTarget, '.PaybackLogoLargeComponent', 'pds_paybacklogo'):
+							break;
+
+						case isElementClicked(thisTarget, '[href="#color"]', 'pds_changecolor'):
+							break;
+							
 					}
 				});
 			}
 		});
+
+		// eine Instanz des Observers erzeugen
+		var observer = new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				if(window.document.documentElement.className.indexOf("expanded-view-open") !== -1){
+					goalPush('pds_magnifier');
+				}
+			});
+		});
+		// eigentliche Observierung starten und Zielnode und Konfiguration übergeben
+		observer.observe(window.document.documentElement, { attributes: true, childList: false, characterData: false});
 
 		// Zoom hover
 		_self.elem('.pds__imageAndCockpitWrapper > div:first-child > .main-carousel', function(mainImgWrapper){
@@ -141,14 +158,21 @@
 		if(isFromCTL || isFromReco){
 			_self.ajax("https://www.hessnatur.com/de/cart/add", function() {
 				if(isFromCTL){
-					window.iridion.push(["segment", ""]);
+					window.iridion.push(["segment", "32906"]);
 					goalPush('pds_addCtlProductToCart');
 				}
 				if(isFromReco){
-					window.iridion.push(["segment", ""]);
+					window.iridion.push(["segment", "32907"]);
 					goalPush('pds_addRecoProductToCart');
 				}
 			});
 		}
+
+
+		_self.ajax("https://widget.fitanalytics.com/widget/api/profiles", function() {
+			goalPush('pds_sizeadvisor');
+		});
+
+		
 	}
-})(window.WATO);
+})(window.WATO, window);
