@@ -15,23 +15,29 @@
     WATO.prototype.favProducts = [];
     WATO.prototype.sehrgefragtProducts = [];
 
+    WATO.prototype.iridionProfile = function(thisName, thisvalue) {
+        if(thisvalue){
+            window.iridion.push(['profile', 'setValue', thisName, JSON.stringify(thisvalue)]);
+        }else{
+            return window.iridion.push(['profile', 'getValue', thisName]);
+        }
+    }
+
+    WATO.prototype.isCustomerTypeInteressent = function() {
+        var customerType = this.iridionProfile("customerType");
+        console.log('customerType: ', customerType);
+        return !window.localStorage.getItem("kk_hasbought") && document.location.search.indexOf("show=neukunde") === -1 && customerType !== "Neukunde" && customerType !== "Bestandskunde";
+    }
+
 	WATO.prototype.ps01_2global = function(){
-        var _self = this,
-            isInteressent = !window.localStorage.getItem("kk_hasbought") && document.location.search.indexOf("show=neukunde") === -1;
+        var _self = this;
+            // isInteressent = !window.localStorage.getItem("kk_hasbought") && document.location.search.indexOf("show=neukunde") === -1;
 
         function setCookieThatExpiresAfter24h() {
             // Aktualisierungen nur noch alle 24h
             var exdate = new Date();
             exdate.setDate(exdate.getDate() + 1);
             document.cookie = "kk_favForSession=isUpToDate;expires=" + exdate.toUTCString() + ";domain=www.hessnatur.com;path=/";
-        }
-    
-        function iridionProfile(thisName, thisvalue) {
-            if(thisvalue){
-                window.iridion.push(['profile', 'setValue', thisName, JSON.stringify(thisvalue)]);
-            }else{
-                return window.iridion.push(['profile', 'getValue', thisName]);
-            }
         }
     
         function getFavOrPopular(widgetID, isFav, profileName) {
@@ -41,7 +47,7 @@
                 for (var i = 0; i < allItems.length; i++) {
                     respArray.push(parseInt(allItems[i].id));
                 }
-                iridionProfile(profileName, respArray);
+                _self.iridionProfile(profileName, respArray);
                 setCookieThatExpiresAfter24h();
                 if(isFav){
                     _self.favProducts = respArray;
@@ -52,14 +58,14 @@
         }
 
         if(document.cookie.indexOf("kk_favForSession") !== -1){
-            _self.favProducts = JSON.parse(iridionProfile("favProducts"));
-            _self.sehrgefragtProducts = JSON.parse(iridionProfile("sehrgefragtProducts"));
+            _self.favProducts = JSON.parse(_self.iridionProfile("favProducts"));
+            _self.sehrgefragtProducts = JSON.parse(_self.iridionProfile("sehrgefragtProducts"));
         }else{
             getFavOrPopular(131, true, "favProducts");
             getFavOrPopular(132, false, "sehrgefragtProducts");
         }
 
-        if(isInteressent){
+        if(_self.isCustomerTypeInteressent()){
             window.iridion.push(["segment", "32812"]);
         } else {
             window.iridion.push(["segment", "-32812"]);

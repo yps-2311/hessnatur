@@ -15,7 +15,7 @@
 
     WATO.ps01_2global();
 
-    var isInteressent = !window.localStorage.getItem("kk_hasbought") && document.location.search.indexOf("show=neukunde") === -1,
+    var isInteressent = WATO.isCustomerTypeInteressent(),
         isPDS = window.document.location.pathname.indexOf("/p/") !== -1,
         imgUrl = 'https://media.hessnatur.com/kk/2021/ps01_2/',
         boxContent = [
@@ -195,9 +195,6 @@
     });
 
 })(new window.WATO(), window);
-
-
-
 
 
 
