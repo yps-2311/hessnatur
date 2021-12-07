@@ -35,8 +35,6 @@
                 newbadgesContainer.appendChild(badgesContainer);
                 newbadgesContainer.insertBefore(pdsCockpit, badgesContainer);
 
-
-
             }
         })
     } else {
