@@ -1,0 +1,69 @@
+/* IMPORT VAR LESS FILE */
+@import "../global/vars.less";
+/* IMPORT GLOBAL LESS FILES */
+@import "../global/global.less";
+
+/* DEFINE VARIATION CSS */
+.kk-ps08-2 {
+  .kk-badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    @media (max-width: 540px) {
+      flex-flow: row-reverse;
+      > div {
+        padding: 0 !important;
+      }
+    }
+    .pds-cockpit__ratingSummaryWrapper {
+      margin-bottom: 10px;
+    }
+    .js-badges-container {
+      flex: 0 0 auto;
+      margin-bottom: 10px;
+      order: 2;
+      display: flex !important;
+    }
+    .js-advertising-medium-code {
+      right: -30px;
+    }
+  }
+
+    .js-badges-container {
+      align-items: center;
+      display: flex ;
+      flex-wrap: wrap;
+      @media (max-width: 480px) {
+        flex: 0 0 64% !important;
+        max-width: 64% !important;
+      }
+      .pds-cockpit__badge {
+        margin-right: 10px;
+      }
+      .kk-nachhaltig {
+        color: #81b539;
+        font-family: "Roboto Condensed";
+        font-size: 12.5px;
+        font-weight: 700;
+        line-height: 25px;
+        text-transform: uppercase;
+        letter-spacing: 0.439161px;
+        display: inline-block;
+        order: 4;
+        height: 25px;
+        margin-right: 10px;
+      }
+    }
+
+  .js_backstopWrapper .pds-cockpit__ratingSummaryWrapper {
+    @media (max-width: 480px) {
+      flex: 0 0 36%;
+      max-width: 36%;
+    }
+
+  }
+  &.kk_favorit .js-badges-container::after {
+    margin: 6px 10px 6px 0;
+  }
+
+}
