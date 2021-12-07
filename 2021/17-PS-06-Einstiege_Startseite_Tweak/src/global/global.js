@@ -147,11 +147,11 @@ WATO.exclude(1023, function () {
 		} else if(CATEGORY_AFFINITY === "home"){
 
 			CATEGORIES = [
-                ["Bettwäsche", "home/desktop/bettwaesche.jpeg","home/schlafzimmer/bettwaesche/c/home-schlafzimmer-bettwaesche","home/mobile/Bettwaesche.png"],
+                ["Bettwäsche", "home/desktop/bettwaesche2.jpg" /*bettwaesche.jpeg*/,"home/schlafzimmer/bettwaesche/c/home-schlafzimmer-bettwaesche","home/mobile/Bettwaesche2.jpg" /*Bettwaesche.png*/],
 				["Wolldecken & Plaids", "home/desktop/wolldecken_plaids.jpeg","home/wohnzimmer-und-esszimmer/wohndecken-und-plaids/c/home-wohnzimmer-wohndecken-plaids","home/mobile/Wolldecken.png"],
                 ["Tischwäsche", "home/desktop/tischwaesche.jpeg","home/wohnzimmer-und-esszimmer/tischwaesche/c/home-wohnzimmer-tischwaesche","home/mobile/Tischwaesche.png"],
                 ["Handtücher", "home/desktop/handtuecher.jpeg","home/bad/badtextilien/c/home-bad-badtextilien","home/mobile/Handtuecher.png"],
-                ["Bettlaken", "home/desktop/spannbetttuecher_laken.jpeg","home/schlafzimmer/spannbetttuecher-und-laken/c/home-schlafzimmer-spannbetttuecher-laken","home/mobile/Spannbetttuecher.png"],
+                ["Bettlaken", "home/desktop/spannbetttuecher_laken2.jpg" /*"home/desktop/spannbetttuecher_laken.jpeg"*/,"home/schlafzimmer/spannbetttuecher-und-laken/c/home-schlafzimmer-spannbetttuecher-laken", "home/mobile/Spannbetttuecher2.jpg" /*"home/mobile/Spannbetttuecher.png"*/],
                 ["Teppiche", "home/desktop/teppiche.jpeg","home/wohnzimmer-und-esszimmer/teppiche/c/home-wohnzimmer-teppiche","home/mobile/Teppiche.png"],
 				["Bademäntel", "home/desktop/bademaentel.jpeg","home/bad/bademaentel/c/home-bad-bademaentel","home/mobile/Bademaentel.png"]
             ];
