@@ -26,28 +26,28 @@
         // Table with all messages to displaying
         messageByCat = {
             'baby': {
-                'Aktion': [badgeAktionUrl, 'Bio-Kindermode aus Naturfasern<br><b>15% Rabatt mit Code KIDS21</b>'],
+                'Aktion': [badgeAktionUrl, 'Bio-Kindermode aus Naturfasern<br><b>10% Rabatt mit code SALE2021</b>'],
                 'Sale': [badgeSaleUrl, 'Bio-Kindermode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
                 'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Kindermode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Bio-Kindermode aus Naturfasern<br><b>Neu im Sortiment</b>'],
                 'Allgemein': ['Nachhaltig', 'Bio-Kindermode aus Naturfasern<br><b>In höchster Qualität</b>']
             },
             'home': {
-                'Aktion': [badgeAktionUrl, 'Gut für Mensch & Natur'],
+                'Aktion': [badgeAktionUrl, 'Gut für Mensch & Natur<br><b>10% Rabatt mit code SALE2021</b>'],
                 'Sale': [badgeSaleUrl, 'Gut für Mensch & Natur<br><b>Jetzt zum reduzierten Preis</b>'],
                 'Kundenfavorit': [badgeKundenfavoritUrl, 'Gut für Mensch & Natur<br><b>Ein Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Gut für Mensch & Natur<br><b>Neu im Sortiment</b>'],
                 'Allgemein': ['Nachhaltig', 'Gut für Mensch & Natur<br><b>In höchster Qualität</b>']
             },
             'herren': {
-                'Aktion': [badgeAktionUrl, 'Bio-Mode aus Naturfasern'],
+                'Aktion': [badgeAktionUrl, 'Bio-Mode aus Naturfasern<br><b>10% Rabatt mit code SALE2021</b>'],
                 'Sale': [badgeSaleUrl, 'Bio-Mode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
                 'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Mode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Bio-Mode aus Naturfasern<br><b>Neu im Sortiment</b>'],
                 'Allgemein': ['Nachhaltig', 'Bio-Mode aus Naturfasern<br><b>In höchster Qualität</b>']
             },
             'damen': {
-                'Aktion': [badgeAktionUrl, 'Bio-Mode aus Naturfasern'],
+                'Aktion': [badgeAktionUrl, 'Bio-Mode aus Naturfasern<br><b>10% Rabatt mit code SALE2021</b>'],
                 'Sale': [badgeSaleUrl, 'Bio-Mode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
                 'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Mode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Bio-Mode aus Naturfasern<br><b>Neu im Sortiment</b>'],
@@ -65,6 +65,7 @@
                 case "SO-021":
                 case "SO-030":
                 case "SO-040":
+                case "SO-006":
                     ret = 'damen';
                     break;
 
@@ -137,7 +138,7 @@
         // product detail page?
         if (!category && checkPath('/p/')) {
 
-            var item = document.querySelectorAll('.breadcrumbs span');
+            var item = WATO.qsa('.breadcrumbs span');
 
             if (item && item[1]) {
 
@@ -165,7 +166,6 @@
     function removeClass(selector){
 
         WATO.qsa(selector).forEach(function (el) {
-            console.log(el,'visible');
             el.classList.remove('kk-hidden');
             el.classList.add('kk-visible');
         })
@@ -192,6 +192,7 @@
 
                         badgesContainer = badgesContainer[0];
 
+                        removeElem('.kk-nachhaltig');
                         badgesContainer.insertAdjacentHTML('beforeend', '<span class="kk-nachhaltig">Nachhaltig</span>');
 
                         var badges = '', // list of badges linked to the product
@@ -273,6 +274,7 @@
                         boxBadgeUrl = boxBadgeUrl === 'Nachhaltig' ? '<div data-segment-id="'+ segmentID +'" class="kk-badge">' + boxBadgeUrl + '</div>' : '<img data-segment-id="'+ segmentID +'" class="kk-badge" src="' + boxBadgeUrl + '"/>';
 
                         if (window.innerWidth > 540) {
+                            removeElem('.kk-box');
                             WATO.qs('.pds-cockpit__productName', badgesContainer.closest('.pds-cockpit__wrapper')).insertAdjacentHTML("afterend",
                                 '<div class="kk-box">' + boxBadgeUrl + '<div>' + boxTxtContent + '</div></div>');
                         } else {
@@ -280,6 +282,7 @@
                                 WATO.elem('.kk_slider', function (pdsWrapper) {
                                     if (pdsWrapper) {
                                         pdsWrapper = pdsWrapper[0];
+                                        removeElem('.kk-box');
                                         pdsWrapper.insertAdjacentHTML("afterend",
                                             '<div class="kk-box">' + boxBadgeUrl + '<div>' + boxTxtContent +
                                             '</div><img class="kk-btn-close" src="https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2021/ps08-einstiege-aus-anderen-kan%C3%A4len/close.svg"/></div>');
@@ -311,6 +314,13 @@
                                 observer.observe(badge[0]);
                             }
                         });
+                        WATO.elem('.kk-box', function (kkBox) {
+                            if (kkBox) {
+                                kkBox[0].addEventListener('click', function (e) {
+                                    goalPush('ps08_click_message');
+                                })
+                            }
+                        });
 
                     }
 
@@ -331,19 +341,14 @@
 
     // Color change of the product
     WATO.ajax("reload?", function() {
-        removeElem('.kk-box');
-        removeElem('.kk-nachhaltig');
-        // removeElem('.kk-badge');
         displyBadges();
     });
+
 
     var observer = new window.IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
             if (entry.isIntersecting) {
-
-                console.log('segment :', entry.target, entry.target.dataset.segmentId );
                 window.iridion.push(['segment', entry.target.dataset.segmentId]);
-
             }
         });
     }, {
