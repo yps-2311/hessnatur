@@ -390,10 +390,10 @@ WATO.exclude(1023, function () {
 						'<div class="lpmSeparator">&nbsp;</div>' +
 						initKkHeadline("kk_Tendencies_header",(variation === 1 ? "NACHHALTIGE PRODUKTE FÜR SIE AUSGEWÄHLT" : userAlignment + ' Basics aus Bio-Baumwolle')) +
 						initKkSliderContainer("kk_Tendencies_content") +
-						initKkHeadline("kk_popular_header","Beliebte Kategorien", ref, userAlignment) +
-						'<div id="kk_chosen_user" class="kk_container">' +
-						'</div>' +
-						initKkSliderContainer("kk_popularities_content") +
+						// initKkHeadline("kk_popular_header","Beliebte Kategorien", ref, userAlignment) + // DL 03.12.21
+						// '<div id="kk_chosen_user" class="kk_container">' + // DL 03.12.21
+						// '</div>' + // DL 03.12.21
+						// initKkSliderContainer("kk_popularities_content") + // DL 03.12.21
 						'<div id="kk_chosen_user" class="kk_container">' +
 							'<div class="kk_furtherArticles kk_isMobile kk_justify-content-center">' +
 								'<a href=' + ref + '>' +
@@ -406,47 +406,78 @@ WATO.exclude(1023, function () {
 			}
 		});
 
-		WATO.elem('#kk_popularities_content',function(popularities){
-			if(popularities){
 
-				WATO.elem(function(){
-					return typeof window.Flickity !== "undefined";
-				}, function(){
+		// DL 03.12.21
+		// WATO.elem('#kk_popularities_content',function(popularities){
+		// 	if(popularities){
 
-					popularities = popularities[0];
+		// 		WATO.elem(function(){
+		// 			return typeof window.Flickity !== "undefined";
+		// 		}, function(){
 
-					popularities.innerHTML = '';
-					popularities.style.opacity = "0";
-					insertPopularities(popularities);
+		// 			popularities = popularities[0];
+
+		// 			popularities.innerHTML = '';
+		// 			popularities.style.opacity = "0";
+		// 			insertPopularities(popularities);
 					
-					WATO.elem(function(){
-						return 	WATO.qs('a > img', popularities).clientHeight > 0;
-					}, function(oneImgReady){
-						if(oneImgReady && window.innerWidth >= 600){
-							initFlickity(popularities);
-						} else{
-							//console.log('popularities.childNodes', popularities.childNodes);
-							popularities.childNodes.forEach(function(node,index){
-								node.addEventListener('click',function(){
-									//console.log(popularities.children[index],index,"chuldren");
-									pushGoal('click_category' + index, false, true);
-									pushGoal('click_slider', false, true);
-								})
-							})
-						}
-						popularities.style.opacity = "1";
-					});	
-				});
-			}
-		});
+		// 			WATO.elem(function(){
+		// 				return 	WATO.qs('a > img', popularities).clientHeight > 0;
+		// 			}, function(oneImgReady){
+		// 				if(oneImgReady && window.innerWidth >= 600){
+		// 					initFlickity(popularities);
+		// 				} else{
+		// 					//console.log('popularities.childNodes', popularities.childNodes);
+		// 					popularities.childNodes.forEach(function(node,index){
+		// 						node.addEventListener('click',function(){
+		// 							//console.log(popularities.children[index],index,"chuldren");
+		// 							pushGoal('click_category' + index, false, true);
+		// 							pushGoal('click_slider', false, true);
+		// 						})
+		// 					})
+		// 				}
+		// 				popularities.style.opacity = "1";
+		// 			});	
+		// 		});
+		// 	}
+		// });
 
-		var econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1';
-		var econdaId=96;
+		var urlPathName = window.location.pathname.split('/');
+		var econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-';
 		var alreadyInitialized=false;
 
-		if(CATEGORY_AFFINITY === "herren")econdaId=93;
-		if(CATEGORY_AFFINITY === "baby")econdaId=94;
-		if(CATEGORY_AFFINITY === "home")econdaId=95;	
+		// DL 03.12.21
+		// var econdaId=96;
+		// if(CATEGORY_AFFINITY === "herren")econdaId=93;
+		// if(CATEGORY_AFFINITY === "baby")econdaId=94;
+		// if(CATEGORY_AFFINITY === "home")econdaId=95;
+
+		var econdaWidgetIds = {
+				de: {
+					accountID: 1,
+					damen: 96,
+					herren: 93,
+					baby: 94,
+					home: 95
+				},
+				ch: {
+					accountID: 2,
+					damen: 11,
+					herren: 84,
+					baby: 85,
+					home: 86
+				},
+				at: {
+					accountID: 3,
+					damen: 88,
+					herren: 80,
+					baby: 81,
+					home: 82
+				}
+			},
+			econdaId = econdaWidgetIds[urlPathName[1]][CATEGORY_AFFINITY];
+
+		econdaAccountID = econdaAccountID + econdaWidgetIds[urlPathName[1]][accountID];
 
 		
 		WATO.elem(function(){
