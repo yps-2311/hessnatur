@@ -25,7 +25,7 @@
 
     WATO.prototype.isCustomerTypeInteressent = function() {
         var customerType = this.iridionProfile("customerType");
-        console.log('customerType: ', customerType);
+        // console.log('customerType: ', customerType);
         return !window.localStorage.getItem("kk_hasbought") && document.location.search.indexOf("show=neukunde") === -1 && customerType !== "Neukunde" && customerType !== "Bestandskunde";
     }
 

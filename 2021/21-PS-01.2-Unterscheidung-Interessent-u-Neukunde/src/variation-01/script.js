@@ -48,6 +48,10 @@
         }
     }
 
+    function getRandomIndex() {
+        return Math.floor(Math.random() * 3);
+    }
+
     function getCatBox(contentIndex, uvpIndex) {
         return  '<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel">'+
                     '<div class="row">'+
@@ -126,6 +130,8 @@
 
         } else {
 
+            isInteressent = true;
+
             // Kategorieseite
             WATO.elem('footer', function(prodWrapper){
 
@@ -139,11 +145,11 @@
                         var prod6 = allProds[4] || allProds[allProds.length-2] || allProds[allProds.length-1],
                             prod9 = allProds[7],
                             prod15 = allProds[13],
-                            randomContentIndex = Math.floor(Math.random() * 3),
+                            // randomIndex = Math.floor(Math.random() * 3),
                             all3boxes = [
-                                getCatBox(randomContentIndex, 0),
-                                getCatBox(randomContentIndex, 1),
-                                getCatBox(randomContentIndex, 2)
+                                getCatBox(0, getRandomIndex()),
+                                getCatBox(1, getRandomIndex()),
+                                getCatBox(2, getRandomIndex())
                             ];
                         
                         if(prod6 && !checkForKachelClass(prod6)){
