@@ -104,7 +104,7 @@
                 if(contentArea){
                     // UVPs auf PDS auf voller länge
                     contentArea[0].insertAdjacentHTML('afterbegin', 
-                        '<div class="kk_quali">'+
+                        '<div class="kk_newuvps">'+
                             '<div class="kk_innerwrapper">'+
                                 '<h4 class="kk_hl">'+
                                     '<span>Natürliche Qualität für Ihr Wohlbefinden</span>'+
