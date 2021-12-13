@@ -11,6 +11,7 @@
     "use strict";
 
     /*jshint loopfunc: true */
+    
 
     WATO.prototype.favProducts = [];
     WATO.prototype.sehrgefragtProducts = [];

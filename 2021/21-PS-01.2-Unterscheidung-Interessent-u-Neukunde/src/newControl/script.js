@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -11,7 +11,7 @@
  (function(WATO, window) {
     "use strict";
 
-    // window.iridion.econda.push(["SprintPS01-2", "V0"]);
+    window.iridion.econda.push(["PS01-2", "V0"]);
 
     WATO.ps01_2global();
     

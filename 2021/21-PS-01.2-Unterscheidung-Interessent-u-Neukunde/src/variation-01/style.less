@@ -8,10 +8,12 @@
 
 
 
-.kk_newuvps {
+
+.kk_pdsuvps {
     margin: 36px 0 25px;
     padding: 0 72px;
     width: 100%;
+    background-color: #F5F5F5;
     .kk_hl {
         font-size: 28px;
         line-height: 28px;
@@ -104,63 +106,9 @@
         text-transform: uppercase;
     }
 }
-.kk_favorit .js-badges-container {
-    position: relative;
-    &::after {
-        content: "Kundenfavorit";
-        font-size: 11px;
-        color: #373939;
-        font-weight: bold;
-        line-height: 26px;
-        height: 25px;
-        text-align: center;
-        text-transform: uppercase;
-        padding: 0 10px;
-        margin-left: 1px;
-        order: 3;
-        border-radius: 2px;
-        letter-spacing: 1.55px;
-        background-color: #F2E543;
-        display: inline-block;
-    }
-}
 
-.kk_fav {
-    &::before {
-        content: "Kundenfavorit";
-        font-size: 10px;
-        color: #373939;
-        font-weight: bold;
-        line-height: 26px;
-        height: 25px;
-        padding: 0 10px;
-        text-align: center;
-        text-transform: uppercase;
-        letter-spacing: 1.55px;
-        position: absolute;
-        top: 6px;
-        z-index: 20;
-        left: 6px;
-        border-radius: 2px;
-        background-color: #F2E543;
-        display: block;
-    }
-}
-.kk_sehrgefragt {
-    &::after {
-        content: "Aktuell sehr gefragt!";
-        text-transform: uppercase;
-        font-weight: bold;
-        font-size: 11px;
-        color: #81B539;
-        line-height: 9px;
-        position: absolute;
-        bottom: -24px;
-        left: 0;
-        width: 100%;
-        text-align: center;
-    }
-}
+
+
 // .kk_cta_uvps {
 //     margin-top: 5px;
 //     padding-bottom: 40px;
@@ -185,7 +133,7 @@
 //         }
 //     }
 // }
-.kk_kachel {
+.kk_uvpKachel {
     .column.small-12 {
         position: relative;
     }
@@ -236,35 +184,102 @@
         opacity: 0;
     }
 }
+.kk_sehrgefragt {
+    &::after {
+        content: "Aktuell sehr gefragt!";
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 11px;
+        color: #81B539;
+        line-height: 9px;
+        position: absolute;
+        bottom: -24px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media only screen and (min-width: 630px) {
+    .kk_fav {
+        &::before {
+            content: "Kundenfavorit";
+            font-size: 10px;
+            color: #373939;
+            font-weight: bold;
+            line-height: 26px;
+            height: 25px;
+            padding: 0 10px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1.55px;
+            position: absolute;
+            top: 6px;
+            z-index: 20;
+            right: 6px;
+            border-radius: 2px;
+            background-color: #F2E543;
+            display: block;
+        }
+    }
+    .kk_favorit .js-badges-container {
+        position: relative;
+        &::after {
+            content: "Kundenfavorit";
+            font-size: 11px;
+            color: #373939;
+            font-weight: bold;
+            line-height: 26px;
+            height: 25px;
+            text-align: center;
+            text-transform: uppercase;
+            padding: 0 10px;
+            margin-left: 1px;
+            order: 3;
+            border-radius: 2px;
+            letter-spacing: 1.55px;
+            background-color: #F2E543;
+            display: inline-block;
+        }
+    }
+}
 @media only screen and (min-width: 1910px) {
-    .kk_kachel .kk_content > div div {
+    .kk_uvpKachel .kk_content > div div {
         font-size: 36px;
         line-height: 36px;
     }
-    .kk_kachel .kk_content > div h3 {
+    .kk_uvpKachel .kk_content > div h3 {
         font-size: 24px;
     }
 }
 @media only screen and (max-width: 1100px) {
-    .kk_newuvps {
+    .kk_pdsuvps {
         padding-right: 20px;
     }
 }
 @media only screen and (max-width: 1007px) {
-    .kk_kachel .kk_content > div div {
+    .kk_uvpKachel .kk_content > div div {
         font-size: 3.8vw;
         line-height: 3.8vw;
     }
-    .kk_kachel .kk_content > div h3 {
+    .kk_uvpKachel .kk_content > div h3 {
         font-size: 2.23vw;
     }
-    .kk_newuvps {
+    .kk_pdsuvps {
+        z-index: 10;
         padding-right: 72px;
+        background-color: #F5F5F5;
+        margin-bottom: 100px;
         .kk_hl {
             width: 100%;
-            margin: 45px 0 25px;
+            // margin: 45px 0 25px;
+            margin: 25px 0 25px;
+            display: flex;
+            align-items: center;
+            padding-right: 15px;
         }
         .kk_innerwrapper {
+            background-color: #F5F5F5;
             margin: 0;
             padding: 0;
             > div {
@@ -276,46 +291,105 @@
                 margin-bottom: 50px;
                 width: calc(33.33% - 48px);
                 background-size: contain;
+                margin-bottom: 0;
             }
         }
     }
     .kk_natur {
-        background: #FAFAFA url("https://media.hessnatur.com/kk/2021/ps01_2/qualitaet2.svg") no-repeat center center;
+        background: #F5F5F5 url("https://media.hessnatur.com/kk/2021/ps01_2/qualitaet2.svg") no-repeat center center;
     }
     .kk_stuecke {
-        background: #FAFAFA url("https://media.hessnatur.com/kk/2021/ps01_2/tragekomfort2.svg") no-repeat center center;
+        background: #F5F5F5 url("https://media.hessnatur.com/kk/2021/ps01_2/tragekomfort2.svg") no-repeat center center;
     }
     .kk_tropfen {
-        background: #FAFAFA url("https://media.hessnatur.com/kk/2021/ps01_2/menschundnatur2.svg") no-repeat center center;
+        background: #F5F5F5 url("https://media.hessnatur.com/kk/2021/ps01_2/menschundnatur2.svg") no-repeat center center;
     }
 }
 @media only screen and (max-width: 630px) {
-    .kk_kachel .kk_content > div div {
-        font-size: 4.5vw;
-        line-height: 4.6vw;
+    .kk_fav .productBadgesWrapper {
+        &::after {
+            content: "Kundenfavorit";
+            height: 18px;
+            line-height: 18px;
+            letter-spacing: 0.55px;
+            font-size: 9px;
+            display: inline-block;
+            padding: 0 6px;
+            font-family: "Roboto Condensed Bold", "Roboto",Helvetica,Arial,"Archer A",sans-serif;
+            font-weight: normal;
+            text-transform: uppercase;
+            border-radius: 2px;
+            color: #000;
+            background-color: #f2e543;
+        }
     }
-    .kk_kachel .kk_content > div h3 {
+    .kk_sehrgefragt::after {
+        bottom: -12px;
+    }
+
+
+    .kk_favorit .kk_slider {
+        // border: red solid 4px;
+        position: relative;
+        &::before {
+            content: "Kundenfavorit";
+            font-family: "Roboto Condensed Bold", "Roboto",Helvetica,Arial,"Archer A",sans-serif;
+            color: #000000;
+            font-weight: normal;
+            height: 25px;
+            line-height: 25px;
+            font-size: 11px;
+            padding: 0 10px;
+            letter-spacing: 0.55px;
+            text-align: center;
+            text-transform: uppercase;
+            position: absolute;
+            // top: 6px;
+            z-index: 20;
+            // left: 50%;
+            // margin-left: -59px;
+            border-radius: 2px;
+            background-color: #F2E543;
+            display: block;
+
+            left: 17px;
+            margin: 0;
+            top: auto;
+            bottom: 13px;
+        }
+    }
+
+    .kk_uvpKachel .kk_content > div div {
+        font-size: 4.5vw;
+        line-height: 5.2vw;
+    }
+    .kk_uvpKachel .kk_content > div h3 {
         font-size: 3.23vw;
         top: 75%;
         padding: 0 15%;
         bottom: auto;
+        line-height: 130%;
     }
-    .kk_newuvps {
+    .kk_pdsuvps {
         padding-right: 24px;
         padding-left: 24px;
-        margin-bottom: -25px;
+        margin-bottom: 25px;
 
+        .kk_hl {
+            margin-top: 45px;
+        }
         .kk_innerwrapper {
             flex-wrap: wrap;
             > div {
                 height: calc(32vw - 16px);
                 width: calc(32vw - 16px);
+                margin-bottom: 45px;
             }
         }
     }
 }
 @media only screen and (max-width: 350px) {
-    .kk_newuvps .kk_hl {
+    .kk_pdsuvps .kk_hl {
         font-size: 27px;
     }
 }

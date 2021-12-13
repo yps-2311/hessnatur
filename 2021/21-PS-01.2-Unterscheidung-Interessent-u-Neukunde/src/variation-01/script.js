@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -11,7 +11,7 @@
  (function(WATO, window) {
     "use strict";
 
-    // window.iridion.econda.push(["SprintPS01-2", "V1"]);
+    window.iridion.econda.push(["PS01-2", "V1"]);
 
     WATO.ps01_2global();
 
@@ -42,7 +42,7 @@
 
     function checkForKachelClass(elem) {
         try {
-            return elem.nextElementSibling ? elem.nextElementSibling.classList.contains('kk_kachel') : false;
+            return elem.nextElementSibling ? elem.nextElementSibling.classList.contains('kk_uvpKachel') : false;
         } catch (error) {
             return false;
         }
@@ -53,7 +53,7 @@
     }
 
     function getCatBox(contentIndex, uvpIndex) {
-        return  '<div class="gridviewProductItemWrapper column js-product-grid-item kk_kachel">'+
+        return  '<div class="gridviewProductItemWrapper column js-product-grid-item kk_uvpKachel">'+
                     '<div class="row">'+
                         '<div class="column small-12">'+
                             '<div class="kk_content column">'+
@@ -108,7 +108,7 @@
                 if(contentArea){
                     // UVPs auf PDS auf voller länge
                     contentArea[0].insertAdjacentHTML('afterbegin', 
-                        '<div class="kk_newuvps">'+
+                        '<div class="kk_pdsuvps">'+
                             '<div class="kk_innerwrapper">'+
                                 '<h4 class="kk_hl">'+
                                     '<span>Natürliche Qualität für Ihr Wohlbefinden</span>'+
@@ -130,8 +130,6 @@
 
         } else {
 
-            isInteressent = true;
-
             // Kategorieseite
             WATO.elem('footer', function(prodWrapper){
 
@@ -139,18 +137,27 @@
 
                     var allProds = WATO.qsa(".js-product-grid > .gridviewProductItemWrapper");
                     
-                    if(isInteressent && !WATO.qs('.kk_kachel')) {
+                    if(isInteressent && !WATO.qs('.kk_uvpKachel')) {
 
                         // Interessent
                         var prod6 = allProds[4] || allProds[allProds.length-2] || allProds[allProds.length-1],
                             prod9 = allProds[7],
                             prod15 = allProds[13],
-                            // randomIndex = Math.floor(Math.random() * 3),
                             all3boxes = [
                                 getCatBox(0, getRandomIndex()),
                                 getCatBox(1, getRandomIndex()),
                                 getCatBox(2, getRandomIndex())
                             ];
+                        
+                        // Zufällige Reihenfolge
+                        for (var i = all3boxes.length - 1; i > 0; i--) {
+
+                            var j = Math.floor(Math.random() * (i + 1)),
+                                temp = all3boxes[i];
+
+                            all3boxes[i] = all3boxes[j];
+                            all3boxes[j] = temp;
+                        }
                         
                         if(prod6 && !checkForKachelClass(prod6)){
                             prod6.insertAdjacentHTML('afterend', all3boxes[0]);
@@ -189,6 +196,7 @@
                             }
                         });
                     }
+                    
                 }
             });
         }
