@@ -1,0 +1,133 @@
+/* IMPORT VAR LESS FILE */
+@import "../global/vars.less";
+
+/* IMPORT GLOBAL LESS FILES */
+@import "../global/global.less";
+
+/* DEFINE VARIATION CSS */
+.kk-ps08 {
+  &.kk_favorit {
+    .js-badges-container {
+      &.kk-fav-hidden {
+        &::after {
+          display: none;
+        }
+      }
+      &::after {
+        display: none;
+      }
+    }
+    .kk_slider::before {
+      display: none;
+    }
+  }
+  .js_backstopWrapper .pds-cockpit__ratingSummaryWrapper {
+    @media (max-width: 480px){
+      flex: 0 0 35%;
+      max-width: 35%;
+    }
+
+  }
+  .js-badges-container {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    @media (max-width: 480px){
+      flex: 0 0 65% !important;
+      max-width: 65% !important;
+    }
+    .pds-cockpit__badge {
+      margin-right: 6px;
+      opacity: 0;
+      &.kk-visible {
+        opacity: 1;
+      }
+    }
+    .kk-nachhaltig {
+      color: #81b539;
+      font-family: "Roboto Condensed";
+      font-size: 12.5px;
+      font-weight: 700;
+      line-height: 25px;
+      text-transform: uppercase;
+      letter-spacing: 0.439161px;
+      display: inline-block;
+      order: 4;
+      height:25px;
+      margin-right: 10px;
+    }
+    .kk-badge {
+      order: 3;
+      margin-right: 6px;
+    }
+  }
+  h1.pds-cockpit__productName {
+    margin: 15px 0 10px;
+  }
+  .kk-box {
+    border-radius: 2px;
+    background: #f7f6f5;
+    display: flex;
+    padding: 6px 10px;
+    margin-bottom: 20px;
+    font-family: Roboto, Helvetica, Arial, Archer A, sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 14px;
+    letter-spacing: 0.3px;
+    align-items: center;
+    max-width: 326px;
+    @media (max-width: 540px){
+      opacity: 0.98;
+      border: solid 1px #d9dbdb;
+      background: #ffffff;
+      width: 100%;
+      margin: -54px 10px 10px;
+      z-index: 1;
+      -webkit-animation: slide 0.5s forwards;
+      -webkit-animation-delay: 2s;
+      animation: slide 0.5s forwards;
+      animation-delay: 2s;
+      transform: translateX(120%);
+      &.slide-out {
+        -webkit-animation: slideOut 0.5s forwards;
+        -webkit-animation-delay: 1s;
+        animation: slideOut 0.5s forwards;
+        animation-delay: 0s;
+        transform: translateX(0%);
+      }
+      >div:not(.kk-badge){
+        flex: auto;
+      }
+    }
+    .kk-badge {
+      color: #81b539;
+      font-family: "Roboto Condensed";
+      font-size: 12.5px;
+      font-weight: 700;
+      line-height: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.439161px;
+      margin-right: 13px;
+    }
+  }
+  .kk-hidden {
+    display: none !important;
+  }
+}
+
+@-webkit-keyframes slide {
+  100% { transform: translateX(0%); }
+}
+
+@keyframes slide {
+  100% { transform: translateX(0%); }
+}
+
+@-webkit-keyframes slideOut {
+  100% { transform: translateX(-120%); }
+}
+
+@keyframes slideOut {
+  100% { transform: translateX(-120%); }
+}
