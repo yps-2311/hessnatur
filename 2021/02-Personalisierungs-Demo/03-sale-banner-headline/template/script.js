@@ -98,6 +98,8 @@
                     wrapper.classList.add('kk_alignment_left');
                 }else if(alignment.indexOf("right") !== -1){
                     wrapper.classList.add('kk_alignment_right');
+                }else if(alignment.indexOf("center") !== -1){
+                    wrapper.classList.add('kk_alignment_center');
                 }
             }
 
