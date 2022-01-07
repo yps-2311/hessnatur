@@ -284,6 +284,7 @@
 					for (var i = 0; i < appProducts.length; i++) {
 						productIDs.push(appProducts[i].getAttribute('id').substring(0,5));
 					}
+					console.log('productIDs: ', productIDs);
 				}
 			});
 
@@ -293,6 +294,7 @@
 						typeof window.econda.recengine.Widget !== "undefined";
 			}, function(isLoadedEconda){
 				if(isLoadedEconda){
+					console.log('isLoadedEconda: ', isLoadedEconda);
 					// Wenn Econda geladen ist kann der Call abgeschickt werden
 
 					var tempCat = window.location.pathname.replace("/de/", "").split("/"),
@@ -306,6 +308,8 @@
 						var data = JSON.parse(callbackData.response),
 							items = data.items,
 							itemsTemp = [];
+						
+						console.log('data: ', data);
 
 						// Alle Produkte die bereits auf dieser Seite zu sehen sind werden aus der Liste entfernt
 						for (var j = 0; j < items.length; j++) {
