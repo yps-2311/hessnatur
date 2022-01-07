@@ -12,7 +12,7 @@
  (function (WATO) {
     "use strict";
 
-    window.iridion.econda.push(["PS06_3_Tweak", "V1"]);
+    // window.iridion.econda.push(["PS06_3_Tweak", "V1"]);
 
     // response > "damen" | "herren" | "baby OR junior" | "home"
     var CATEGORY_AFFINITY = window.iridion.push(['profile', 'getValue', 'categoryAffinity']);

@@ -11,7 +11,7 @@
  (function(WATO, window) {
     "use strict";
 
-    window.iridion.econda.push(["PS01-2", "V0"]);
+    // window.iridion.econda.push(["PS01-2", "V0"]);
 
     WATO.ps01_2global();
 
@@ -191,12 +191,12 @@
             WATO.elem('footer', function(prodWrapper){
 
                 if(prodWrapper){
-                    console.log('prodWrapper: ', prodWrapper);
+                    // console.log('prodWrapper: ', prodWrapper);
 
                     var allProds = WATO.qsa(".js-product-grid > .gridviewProductItemWrapper");
-                    console.log('allProds: ', allProds);
+                    // console.log('allProds: ', allProds);
                     
-                    console.log('isInteressent: ', isInteressent);
+                    // console.log('isInteressent: ', isInteressent);
                     if(isInteressent && !WATO.qs('.kk_hoechstequali')) {
 
                         // Interessent
@@ -249,17 +249,17 @@
                             all3boxes[j] = temp;
                         }
                         
-                        console.log('prod6: ', prod6);
+                        // console.log('prod6: ', prod6);
                         if(prod6 && !checkForKachelClass(prod6)){
                             prod6.insertAdjacentHTML('afterend', all3boxes[0]);
                         }
                         
-                        console.log('prod9: ', prod9);
+                        // console.log('prod9: ', prod9);
                         if(prod9 && !checkForKachelClass(prod9)){
                             prod9.insertAdjacentHTML('afterend',  all3boxes[1]);
                         }
 
-                        console.log('prod15: ', prod15);
+                        // console.log('prod15: ', prod15);
                         if(prod15 && !checkForKachelClass(prod15)){
                             prod15.insertAdjacentHTML('afterend',  all3boxes[2]);
                         }
@@ -272,7 +272,7 @@
                         }, function(element){
                             if(element){
                                 var allProducts = WATO.qsa(".js-product-grid .dropdown-pane");
-                                console.log('allProducts: ', allProducts);
+                                // console.log('allProducts: ', allProducts);
 
                                 for (var k = 0; k < allProducts.length; k++) {
             
