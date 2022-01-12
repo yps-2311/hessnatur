@@ -32,18 +32,18 @@
     }
 
     /** EDITOR VARS */
-    var IMG_IMAGE_LEFT = "{{name=ImageLeft&desc=Optimales Format: 298x430 Pixel&type=webarts.watt.editor.impl.ImageUrlEditor}}",
-        TEXT_HEADLINE = "{{name=Headline&desc=Bitte die gewünschte Headline eingeben (optional)&type=webarts.watt.editor.impl.TextEditor}}",
-        TEXT_SUBLINE = "{{name=Subline&desc=Bitte die gewünschte Subline eingeben. Dieser wird unterhalb der Headline positioniert (optional)&type=webarts.watt.editor.impl.TextEditor}}",
-        TEXT_FLOWTEXT = "{{name=Text&desc=Bitte den gewünschten Text eingeben. Dieser wird unterhalb der Subline positioniert (optional)&type=webarts.watt.editor.impl.TextEditor}}",
+    var IMG_IMAGE_LEFT = "{{name=ImageLeft&desc=Optimales Format: 298x430 Pixel. Die Bild-URL darf keine Parameter am Ende enthalten&type=webarts.watt.editor.impl.ImageUrlEditor}}",
+        TEXT_HEADLINE = "{{name=Headline&desc=Bitte die gewünschte Headline eingeben (optional). Schriftgröße 12&type=webarts.watt.editor.impl.TextEditor}}",
+        TEXT_SUBLINE = "{{name=Subline&desc=Bitte die gewünschte Subline eingeben. Dieser wird unterhalb der Headline positioniert (optional). Schriftgröße 31&type=webarts.watt.editor.impl.TextEditor}}",
+        TEXT_FLOWTEXT = "{{name=Text&desc=Bitte den gewünschten Text eingeben. Dieser wird unterhalb der Subline positioniert (optional). Schriftgröße 12&type=webarts.watt.editor.impl.TextEditor}}",
         DROPDOWN_NEWSLETTER_TRIGGER = "{{name=NewsletterONOFF&desc=Newsletter Eingabefeld wird angezeigt&type=webarts.watt.editor.impl.SelectEditor&values=on;off}}",
         TEXT_NEWSLETTER_BUTTON = "{{name=Newsletter_Button_Text&desc=Wenn Sie den Newsletter anzeigen können Sie den Text des Buttons ändern (optional)&type=webarts.watt.editor.impl.TextEditor}}",
         TEXT_FUSSNOTE = "{{name=Fussnote&desc=Sie können zusätzlichen Text als Fußnote angeben (optional)&type=webarts.watt.editor.impl.TextEditor}}",
         DROPDOWN_BADGE_TRIGGER = "{{name=BadgeONOFF&desc=Badge über dem Bild wird angezeigt&type=webarts.watt.editor.impl.SelectEditor&values=on;off}}",
         TEXT_BADGE1 = "{{name=Badge_Text1&hint=max. 5 Zeichen&desc=Die Zeile des Badges hat nicht mehr Platz als 5 Zeichen (optional)&type=webarts.watt.editor.impl.TextEditor}}",
         TEXT_BADGE2 = "{{name=Badge_Text2&desc=Dieser Text wird klein im Badge unter dem ersten Text angezeigt (optional)&type=webarts.watt.editor.impl.TextEditor}}",
-        COLORPICKER_COLOR = "{{name=Badge_Background_Color&hint=#ff00000&hint=z.B. “green” ODER HTML-Farbcodes z.B. “#ff00000”&type=webarts.watt.editor.impl.ColorEditor}}",
-        DROPDOWN_ALIGNMENT = "{{name=Badge_Alignment&desc=Ausrichtung des Textes im Badge&type=webarts.watt.editor.impl.SelectEditor&values=center;left;right}}",
+        COLORPICKER_COLOR = "{{name=Badge_Background_Color&hint=#ff00000&desc=z.B. “green” ODER HTML-Farbcodes z.B. “#ff00000”&type=webarts.watt.editor.impl.ColorEditor}}",
+        // DROPDOWN_ALIGNMENT = "{{name=Badge_Alignment&desc=Ausrichtung des Textes im Badge&type=webarts.watt.editor.impl.SelectEditor&values=center;left;right}}",
         TEXT_COOKIENAME = "{{name=Cookiename&desc=Wenn man paralell mehrere Exit-intent-Layer nutzt sollten dessen Cookies sich unterscheiden (default: kk_modalclosed)&hint=kk_modalclosed&type=webarts.watt.editor.impl.TextEditor}}";
         
 
@@ -73,8 +73,8 @@
                 BadgeOn = htmlDecode(DROPDOWN_BADGE_TRIGGER).toLowerCase().indexOf("on") !== -1,
                 badgeText1 = htmlDecode(TEXT_BADGE1),
                 badgeText2 = htmlDecode(TEXT_BADGE2),
-                badgeBackgroundColor = htmlDecode(COLORPICKER_COLOR) || "transparent",
-                badgeAlignment = htmlDecode(DROPDOWN_ALIGNMENT).toLowerCase();
+                badgeBackgroundColor = htmlDecode(COLORPICKER_COLOR) || "transparent";
+                // badgeAlignment = htmlDecode(DROPDOWN_ALIGNMENT).toLowerCase();
 
             // Modal wird eingebaut
             WATO.qs('body').insertAdjacentHTML('afterbegin', 
@@ -84,7 +84,7 @@
                         '<div class="row">'+
                             '<div class="kk_left" '+(valideImgURL(IMG_IMAGE_LEFT) ? 'style="background-image: url('+IMG_IMAGE_LEFT+')" ' : '')+'>'+
                             (BadgeOn ?
-                                '<div class="kk_badge" style="text-align: '+badgeAlignment+'; background-color: '+badgeBackgroundColor+';">'+
+                                '<div class="kk_badge" style="background-color: '+badgeBackgroundColor+';">'+ // text-align: '+badgeAlignment+'; 
                                 badgeText1+
                                 (badgeText2 ? '<span>'+badgeText2+'</span>' : '')+
                                 '</div>'
@@ -138,14 +138,23 @@
                     // Buttonbeschriftung wird eingebaut in den Originalbutton
                     cta.value = htmlDecode(TEXT_NEWSLETTER_BUTTON);
 
-                    // Beim erfolgreichen absenden wird eine Klasse gesetzt
+                    
                     originalNL.addEventListener('submit', function(){
+                        // Beim erfolgreichen absenden wird eine Klasse gesetzt
                         WATO.elem('.js-newsletter-form-error.success', function(success){
                             if(success){
+                                originalNL.classList.remove('kk_error');
                                 originalNL.classList.add('kk_success');
                                 setTimeout(function(){
                                     closeModal();
                                 }, 2000);
+                            }
+                        });
+
+                        // Fehlerhafte Eingabe einer Emailadresse
+                        WATO.elem('.js-newsletter-form-error.is-visible', function(success){
+                            if(success){
+                                originalNL.classList.add('kk_error');
                             }
                         });
                     });
