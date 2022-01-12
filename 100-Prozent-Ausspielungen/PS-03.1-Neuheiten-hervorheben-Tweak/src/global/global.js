@@ -176,9 +176,9 @@
 		var WATO = this,
 			// econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f',
 			econdaAccountID = '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1',
-			UrlHref = window.location.href,
+			// UrlHref = window.location.href,
 			UrlPathname = window.location.pathname,
-			imgs7 = "https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/",
+			// imgs7 = "https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/",
 			productIDs = [];
 
 		function pushGoal(key, value) {
@@ -284,7 +284,7 @@
 					for (var i = 0; i < appProducts.length; i++) {
 						productIDs.push(appProducts[i].getAttribute('id').substring(0,5));
 					}
-					console.log('productIDs: ', productIDs);
+					// console.log('productIDs: ', productIDs);
 				}
 			});
 
@@ -294,7 +294,7 @@
 						typeof window.econda.recengine.Widget !== "undefined";
 			}, function(isLoadedEconda){
 				if(isLoadedEconda){
-					console.log('isLoadedEconda: ', isLoadedEconda);
+					// console.log('isLoadedEconda: ', isLoadedEconda);
 					// Wenn Econda geladen ist kann der Call abgeschickt werden
 
 					var tempCat = window.location.pathname.replace("/de/", "").split("/"),
@@ -308,8 +308,9 @@
 						var data = JSON.parse(callbackData.response),
 							items = data.items,
 							itemsTemp = [];
-						
-						console.log('data: ', data);
+							
+							// console.log('data: ', data);
+							// console.log('items: ', items);
 
 						// Alle Produkte die bereits auf dieser Seite zu sehen sind werden aus der Liste entfernt
 						for (var j = 0; j < items.length; j++) {
@@ -318,6 +319,7 @@
 							}
 						}
 						items = itemsTemp;
+						// console.log('items: ', items);
 
 						// Sortieren der Produkte nach Kategorie der aktuellen Seite.
 						// z.B. Wenn man auf Herren-Hemden ist werden bevorzugt Herren Produkte angezeigt
