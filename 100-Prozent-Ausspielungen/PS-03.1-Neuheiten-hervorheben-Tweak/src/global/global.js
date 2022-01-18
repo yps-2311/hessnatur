@@ -305,200 +305,209 @@
 					}
 						
 					WATO.ajaxCallback("widgets.crosssell.info/eps/crosssell/recommendations", function(callbackData){
-						var data = JSON.parse(callbackData.response),
-							items = data.items,
-							itemsTemp = [];
-							
-							// console.log('data: ', data);
+						try {
+							var data = JSON.parse(callbackData.response),
+								items = data.items,
+								itemsTemp = [];
+								
+								// console.log('data: ', data);
+								// console.log('items: ', items);
+
+							// Alle Produkte die bereits auf dieser Seite zu sehen sind werden aus der Liste entfernt
+							for (var j = 0; j < items.length; j++) {
+								if (productIDs.indexOf(items[j].id) === -1) {
+									itemsTemp.push(items[j]);
+								}
+							}
+							items = itemsTemp;
 							// console.log('items: ', items);
 
-						// Alle Produkte die bereits auf dieser Seite zu sehen sind werden aus der Liste entfernt
-						for (var j = 0; j < items.length; j++) {
-							if (productIDs.indexOf(items[j].id) === -1) {
-								itemsTemp.push(items[j]);
+							// Sortieren der Produkte nach Kategorie der aktuellen Seite.
+							// z.B. Wenn man auf Herren-Hemden ist werden bevorzugt Herren Produkte angezeigt
+							// items.sort(compare);
+
+
+							// Zufällige Reihenfolge
+							for (var i = items.length - 1; i > 0; i--) {
+
+								var j = Math.floor(Math.random() * (i + 1)),
+									temp = items[i];
+
+								items[i] = items[j];
+								items[j] = temp;
 							}
-						}
-						items = itemsTemp;
-						// console.log('items: ', items);
 
-						// Sortieren der Produkte nach Kategorie der aktuellen Seite.
-						// z.B. Wenn man auf Herren-Hemden ist werden bevorzugt Herren Produkte angezeigt
-						// items.sort(compare);
+							// Die neue Reco
+							WATO.elem('#kk_crossprods .kk_cbody', function(cbody){
+								if(cbody){
+									cbody = cbody[0];
 
-
-						// Zufällige Reihenfolge
-						for (var i = items.length - 1; i > 0; i--) {
-
-							var j = Math.floor(Math.random() * (i + 1)),
-								temp = items[i];
-
-							items[i] = items[j];
-							items[j] = temp;
-						}
-
-						// Die neue Reco
-						WATO.elem('#kk_crossprods .kk_cbody', function(cbody){
-							if(cbody){
-								cbody = cbody[0];
-
-								cbody.innerHTML = '';
-
-								cbody.insertAdjacentHTML('beforeend',  
-									'<div class="carousel-cell kk_blackbox">'+
-										'<h4>'+userTypeText[0]+'</h4>'+
-										(userTypeText[1] ? '<div class="kk_subline">'+userTypeText[1]+'</div>' : '' )+
-										'<span class="kk_number">1/3</span>'+
-									'</div>'
-								);
-
-								WATO.elem('#kk_crossprods .kk_blackbox:last-child a', function(textlink){
-									if(!textlink) return;
-									textlink[0].addEventListener('click', () => {
-										pushGoal('click_textlink');
-									});
-								});
-
-								var countProducts = items.length < 10 ? items.length : 10;
-
-								for (var j = 0; j < countProducts; j++) {
-
-									var item = items[j],
-										imgURL = item.iconurl.replace("large","small").replace("_7.jpg","_1.jpg").replace("generalfeed_small","hyb_redes_list_main");
-
-									fetch(imgURL)
-										.then((res) => {
-											res.blob().then((data) => {
-												try {
-													if(typeof data.size !== "undefined" && data.size === 5803){ // 3080
-														// Hier wird anhand der Größe des zurückgelieferten Bildes erkannt dass es sich um einen Platzhalter vom Imageserver handelt
-														var imgToChangeSrc = WATO.qs('img[src="'+res.url+'"]');
-														if(imgToChangeSrc){
-															imgToChangeSrc.setAttribute('src', res.url.replace("_1.jpg","_7.jpg"));
-														}
-													}
-												} catch(error) {
-													// console.log('Error: ', error);
-													window.iridion.push(['goal', 'error_setup', error.toString()]);
-												}
-											});
-										}).catch((error) => {
-											// console.log('Error: ', error);
-											window.iridion.push(['goal', 'error_setup', error.toString()]);
-										});
+									cbody.innerHTML = '';
 
 									cbody.insertAdjacentHTML('beforeend',  
-										'<a class="carousel-cell" href="' + item.deeplink + '?ps03=true" data-index="' + (j+1) + '">'+
-											'<div class="kk_cimg">'+
-												'<img src="' + imgURL + '">'+
-												'<div class="kk_badge">'+
-													(item.isVegan === "true" ? '<span class="kk_vegan">Vegan</span>' : '') + // '<img src="' + imgs7 + 'overlay_vegan.svg" alt="Vegan">'
-													((new Date().getTime() - new Date(item.g_ab).getTime()) / (1000 * 3600 * 24) < 45 ? '<span class="kk_new">New</span>' : '')+ // '<img src="'+imgs7+'overlay_neu.svg" alt="Neu">'
-												'</div>'+
-											'</div>'+
-											'<div class="kk_title">' + item.name + '</div>'+
-											'<div class="kk_price">' + item.price + '</div>'+
-										'</a>'
+										'<div class="carousel-cell kk_blackbox">'+
+											'<h4>'+userTypeText[0]+'</h4>'+
+											(userTypeText[1] ? '<div class="kk_subline">'+userTypeText[1]+'</div>' : '' )+
+											'<span class="kk_number">1/3</span>'+
+										'</div>'
 									);
-								}
 
-								// [...WATO.qsa('#kk_crossprods .carousel-cell')].map((product) => {
-								// 	product.addEventListener('click', () => {
-								// 		pushGoalAgain('ps03_click_slide_' + product.dataset.index);
-								// 	});
-								// });
-
-								// var tempMainCat = WATO.qs('.navigation-main > li > a.h-text-bold'),
-								// 	selectedCategory = tempMainCat ? tempMainCat.getAttribute('href').replace("/de/","") : ,
-								var	newURL = "NEU";
-
-								switch (mainCat) {
-									case 'Herren':
-										newURL = 'herren/bekleidung/c/neu-herren';
-										break;
-									case 'Damen':
-										newURL = 'damen/bekleidung/c/neu-damen';
-										break;
-									case 'Baby':
-									// case 'Junior':
-										newURL = 'baby/bekleidung/c/neu-junior';
-										break;
-									case 'Home':
-										newURL = 'home/bekleidung/c/neu-home';
-										break;
-									default:
-										if(UrlPathname.indexOf('herren') !== -1){
-											newURL = 'herren/bekleidung/c/neu-herren';
-										}else if(UrlPathname.indexOf('damen') !== -1){
-											newURL = 'damen/bekleidung/c/neu-damen';
-										}else if(UrlPathname.indexOf('baby') !== -1 || UrlPathname.indexOf('junior') !== -1){
-											newURL = 'baby/bekleidung/c/neu-junior';
-										}else if(UrlPathname.indexOf('home') !== -1){
-											newURL = 'home/bekleidung/c/neu-home';
-										}
-										break;
-								}
-
-								// https://www.hessnatur.com/de/herren/bekleidung/c/neu-herren
-								// https://www.hessnatur.com/de/damen/bekleidung/c/neu-damen
-								// https://www.hessnatur.com/de/baby/bekleidung/c/neu-junior
-								// https://www.hessnatur.com/de/home/heimtextilien/c/neu-home
-
-								cbody.insertAdjacentHTML('beforeend',  
-									'<div class="carousel-cell kk_blackbox">'+
-										'<h4>Noch mehr Neuheiten entdecken?</h4>'+
-										'<a class="kk_subline" href="/de/'+newURL+'">> zu allen Neuheiten</a>'+
-										'<span class="kk_number">3/3</span>'+
-									'</div>'
-								);
-
-								WATO.elem(function(){
-									return typeof window.Flickity !== "undefined";
-								}, function(){
-
-									var scrollGoalSend = false;
-
-									// Slider init
-									new window.Flickity(cbody, {
-										cellAlign: 'left',
-										cellSelector: '.carousel-cell',
-										draggable: true,
-										wrapAround: false,
-										pageDots: false,
-										contain: true,
-										groupCells: 4
-									}).on('staticClick', function(event, pointer, cellElement, cellIndex){
-										// KK: PS03: Klick auf das 1. Produkt aus Slide-Element
-										// KK: PS03: Klick auf das 2. Produkt aus Slide-Element
-										// KK: PS03: Klick auf das 3. Produkt aus Slide-Element
-										// KK: PS03: Klick auf das 4. Produkt aus Slide-Element
-										pushGoalAgain('click_slide_' + cellIndex);
-									}).on('dragStart', function() {
-										if(!scrollGoalSend){
-											scrollGoalSend = true;
-											// KK: PS03: Klick auf Pfeil auf der rechten / linken Seite - PDL
-											pushGoal('click_slide_change');
-										}
+									WATO.elem('#kk_crossprods .kk_blackbox:last-child a', function(textlink){
+										if(!textlink) return;
+										textlink[0].addEventListener('click', () => {
+											pushGoal('click_textlink');
+										});
 									});
-									WATO.elem('#kk_crossprods button.next', function(nextButton){
-										if(nextButton){
-											nextButton[0].addEventListener('click', function(){
-												// KK: PS03: Klick auf Pfeil auf der rechten / linken Seite - PDL
-												pushGoal('click_slide_change');
+
+									var countProducts = items.length < 10 ? items.length : 10;
+
+									for (var j = 0; j < countProducts; j++) {
+
+										var item = items[j],
+											imgURL = item.iconurl.replace("large","small").replace("_7.jpg","_1.jpg").replace("generalfeed_small","hyb_redes_list_main");
+
+										fetch(imgURL)
+											.then((res) => {
+												res.blob().then((data) => {
+													try {
+														if(typeof data.size !== "undefined" && data.size === 5803){ // 3080
+															// Hier wird anhand der Größe des zurückgelieferten Bildes erkannt dass es sich um einen Platzhalter vom Imageserver handelt
+															var imgToChangeSrc = WATO.qs('img[src="'+res.url+'"]');
+															if(imgToChangeSrc){
+																imgToChangeSrc.setAttribute('src', res.url.replace("_1.jpg","_7.jpg"));
+															}
+														}
+													} catch(error) {
+														// console.log('Error: ', error);
+														window.iridion.push(['goal', 'error_setup', error.toString()]);
+													}
+												});
+											}).catch((error) => {
+												// console.log('Error: ', error);
+												window.iridion.push(['goal', 'error_setup', error.toString()]);
 											});
-										}
-									});
 
-									// WATO.elem('#kk_crossprods > .main-carousel > button', (buttons) => {
-									// 	[...buttons].map((button) => {
-									// 		button.addEventListener('click', () => {
-									// 			// KK: PS03: Klick auf Pfeil auf der rechten / linken Seite - PDL
-									// 			pushGoal('click_slide_change');
-									// 		});
+										cbody.insertAdjacentHTML('beforeend',  
+											'<a class="carousel-cell" href="' + item.deeplink + '?ps03=true" data-index="' + (j+1) + '">'+
+												'<div class="kk_cimg">'+
+													'<img src="' + imgURL + '">'+
+													'<div class="kk_badge">'+
+														(item.isVegan === "true" ? '<span class="kk_vegan">Vegan</span>' : '') + // '<img src="' + imgs7 + 'overlay_vegan.svg" alt="Vegan">'
+														((new Date().getTime() - new Date(item.g_ab).getTime()) / (1000 * 3600 * 24) < 45 ? '<span class="kk_new">New</span>' : '')+ // '<img src="'+imgs7+'overlay_neu.svg" alt="Neu">'
+													'</div>'+
+												'</div>'+
+												'<div class="kk_title">' + item.name + '</div>'+
+												'<div class="kk_price">' + item.price + '</div>'+
+											'</a>'
+										);
+									}
+
+									// [...WATO.qsa('#kk_crossprods .carousel-cell')].map((product) => {
+									// 	product.addEventListener('click', () => {
+									// 		pushGoalAgain('ps03_click_slide_' + product.dataset.index);
 									// 	});
 									// });
-								});
-							}
-						});
+
+									// var tempMainCat = WATO.qs('.navigation-main > li > a.h-text-bold'),
+									// 	selectedCategory = tempMainCat ? tempMainCat.getAttribute('href').replace("/de/","") : ,
+									var	newURL = "NEU";
+
+									switch (mainCat) {
+										case 'Herren':
+											newURL = 'herren/bekleidung/c/neu-herren';
+											break;
+										case 'Damen':
+											newURL = 'damen/bekleidung/c/neu-damen';
+											break;
+										case 'Baby':
+										// case 'Junior':
+											newURL = 'baby/bekleidung/c/neu-junior';
+											break;
+										case 'Home':
+											newURL = 'home/bekleidung/c/neu-home';
+											break;
+										default:
+											if(UrlPathname.indexOf('herren') !== -1){
+												newURL = 'herren/bekleidung/c/neu-herren';
+											}else if(UrlPathname.indexOf('damen') !== -1){
+												newURL = 'damen/bekleidung/c/neu-damen';
+											}else if(UrlPathname.indexOf('baby') !== -1 || UrlPathname.indexOf('junior') !== -1){
+												newURL = 'baby/bekleidung/c/neu-junior';
+											}else if(UrlPathname.indexOf('home') !== -1){
+												newURL = 'home/bekleidung/c/neu-home';
+											}
+											break;
+									}
+
+									// https://www.hessnatur.com/de/herren/bekleidung/c/neu-herren
+									// https://www.hessnatur.com/de/damen/bekleidung/c/neu-damen
+									// https://www.hessnatur.com/de/baby/bekleidung/c/neu-junior
+									// https://www.hessnatur.com/de/home/heimtextilien/c/neu-home
+
+									cbody.insertAdjacentHTML('beforeend',  
+										'<div class="carousel-cell kk_blackbox">'+
+											'<h4>Noch mehr Neuheiten entdecken?</h4>'+
+											'<a class="kk_subline" href="/de/'+newURL+'">> zu allen Neuheiten</a>'+
+											'<span class="kk_number">3/3</span>'+
+										'</div>'
+									);
+
+									WATO.elem(function(){
+										return typeof window.Flickity !== "undefined";
+									}, function(){
+
+										var scrollGoalSend = false;
+
+										// Slider init
+										new window.Flickity(cbody, {
+											cellAlign: 'left',
+											cellSelector: '.carousel-cell',
+											draggable: true,
+											wrapAround: false,
+											pageDots: false,
+											contain: true,
+											groupCells: 4
+										}).on('staticClick', function(event, pointer, cellElement, cellIndex){
+											// KK: PS03: Klick auf das 1. Produkt aus Slide-Element
+											// KK: PS03: Klick auf das 2. Produkt aus Slide-Element
+											// KK: PS03: Klick auf das 3. Produkt aus Slide-Element
+											// KK: PS03: Klick auf das 4. Produkt aus Slide-Element
+											pushGoalAgain('click_slide_' + cellIndex);
+										}).on('dragStart', function() {
+											if(!scrollGoalSend){
+												scrollGoalSend = true;
+												// KK: PS03: Klick auf Pfeil auf der rechten / linken Seite - PDL
+												pushGoal('click_slide_change');
+											}
+										});
+										WATO.elem('#kk_crossprods button.next', function(nextButton){
+											if(nextButton){
+												nextButton[0].addEventListener('click', function(){
+													// KK: PS03: Klick auf Pfeil auf der rechten / linken Seite - PDL
+													pushGoal('click_slide_change');
+												});
+											}
+										});
+
+										// WATO.elem('#kk_crossprods > .main-carousel > button', (buttons) => {
+										// 	[...buttons].map((button) => {
+										// 		button.addEventListener('click', () => {
+										// 			// KK: PS03: Klick auf Pfeil auf der rechten / linken Seite - PDL
+										// 			pushGoal('click_slide_change');
+										// 		});
+										// 	});
+										// });
+									});
+								}
+							});
+						} catch (error) {
+							// console.log('Error: ', error);
+							WATO.elem('#kk_crossprods', function(crossprods){
+								if(crossprods){
+									crossprods[0].style.display = "none";
+								}
+							});
+						}
 					});
 
 					try {
