@@ -17,7 +17,7 @@
  * WATO.scrollTo         ==> Scrollt bis zum Übergebenen Pixel (von oben)
  * WATO.event            ==> EventListener setzen
  * WATO.xhr_get          ==> Ajax GET Request
- * WATO.xhr_post         ==> Ajax POST Request
+ * WATO.xhr_post          ==> Ajax POST Request
  */
 (function (window, document) {
     "use strict";
@@ -77,122 +77,31 @@
     };
 
     /**
-     * WARNING - Not yet tested! 
-     * 
-     * @author Max Vith
-     * @description A wrapper function - making polling async
-     * 
-     * @param {string} waitFor - CSS Selector des zu findenden DOM Elements.
-     */
-    /*
-    window.WATO.prototype.asyncElem = async function(waitFor) {
-
-        return new Promise((resolve, reject) => {
-
-            this.elem(waitFor, (results) => {
-                if(!results){
-                    reject();
-                }
-
-                resolve(results);
-            });
-        });
-    };
-    */
-
-    /**
      * @function qs
      * @memberOf WATO
      *
-     * @author Max Vith, Timo Ott
+     * @author Timo Ott
      *
      * @param {string} selector - CSS Selector des zu findenden DOM Elements
-     * @param {node} parent - CSS Selector des zu findenden DOM Elements
-     * @param {func} callback - Callback function if the node was found
-     * @param {error} callback - Error callback funciton if no node was found
      */
-    window.WATO.prototype.qs = function (selector, parent, callback, error) {
+    window.WATO.prototype.qs = function (selector, parent) {
 
-        var elem = (parent ? parent : document).querySelector(selector);
-
-        if (elem) {
-
-            if (typeof callback === "function") {
-
-                callback(elem);
-            }
-        } else {
-
-            if (typeof error === "function") {
-
-                error();
-            }
-        }
-
-        return elem;
+        return (parent ? parent : document).querySelector(selector);
     };
 
     /**
      * @function qsa
      * @memberOf WATO
      *
-     * @author Max Vith, Timo Ott
+     * @author Timo Ott
      *
      * @param {string} selector - CSS Selector des zu findenden DOM Elements
-     * @param {node} parent - CSS Selector des zu findenden DOM Elements
-     * @param {func} callback - Callback function if the node was found
-     * @param {error} callback - Error callback funciton if no node was found
      */
-    window.WATO.prototype.qsa = function (selector, parent, callback, error) {
+    window.WATO.prototype.qsa = function (selector, parent) {
 
-        var elem = (parent ? parent : document).querySelectorAll(selector);
-
-        if (elem) {
-
-            if (typeof callback === "function") {
-
-                callback(elem);
-            }
-        } else {
-
-            if (typeof error === "function") {
-
-                error();
-            }
-        }
-
-        return elem;
+        return (parent ? parent : document).querySelectorAll(selector);
     };
 
-    /**
-     * @function ev
-     * @memberOf WATO
-     *
-     * @author Max Vith
-     *
-     * @param {string || Node} selector
-     * @param {string} eventType
-     * @param {function} callback
-     */
-    /*
-    window.WATO.prototype.ev = function (selector, eventType, callback) {
-
-        if(typeof selector === "string"){
-
-            this.elem(selector, function(elem){
-
-                if(elem){
-
-                    elem[0].addEventListener(eventType, callback);
-                }
-            });
-        } else if(typeof selector === "object"){
-
-            selector.addEventListener(eventType, callback);
-        }
-    };
-    */
-   
     /**
      * @function ready
      * @memberOf WATO
@@ -201,7 +110,6 @@
      *
      * @param {function} callback
      */
-    /*
     window.WATO.prototype.ready = function (callback) {
 
         // http://youmightnotneedjquery.com/ IE9+
@@ -212,8 +120,16 @@
 
             document.addEventListener('DOMContentLoaded', callback);
         }
+
+        // BUGFIX LD 09.05.2017
+        // var state = document.readyState !== 'loading';
+        // if(state) {
+        // 	callback();
+        // } else {
+        // 	document.addEventListener('DOMContentLoaded', callback);
+        // }
+        // return state;
     };
-    */
 
     /**
      * @function initObserver
@@ -355,10 +271,7 @@
 
                     if (uri.indexOf(url) !== -1) {
                         
-                        if(typeof callback === "function"){
-                            
-                            callback();
-                        }
+                        callback();
                     }
                 }
             }, false);
@@ -461,12 +374,13 @@
 		
 		if(typeof callback === "function"){
 			
-            window.addEventListener('resize', function(){
-                _checkWidth();
-            });
+			window.onresize = function() {
+
+				_checkWidth();
+			};
 		}
 	};
-    */
+	*/
 
     /**
      * @function storageAvailable
