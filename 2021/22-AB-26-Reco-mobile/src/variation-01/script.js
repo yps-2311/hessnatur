@@ -17,8 +17,6 @@
 
     WATO.elem('[data-componentid="CrossSellingEconda"]', function(crossSellingEconda){
         if(crossSellingEconda){ 
-            // crossSellingEconda = crossSellingEconda[0].parentNode;
-
             crossSellingEconda = crossSellingEconda[0];
             
             var qualiBadges = WATO.qs('.medium-uncollapse > .kk_quali'),
