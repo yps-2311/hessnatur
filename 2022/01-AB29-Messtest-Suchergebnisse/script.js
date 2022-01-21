@@ -88,11 +88,11 @@
 			products.forEach(function(product) {
 
 				// Klick auf Produktbild
-				qsWithGoalOnEventListener('.productPrgWrapper.js-prgLink', product, ['kk-click-product-img', 'kk-product-clicked'], true);
+				qsWithGoalOnEventListener('.productPrgWrapper.js-prgLink', product, ['kk-click-product-img', 'kk-click-product'], true);
 				
 
 				// Klick auf Produkt Text / Preis
-				qsaWithGoalOnEventListener('.productItemColorContainer > div', product, ['kk-product-clicked'], true);
+				qsaWithGoalOnEventListener('.productItemColorContainer > div', product, ['kk-click-product'], true);
 
 				// Farben
 				WATO.qsa('.productItemColor img', product, function(productColors) {
@@ -102,7 +102,7 @@
 							// Klick auf Farbe
 							color.addEventListener('click', function() {
 								console.log('product clicked');
-								goalPush('kk-product-clicked', true);
+								goalPush('kk-click-product', true);
 							});
 
 							// Hover über Produktfarben (Desktop)
@@ -117,7 +117,7 @@
 				});
 
 				// Klick auf Produktgröße (Desktop)
-				qsaWithGoalOnEventListener('.productItemSizes .h-text-decoration-none-hover', product, ['kk-click-product-size', 'kk-product-clicked'], true);
+				qsaWithGoalOnEventListener('.productItemSizes .h-text-decoration-none-hover', product, ['kk-click-product-size', 'kk-click-product'], true);
 
 
 				// Klick auf Produkt merken
