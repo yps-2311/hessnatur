@@ -21,22 +21,32 @@
     //     }
     // }
 
-
     /** EDITOR VARS */
-    // var BABY_AKTION_TEXT1 = "{{name=ImageLeft&desc=Optimales Format: 298x430 Pixel. Die Bild-URL darf keine Parameter am Ende enthalten&type=webarts.watt.editor.impl.ImageUrlEditor}}",
-    //     BABY_AKTION_TEXT2 = "{{name=Headline&desc=Bitte die gewünschte Headline eingeben (optional). Schriftgröße 12&type=webarts.watt.editor.impl.TextEditor}}",
-    //     BABY_AKTION_ICON = "{{name=Subline&desc=Bitte die gewünschte Subline eingeben. Dieser wird unterhalb der Headline positioniert (optional). Schriftgröße 31&type=webarts.watt.editor.impl.TextEditor}}",
-    //     TEXT_FLOWTEXT = "{{name=Text&desc=Bitte den gewünschten Text eingeben. Dieser wird unterhalb der Subline positioniert (optional). Schriftgröße 12&type=webarts.watt.editor.impl.TextEditor}}",
-    //     DROPDOWN_NEWSLETTER_TRIGGER = "{{name=NewsletterONOFF&desc=Newsletter Eingabefeld wird angezeigt&type=webarts.watt.editor.impl.SelectEditor&values=on;off}}",
-    //     TEXT_NEWSLETTER_BUTTON = "{{name=Newsletter_Button_Text&desc=Wenn Sie den Newsletter anzeigen, können Sie den Text des Buttons ändern (optional)&type=webarts.watt.editor.impl.TextEditor}}",
-    //     TEXT_FUSSNOTE = "{{name=Fussnote&desc=Sie können zusätzlichen Text als Fußnote angeben (optional). Schriftgröße 10&type=webarts.watt.editor.impl.TextEditor}}",
-    //     DROPDOWN_BADGE_TRIGGER = "{{name=BadgeONOFF&desc=Badge über dem Bild wird angezeigt&type=webarts.watt.editor.impl.SelectEditor&values=on;off}}",
-    //     TEXT_BADGE1 = "{{name=Badge_Text1&hint=max. 5 Zeichen&desc=Die Zeile des Badges hat nicht mehr Platz als 5 Zeichen (optional)&type=webarts.watt.editor.impl.TextEditor}}",
-    //     TEXT_BADGE2 = "{{name=Badge_Text2&desc=Dieser Text wird klein im Badge unter dem ersten Text angezeigt (optional)&type=webarts.watt.editor.impl.TextEditor}}",
-    //     COLORPICKER_COLOR = "{{name=Badge_Background_Color&hint=#ff00000&desc=z.B. “green” ODER HTML-Farbcodes z.B. “#ff00000” oder benutzen Sie den Colorpicker rechts&type=webarts.watt.editor.impl.ColorEditor}}",
-    //     // DROPDOWN_ALIGNMENT = "{{name=Badge_Alignment&desc=Ausrichtung des Textes im Badge&type=webarts.watt.editor.impl.SelectEditor&values=center;left;right}}",
-    //     TEXT_COOKIENAME = "{{name=Cookiename&desc=Wenn man parallel mehrere Exit-Intent-Layer nutzt, sollten deren Cookies sich unterscheiden (default: kk_modalclosed)&hint=kk_modalclosed&type=webarts.watt.editor.impl.TextEditor}}";
-        
+    var BABY_AKTION_TEXT1 = "{{name=babyActionText1&desc=Dünner Text oberhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
+        BABY_AKTION_TEXT2 = "{{name=babyActionText2&desc=Dicker Text unterhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
+        BABY_AKTION_ICON = "{{name=babyActionIcon&desc=Icon vor dem Badge. Default: 15%-Icon&type=webarts.watt.editor.impl.ImageUrlEditor}}",
+
+        HOME_AKTION_TEXT1 = "{{name=homeActionText1&desc=Dünner Text oberhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
+        HOME_AKTION_TEXT2 = "{{name=homeActionText2&desc=Dicker Text unterhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
+        HOME_AKTION_ICON = "{{name=homeActionIcon&desc=Icon vor dem Badge. Default: 15%-Icon&type=webarts.watt.editor.impl.ImageUrlEditor}}",
+
+        HERREN_AKTION_TEXT1 = "{{name=herrenActionText1&desc=Dünner Text oberhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
+        HERREN_AKTION_TEXT2 = "{{name=herrenActionText2&desc=Dicker Text unterhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
+        HERREN_AKTION_ICON = "{{name=herrenActionIcon&desc=Icon vor dem Badge. Default: 15%-Icon&type=webarts.watt.editor.impl.ImageUrlEditor}}",
+
+        DAMEN_AKTION_TEXT1 = "{{name=damenActionText1&desc=Dünner Text oberhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
+        DAMEN_AKTION_TEXT2 = "{{name=damenActionText2&desc=Dicker Text unterhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
+        DAMEN_AKTION_ICON = "{{name=damenActionIcon&desc=Icon vor dem Badge. Default: 15%-Icon&type=webarts.watt.editor.impl.ImageUrlEditor}}";
+    
+
+    console.log('BABY_AKTION_TEXT1: ', BABY_AKTION_TEXT1);
+    console.log('BABY_AKTION_TEXT2: ', BABY_AKTION_TEXT2);
+    console.log('BABY_AKTION_ICON: ', BABY_AKTION_ICON);
+
+    console.log('HOME_AKTION_TEXT1: ', HOME_AKTION_TEXT1);
+    console.log('HOME_AKTION_TEXT2: ', HOME_AKTION_TEXT2);
+    console.log('HOME_AKTION_ICON: ', HOME_AKTION_ICON);
+
 
     var PATHNAME = location.pathname,
         currentCategory = false, // current category
@@ -53,28 +63,28 @@
         // Table with all messages to displaying
         messageByCat = {
             'baby': {
-                'Aktion': [badgeAktionUrl, 'Bio-Kindermode aus Naturfasern<br><b>10% Rabatt mit code SALE2021</b>'],
+                'Aktion': [BABY_AKTION_ICON.length ? badgeAktionUrl : BABY_AKTION_ICON, BABY_AKTION_TEXT1 + '<br><b>'+ BABY_AKTION_TEXT2 +'</b>'],
                 'Sale': [badgeSaleUrl, 'Bio-Kindermode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
                 'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Kindermode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Bio-Kindermode aus Naturfasern<br><b>Neu im Sortiment</b>'],
                 'Allgemein': ['Nachhaltig', 'Bio-Kindermode aus Naturfasern<br><b>In höchster Qualität</b>']
             },
             'home': {
-                'Aktion': [badgeAktionUrl, 'Gut für Mensch & Natur<br><b>10% Rabatt mit code SALE2021</b>'],
+                'Aktion': [HOME_AKTION_ICON.length ? badgeAktionUrl : HOME_AKTION_ICON, HOME_AKTION_TEXT1 + '<br><b>'+ HOME_AKTION_TEXT2 +'</b>'],
                 'Sale': [badgeSaleUrl, 'Gut für Mensch & Natur<br><b>Jetzt zum reduzierten Preis</b>'],
                 'Kundenfavorit': [badgeKundenfavoritUrl, 'Gut für Mensch & Natur<br><b>Ein Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Gut für Mensch & Natur<br><b>Neu im Sortiment</b>'],
                 'Allgemein': ['Nachhaltig', 'Gut für Mensch & Natur<br><b>In höchster Qualität</b>']
             },
             'herren': {
-                'Aktion': [badgeAktionUrl, 'Bio-Mode aus Naturfasern<br><b>10% Rabatt mit code SALE2021</b>'],
+                'Aktion': [HERREN_AKTION_ICON.length ? badgeAktionUrl : HERREN_AKTION_ICON, HERREN_AKTION_TEXT1 + '<br><b>'+ HERREN_AKTION_TEXT2 +'</b>'],
                 'Sale': [badgeSaleUrl, 'Bio-Mode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
                 'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Mode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Bio-Mode aus Naturfasern<br><b>Neu im Sortiment</b>'],
                 'Allgemein': ['Nachhaltig', 'Bio-Mode aus Naturfasern<br><b>In höchster Qualität</b>']
             },
             'damen': {
-                'Aktion': [badgeAktionUrl, 'Bio-Mode aus Naturfasern<br><b>10% Rabatt mit code SALE2021</b>'],
+                'Aktion': [DAMEN_AKTION_ICON.length ? badgeAktionUrl : DAMEN_AKTION_ICON, DAMEN_AKTION_TEXT1 + '<br><b>'+ DAMEN_AKTION_TEXT2 +'</b>'],
                 'Sale': [badgeSaleUrl, 'Bio-Mode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
                 'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Mode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Bio-Mode aus Naturfasern<br><b>Neu im Sortiment</b>'],
@@ -199,7 +209,7 @@
 
     }
 
-    document.documentElement.classList.add('kk-ps08-3');
+    document.documentElement.classList.add('kk-notifications-pds');
 
     function displyBadges() {
         WATO.elem(function () {
