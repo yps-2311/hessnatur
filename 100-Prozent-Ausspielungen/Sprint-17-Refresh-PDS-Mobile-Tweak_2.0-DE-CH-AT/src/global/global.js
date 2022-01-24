@@ -597,63 +597,76 @@
 
         // Complete the Look
         function createCTL() {
-            _self.elem('.js-jump-complete-look', function(completeTheLookLink){
-                if(completeTheLookLink){
+
+            _self.elem('.js-completeTheLookWrapper', function(completeTheLookWrapper){
+                if(completeTheLookWrapper && completeTheLookWrapper[0].children.length > 0){
                     
-                    _self.elem(function(){
-                        return _self.qsa('.h-xxLargeOffset-bottom-inner-xLarge-up > img').length > 0 && !_self.qs(".kk_ctl");
-                    }, function(){
-                        var completeTheLookImg = _self.qs('.h-xxLargeOffset-bottom-inner-xLarge-up > img');
+                    _self.elem('.js-jump-complete-look', function(completeTheLookLink){
+                        if(completeTheLookLink){
+                            
+                            _self.elem(function(){
+                                return _self.qsa('.h-xxLargeOffset-bottom-inner-xLarge-up > img').length > 0 && !_self.qs(".kk_ctl");
+                            }, function(){
+                                var completeTheLookImg = _self.qs('.h-xxLargeOffset-bottom-inner-xLarge-up > img');
 
-                        try {
-                            completeTheLookLink = completeTheLookLink[0];
-                            completeTheLookLink.innerHTML = "Complete the Look";
-
-                            if(completeTheLookImg){
-                                var CTLTeaserImgSrc = completeTheLookImg.getAttribute('src'), // .replace("reco","detail") thumb
-                                    CTLWrapper = _self.qs(".js-completeTheLookWrapper");
+                                if(!_self.qs(".kk_ctl")){
+                                    try {
+                                        completeTheLookLink = completeTheLookLink[0];
+                                        completeTheLookLink.innerHTML = "Complete the Look";
             
-                                completeTheLookLink.setAttribute('style', 'background-image: url('+CTLTeaserImgSrc+')');
-
-                                // completeTheLookLink.addEventListener('click', function(){
-                                //     _self.goalPush("kk17_shopthelook_anker");
-                                // });
-
-                                if(CTLWrapper) {
-                                    var CTLProducts = _self.qsa(".item__image", CTLWrapper);
-                                
-                                    // CTL wird umgebaut
-                                    CTLWrapper.insertAdjacentHTML('beforeend', 
-                                        '<div class="kk_ctl" id="look">'+
-                                            '<img src="'+CTLTeaserImgSrc+'">'+
-                                            '<div class="kk_subline">Complete the Look</div>'+
-                                            '<div class="kk_teaser">FÜR MEHR STIL: IHR<br>PerfekteS Outfit</div>'+
-                                            '<div id="kk_ctlwrapper"></div>'+
-                                        '</div>'
-                                    );
-                
-                                    var newCTLWrapper = _self.qs("#kk_ctlwrapper", CTLWrapper.parentNode);
-                                    
-                                    for (var i = 0; i < CTLProducts.length; i++) {
-                                        // CTLProducts[i].addEventListener('click', function(){
-                                        //     _self.goalPush("kk17_product_ctl", true);
-                                        // });
-                                        if(newCTLWrapper){
-                                            newCTLWrapper.insertAdjacentElement('beforeend', CTLProducts[i]);
+                                        if(completeTheLookImg){
+                                            var CTLTeaserImgSrc = completeTheLookImg.getAttribute('src'), // .replace("reco","detail") thumb
+                                                CTLWrapper = _self.qs(".js-completeTheLookWrapper");
+                        
+                                            completeTheLookLink.setAttribute('style', 'background-image: url('+CTLTeaserImgSrc+')');
+            
+                                            // completeTheLookLink.addEventListener('click', function(){
+                                            //     _self.goalPush("kk17_shopthelook_anker");
+                                            // });
+            
+                                            if(CTLWrapper) {
+                                                var CTLProducts = _self.qsa(".item__image", CTLWrapper);
+                                            
+                                                // CTL wird umgebaut
+                                                CTLWrapper.insertAdjacentHTML('beforeend', 
+                                                    '<div class="kk_ctl" id="look">'+
+                                                        '<img src="'+CTLTeaserImgSrc+'">'+
+                                                        '<div class="kk_subline">Complete the Look</div>'+
+                                                        '<div class="kk_teaser">FÜR MEHR STIL: IHR<br>PerfekteS Outfit</div>'+
+                                                        '<div id="kk_ctlwrapper"></div>'+
+                                                    '</div>'
+                                                );
+                            
+                                                var newCTLWrapper = _self.qs("#kk_ctlwrapper", CTLWrapper.parentNode);
+                                                
+                                                for (var i = 0; i < CTLProducts.length; i++) {
+                                                    // CTLProducts[i].addEventListener('click', function(){
+                                                    //     _self.goalPush("kk17_product_ctl", true);
+                                                    // });
+                                                    if(newCTLWrapper){
+                                                        newCTLWrapper.insertAdjacentElement('beforeend', CTLProducts[i]);
+                                                    }
+                                                }
+                                                
+                                                initGallery('#kk_ctlwrapper');
+                                            }
                                         }
+            
+                                    } catch (error) {
+                                        _self.goalPush("wa_setup_monitoring2");
+                                        // console.log('Error: ', error);
                                     }
-                                    
-                                    initGallery('#kk_ctlwrapper');
                                 }
-                            }
-
-                        } catch (error) {
-                            _self.goalPush("wa_setup_monitoring2");
-                            // console.log('Error: ', error);
+                                
+                            });
                         }
                     });
+
+
                 }
             });
+
+            
         }
 
         createCTL();
