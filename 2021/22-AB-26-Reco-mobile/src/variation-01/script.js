@@ -13,8 +13,6 @@
 
     // window.iridion.econda.push(["AB26", "V1"]);
 
-    WATO.ab26global();
-
     WATO.elem('[data-componentid="CrossSellingEconda"]', function(crossSellingEconda){
         if(crossSellingEconda){ 
             crossSellingEconda = crossSellingEconda[0];
@@ -28,7 +26,58 @@
                 productInfos.insertAdjacentElement('beforebegin', crossSellingEconda);
             }
 
+            WATO.ab26global();
         }
     });
+
+    var multiReloadStop = false,
+        scrollGoalSend = false;
+
+    WATO.ajax("/ProductReferencesComponentController/", function(){
+        if(!multiReloadStop){
+            multiReloadStop = true;
+
+            WATO.elem('#ecRecommendationsContainer > .productitem', function(ecRecommendationsContainer){
+                if(ecRecommendationsContainer){
+                    ecRecommendationsContainer[0].parentNode.parentNode.innerHTML = ecRecommendationsContainer[0].parentNode.parentNode.innerHTML;
+
+                    WATO.elem(function(){
+                        return typeof $ !== "undefined";
+                    }, function(isjq){
+                        if(isjq){
+                            // Doku https://flickity.metafizzy.co/
+                            var slider = $('#ecRecommendationsContainer');
+
+                            // slider.on( 'scroll.flickity', function() {
+                            //     if(!scrollGoalSend){
+                            //         scrollGoalSend = true;
+                            //         window.iridion.push(['goal', 'kk26_swipe_reco']);
+                            //     }
+                            // });
+
+                            slider.flickity({
+                                draggable: true,
+                                cellAlign: 'left',
+                                contain: true,
+                                prevNextButtons: false,
+                                pageDots: false,
+                                percentPosition: true,
+                                setGallerySize: true
+                            });
+
+                            setTimeout(function(){
+                                WATO.ab26global();
+                            }, 1000);
+                        }
+                    });
+                }
+            });
+            setTimeout(function(){
+                multiReloadStop = false;
+            }, 500);
+        }
+    });
+
+    
 
 })(new window.WATO());

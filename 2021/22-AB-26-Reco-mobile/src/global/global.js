@@ -14,6 +14,9 @@
     
 
 	WATO.prototype.ab26global = function(){
+
+        console.log("ab26global");
+
         var _self = this,
             swipeSend = false;
 
@@ -39,7 +42,7 @@
                 _self.qs('#ecRecommendationsContainer', crossSellingEconda[0]).addEventListener('touchmove', function(){
                     if(!swipeSend){
                         swipeSend = true;
-                        goalPush("kk26_swipe_reco", true);
+                        goalPush("kk26_swipe_reco", false);
                     }
                 });
             }
