@@ -201,7 +201,7 @@
      *
      * @param {function} callback
      */
-    /*
+    
     window.WATO.prototype.ready = function (callback) {
 
         // http://youmightnotneedjquery.com/ IE9+
@@ -213,7 +213,7 @@
             document.addEventListener('DOMContentLoaded', callback);
         }
     };
-    */
+    
 
     /**
      * @function initObserver
