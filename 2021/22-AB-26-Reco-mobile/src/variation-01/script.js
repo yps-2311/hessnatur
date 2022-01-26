@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -11,7 +11,7 @@
  (function(WATO) {
     "use strict";
 
-    // window.iridion.econda.push(["AB26", "V1"]);
+    window.iridion.econda.push(["AB26", "V1"]);
 
     WATO.elem('[data-componentid="CrossSellingEconda"]', function(crossSellingEconda){
         if(crossSellingEconda){ 
@@ -30,8 +30,8 @@
         }
     });
 
-    var multiReloadStop = false,
-        scrollGoalSend = false;
+    var multiReloadStop = false;
+        // scrollGoalSend = false;
 
     WATO.ajax("/ProductReferencesComponentController/", function(){
         if(!multiReloadStop){
@@ -77,7 +77,5 @@
             }, 500);
         }
     });
-
-    
 
 })(new window.WATO());

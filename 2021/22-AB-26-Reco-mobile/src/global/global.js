@@ -11,44 +11,34 @@
     "use strict";
 
     /*jshint loopfunc: true */
-    
 
 	WATO.prototype.ab26global = function(){
-
-        console.log("ab26global");
 
         var _self = this,
             swipeSend = false;
 
-        function goalPush(key, sendOnNextPageView){
-            console.log('key: ', key);
-			if(sendOnNextPageView){
-				window.iridion.push(['goal', key, '', true]);
-			}else{
-				window.iridion.push(['goal', key]);
-			}
+        function goalPush(key){
+			window.iridion.push(['goal', key]);
 		}
 
-        _self.elem('[data-componentid="CrossSellingEconda"]', function(crossSellingEconda){
+        _self.elem('#ecRecommendationsContainer', function(crossSellingEconda){
             if(crossSellingEconda){
-                var allProducts = _self.qsa('.item__image', crossSellingEconda[0].parentNode);
-
-                allProducts.forEach(function(item){
-                    item.addEventListener('click', function(){
-                        goalPush("klick_recoProduct", true);
-                    });
-                });
-
-                _self.qs('#ecRecommendationsContainer', crossSellingEconda[0]).addEventListener('touchmove', function(){
+                crossSellingEconda[0].addEventListener('touchmove', function(){
                     if(!swipeSend){
                         swipeSend = true;
-                        goalPush("kk26_swipe_reco", false);
+                        goalPush("kk26_swipe_reco");
                     }
                 });
             }
         });
-        
-        
+
+        if(window.location.search.indexOf("emcs1=91_ARP_Produktdetailseite") !== -1){
+            goalPush("klick_recoProduct");
+
+            _self.ajax("/cart/add", function(){
+                goalPush("kk26_recoproduct_addtocart");
+            });
+        }
     };
 	
 })(window.WATO, window);
