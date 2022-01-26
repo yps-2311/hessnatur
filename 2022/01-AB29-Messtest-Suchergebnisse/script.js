@@ -44,62 +44,6 @@
 		});
 	}
 	
-	
-
-
-	// function trackProductGoals(){
-	// 	const productGrid = WATO.qs('.js-product-grid');
-
-	// 	//console.log('parent',productGrid);
-	// 	WATO.qsa('.gridviewProductItemWrapper', productGrid, function(products) {
-	// 		if(products) {
-
-	// 			//console.log('products: ',products);
-
-	// 			products.forEach(function(product) {
-					
-	// 				if(!product.classList.contains('listenerSet')){
-	// 					// Klick auf Produktbild
-	// 					qsWithGoalOnEventListener('.productPrgWrapper.js-prgLink', product, ['kk-click-product-img', 'kk-click-product'], true);
-		
-	// 					// Klick auf Produkt Text / Preis
-	// 					qsaWithGoalOnEventListener('.productItemColorContainer > div', product, ['kk-click-product'], true);
-
-	// 					// Farben
-	// 					WATO.qsa('.productItemColor img', product, function(productColors) {
-	// 						if(productColors) {
-	// 							productColors.forEach(function(color) {
-									
-	// 								// Klick auf Farbe
-	// 								color.addEventListener('click', function() {
-	// 									console.log('product clicked');
-	// 									goalPush('kk-click-product', true);
-	// 								});
-		
-	// 								// Hover über Produktfarben (Desktop)
-	// 								color.addEventListener('mouseenter', function() {
-	// 									console.log('product color hoverd');
-	// 									goalPush('kk-hover-color');
-										
-	// 								});
-									
-	// 							});	
-	// 						}
-	// 					});
-		
-	// 					// Klick auf Produktgröße (Desktop)
-	// 					qsaWithGoalOnEventListener('.productItemSizes .h-text-decoration-none-hover', product, ['kk-click-product-size', 'kk-click-product'], true);
-		
-	// 					// Klick auf Produkt merken
-	// 					qsWithGoalOnEventListener('.whishList', product, ['kk-click-remember-product'], true);
-
-	// 					product.classList.add('listenerSet');
-	// 				}
-	// 			});
-	// 		}
-	// 	});
-	// }
-
 
 	/* Goals */
 
@@ -113,27 +57,48 @@
 		}
 	});
 
+	// Filter mobile
+	WATO.elem('#productFilterMobile', function(filter){
+		if(filter){
+			filter[0].addEventListener('mousedown', function(event){
+				var target = event.target;
+
+				// console.log('target ',target);
+				// console.log('target id ',target.id);
+				// console.log('currentTarget: ',event.currentTarget);
+
+				if(target.id === 'tabSort-label' || target.parentElement.id === 'tabSort-label'){
+					goalPush('kk-selection-sort-expand');
+					//console.log('test sort click');
+				} else if(target.id === 'tabView-label' || target.parentElement.id === 'tabView-label'){
+					goalPush('kk-selection-display');
+					//console.log('test view click');
+				} else if(target.id === 'tabFilter-label' || target.parentElement.id === 'tabFilter-label'){
+					goalPush('kk-filter-used');
+					//console.log('test filter click');
+				}
+			});
+		}
+	});
 
 	/* Filter Bereich */ 
 	WATO.elem('.js-filter-form', function(filterForms) {
 		if(filterForms) {
-	
 			// Desktop = filterForms[1] and  Mobile = filterForms[0]
 
 			//Sortierung aufklappen (Desktop)
 			qsWithGoalOnEventListener('#desktop__sort', filterForms[1], ['kk-selection-sort-expand']);
 
-			// Auswahl der Ansicht (Desktop & Mobile)
+			// Auswahl der Ansicht (Desktop)
 			qsWithGoalOnEventListener('#desktop__viewmode_model', filterForms[1], ['kk-selection-display'], true);
 			qsWithGoalOnEventListener('#desktop__viewmode_article', filterForms[1], ['kk-selection-display'], true);
-			qsWithGoalOnEventListener('#mobile__viewmode_model', filterForms[1], ['kk-selection-display'], true);
-			qsWithGoalOnEventListener('#mobile__viewmode_article', filterForms[1], ['kk-selection-display'], true);
 
 			// Nutzung der Filter (Desktop)
-			qsaWithGoalOnEventListener('.filterVariations .column', filterForms[1], ['kk-filter-used']);
-
+			qsaWithGoalOnEventListener('.filterVariations .column a', filterForms[1], ['kk-filter-used']);
 		}
 	});
+
+
 
 	/* Klick auf Produkt */
 	WATO.elem('.js-product-grid', function(productGrid){
@@ -171,94 +136,12 @@
 
 
 			productGrid[0].addEventListener('mouseover', function(event){
-
-				var target = event.target;
-				//var currentTarget = event.currentTarget;
-
-				// console.log('target = ',target);
-
-				// if(target.getAttribute('role') === 'menuitem') {
-				// 	console.log('menuItem hovered');
-				// }
-				//console.log('target classList: ',target.classList);
-				// console.log('currentTarget: ', currentTarget);
-				
-
-				if(target.classList.contains('h-shape-circle' || 'productItemColor')){
-					// console.log('Hover color Test!!!');
+				if(event.target.classList.contains('h-shape-circle' || 'productItemColor')){
 					goalPush('kk-hover-color');
 				}
 			});
 		}
 	});
-
-	// WATO.ready(function(){
-	// 	trackProductGoals();
-	// });
-
-
-
-	// WATO.elem('.button.js-more-results', function(moreResults){
-
-	// 	//console.log('moreResults NodeList: ',moreResults);
-	// 	if(moreResults){
-	// 		moreResults[0].addEventListener('click', function(){
-	// 			setTimeout(5000);
-	// 			//console.log('more Results clicked  ', moreResults[0])
-	// 			trackProductGoals();
-	// 		});
-	// 	}
-	// });
-	
-	
-
-	// WATO.elem('.gridviewProductItemWrapper', function(products) {
-	// 	if(products) {
-	// 		products.forEach(function(product) {
-
-	// 			// Klick auf Produktbild
-	// 			qsWithGoalOnEventListener('.productPrgWrapper.js-prgLink', product, ['kk-click-product-img', 'kk-click-product'], true);
-				
-
-	// 			// Klick auf Produkt Text / Preis
-	// 			qsaWithGoalOnEventListener('.productItemColorContainer > div', product, ['kk-click-product'], true);
-
-	// 			// Farben
-
-				
-	// 			WATO.qsa('.productItemColor img', product, function(productColors) {
-	// 				if(productColors) {
-	// 					productColors.forEach(function(color) {
-							
-	// 						// Klick auf Farbe
-	// 						color.addEventListener('click', function() {
-	// 							console.log('product clicked');
-	// 							goalPush('kk-click-product', true);
-	// 						});
-
-	// 						// Hover über Produktfarben (Desktop)
-	// 						color.addEventListener('mouseenter', function() {
-	// 							console.log('product color hoverd');
-	// 							goalPush('kk-hover-color');
-								
-	// 						});
-							
-	// 					});	
-	// 				}
-	// 			});
-
-	// 			// Klick auf Produktgröße (Desktop)
-	// 			qsaWithGoalOnEventListener('.productItemSizes .h-text-decoration-none-hover', product, ['kk-click-product-size', 'kk-click-product'], true);
-
-
-	// 			// Klick auf Produkt merken
-	// 			qsWithGoalOnEventListener('.whishList', product, ['kk-click-remember-product'], true);
-
-
-	// 		});
-	// 	}
-	// });
-
 
 
 })(new window.WATO());
