@@ -1,0 +1,67 @@
+/* IMPORT VAR LESS FILE */
+@import "../global/vars.less";
+
+/* IMPORT GLOBAL LESS FILES */
+@import "../global/global.less";
+
+/* DEFINE VARIATION CSS */
+
+
+
+// V1
+.kk_quali + .small-12.columns.js-product-reference {
+    margin-top: -70px;
+    .desc-price {
+        display: flex;
+        .price.full {
+            order: -1;
+        }
+        .price:nth-child(2) {
+            color: #e53e3e;
+            margin: 0 3px 0 0 !important;
+            order: -4;
+        }
+        .price.special {
+            order: -3;
+            margin-right: 15px;
+        }
+        .price:last-child {
+            order: -2;
+        }
+    }
+}
+
+.item__desc .price.special {
+    margin-left: 3px;
+}
+
+html .js-productSliderWrapper {
+    padding: 0 0 0 24px;
+    .recommendation-headline.h4 {
+        margin: 30px 0 0 !important;
+        font-size: 32px;
+        line-height: 34px;
+        text-transform: uppercase;
+        font-family: 'Roboto Condensed Bold','Roboto Condensed',Helvetica,Arial,sans-serif;
+        font-style: normal;
+    }
+    > .column:first-child {
+        padding: 0;
+    }
+}
+#kk_likethisproduct .productitem {
+    padding: 0 1px;
+    // flex: 0 0 41.66667%;
+    // max-width: 41.66667%;
+}
+
+// @media (max-width: 1100px) {
+    .kk_quali + .small-12.columns.js-product-reference {
+        display: none !important;
+    }
+// }
+
+.js-jump-references,
+[data-componentid="CrossSellingEconda"] {
+    display: none !important;
+}

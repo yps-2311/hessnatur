@@ -1,0 +1,299 @@
+/* IMPORT VAR LESS FILE */
+@import "vars.less";
+
+// DEFINE GLOBAL CSS
+// Beispiel für die Verwendung der Variable base-url
+// background: url('@{base-url}sprite.png') no-repeat 0 0;
+
+
+#kk_crosshead {
+    background-color: #000000;
+    padding: 20px 19% 20px 20px;
+    width: 100%;
+    color: #fff;
+    font-size: 32px;
+    line-height: 34px;
+    text-transform: uppercase;
+    font-family: 'Roboto Condensed Bold','Roboto Condensed',Helvetica,Arial,sans-serif;
+    font-style: normal;
+    position: relative;
+    &::before {
+        content: "";
+        width: 21px;
+        height: 2.8px;
+        background-color: #fff;
+        transform: rotate(45deg);
+        position: absolute;
+        top: 48%;
+        right: 43px;
+    }
+    &::after {
+        content: "";
+        width: 21px;
+        height: 2.8px;
+        background-color: #fff;
+        transform: rotate(-45deg);
+        position: absolute;
+        top: 48%;
+        right: 30px;
+    }
+    &.kk_open {
+        &::before {
+            transform: rotate(-45deg);
+        }
+        &::after {
+            transform: rotate(45deg);
+        }
+        & + .kk_cbody {
+            height: 142vw;
+        }
+    }
+}
+
+#kk_crossprods {
+    margin: 0 0 40px;
+    // min-height: 584px;
+    width: 100%;
+    .kk_cbody {
+        height: 0;
+        overflow: hidden;
+        transition: height 1s ease-in-out;
+        &:not(.flickity-enabled){
+            display: flex;
+            flex-direction: row;
+        }
+        
+    }
+    .carousel-cell {
+        width: 80%;
+        height: 142vw;
+        // max-height: 532px;
+        text-decoration: none;
+        margin-right: 2px;
+    }
+    .flickity-prev-next-button {
+        top: 40%;
+        opacity: .46;
+        &[disabled]{
+            display: none !important;
+        }
+    }
+    .flickity-prev-next-button.previous {
+        left: 0;
+    }
+    .flickity-prev-next-button.next {
+        right: 15px;
+    }
+}
+// .gridviewProductItemWrapper + #kk_crossprods {
+//     margin-left: 2.30769rem;
+//     -webkit-box-flex: 0;
+//     flex: 0 0 97.5%;
+//     max-width: 97.5%;
+// }
+
+.kk_cimg {
+    width: 100%;
+    padding: 0;
+    // overflow: hidden;
+    position: relative;
+    img {
+        width: 100%;
+        height: auto;
+        display: block;
+        margin: auto;
+    }
+}
+.kk_title {
+    margin-top: 4px;
+    text-decoration: none;
+    font-size: 13px;
+    color: #393939;
+    letter-spacing: 0.12px;
+    text-align: left;
+    line-height: 17px;
+    padding: 0 15% 0 20px;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+.kk_price {
+    margin-top: 4px;
+    text-decoration: none;
+    font-size: 13px;
+    color: #393939;
+    letter-spacing: 0.12px;
+    text-align: left;
+    line-height: 17px;
+    padding: 0 20px;
+}
+
+.kk_vegan {
+    color: #A1B290;
+    text-transform: uppercase;
+    margin-right: 13px;
+    font-weight: bold;
+}
+.kk_new {
+    text-transform: uppercase;
+    margin-right: 13px;
+    font-weight: bold;
+    
+    // color: #D34544;
+}
+
+.kk_badge {
+    display: flex;
+    justify-content: flex-start;
+    // position: absolute;
+    // bottom: -10px;
+    width: 100%;
+    margin: 15px 0 0;
+    padding: 0 20px;
+    img {
+        height: 25px;
+        width: auto;
+        margin: 0 5px;
+    }
+}
+.kk_blackbox {
+    padding: 57px 17px 0;
+    background-color: #000 !important;
+    height: calc(22.83vw) !important;
+    max-height: 442px !important;
+    h4 {
+        font-family: "Roboto Condensed Bold";
+        font-weight: normal;
+        font-size: calc(1.85vw);
+        line-height: calc(2.2vw);
+        color: #FFFFFF;
+        letter-spacing: 0.22px;
+        text-transform: uppercase;
+    }
+}
+.kk_subline {
+    font-size: calc(1.07vw);
+    line-height: calc(1.2vw);
+    color: #FFFFFF;
+    text-transform: uppercase;
+}
+a.kk_subline {
+    letter-spacing: 0.13px;
+    text-decoration: none;
+    &:hover {
+        color: #FFFFFF;
+        text-decoration: underline;
+    }
+}
+.kk_number {
+    font-family: "Roboto Condensed Bold";
+    font-weight: normal;
+    position: absolute;
+    right: 23px;
+    bottom: 16px;
+    color: #FFFFFF;
+    font-size: 18px;
+}
+
+
+// @media (max-width: 375px) {
+//     #kk_crossprods .carousel-cell,
+//     #kk_crosshead.kk_open + .kk_cbody {
+//         height: 138vw;
+//     }
+
+// }
+@media (max-width: 340px) {
+    #kk_crossprods .carousel-cell,
+    #kk_crosshead.kk_open + .kk_cbody {
+        height: 146vw;
+    }
+    #kk_crosshead::before {
+        right: 30px;
+    }
+    #kk_crosshead::after {
+        right: 16px;
+    }
+}
+
+.kk_load {
+    display: flex;
+    justify-content: left;
+    flex-direction: row;
+}
+.kk_cprod {
+    cursor: pointer;
+    background-color: #f7f7f7;
+    height: 125vw;
+    margin: 0 2px 102px 0;
+    position: relative;
+    display: block;
+    width: 80%;
+    overflow: hidden;
+    // box-shadow: 0 3px 19px 1px rgba(0,0,0,0.05);
+    // border: solid #E9E8E4 2px;
+    text-decoration: none;
+    &:last-child {
+        width: 20%;
+    }
+}
+
+
+
+
+/** LOADER **/
+.kk-loader {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 25%;
+    left: 0;
+    z-index: 9;
+    // background: #f7f7f7;
+
+    // https://loading.io/css/
+    .lds-ring {
+        position: absolute;
+        margin-left: -40px;
+        top: 10%;
+        left: 50%;
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+    }
+
+    .lds-ring div {
+        box-sizing: border-box;
+        display: block;
+        position: absolute;
+        width: 64px;
+        height: 64px;
+        margin: 8px;
+        border: 5px solid #fff;
+        border-radius: 50%;
+        animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        border-color: #979797 transparent transparent transparent;
+    }
+
+    .lds-ring div:nth-child(1) {
+        animation-delay: -0.45s;
+    }
+
+    .lds-ring div:nth-child(2) {
+        animation-delay: -0.3s;
+    }
+
+    .lds-ring div:nth-child(3) {
+        animation-delay: -0.15s;
+    }
+
+    @keyframes lds-ring {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}
