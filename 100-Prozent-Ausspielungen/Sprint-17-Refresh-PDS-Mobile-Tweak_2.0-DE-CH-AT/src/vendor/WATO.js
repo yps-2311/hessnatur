@@ -258,13 +258,27 @@
 
         XMLHttpRequest.prototype.open = function(method, uri, async, user, pass) {
 
-            this.addEventListener("loadend", function() {
-                // console.log("ajax");
-                var respText = this.responseText;
-                if (this.readyState === 4) {
-                    if (uri.indexOf(url) !== -1) {
+            // this.addEventListener("loadend", function() {
+            //     // console.log("ajax");
+            //     var respText = this.responseText;
+            //     if (this.readyState === 4) {
+            //         if (uri.indexOf(url) !== -1) {
                         
-                        callback(uri, respText);
+            //             callback(uri, respText);
+            //         }
+            //     }
+            // }, false);
+
+            this.addEventListener("loadend", function () {
+                var _that = this;
+                if (_that.readyState === 4) {
+                    
+                    if (uri.indexOf(url) !== -1) {
+
+                        if (typeof callback === "function") {
+
+                            callback(uri, _that.responseText);
+                        }
                     }
                 }
             }, false);
