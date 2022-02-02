@@ -1,5 +1,5 @@
 // load core and global js
-// @ codekit-prepend "../global/global.js";
+// @codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -194,10 +194,8 @@
                     // console.log('prodWrapper: ', prodWrapper);
 
                     var allProds = WATO.qsa(".js-product-grid > .gridviewProductItemWrapper");
-                    // console.log('allProds: ', allProds);
                     
-                    // console.log('isInteressent: ', isInteressent);
-                    if(isInteressent && !WATO.qs('.kk_hoechstequali')) {
+                    if(isInteressent && !WATO.qs('.kk_hoechstequali') && allProds.length > 8) {
 
                         // Interessent
                         var prod6 = allProds[4] || allProds[allProds.length-2] || allProds[allProds.length-1],
