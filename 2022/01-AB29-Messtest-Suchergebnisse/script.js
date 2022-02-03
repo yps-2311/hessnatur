@@ -43,6 +43,18 @@
 			}
 		});
 	}
+
+	function pushProductGroupGoal(target){
+		let product = target.closest('.gridviewProductItemWrapper.column.js-product-grid-item');
+		let goalGroup = product.getAttribute('data-goal-name');
+		//console.log('goalGroup:', goalGroup);
+		if(goalGroup){
+			// if(navigator.userAgent.indexOf('Mobile') === -1 && navigator.userAgent.indexOf('Android') === -1) {  <- mobile ausschließen fällt raus
+				goalPush('kk-click-product-' + goalGroup, true);
+				console.log('kk-click-product-' + goalGroup + 'pushed');
+			//}
+		}
+	}
 	
 
 	/* Goals */
@@ -99,32 +111,59 @@
 	});
 
 
-
 	/* Klick auf Produkt */
 	WATO.elem('.js-product-grid', function(productGrid){
 		if(productGrid){
-			productGrid[0].addEventListener('click', function(event){			
-				
-				var target = event.target;
 
-				//console.log('target = ',target);
+			// set data attributes for the groups
+			WATO.qsa('.gridviewProductItemWrapper.column.js-product-grid-item', productGrid[0], function(products){
+				if(products){
+
+					let j = 0;
+					for(let i = 0; i < 20; i++){
+							//console.log('modulo: ',i%4);
+							
+							if(i % 4 === 0) {
+								j++
+							}
+
+							if(products[i]){
+								products[i].setAttribute("data-goal-name", "group-"+j);
+								//console.log(products[i]);
+							}
+
+					}
+				}
+			});
+
+			productGrid[0].addEventListener('click', function(event){	
+				
+				let target = event.target;
+				// console.log('target = ',target);
+				// console.log('currentTarget: ',event.currentTarget);
 
 				if(target.classList.contains('productImage-1' || 'productImage-2')){
 					// console.log('Product img clicked');
 					// console.log('Producut clicked');
 					goalPush('kk-click-product-img', true);
 					goalPush('kk-click-product', true);
+					//console.log(target);
+					pushProductGroupGoal(target);
+
 				} else if(target.classList.contains('js-add-to-wishlist')){
 					// console.log('addToWishlist');
 					goalPush('kk-click-remember-product', true);
+					pushProductGroupGoal(target);
 				} else if(target.classList.contains('h-shape-circle' || 'productItemColor')){
 					// console.log('Color clicked');
 					// console.log('Producut clicked');
 					goalPush('kk-click-product', true);
+					pushProductGroupGoal(target);
 				} else if(target.parentElement.classList.contains('js-prgLink' || 'productPrgWrapper')){
 					// console.log('prgLink clicked');
 					// console.log('Producut clicked');
 					goalPush('kk-click-product', true);
+					pushProductGroupGoal(target);
 
 					if(target.getAttribute('role') === 'menuitem') {
 						// console.log('menuItem clicked');
