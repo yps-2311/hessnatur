@@ -116,11 +116,14 @@
 		if(productGrid){
 
 			// set data attributes for the groups
-			WATO.qsa('.gridviewProductItemWrapper.column.js-product-grid-item', productGrid[0], function(products){
-				if(products){
-
-					let j = 0;
-					for(let i = 0; i < 20; i++){
+			setTimeout(function(){
+				WATO.qsa('.gridviewProductItemWrapper.column.js-product-grid-item', productGrid[0], function(products){
+					if(products){
+	
+						console.log(products);
+	
+						let j = 0;
+						for(let i = 0; i < 20; i++){
 							//console.log('modulo: ',i%4);
 							
 							if(i % 4 === 0) {
@@ -129,12 +132,13 @@
 
 							if(products[i]){
 								products[i].setAttribute("data-goal-name", "group-"+j);
-								//console.log(products[i]);
+								console.log(products[i]);
 							}
-
+	
+						}
 					}
-				}
-			});
+				});
+			},500);
 
 			productGrid[0].addEventListener('click', function(event){	
 				
