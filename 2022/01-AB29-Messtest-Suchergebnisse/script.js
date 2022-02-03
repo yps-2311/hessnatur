@@ -120,7 +120,7 @@
 				WATO.qsa('.gridviewProductItemWrapper.column.js-product-grid-item', productGrid[0], function(products){
 					if(products){
 	
-						console.log(products);
+						//console.log(products);
 	
 						let j = 0;
 						for(let i = 0; i < 20; i++){
@@ -132,7 +132,7 @@
 
 							if(products[i]){
 								products[i].setAttribute("data-goal-name", "group-"+j);
-								console.log(products[i]);
+								//console.log(products[i]);
 							}
 	
 						}
