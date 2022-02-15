@@ -22,23 +22,23 @@
     // }
 
     /** EDITOR VARS */
-    var BABY_AKTION_TEXT1 = "{{name=babyActionText1&desc=Dünner Text oberhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
-        BABY_AKTION_TEXT2 = "{{name=babyActionText2&desc=Dicker Text unterhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
-        BABY_AKTION_ICON = "{{name=babyActionIcon&desc=Icon vor dem Badge. Default: 15%-Icon&type=webarts.watt.editor.impl.ImageUrlEditor}}",
-
-        HOME_AKTION_TEXT1 = "{{name=homeActionText1&desc=Dünner Text oberhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
-        HOME_AKTION_TEXT2 = "{{name=homeActionText2&desc=Dicker Text unterhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
-        HOME_AKTION_ICON = "{{name=homeActionIcon&desc=Icon vor dem Badge. Default: 15%-Icon&type=webarts.watt.editor.impl.ImageUrlEditor}}",
+    var DAMEN_AKTION_TEXT1 = "{{name=damenActionText1&desc=Dünner Text oberhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
+        DAMEN_AKTION_TEXT2 = "{{name=damenActionText2&desc=Dicker Text unterhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
+        DAMEN_AKTION_ICON = "{{name=damenActionIcon&desc=Icon vor dem Badge. Default: 15%-Icon&type=webarts.watt.editor.impl.ImageUrlEditor}}",
 
         HERREN_AKTION_TEXT1 = "{{name=herrenActionText1&desc=Dünner Text oberhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
         HERREN_AKTION_TEXT2 = "{{name=herrenActionText2&desc=Dicker Text unterhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
         HERREN_AKTION_ICON = "{{name=herrenActionIcon&desc=Icon vor dem Badge. Default: 15%-Icon&type=webarts.watt.editor.impl.ImageUrlEditor}}",
 
-        DAMEN_AKTION_TEXT1 = "{{name=damenActionText1&desc=Dünner Text oberhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
-        DAMEN_AKTION_TEXT2 = "{{name=damenActionText2&desc=Dicker Text unterhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
-        DAMEN_AKTION_ICON = "{{name=damenActionIcon&desc=Icon vor dem Badge. Default: 15%-Icon&type=webarts.watt.editor.impl.ImageUrlEditor}}";
-    
+        HOME_AKTION_TEXT1 = "{{name=homeActionText1&desc=Dünner Text oberhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
+        HOME_AKTION_TEXT2 = "{{name=homeActionText2&desc=Dicker Text unterhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
+        HOME_AKTION_ICON = "{{name=homeActionIcon&desc=Icon vor dem Badge. Default: 15%-Icon&type=webarts.watt.editor.impl.ImageUrlEditor}}",
 
+        BABY_AKTION_TEXT1 = "{{name=babyActionText1&desc=Dünner Text oberhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
+        BABY_AKTION_TEXT2 = "{{name=babyActionText2&desc=Dicker Text unterhalb des Badges&type=webarts.watt.editor.impl.TextEditor}}",
+        BABY_AKTION_ICON = "{{name=babyActionIcon&desc=Icon vor dem Badge. Default: 15%-Icon&type=webarts.watt.editor.impl.ImageUrlEditor}}";
+    
+    /*
     console.log('BABY_AKTION_TEXT1: ', BABY_AKTION_TEXT1);
     console.log('BABY_AKTION_TEXT2: ', BABY_AKTION_TEXT2);
     console.log('BABY_AKTION_ICON: ', BABY_AKTION_ICON);
@@ -46,6 +46,15 @@
     console.log('HOME_AKTION_TEXT1: ', HOME_AKTION_TEXT1);
     console.log('HOME_AKTION_TEXT2: ', HOME_AKTION_TEXT2);
     console.log('HOME_AKTION_ICON: ', HOME_AKTION_ICON);
+
+    console.log('HERREN_AKTION_TEXT1: ', HERREN_AKTION_TEXT1);
+    console.log('HERREN_AKTION_TEXT2: ', HERREN_AKTION_TEXT2);
+    console.log('HERREN_AKTION_ICON: ', HERREN_AKTION_ICON);
+
+    console.log('DAMEN_AKTION_TEXT1: ', DAMEN_AKTION_TEXT1);
+    console.log('DAMEN_AKTION_TEXT2: ', DAMEN_AKTION_TEXT2);
+    console.log('DAMEN_AKTION_ICON: ', DAMEN_AKTION_ICON);
+    */
 
 
     var PATHNAME = location.pathname,
@@ -55,40 +64,41 @@
         boxBadgeUrl,
         segmentID,
 
-        badgeSaleUrl = 'https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/overlay_sale.svg',
+        imgURL = 'https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/',
+        badgeSaleUrl = imgURL+'overlay_sale.svg',
         badgeKundenfavoritUrl = 'https://media.hessnatur.com/kk/100Prozent/templates/icons/favorit.svg',
-        badgeNeuUrl = 'https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/overlay_neu.svg',
-        badgeAktionUrl = 'https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/overlay_15Prozent.svg',
+        badgeNeuUrl = imgURL+'overlay_neu.svg',
+        badgeAktionUrl = imgURL+'overlay_15Prozent.svg',
 
         // Table with all messages to displaying
         messageByCat = {
-            'baby': {
-                'Aktion': [BABY_AKTION_ICON.length ? badgeAktionUrl : BABY_AKTION_ICON, BABY_AKTION_TEXT1 + '<br><b>'+ BABY_AKTION_TEXT2 +'</b>'],
-                'Sale': [badgeSaleUrl, 'Bio-Kindermode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
-                'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Kindermode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
-                'Neu': [badgeNeuUrl, 'Bio-Kindermode aus Naturfasern<br><b>Neu im Sortiment</b>'],
-                'Allgemein': ['Nachhaltig', 'Bio-Kindermode aus Naturfasern<br><b>In höchster Qualität</b>']
+            'damen': {
+                'Aktion': [DAMEN_AKTION_ICON.length > 0 ? DAMEN_AKTION_ICON : badgeAktionUrl , DAMEN_AKTION_TEXT1 + '<br><b>'+ DAMEN_AKTION_TEXT2 +'</b>'],
+                'Sale': [badgeSaleUrl, 'Bio-Mode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
+                'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Mode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
+                'Neu': [badgeNeuUrl, 'Bio-Mode aus Naturfasern<br><b>Neu im Sortiment</b>'],
+                'Allgemein': ['Nachhaltig', 'Bio-Mode aus Naturfasern<br><b>In höchster Qualität</b>']
+            },
+            'herren': {
+                'Aktion': [HERREN_AKTION_ICON.length > 0 ? HERREN_AKTION_ICON : badgeAktionUrl, HERREN_AKTION_TEXT1 + '<br><b>'+ HERREN_AKTION_TEXT2 +'</b>'],
+                'Sale': [badgeSaleUrl, 'Bio-Mode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
+                'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Mode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
+                'Neu': [badgeNeuUrl, 'Bio-Mode aus Naturfasern<br><b>Neu im Sortiment</b>'],
+                'Allgemein': ['Nachhaltig', 'Bio-Mode aus Naturfasern<br><b>In höchster Qualität</b>']
             },
             'home': {
-                'Aktion': [HOME_AKTION_ICON.length ? badgeAktionUrl : HOME_AKTION_ICON, HOME_AKTION_TEXT1 + '<br><b>'+ HOME_AKTION_TEXT2 +'</b>'],
+                'Aktion': [HOME_AKTION_ICON.length > 0 ? HOME_AKTION_ICON : badgeAktionUrl, HOME_AKTION_TEXT1 + '<br><b>'+ HOME_AKTION_TEXT2 +'</b>'],
                 'Sale': [badgeSaleUrl, 'Gut für Mensch & Natur<br><b>Jetzt zum reduzierten Preis</b>'],
                 'Kundenfavorit': [badgeKundenfavoritUrl, 'Gut für Mensch & Natur<br><b>Ein Topseller des Monats</b>'],
                 'Neu': [badgeNeuUrl, 'Gut für Mensch & Natur<br><b>Neu im Sortiment</b>'],
                 'Allgemein': ['Nachhaltig', 'Gut für Mensch & Natur<br><b>In höchster Qualität</b>']
             },
-            'herren': {
-                'Aktion': [HERREN_AKTION_ICON.length ? badgeAktionUrl : HERREN_AKTION_ICON, HERREN_AKTION_TEXT1 + '<br><b>'+ HERREN_AKTION_TEXT2 +'</b>'],
-                'Sale': [badgeSaleUrl, 'Bio-Mode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
-                'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Mode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
-                'Neu': [badgeNeuUrl, 'Bio-Mode aus Naturfasern<br><b>Neu im Sortiment</b>'],
-                'Allgemein': ['Nachhaltig', 'Bio-Mode aus Naturfasern<br><b>In höchster Qualität</b>']
-            },
-            'damen': {
-                'Aktion': [DAMEN_AKTION_ICON.length ? badgeAktionUrl : DAMEN_AKTION_ICON, DAMEN_AKTION_TEXT1 + '<br><b>'+ DAMEN_AKTION_TEXT2 +'</b>'],
-                'Sale': [badgeSaleUrl, 'Bio-Mode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
-                'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Mode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
-                'Neu': [badgeNeuUrl, 'Bio-Mode aus Naturfasern<br><b>Neu im Sortiment</b>'],
-                'Allgemein': ['Nachhaltig', 'Bio-Mode aus Naturfasern<br><b>In höchster Qualität</b>']
+            'baby': {
+                'Aktion': [BABY_AKTION_ICON.length > 0 ? BABY_AKTION_ICON : badgeAktionUrl, BABY_AKTION_TEXT1 + '<br><b>'+ BABY_AKTION_TEXT2 +'</b>'],
+                'Sale': [badgeSaleUrl, 'Bio-Kindermode aus Naturfasern<br><b>Jetzt zum reduzierten Preis</b>'],
+                'Kundenfavorit': [badgeKundenfavoritUrl, 'Bio-Kindermode aus Naturfasern<br><b>Ein Topseller des Monats</b>'],
+                'Neu': [badgeNeuUrl, 'Bio-Kindermode aus Naturfasern<br><b>Neu im Sortiment</b>'],
+                'Allgemein': ['Nachhaltig', 'Bio-Kindermode aus Naturfasern<br><b>In höchster Qualität</b>']
             }
         },
 
@@ -200,16 +210,26 @@
     //     window.iridion.push(['goal', key]);
     // }
 
-    function removeClass(selector){
-
-        WATO.qsa(selector).forEach(function (el) {
-            el.classList.remove('kk-hidden');
-            el.classList.add('kk-visible');
-        })
-
+    function addClass(elem, thisclassname) {
+        if(elem){
+            elem.classList.add(thisclassname);
+        }
+    }
+    function removeClass(elem, thisclassname) {
+        if(elem){
+            elem.classList.remove(thisclassname);
+        }
     }
 
-    document.documentElement.classList.add('kk-notifications-pds');
+    function replaceClasses(selector){
+        WATO.qsa(selector).forEach(function (el) {
+            removeClass(el, 'kk-hidden');
+            addClass(el, 'kk-visible');
+        })
+    }
+
+    
+    addClass(document.documentElement, 'kk-notifications-pds');
 
     function displyBadges() {
         WATO.elem(function () {
@@ -217,7 +237,7 @@
                 return !!getCategory();
             }
             catch (e) {
-                console.log('error:', e);
+                // console.log('error:', e);
             }
             return false;
         }, function (cat_found) {
@@ -251,29 +271,31 @@
                             //get type of currents badges
                             try {
                                 var imgPath = imgElem.src.split('/'); // for exemple path of sale badge 'https://imgs7.hessnatur.com/is/content/HessNatur/Overlays/overlay_sale.svg' => result : overlay_sale.svg
+                                // console.log('imgPath: ', imgPath);
 
                                 imgPath = imgPath[imgPath.length - 1].split('_'); // get name of badge with extension 'overlay_sale.svg' => sale.svg
-                                imgPath = imgPath[imgPath.length - 1].split('.');// get name of badge => sale
+                                imgPath = imgPath[imgPath.length - 1].split('.'); // get name of badge => sale
 
                                 badges += imgPath[0].toLowerCase() + ',';
+                                // console.log('badges: ', badges);
 
                             } catch (e) {
-                                console.log(e);
+                                // console.log(e);
                             }
 
-                            imgElem.classList.add('kk-hidden');
+                            addClass(imgElem, 'kk-hidden');
 
                         });
 
                         currentCategory = getCategory();
 
-                        console.log('currentCategory: ', currentCategory);
+                        // console.log('currentCategory: ', currentCategory);
 
-                        if (badges.includes('15prozent')) {
+                        if (badges.includes('prozent')) {
                             boxBadgeUrl = messageByCat[currentCategory]['Aktion'][0];
                             boxTxtContent = messageByCat[currentCategory]['Aktion'][1];
 
-                            removeClass('.js-badges-container img:not(img[src*="15Prozent"])');
+                            replaceClasses('.js-badges-container img:not(img[src*="Prozent"])');
                             segmentID = '32896';
 
                         } else if (badges.includes('sale')) {
@@ -281,14 +303,14 @@
                             boxTxtContent = messageByCat[currentCategory]['Sale'][1];
                             segmentID = '32895';
 
-                            removeClass('.js-badges-container img:not(img[src*="sale"])');
+                            replaceClasses('.js-badges-container img:not(img[src*="sale"])');
 
                         } else if (badges.includes('Kundenfavorit')) {
                             boxBadgeUrl = messageByCat[currentCategory]['Kundenfavorit'][0];
                             boxTxtContent = messageByCat[currentCategory]['Kundenfavorit'][1];
                             segmentID = '32894';
 
-                            removeClass('.js-badges-container img:not(img[src*="favorit"])');
+                            replaceClasses('.js-badges-container img:not(img[src*="favorit"])');
 
                         } else if (badges.includes('neu')) {
                             boxBadgeUrl = messageByCat[currentCategory]['Neu'][0];
@@ -296,18 +318,19 @@
                             segmentID = '32892';
 
 
-                            removeClass('.js-badges-container img:not(img[src*="neu"])');
+                            replaceClasses('.js-badges-container img:not(img[src*="neu"])');
 
                         } else {
                             boxBadgeUrl = messageByCat[currentCategory]['Allgemein'][0];
                             boxTxtContent = messageByCat[currentCategory]['Allgemein'][1];
-                            WATO.qs('.kk-nachhaltig').classList.add('kk-hidden');
+
+                            addClass(WATO.qs('.kk-nachhaltig'), 'kk-hidden');
                             segmentID = '32893';
 
-                            removeClass('.js-badges-container img');
+                            replaceClasses('.js-badges-container img');
                         }
 
-                        badgesContainer.classList.remove('kk-hidden');
+                        removeClass(badgesContainer, 'kk-hidden');
 
                         boxBadgeUrl = boxBadgeUrl === 'Nachhaltig' ? '<div data-segment-id="'+ segmentID +'" class="kk-badge">' + boxBadgeUrl + '</div>' : '<img data-segment-id="'+ segmentID +'" class="kk-badge" src="' + boxBadgeUrl + '"/>';
 
@@ -325,8 +348,9 @@
                                             '<div class="kk-box">' + boxBadgeUrl + '<div>' + boxTxtContent +
                                             '</div><img class="kk-btn-close" src="https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2021/ps08-einstiege-aus-anderen-kan%C3%A4len/close.svg"/></div>');
 
-                                        WATO.qs('.kk-btn-close').addEventListener('click', function (e) {
-                                            this.parentElement.classList.add('slide-out');
+                                        WATO.qs('.kk-btn-close').addEventListener('click', function () {
+                                            addClass(this.parentElement, 'slide-out');
+
                                             if (!badgeClosedCookieCounter) {
                                                 WATO.setCookie('kk_ps08_close_badge_counter', '0', '', true);
                                             } else {
@@ -336,14 +360,16 @@
                                             if (parseInt(badgeClosedCookieCounter) > 1) {
                                                 WATO.setCookie('kk_ps08_close_badge', 'true', '', true);
                                             }
-                                            WATO.qs('.kk-hidden', badgesContainer).classList.add('kk-visible');
-                                            WATO.qs('.kk-hidden', badgesContainer).classList.remove('kk-hidden');
+                                            var hiddenElem =  WATO.qs('.kk-hidden', badgesContainer);
+                                            
+                                            addClass(hiddenElem, 'kk-visible');
+                                            removeClass(hiddenElem, 'kk-hidden');
                                             // goalPush('ps08_close_message');
                                         })
                                     }
                                 })
                             } else {
-                                removeClass('.pds-cockpit__badge');
+                                replaceClasses('.pds-cockpit__badge');
                             }
 
                         }
@@ -376,15 +402,20 @@
      * Remove node
      * @param el
      */
-    function removeElem(el){
-        WATO.qs(el) !== null ? WATO.qs(el).remove() : console.log("can't remove it") ;
+    // function removeElem(el){
+    //     WATO.qs(el) !== null ? WATO.qs(el).remove() : console.log("can't remove it") ;
+    // }
+    function removeElem(el) {
+        var thisElem = WATO.qs(el);
+        if(thisElem){
+            thisElem.parentNode.removeChild(thisElem);
+        }
     }
 
     // Color change of the product
     WATO.ajax("reload?", function() {
         displyBadges();
     });
-
 
     // var observer = new window.IntersectionObserver(function (entries) {
     //     entries.forEach(function (entry) {
