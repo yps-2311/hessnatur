@@ -248,6 +248,10 @@
 
                         badgesContainer = badgesContainer[0];
 
+                        currentCategory = getCategory();
+
+                        console.log('currentCategory 123: ', currentCategory);
+
                         removeElem('.kk-nachhaltig');
                         badgesContainer.insertAdjacentHTML('beforeend', '<span class="kk-nachhaltig">Nachhaltig</span>');
 
@@ -255,10 +259,15 @@
                             idProduct;
 
                         WATO.elem('input[name="ff_id"]', function (inputId) {
-                            if (inputId){
+                            if (inputId && currentCategory){
 
                                 idProduct = inputId[0].value;
                                 if (favProducts && favProducts.indexOf(idProduct) !== -1) {
+
+                                    console.log('messageByCat: ', messageByCat);
+                                    console.log('currentCategory: ', currentCategory);
+                                    console.log('messageByCat[currentCategory]: ', messageByCat[currentCategory]);
+                                    console.log('messageByCat[currentCategory][Kundenfavorit]: ', messageByCat[currentCategory]['Kundenfavorit']);
 
                                     badgesContainer.insertAdjacentHTML('beforeend', '<img class="kk-badge" src="' + messageByCat[currentCategory]['Kundenfavorit'][0] + '"/>');
                                     badges += 'Kundenfavorit ,';
@@ -286,10 +295,6 @@
                             addClass(imgElem, 'kk-hidden');
 
                         });
-
-                        currentCategory = getCategory();
-
-                        // console.log('currentCategory: ', currentCategory);
 
                         if (badges.includes('prozent')) {
                             boxBadgeUrl = messageByCat[currentCategory]['Aktion'][0];
