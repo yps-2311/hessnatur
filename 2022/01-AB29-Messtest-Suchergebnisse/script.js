@@ -51,7 +51,7 @@
 		if(goalGroup){
 			// if(navigator.userAgent.indexOf('Mobile') === -1 && navigator.userAgent.indexOf('Android') === -1) {  <- mobile ausschließen fällt raus
 				goalPush('kk-click-product-' + goalGroup, true);
-				console.log('kk-click-product-' + goalGroup + 'pushed');
+				// console.log('kk-click-product-' + goalGroup + 'pushed');
 			//}
 		}
 	}
@@ -63,7 +63,7 @@
 	WATO.elem('#search_form_page', function(searchBar) {
 		if(searchBar) {
 			searchBar[0].addEventListener('click', function() {
-				console.log('searchbar clicked');
+				// console.log('searchbar clicked');
 				goalPush('kk-searchbar-clicked');
 			});
 		}
@@ -115,16 +115,23 @@
 	WATO.elem('.js-product-grid', function(productGrid){
 		if(productGrid){
 
+			// console.log(3, productGrid);
+
 			// set data attributes for the groups
 			setTimeout(function(){
-				WATO.qsa('.gridviewProductItemWrapper.column.js-product-grid-item', productGrid[0], function(products){
+
+				// console.log(4);
+
+				WATO.elem('.gridviewProductItemWrapper.column.js-product-grid-item', function(products){
 					if(products){
+
+						// console.log(5);
 	
-						//console.log(products);
+						// console.log(products);
 	
 						let j = 0;
 						for(let i = 0; i < 20; i++){
-							//console.log('modulo: ',i%4);
+							// console.log('modulo: ',i%4);
 							
 							if(i % 4 === 0) {
 								j++
@@ -132,7 +139,7 @@
 
 							if(products[i]){
 								products[i].setAttribute("data-goal-name", "group-"+j);
-								//console.log(products[i]);
+								// console.log(products[i]);
 							}
 	
 						}
