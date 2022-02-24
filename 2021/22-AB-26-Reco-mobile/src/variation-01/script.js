@@ -78,4 +78,7 @@
         }
     });
 
+    // Eventuell mit clonen und einfügen, anstatt verschieben versuchen
+    //cloneNode()
+
 })(new window.WATO());
