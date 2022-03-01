@@ -377,10 +377,12 @@ WATO.exclude(1023, function () {
 		// 		}
 		// 	}
 		// }
+
 	
 		WATO.elem(".lpmHero", function (headline) {
 	
 			if (headline) {
+				console.log('headline: ', headline);
 				
 				var ref = "";
 				ref = ref.concat(DOMAIN, CATEGORY_AFFINITY,  "/c/", CATEGORY_AFFINITY);
@@ -405,19 +407,19 @@ WATO.exclude(1023, function () {
 					'</div>'	
 				);
 
-				WATO.elem('.pusActionModule', function(pusActionModule){
-					if(pusActionModule){
+				// WATO.elem('.pusActionModule', function(pusActionModule){
+				// 	if(pusActionModule){
 						
-						// headline[0].insertAdjacentHTML('afterend', 
-						// 	'<div class="lpmSeparator">&nbsp;</div>'
-						// );
+				// 		// headline[0].insertAdjacentHTML('afterend', 
+				// 		// 	'<div class="lpmSeparator">&nbsp;</div>'
+				// 		// );
 
-						var temp = pusActionModule[0].nextElementSibling;
+				// 		var temp = pusActionModule[0].nextElementSibling;
 						
-						headline[0].insertAdjacentElement('afterend', pusActionModule[0]);
-						headline[0].insertAdjacentElement('afterend', temp);
-					}
-				});
+				// 		headline[0].insertAdjacentElement('afterend', pusActionModule[0]);
+				// 		headline[0].insertAdjacentElement('afterend', temp);
+				// 	}
+				// });
 			}
 		});
 
