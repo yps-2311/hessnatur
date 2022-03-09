@@ -44,7 +44,8 @@
         TEXT_BADGE2 = "{{name=Badge_Text2&desc=Dieser Text wird klein im Badge unter dem ersten Text angezeigt (optional)&type=webarts.watt.editor.impl.TextEditor}}",
         COLORPICKER_COLOR = "{{name=Badge_Background_Color&hint=#ff00000&desc=z.B. “green” ODER HTML-Farbcodes z.B. “#ff00000” oder benutzen Sie den Colorpicker rechts&type=webarts.watt.editor.impl.ColorEditor}}",
         // DROPDOWN_ALIGNMENT = "{{name=Badge_Alignment&desc=Ausrichtung des Textes im Badge&type=webarts.watt.editor.impl.SelectEditor&values=center;left;right}}",
-        TEXT_COOKIENAME = "{{name=Cookiename&desc=Wenn man parallel mehrere Exit-Intent-Layer nutzt, sollten deren Cookies sich unterscheiden (default: kk_modalclosed)&hint=kk_modalclosed&type=webarts.watt.editor.impl.TextEditor}}";
+        TEXT_COOKIENAME = "{{name=Cookiename&desc=Wenn man parallel mehrere Exit-Intent-Layer nutzt, sollten deren Cookies sich unterscheiden (default: kk_modalclosed)&hint=kk_modalclosed&type=webarts.watt.editor.impl.TextEditor}}",
+        excludeCookie = htmlDecode(TEXT_COOKIENAME) || 'kk_modalclosed';
         
 
     // console.log('IMG_IMAGE_LEFT: ', IMG_IMAGE_LEFT);
@@ -64,6 +65,8 @@
     function openModal() {
 
         if(!WATO.qs('.kk_template_modal')){
+
+            WATO.setCookie(excludeCookie, true, window.location.hostname.replace("www.", ""), false);
 
             var headline = htmlDecode(TEXT_HEADLINE),
                 subline = htmlDecode(TEXT_SUBLINE),
@@ -178,19 +181,20 @@
     }
 
     
-    if(window.innerWidth > 779){
-
+    if(window.innerWidth > 779 && document.cookie.indexOf(excludeCookie) === -1){
+        console.log(1);
         WATO.elem(function () {
 			return typeof window.ouibounce !== 'undefined';
 		}, function(ouibounceReady){
 			if(ouibounceReady){
+                console.log(2);
 				// Das Ouibounce-Script reagiert auf ein Exitintent 
 				// beim verlassen des Cursors nach oben aus dem Browser
 				window.ouibounce(false, {
 					callback: openModal,
 					aggressive: window.document.location.href.indexOf("dev") !== -1,
 					cookieExpire: 30,
-                    cookieName: htmlDecode(TEXT_COOKIENAME) || 'kk_modalclosed',
+                    cookieName: excludeCookie,
 					timer: 0
 				});
 			}
