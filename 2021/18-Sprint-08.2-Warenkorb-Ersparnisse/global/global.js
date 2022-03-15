@@ -48,7 +48,7 @@
 				word.indexOf("Klapp-Karte") !== -1 || word.indexOf("Mütze") !== -1 || word.indexOf("hose") !== -1){
 			return 'eine '+word;
 		}else if(word.indexOf("Socke") !== -1){
-			return 'ein paar '+word.replace("Socke", "Socken");
+			return 'ein Paar '+word.replace("Socke", "Socken");
 		}else {
 			return 'ein '+word;
 		}
