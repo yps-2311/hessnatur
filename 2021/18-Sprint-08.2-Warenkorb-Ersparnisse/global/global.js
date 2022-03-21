@@ -251,7 +251,7 @@
 					var isVoucher = _self.qs('[name="voucherCode"][value="ALLES21"]'),
 						promoProd = upsellProds[(isVoucher ? 'voucher' : 'sale')][window.iridion.push(['profile', 'getValue', 'categoryAffinity'])];
 					
-					console.log('promoProd: ', promoProd);
+					// console.log('promoProd: ', promoProd);
 
 					// decide which product will be shown
 					var upsellIndex = 2,
@@ -311,7 +311,7 @@
 					if(promoProd){
 						var promo = promoProd[upsellIndex];
 
-						console.log('promo: ', promo);
+						// console.log('promo: ', promo);
 
 						// if product found get product info from API
 						if(promo) {
@@ -344,7 +344,7 @@
 								}else {
 									
 									_self.xhr_get('https://www.hessnatur.com/de/p/'+prodUsk+'/json', false, function(data){
-										console.log('data: ', data);
+										// console.log('data: ', data);
 
 										if(!data){
 											// Wenn das Produkt mit dieser ID nicht existiert
@@ -608,7 +608,7 @@
 
 
 							
-							console.log('promo: ', promo);
+							// console.log('promo: ', promo);
 
 							getProductData(0);
 
