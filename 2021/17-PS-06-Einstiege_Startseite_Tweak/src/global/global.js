@@ -47,70 +47,70 @@ WATO.exclude(1023, function () {
 		window.iridion.push(props);
 	}
 
-	WATO.prototype.PS06_Tweak_Goals = function() {
+	// WATO.prototype.PS06_Tweak_Goals = function() {
 
-		var WATO = this;
+	// 	var WATO = this;
 
-		WATO.elem("#ecRecommendationsContainer .flickity-slider", function (reco) {
-			if (reco[0]) {
-				reco[0].addEventListener('click', function(){
-					pushGoal('click_original_slider', false, true);
-				});
-			}
-		});
+	// 	WATO.elem("#ecRecommendationsContainer .flickity-slider", function (reco) {
+	// 		if (reco[0]) {
+	// 			reco[0].addEventListener('click', function(){
+	// 				pushGoal('click_original_slider', false, true);
+	// 			});
+	// 		}
+	// 	});
 		
-		var sendClickNavigation = false;
+	// 	var sendClickNavigation = false;
 
-		// hover on navigation, desktop
-		WATO.elem('#mainNavPrgRedirectionForm > ul > li:nth-child(7)', function(){
+	// 	// hover on navigation, desktop
+	// 	WATO.elem('#mainNavPrgRedirectionForm > ul > li:nth-child(7)', function(){
 
-			var navElements=WATO.qsa('#mainNavPrgRedirectionForm > ul > li');
+	// 		var navElements=WATO.qsa('#mainNavPrgRedirectionForm > ul > li');
 
-			if(navElements){
+	// 		if(navElements){
 
-				for(var i = 0; i < navElements.length; i++){
+	// 			for(var i = 0; i < navElements.length; i++){
 
-					navElements[i].addEventListener('mouseenter', function(){
+	// 				navElements[i].addEventListener('mouseenter', function(){
 						
 
-						window.setTimeout(function(){
+	// 					window.setTimeout(function(){
 
-							var activeNavElem = WATO.qs('#mainNavPrgRedirectionForm > ul > li.is-active');
+	// 						var activeNavElem = WATO.qs('#mainNavPrgRedirectionForm > ul > li.is-active');
 
-							if(!sendClickNavigation && activeNavElem){
+	// 						if(!sendClickNavigation && activeNavElem){
 
-								sendClickNavigation = true;
-								pushGoal('click_navigation');
-							}
-						}, 500);
-					});
-				}
-			}
-		});
+	// 							sendClickNavigation = true;
+	// 							pushGoal('click_navigation');
+	// 						}
+	// 					}, 500);
+	// 				});
+	// 			}
+	// 		}
+	// 	});
 
-		// click on navigation, mobile
-		WATO.elem('#header .mobileNavigationContainer > li:nth-child(1) > a', function(mainNav){
+	// 	// click on navigation, mobile
+	// 	WATO.elem('#header .mobileNavigationContainer > li:nth-child(1) > a', function(mainNav){
 
-			if(mainNav){
+	// 		if(mainNav){
 
-				for(var i = 0; i < mainNav.length; i++){
+	// 			for(var i = 0; i < mainNav.length; i++){
 
-					mainNav[i].addEventListener('click', function(){
+	// 				mainNav[i].addEventListener('click', function(){
 
-						pushGoal('click_navigation');
-					});
-				}
-			}
-		});
+	// 					pushGoal('click_navigation');
+	// 				});
+	// 			}
+	// 		}
+	// 	});
 
-		WATO.elem("#search_form", function(searchForm){
-			if(searchForm){
-				searchForm[0].addEventListener("keydown",function(){
-					pushGoal('search_form');
-				})
-			}
-		});
-	};
+	// 	WATO.elem("#search_form", function(searchForm){
+	// 		if(searchForm){
+	// 			searchForm[0].addEventListener("keydown",function(){
+	// 				pushGoal('search_form');
+	// 			})
+	// 		}
+	// 	});
+	// };
 
 	WATO.prototype.PS06_Tweak_Categories = function(CATEGORY_AFFINITY) {
 
@@ -201,7 +201,7 @@ WATO.exclude(1023, function () {
 			userAlignment = "Kinder";
 		}
 
-		WATO.PS06_Tweak_Goals();
+		// WATO.PS06_Tweak_Goals();
 
 		function initFlickity(slide){
 			var props = {
@@ -220,6 +220,8 @@ WATO.exclude(1023, function () {
 				pushGoal('click_' + type + '_' + cellIndex, false, true);
 				pushGoal('click_slider', false, true);
 			});
+
+			slide.style.opacity = "1";
 
 		}
 	
@@ -263,7 +265,26 @@ WATO.exclude(1023, function () {
 							'<div class="small-12 h-no-padding-medium-down '+(window.innerWidth>600?"column":'')+'">'+
 								'<div class="'+(window.innerWidth>600?"--cell-padding":'')+' kk_py-0">' +
 									'<div class="flickity-productslider kk_slider" id="'+contentId+'">'+
-										'...Loading'+
+										// '...Loading'+
+
+										'<div class="flickity-viewport" style="height: 34.33vw;">'+
+											'<div class="flickity-slider">'+
+											
+												// '<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 0%;"><a href="https://www.hessnatur.com/de/shirt-aus-reiner-bio-baumwolle/p/512925634" class="item__image"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/V_Shirt_aus_reiner_Bio_Baumwolle-51292_56_7.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name">V-Shirt aus reiner Bio-Baumwolle</h4><div class="desc-price kk_flex"><span class="price hide special full ">undefined €</span><span class="hide">&nbsp;&nbsp;</span><span class="price hide" style="margin-left: 3px">ab </span><span class="price hide special">29,95 €</span><span class="price light show">29,95 €</span><div class="product-basic-price basicPrice"></div></div></div></a></div>'+
+												// '<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 25%;"><a href="https://www.hessnatur.com/de/strickkleid-aus-reiner-bio-baumwolle/p/508674434" class="item__image"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/Strickkleid_aus_reiner_Bio_Baumwolle-50867_44_7.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name">Strickkleid aus reiner Bio-Baumwolle</h4><div class="desc-price kk_flex"><span class="price hide special full ">undefined €</span><span class="hide">&nbsp;&nbsp;</span><span class="price hide" style="margin-left: 3px">ab </span><span class="price hide special">149,95 €</span><span class="price light show">149,95 €</span><div class="product-basic-price basicPrice"></div></div></div></a></div>'+
+												// '<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 50%;"><a href="https://www.hessnatur.com/de/jersey-kleid-aus-reiner-pima-bio-baumwolle/p/523671734" class="item__image"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/Jersey_Kleid_aus_reiner_Bio_Pima_Baumwolle-52367_17_7.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name">Jersey-Kleid aus reiner Bio-Pima-Baumwolle</h4><div class="desc-price kk_flex"><span class="price hide special full ">undefined €</span><span class="hide">&nbsp;&nbsp;</span><span class="price hide" style="margin-left: 3px">ab </span><span class="price hide special">99,95 €</span><span class="price light show">99,95 €</span><div class="product-basic-price basicPrice"></div></div></div></a></div>'+
+												// '<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 75%;"><a href="https://www.hessnatur.com/de/kurzarm-shirt-aus-reiner-bio-baumwolle/p/527891734" class="item__image"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/Kurzarm_Shirt_aus_reiner_Bio_Baumwolle-52789_17_7.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name">Kurzarm-Shirt aus reiner Bio-Baumwolle</h4><div class="desc-price kk_flex"><span class="price hide special full ">undefined €</span><span class="hide">&nbsp;&nbsp;</span><span class="price hide" style="margin-left: 3px">ab </span><span class="price hide special">29,95 €</span><span class="price light show">29,95 €</span><div class="product-basic-price basicPrice"></div></div></div></a></div>'+
+											
+												'<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 0%;"><a class="item__image" href=""><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/1.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name" style="width: 81%;height: 10px;background-color: #acacac;border-radius: 5px;"></h4><div class="desc-price kk_flex"><span class="price light show" style="width: 17%;height: 10px;background-color: #acacac;border-radius: 5px;"></span></div></div></a></div>'+
+												'<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 25%;"><a class="item__image" href=""><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/1.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name" style="width: 92%;height: 10px;background-color: #acacac;border-radius: 5px;"></h4><div class="desc-price kk_flex"><span class="price light show" style="width: 23%;height: 10px;background-color: #acacac;border-radius: 5px;"></span></div></div></a></div>'+
+												'<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 50%;"><a class="item__image" href=""><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/1.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name" style="width: 98%;height: 10px;background-color: #acacac;border-radius: 5px;"></h4><div class="desc-price kk_flex"><span class="price light show" style="width: 20%;height: 10px;background-color: #acacac;border-radius: 5px;"></span></div></div></a></div>'+
+												'<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 75%;"><a class="item__image" href=""><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/1.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name" style="width: 70%;height: 10px;background-color: #acacac;border-radius: 5px;"></h4><div class="desc-price kk_flex"><span class="price light show" style="width: 15%;height: 10px;background-color: #acacac;border-radius: 5px;"></span></div></div></a></div>'+
+												
+
+
+											'</div>'+
+										'</div>' +
+
 									'</div>'+
 								'</div>' +
 							'</div>'+
@@ -382,8 +403,6 @@ WATO.exclude(1023, function () {
 		WATO.elem(".lpmHero", function (headline) {
 	
 			if (headline) {
-				console.log('headline: ', headline);
-				
 				var ref = "";
 				ref = ref.concat(DOMAIN, CATEGORY_AFFINITY,  "/c/", CATEGORY_AFFINITY);
 
@@ -498,59 +517,60 @@ WATO.exclude(1023, function () {
 		econdaAccountID = econdaAccountID + econdaWidgetIds[urlPathName[1]].accountID;
 
 		
-		WATO.elem(function(){
-			return (
-				typeof window.econda !== "undefined" && 
-				typeof window.econda.recengine !== "undefined" && 
-				typeof window.econda.recengine.Widget !== "undefined"
-			);
-		},function(){
+		// WATO.elem(function(){
+		// 	return (
+		// 		typeof window.econda !== "undefined" && 
+		// 		typeof window.econda.recengine !== "undefined" && 
+		// 		typeof window.econda.recengine.Widget !== "undefined"
+		// 	);
+		// },function(){
 
-			WATO.ajaxCallback(`https://widgets.crosssell.info/eps/crosssell/recommendations/${econdaAccountID}.do?`, function (rawData) {
+		// 	WATO.ajaxCallback(`https://widgets.crosssell.info/eps/crosssell/recommendations/${econdaAccountID}.do?`, function (rawData) {
 
-				if(alreadyInitialized){
-					return;
-				} else {
-					alreadyInitialized=true
-				}
+		// 		if(alreadyInitialized){
+		// 			return;
+		// 		} else {
+		// 			alreadyInitialized=true
+		// 		}
 	
-				var data = JSON.parse(rawData.response),
-				items=data.items;
+		// 		var itemsMarkup = insertTendencies(JSON.parse(rawData.response).items);
+
+		// 		WATO.elem(function(){
+		// 			return typeof window.Flickity !== "undefined"; //  && WATO.qsa('a > img', slide)[items.length-1].clientHeight > 0
+		// 		}, function(oneImgReady){
+
+		// 			if(oneImgReady){
 			
-				WATO.elem('#kk_Tendencies_content',function(slide){
-					if(slide){
-						slide=slide[0];
+		// 				WATO.elem('#kk_Tendencies_content',function(slide){
+		// 					if(slide){
+		// 						slide=slide[0];
 
-						slide.innerHTML = '';
-						slide.style.opacity = "0";
-						slide.insertAdjacentHTML("afterbegin", insertTendencies(items));
-						
-						WATO.elem(function(){
-							return typeof window.Flickity !== "undefined" && WATO.qsa('a > img', slide)[items.length-1].clientHeight > 0;
-						}, function(oneImgReady){
+		// 						slide.innerHTML = '';
+		// 						slide.style.opacity = "0";
+		// 						slide.insertAdjacentHTML("afterbegin", itemsMarkup);
 
-							if(oneImgReady){
-								initFlickity(slide);
-								slide.style.opacity = "1";
-							}
-						});
-						
-					}
-				});
-			});
+		// 						initFlickity(slide);
+		// 					}
+		// 				});
+
+
+		// 			}
+		// 		});
+
+		// 	});
 	
-			try{
-				var widget = new window.econda.recengine.Widget({
-					accountId: econdaAccountID,
-					id: econdaId
-				});
+		// 	try{
+		// 		var widget = new window.econda.recengine.Widget({
+		// 			accountId: econdaAccountID,
+		// 			id: econdaId
+		// 		});
 			
-			widget.render();
+		// 	widget.render();
 
-			} catch (error) {
-				console.log("error:",error);
-			}
-		});
+		// 	} catch (error) {
+		// 		console.log("error:",error);
+		// 	}
+		// });
 
 		WATO.elem(".lpmSeparator", function(spaceing) {
 			if(spaceing) {

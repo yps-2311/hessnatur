@@ -452,8 +452,6 @@
      */
     
 	window.WATO.prototype.exclude = function(width, callback){
-
-        console.log("exclude");
 		
 		function _checkWidth() {
 			
