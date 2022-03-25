@@ -262,6 +262,86 @@
   }
 }
 
+
+.kk_preload {
+	position: absolute;
+	.desc-name,
+	.price {
+		height: 10px;
+		background-color: #acacac;
+		border-radius: 5px;
+	}
+
+	&:first-child {
+		left: 0;
+		.desc-name {
+			width: 81%;
+		}
+		.price {
+			width: 17%;
+		}
+	}
+	&:nth-child(2) {
+		left: 25%;
+		.desc-name {
+			width: 92%;
+		}
+		.price {
+			width: 23%;
+		}
+	}
+	&:nth-child(3) {
+		left: 50%;
+		.desc-name {
+			width: 98%;
+		}
+		.price {
+			width: 20%;
+		}
+	}
+	&:nth-child(4) {
+		left: 75%;
+		.desc-name {
+			width: 70%;
+		}
+		.price {
+			width: 15%;
+		}
+	}
+	
+}
+#kk_Tendencies_content {
+	min-height: 30vw;
+}
+
+@media screen and (min-width: 1920px) {
+	#kk_Tendencies_content {
+		min-height: 650px;
+	}
+}
+
+@media screen and (max-width: 1024px) {
+
+	.kk_preload {
+		&:first-child {
+			left: 0;
+		}
+		&:nth-child(2) {
+			left: 40%;
+		}
+		&:nth-child(3) {
+			left: 80%;
+		}
+		&:nth-child(4) {
+			display: none !important;
+		}
+	}
+	#kk_Tendencies_content {
+		min-height: 56vw;
+	}
+	
+}
+
 @media screen and (min-width:64em) {
   #kk_Tendencies_content img{
     width: 435px;

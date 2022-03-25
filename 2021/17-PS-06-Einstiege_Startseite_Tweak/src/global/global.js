@@ -254,6 +254,8 @@ WATO.exclude(1023, function () {
 			}
 			
 		}
+
+		var preloadMarkup = '<div class="kk_preload kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected"><a class="item__image" href="#"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/1.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name"></h4><div class="desc-price kk_flex"><span class="price light show"></span></div></div></a></div>';
 	
 		function initKkSliderContainer(contentId){
 			if(window.innerWidth < 600 && contentId === "kk_popularities_content"){
@@ -275,11 +277,12 @@ WATO.exclude(1023, function () {
 												// '<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 50%;"><a href="https://www.hessnatur.com/de/jersey-kleid-aus-reiner-pima-bio-baumwolle/p/523671734" class="item__image"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/Jersey_Kleid_aus_reiner_Bio_Pima_Baumwolle-52367_17_7.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name">Jersey-Kleid aus reiner Bio-Pima-Baumwolle</h4><div class="desc-price kk_flex"><span class="price hide special full ">undefined €</span><span class="hide">&nbsp;&nbsp;</span><span class="price hide" style="margin-left: 3px">ab </span><span class="price hide special">99,95 €</span><span class="price light show">99,95 €</span><div class="product-basic-price basicPrice"></div></div></div></a></div>'+
 												// '<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 75%;"><a href="https://www.hessnatur.com/de/kurzarm-shirt-aus-reiner-bio-baumwolle/p/527891734" class="item__image"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/Kurzarm_Shirt_aus_reiner_Bio_Baumwolle-52789_17_7.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name">Kurzarm-Shirt aus reiner Bio-Baumwolle</h4><div class="desc-price kk_flex"><span class="price hide special full ">undefined €</span><span class="hide">&nbsp;&nbsp;</span><span class="price hide" style="margin-left: 3px">ab </span><span class="price hide special">29,95 €</span><span class="price light show">29,95 €</span><div class="product-basic-price basicPrice"></div></div></div></a></div>'+
 											
-												'<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 0%;"><a class="item__image" href=""><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/1.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name" style="width: 81%;height: 10px;background-color: #acacac;border-radius: 5px;"></h4><div class="desc-price kk_flex"><span class="price light show" style="width: 17%;height: 10px;background-color: #acacac;border-radius: 5px;"></span></div></div></a></div>'+
-												'<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 25%;"><a class="item__image" href=""><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/1.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name" style="width: 92%;height: 10px;background-color: #acacac;border-radius: 5px;"></h4><div class="desc-price kk_flex"><span class="price light show" style="width: 23%;height: 10px;background-color: #acacac;border-radius: 5px;"></span></div></div></a></div>'+
-												'<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 50%;"><a class="item__image" href=""><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/1.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name" style="width: 98%;height: 10px;background-color: #acacac;border-radius: 5px;"></h4><div class="desc-price kk_flex"><span class="price light show" style="width: 20%;height: 10px;background-color: #acacac;border-radius: 5px;"></span></div></div></a></div>'+
-												'<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 75%;"><a class="item__image" href=""><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/1.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name" style="width: 70%;height: 10px;background-color: #acacac;border-radius: 5px;"></h4><div class="desc-price kk_flex"><span class="price light show" style="width: 15%;height: 10px;background-color: #acacac;border-radius: 5px;"></span></div></div></a></div>'+
 												
+												
+												preloadMarkup+
+												preloadMarkup+
+												preloadMarkup+
+												preloadMarkup+
 
 
 											'</div>'+
@@ -409,7 +412,7 @@ WATO.exclude(1023, function () {
 				headline[0].insertAdjacentHTML("afterend",
 					'<div class="lpmSeparator">&nbsp;</div>'+
 					'<div id="kk_insertion">' +
-						'<div class="lpmSeparator">&nbsp;</div>' +
+						// '<div class="lpmSeparator">&nbsp;</div>' +
 						initKkHeadline("kk_Tendencies_header",(variation === 1 ? "NACHHALTIGE PRODUKTE FÜR SIE AUSGEWÄHLT" : userAlignment + ' Basics aus Bio-Baumwolle')) +
 						initKkSliderContainer("kk_Tendencies_content") +
 						// initKkHeadline("kk_popular_header","Beliebte Kategorien", ref, userAlignment) + // DL 03.12.21
@@ -517,66 +520,75 @@ WATO.exclude(1023, function () {
 		econdaAccountID = econdaAccountID + econdaWidgetIds[urlPathName[1]].accountID;
 
 		
-		// WATO.elem(function(){
-		// 	return (
-		// 		typeof window.econda !== "undefined" && 
-		// 		typeof window.econda.recengine !== "undefined" && 
-		// 		typeof window.econda.recengine.Widget !== "undefined"
-		// 	);
-		// },function(){
+		WATO.elem(function(){
+			return (
+				typeof window.econda !== "undefined" && 
+				typeof window.econda.recengine !== "undefined" && 
+				typeof window.econda.recengine.Widget !== "undefined"
+			);
+		},function(){
 
-		// 	WATO.ajaxCallback(`https://widgets.crosssell.info/eps/crosssell/recommendations/${econdaAccountID}.do?`, function (rawData) {
+			WATO.ajaxCallback(`https://widgets.crosssell.info/eps/crosssell/recommendations/${econdaAccountID}.do?`, function (rawData) {
 
-		// 		if(alreadyInitialized){
-		// 			return;
-		// 		} else {
-		// 			alreadyInitialized=true
-		// 		}
+				if(alreadyInitialized){
+					return;
+				} else {
+					alreadyInitialized=true
+				}
 	
-		// 		var itemsMarkup = insertTendencies(JSON.parse(rawData.response).items);
+				var itemsMarkup = insertTendencies(JSON.parse(rawData.response).items);
 
-		// 		WATO.elem(function(){
-		// 			return typeof window.Flickity !== "undefined"; //  && WATO.qsa('a > img', slide)[items.length-1].clientHeight > 0
-		// 		}, function(oneImgReady){
+				WATO.elem(function(){
+					return typeof window.Flickity !== "undefined"; //  && WATO.qsa('a > img', slide)[items.length-1].clientHeight > 0
+				}, function(oneImgReady){
 
-		// 			if(oneImgReady){
+					if(oneImgReady){
 			
-		// 				WATO.elem('#kk_Tendencies_content',function(slide){
-		// 					if(slide){
-		// 						slide=slide[0];
+						WATO.elem('#kk_Tendencies_content',function(slide){
+							if(slide){
+								slide=slide[0];
 
-		// 						slide.innerHTML = '';
-		// 						slide.style.opacity = "0";
-		// 						slide.insertAdjacentHTML("afterbegin", itemsMarkup);
+								slide.innerHTML = '';
+								slide.style.opacity = "0";
+								slide.insertAdjacentHTML("afterbegin", itemsMarkup);
 
-		// 						initFlickity(slide);
-		// 					}
-		// 				});
+								WATO.elem(function(){
+									return WATO.qs('.kk_productitem_tendency img', slide).offsetHeight > 140;
+								}, function(img){
+									if(img){
+										initFlickity(slide);
+									}
+								});
+
+								
+							}
+						});
 
 
-		// 			}
-		// 		});
+					}
+				});
 
-		// 	});
+			});
 	
-		// 	try{
-		// 		var widget = new window.econda.recengine.Widget({
-		// 			accountId: econdaAccountID,
-		// 			id: econdaId
-		// 		});
+			try{
+				var widget = new window.econda.recengine.Widget({
+					accountId: econdaAccountID,
+					id: econdaId
+				});
 			
-		// 	widget.render();
+			widget.render();
 
-		// 	} catch (error) {
-		// 		console.log("error:",error);
+			} catch (error) {
+				console.log("error:",error);
+			}
+		});
+
+		// WATO.elem(".lpmSeparator", function(spaceing) {
+		// 	if(spaceing) {
+		// 		spaceing[1].style.display = "none";
 		// 	}
 		// });
 
-		WATO.elem(".lpmSeparator", function(spaceing) {
-			if(spaceing) {
-				spaceing[1].style.display = "none";
-			}
-		});
 
 		
 	};
