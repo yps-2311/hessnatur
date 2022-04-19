@@ -7,6 +7,14 @@
 
 /* DEFINE VARIATION CSS */
 
+
+.rteContainer + .js-product-reference[data-componentid] {
+  display: none;
+}
+
+
+
+
 #kk_popular_header,
 #kk_Tendencies_header,
 .kk_container{
@@ -312,13 +320,26 @@
 }
 #kk_Tendencies_content {
 	min-height: 30vw;
+
+  .flickity-prev-next-button {
+    margin-top: -2%;
+  }
+  .flickity-viewport {
+    max-height: 686px;
+  }
+
+}
+#kk_insertion {
+  & + .lpmSeparator {
+    display: none;
+  }
 }
 
-@media screen and (min-width: 1920px) {
-	#kk_Tendencies_content {
-		min-height: 650px;
-	}
-}
+// @media screen and (min-width: 1920px) {
+// 	#kk_Tendencies_content {
+// 		min-height: 650px;
+// 	}
+// }
 
 @media screen and (max-width: 1024px) {
 
@@ -336,9 +357,12 @@
 			display: none !important;
 		}
 	}
-	#kk_Tendencies_content {
-		min-height: 56vw;
-	}
+	// #kk_Tendencies_content {
+	// 	min-height: 56vw;
+	// }
+  #kk_Tendencies_content .flickity-viewport {
+    min-height: 58.33vw;
+  }
 	
 }
 
@@ -350,7 +374,7 @@
     margin-right: 6rem;
   }
   .kk_productitem_tendency > a > div{
-    min-height: 88px;
+    min-height: 50px;
   }
   .kk_headline{
     padding-left: 44px;

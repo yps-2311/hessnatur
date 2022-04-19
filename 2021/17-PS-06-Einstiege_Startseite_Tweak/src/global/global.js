@@ -160,7 +160,7 @@ WATO.exclude(1023, function () {
 		return CATEGORIES;
 	};
 
-	WATO.prototype.PS06_Tweak = function(CATEGORY_AFFINITY, CATEGORIES, DATA, variation){
+	WATO.prototype.PS06_Tweak = function(CATEGORY_AFFINITY, CATEGORIES){ // , DATA, variation
 
 		if(!CATEGORY_AFFINITY || CATEGORY_AFFINITY === 1){
 			CATEGORY_AFFINITY = "damen";
@@ -170,7 +170,7 @@ WATO.exclude(1023, function () {
 
 
 		// var IMG_PATH = "https://media.hessnatur.com/kk/2021/ps06-startseite/";
-		var DOMAIN = "https://www.hessnatur.com/de/";
+		// var DOMAIN = "https://www.hessnatur.com/de/";
 		var WATO = this;
 
 		var oldWidth = window.innerWidth || document.body.clientWidth;
@@ -225,76 +225,86 @@ WATO.exclude(1023, function () {
 
 		}
 	
-		function initKkHeadline(headlineId, headlineText, link, alignment){
-			if(window.innerWidth < 600){
-				return(
-					'<div id="'+headlineId+'" class="lpmTeaser__headline column">'+
-						'<p class="hn-headline hn-color-gray-800 kk_headline">'+headlineText+'</p>'+
-					'</div>'
-				);	
-			} else if(window.innerWidth >= 600 && headlineId === "kk_popular_header"){
-				return(
-					'<div id="'+headlineId+'" class="lpmTeaser__headline --cell-padding">'+
-						'<p class="hn-headline hn-color-gray-800 kk_headline">'+headlineText+'</p>'+
-						'<div class="kk_furtherArticles kk_isDesktop kk_justify-content-end">'+
-								'<a href='+link+'>'+
-									'<span class="hn-button-link">Alle Artikel für '+alignment+'</span>'+
-								'</a>'+
-							'</div>'+
-					'</div>'
-				);	
+		// function initKkHeadline(headlineId, headlineText){ // , link, alignment
+		// 	if(window.innerWidth < 600){
+		// 		return(
+		// 			'<div id="'+headlineId+'" class="lpmTeaser__headline column">'+
+		// 				'<p class="hn-headline hn-color-gray-800 kk_headline">'+headlineText+'</p>'+
+		// 			'</div>'
+		// 		);	
+		// 	// } else if(window.innerWidth >= 600 && headlineId === "kk_popular_header"){
+		// 	// 	return(
+		// 	// 		'<div id="'+headlineId+'" class="lpmTeaser__headline --cell-padding">'+
+		// 	// 			'<p class="hn-headline hn-color-gray-800 kk_headline">'+headlineText+'</p>'+
+		// 	// 			'<div class="kk_furtherArticles kk_isDesktop kk_justify-content-end">'+
+		// 	// 					'<a href='+link+'>'+
+		// 	// 						'<span class="hn-button-link">Alle Artikel für '+alignment+'</span>'+
+		// 	// 					'</a>'+
+		// 	// 				'</div>'+
+		// 	// 		'</div>'
+		// 	// 	);	
 				
-			}
-			 else{
-				return(
-					'<div id="'+headlineId+'" class="lpmTeaser__headline --cell-padding">'+
-						'<p class="hn-headline hn-color-gray-800 kk_headline">'+headlineText+'</p>'+
-					'</div>'
-				);	
-			}
+		// 	} else{
+		// 		return(
+		// 			'<div id="'+headlineId+'" class="lpmTeaser__headline column">'+
+		// 				'<p class="hn-headline hn-color-gray-800 kk_headline">'+headlineText+'</p>'+
+		// 			'</div>'
+		// 		);	
+		// 	}
 			
-		}
+		// }
 
 		var preloadMarkup = '<div class="kk_preload kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected"><a class="item__image" href="#"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/1.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name"></h4><div class="desc-price kk_flex"><span class="price light show"></span></div></div></a></div>';
 	
 		function initKkSliderContainer(contentId){
-			if(window.innerWidth < 600 && contentId === "kk_popularities_content"){
-				return('<div id="'+contentId+'" class="kk_grid column">...Loading</div>');
-			}else{
-				return(
-					'<div class="small-12 js-product-reference">'+
-						'<div class="row js-productSliderWrapper h-LargeOffset-bottom-outer">'+ // h-xxLargeOffset-bottom-outer
-							'<div class="small-12 h-no-padding-medium-down '+(window.innerWidth>600?"column":'')+'">'+
-								'<div class="'+(window.innerWidth>600?"--cell-padding":'')+' kk_py-0">' +
-									'<div class="flickity-productslider kk_slider" id="'+contentId+'">'+
-										// '...Loading'+
+			// if(window.innerWidth < 600 && contentId === "kk_popularities_content"){
+			// 	return('<div id="'+contentId+'" class="kk_grid column">...Loading</div>');
+			// }else{
+				// return(
+				// 	'<div class="small-12 js-product-reference">'+
+				// 		'<div class="row js-productSliderWrapper h-LargeOffset-bottom-outer">'+ // h-xxLargeOffset-bottom-outer
+				// 			'<div class="small-12 h-no-padding-medium-down '+(window.innerWidth>600?"column":'')+'">'+
+				// 				'<div class="'+(window.innerWidth>600?"--cell-padding":'')+' kk_py-0">' +
+									// '<div class="flickity-productslider kk_slider" id="'+contentId+'">'+
+									// 	// '...Loading'+
 
-										'<div class="flickity-viewport" style="height: 34.33vw;">'+
-											'<div class="flickity-slider">'+
+									// 	'<div class="flickity-viewport" style="height: 34.33vw;">'+
+									// 		'<div class="flickity-slider">'+
 											
-												// '<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 0%;"><a href="https://www.hessnatur.com/de/shirt-aus-reiner-bio-baumwolle/p/512925634" class="item__image"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/V_Shirt_aus_reiner_Bio_Baumwolle-51292_56_7.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name">V-Shirt aus reiner Bio-Baumwolle</h4><div class="desc-price kk_flex"><span class="price hide special full ">undefined €</span><span class="hide">&nbsp;&nbsp;</span><span class="price hide" style="margin-left: 3px">ab </span><span class="price hide special">29,95 €</span><span class="price light show">29,95 €</span><div class="product-basic-price basicPrice"></div></div></div></a></div>'+
-												// '<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 25%;"><a href="https://www.hessnatur.com/de/strickkleid-aus-reiner-bio-baumwolle/p/508674434" class="item__image"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/Strickkleid_aus_reiner_Bio_Baumwolle-50867_44_7.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name">Strickkleid aus reiner Bio-Baumwolle</h4><div class="desc-price kk_flex"><span class="price hide special full ">undefined €</span><span class="hide">&nbsp;&nbsp;</span><span class="price hide" style="margin-left: 3px">ab </span><span class="price hide special">149,95 €</span><span class="price light show">149,95 €</span><div class="product-basic-price basicPrice"></div></div></div></a></div>'+
-												// '<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 50%;"><a href="https://www.hessnatur.com/de/jersey-kleid-aus-reiner-pima-bio-baumwolle/p/523671734" class="item__image"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/Jersey_Kleid_aus_reiner_Bio_Pima_Baumwolle-52367_17_7.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name">Jersey-Kleid aus reiner Bio-Pima-Baumwolle</h4><div class="desc-price kk_flex"><span class="price hide special full ">undefined €</span><span class="hide">&nbsp;&nbsp;</span><span class="price hide" style="margin-left: 3px">ab </span><span class="price hide special">99,95 €</span><span class="price light show">99,95 €</span><div class="product-basic-price basicPrice"></div></div></div></a></div>'+
-												// '<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 75%;"><a href="https://www.hessnatur.com/de/kurzarm-shirt-aus-reiner-bio-baumwolle/p/527891734" class="item__image"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/Kurzarm_Shirt_aus_reiner_Bio_Baumwolle-52789_17_7.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name">Kurzarm-Shirt aus reiner Bio-Baumwolle</h4><div class="desc-price kk_flex"><span class="price hide special full ">undefined €</span><span class="hide">&nbsp;&nbsp;</span><span class="price hide" style="margin-left: 3px">ab </span><span class="price hide special">29,95 €</span><span class="price light show">29,95 €</span><div class="product-basic-price basicPrice"></div></div></div></a></div>'+
+									// 			// '<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 0%;"><a href="https://www.hessnatur.com/de/shirt-aus-reiner-bio-baumwolle/p/512925634" class="item__image"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/V_Shirt_aus_reiner_Bio_Baumwolle-51292_56_7.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name">V-Shirt aus reiner Bio-Baumwolle</h4><div class="desc-price kk_flex"><span class="price hide special full ">undefined €</span><span class="hide">&nbsp;&nbsp;</span><span class="price hide" style="margin-left: 3px">ab </span><span class="price hide special">29,95 €</span><span class="price light show">29,95 €</span><div class="product-basic-price basicPrice"></div></div></div></a></div>'+
+									// 			// '<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 25%;"><a href="https://www.hessnatur.com/de/strickkleid-aus-reiner-bio-baumwolle/p/508674434" class="item__image"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/Strickkleid_aus_reiner_Bio_Baumwolle-50867_44_7.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name">Strickkleid aus reiner Bio-Baumwolle</h4><div class="desc-price kk_flex"><span class="price hide special full ">undefined €</span><span class="hide">&nbsp;&nbsp;</span><span class="price hide" style="margin-left: 3px">ab </span><span class="price hide special">149,95 €</span><span class="price light show">149,95 €</span><div class="product-basic-price basicPrice"></div></div></div></a></div>'+
+									// 			// '<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 50%;"><a href="https://www.hessnatur.com/de/jersey-kleid-aus-reiner-pima-bio-baumwolle/p/523671734" class="item__image"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/Jersey_Kleid_aus_reiner_Bio_Pima_Baumwolle-52367_17_7.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name">Jersey-Kleid aus reiner Bio-Pima-Baumwolle</h4><div class="desc-price kk_flex"><span class="price hide special full ">undefined €</span><span class="hide">&nbsp;&nbsp;</span><span class="price hide" style="margin-left: 3px">ab </span><span class="price hide special">99,95 €</span><span class="price light show">99,95 €</span><div class="product-basic-price basicPrice"></div></div></div></a></div>'+
+									// 			// '<div class="kk_productitem_tendency productitem text-center small-5 medium-5 large-3 columns is-selected" style="position: absolute; left: 75%;"><a href="https://www.hessnatur.com/de/kurzarm-shirt-aus-reiner-bio-baumwolle/p/527891734" class="item__image"><img src="https://imgs7.hessnatur.com/is/image/HessNatur/generalfeed_large/Kurzarm_Shirt_aus_reiner_Bio_Baumwolle-52789_17_7.jpg"><div class="item__desc h-smallOffset-top-outer"><h4 class="item_desc desc-name">Kurzarm-Shirt aus reiner Bio-Baumwolle</h4><div class="desc-price kk_flex"><span class="price hide special full ">undefined €</span><span class="hide">&nbsp;&nbsp;</span><span class="price hide" style="margin-left: 3px">ab </span><span class="price hide special">29,95 €</span><span class="price light show">29,95 €</span><div class="product-basic-price basicPrice"></div></div></div></a></div>'+
 											
 												
 												
-												preloadMarkup+
-												preloadMarkup+
-												preloadMarkup+
-												preloadMarkup+
+									// 			preloadMarkup+
+									// 			preloadMarkup+
+									// 			preloadMarkup+
+									// 			preloadMarkup+
 
 
-											'</div>'+
-										'</div>' +
+									// 		'</div>'+
+									// 	'</div>' +
 
-									'</div>'+
-								'</div>' +
-							'</div>'+
-						'</div>'+
-					'</div>'
-				);
-			}
+									// '</div>'+
+				// 				'</div>' +
+				// 			'</div>'+
+				// 		'</div>'+
+				// 	'</div>'
+				// );
+			// }
+
+			return '<div class="flickity-productslider kk_slider" id="'+contentId+'">'+
+				'<div class="flickity-viewport" style="height: 32vw;">'+
+					'<div class="flickity-slider">'+
+						preloadMarkup+
+						preloadMarkup+
+						preloadMarkup+
+						preloadMarkup+
+					'</div>'+
+				'</div>' +
+			'</div>';
 		}
 	
 		function insertTendencies(items) {
@@ -406,27 +416,43 @@ WATO.exclude(1023, function () {
 		WATO.elem(".lpmHero", function (headline) {
 	
 			if (headline) {
-				var ref = "";
-				ref = ref.concat(DOMAIN, CATEGORY_AFFINITY,  "/c/", CATEGORY_AFFINITY);
+				// var ref = "";
+				// ref = ref.concat(DOMAIN, CATEGORY_AFFINITY,  "/c/", CATEGORY_AFFINITY);
+
+				// headline[0].insertAdjacentHTML("afterend",
+				// 	'<div class="lpmSeparator">&nbsp;</div>'+
+				// 	'<div id="kk_insertion">' +
+				// 		// '<div class="lpmSeparator">&nbsp;</div>' +
+				// 		initKkHeadline("kk_Tendencies_header",(variation === 1 ? "NACHHALTIGE PRODUKTE FÜR SIE AUSGEWÄHLT" : userAlignment + ' Basics aus Bio-Baumwolle')) +
+				// 		initKkSliderContainer("kk_Tendencies_content") +
+				// 		// initKkHeadline("kk_popular_header","Beliebte Kategorien", ref, userAlignment) + // DL 03.12.21
+				// 		// '<div id="kk_chosen_user" class="kk_container">' + // DL 03.12.21
+				// 		// '</div>' + // DL 03.12.21
+				// 		// initKkSliderContainer("kk_popularities_content") + // DL 03.12.21
+				// 		'<div id="kk_chosen_user" class="kk_container">' +
+				// 			'<div class="kk_furtherArticles kk_isMobile kk_justify-content-center">' +
+				// 				'<a href=' + ref + '>' +
+				// 					'<span class="hn-button-link">Alle Artikel für ' + userAlignment + '</span>' + 
+				// 				'</a>' +
+				// 			'</div>' +
+				// 		'</div>' +
+				// 	'</div>'	
+				// );
 
 				headline[0].insertAdjacentHTML("afterend",
 					'<div class="lpmSeparator">&nbsp;</div>'+
-					'<div id="kk_insertion">' +
-						// '<div class="lpmSeparator">&nbsp;</div>' +
-						initKkHeadline("kk_Tendencies_header",(variation === 1 ? "NACHHALTIGE PRODUKTE FÜR SIE AUSGEWÄHLT" : userAlignment + ' Basics aus Bio-Baumwolle')) +
-						initKkSliderContainer("kk_Tendencies_content") +
-						// initKkHeadline("kk_popular_header","Beliebte Kategorien", ref, userAlignment) + // DL 03.12.21
-						// '<div id="kk_chosen_user" class="kk_container">' + // DL 03.12.21
-						// '</div>' + // DL 03.12.21
-						// initKkSliderContainer("kk_popularities_content") + // DL 03.12.21
-						'<div id="kk_chosen_user" class="kk_container">' +
-							'<div class="kk_furtherArticles kk_isMobile kk_justify-content-center">' +
-								'<a href=' + ref + '>' +
-									'<span class="hn-button-link">Alle Artikel für ' + userAlignment + '</span>' + 
-								'</a>' +
-							'</div>' +
-						'</div>' +
-					'</div>'	
+					'<div id="kk_insertion" class="small-12 columns js-product-reference">' +
+						'<div class="small-12 columns">'+
+							'<div class="row js-productSliderWrapper">'+ // h-xxLargeOffset-bottom-outer
+								'<div class="recommendation-headline column small-12 h-mediumOffset-bottom-outer">'+
+									'<div class="h2 text-left recommendation-headline__text">Nachhaltige Produkte für Sie ausgewählt</div>'+
+								'</div>'+
+								'<div class="column small-12 h-no-padding-medium-down">'+
+									initKkSliderContainer("kk_Tendencies_content") +
+								'</div>'+
+							'</div>'+
+						'</div>'+
+					'</div>'
 				);
 
 				// WATO.elem('.pusActionModule', function(pusActionModule){
@@ -579,7 +605,7 @@ WATO.exclude(1023, function () {
 			widget.render();
 
 			} catch (error) {
-				console.log("error:",error);
+				// console.log("error:",error);
 			}
 		});
 

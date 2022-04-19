@@ -17,7 +17,7 @@
     // response > "damen" | "herren" | "baby OR junior" | "home"
     var CATEGORY_AFFINITY = window.iridion.push(['profile', 'getValue', 'categoryAffinity']);
     
-    var DATA = {
+    // var DATA = {
         /*
         "5112713": {
             "badges": [
@@ -67,7 +67,7 @@
             ],
             "response": {}
         }*/
-    };
+    // };
 
     var CATEGORIES = WATO.PS06_Tweak_Categories(CATEGORY_AFFINITY);
     /*
@@ -202,6 +202,6 @@
         }
     }*/
 
-    WATO.PS06_Tweak(CATEGORY_AFFINITY, CATEGORIES, DATA, 1);
+    WATO.PS06_Tweak(CATEGORY_AFFINITY, CATEGORIES); // , DATA, 1
 
 })(new window.WATO());
