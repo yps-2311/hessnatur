@@ -204,9 +204,9 @@
                         
                         // falls die Galerie mit einer anderen Farbe schon vorhanden ist wird diese entfernt
                         removeObject(_self.qs(".kk_slider", mainContentWrapper));
-
+                        
                         // Alle anderen Galerien der Seite werden ebenfalls entfernt da es sonst nach dem initalisieren zu fehlern kommt
-                        removeObject(_self.qs(".show-for-medium-only.column.small-12.medium-6", mainContentWrapper));
+                        // removeObject(_self.qs(".show-for-medium-only.column.small-12.medium-6", mainContentWrapper));
                         removeObject(_self.qs(".pds-productImage__mzThumbsWrapper.js_magicZoomThumbWrapper", mainContentWrapper));
                         removeObject(_self.qs(".js_magicZoomKeyVisualWrapper", mainContentWrapper));
                         removeObject(_self.qs(".column.small-12.hide-for-medium.h-smallmediumOffset-bottom-outer.h-no-padding", mainContentWrapper));
@@ -310,7 +310,7 @@
                         var mainPicInitial = "",
                             markupHTMLInitial = "";
 
-                            _self.elem('meta[property="og:image"]', function(initPic){
+                        _self.elem('meta[property="og:image"]', function(initPic){
                             if(initPic){
                                 var initPicLength = initPic.length;
                                 
@@ -430,7 +430,7 @@
             }
         });
 
-        // Initaile Galerie erstellen
+        // // Initaile Galerie erstellen
         buildGalleryWrapper();
 
         // Produktdetails vom Akordion in einen Slider umbauen
