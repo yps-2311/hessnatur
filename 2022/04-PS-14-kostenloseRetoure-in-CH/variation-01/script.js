@@ -46,7 +46,7 @@
 
 
     // Action Bar Manipulation
-    if(isHome || isPDP || isCart){
+    if(!isConfirmation){
         WATO.elem('.yCmsComponent.actionbarWrapper .actionbar.flyout .column', function(actionbarFlyoutColumn){
             if(actionbarFlyoutColumn) {
                 // console.log('actionbarFlyoutColumn: ',actionbarFlyoutColumn);
