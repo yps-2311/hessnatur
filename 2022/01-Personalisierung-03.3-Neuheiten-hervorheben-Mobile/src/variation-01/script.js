@@ -1,5 +1,5 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -12,9 +12,10 @@
 (function(WATO, window) {
     "use strict";
 	
-	// window.iridion.econda.push(["SprintPS03tweak", "V1"]);
+	window.iridion.econda.push(["SprintPS03_3", "V1"]);
 
 	/*jshint loopfunc: true */
+	WATO.ps03setSegment();
 	WATO.ps03_3();
 
 	function pushGoal(key, value) {
@@ -39,10 +40,12 @@
 		WATO.elem('.pds__imageAndCockpitWrapper + .small-collapse > .small-12', function(prodInfo){
 			if(prodInfo){
 
+				window.document.documentElement.classList.add('kk_ps03_3');
+
 				prodInfo[0].insertAdjacentHTML('beforebegin', 
 					// MV, 27.08.21 > Die Klasse js-product-reference darf nicht gesetzt werden, führt sonst zu einem Konflikt der 100% Ausspielung 
 					// Refresh-PDS-Desktop und dem STL Element
-					'<div class="small-12 columns">'+
+					'<div class="small-12 columns" id="kk_likethis">'+
 						'<div class="small-12 columns">'+
 							'<div class="row js-productSliderWrapper h-xxLargeOffset-bottom-outer">'+
 								'<div class="column small-12 h-mediumOffset-bottom-outer">'+
@@ -62,35 +65,28 @@
 						'</div>'+
 					'</div>'
 				);
+				
+				WATO.elem(function(){
+					return typeof window.econda !== "undefined" && typeof jQuery !== "undefined" && 
+						typeof window.Flickity !== "undefined" && // && typeof window.usercentrics !== "undefined"
+						typeof window.econda.recengine !== "undefined" && typeof window.econda.recengine.Widget !== "undefined"; // typeof jQuery.fn.flickity !== "undefined"
+				} , function(econdaRdy){
+					if(econdaRdy){
+						// console.log('econdaRdy: ', econdaRdy);
+						// Reco-Init aus dem komprimierten Code der Seite von Hessnatur
+						// leicht angepasst "var n = $("#kk_likethisproduct")" und "new window.Flickity(t, ACC.productSlider.getFlickityOptions());"
 
-				var econdaConsentStatusMarketing = false;
+						var t = $("#completeTheLookRecommendationsAddToCart");
+						if (t.length > 0) return;
 
-				// Consent Erlaubnis für Econda
-				JSON.parse(window.localStorage.getItem("usercentrics")).consents.forEach(function(item){
-					if(item.categorySlug === "marketing" && item.consentStatus){
-						econdaConsentStatusMarketing = true;
-					}
-				});
+						var i = {};
+						i.horizontal = function(e, t, i) {
 
-				if(econdaConsentStatusMarketing){
-					WATO.elem(function(){
-						return typeof window.econda !== "undefined" && typeof jQuery !== "undefined" && 
-							typeof window.Flickity !== "undefined" && // && typeof window.usercentrics !== "undefined"
-							typeof window.econda.recengine !== "undefined" && typeof window.econda.recengine.Widget !== "undefined"; // typeof jQuery.fn.flickity !== "undefined"
-					} , function(econdaRdy){
-						if(econdaRdy){
-							console.log('econdaRdy: ', econdaRdy);
-							// Reco-Init aus dem komprimierten Code der Seite von Hessnatur
-							// leicht angepasst "var n = $("#kk_likethisproduct")" und "new window.Flickity(t, ACC.productSlider.getFlickityOptions());"
-	
-							var t = $("#completeTheLookRecommendationsAddToCart");
-							if (t.length > 0) return;
-	
-							var i = {};
-							i.horizontal = function(e, t, i) {
-	
-								var sku = WATO.qs('meta[property="product:upc"]').getAttribute('content').substring(0,7);
-								console.log('e.products: ', e.products);
+							var sku = WATO.qs('meta[property="product:upc"]').getAttribute('content').substring(0,7);
+							// console.log('e.products: ', e.products.length);
+
+
+							if(e.products.length > 0){
 								e.products = e.products.filter(function(product){
 									return product.sku !== sku;
 								});
@@ -105,8 +101,8 @@
 									s += '<div class="item__desc h-smallOffset-top-outer">',
 									s += '<h4 class="desc-name">' + i.html(l.name) + "</h4>",
 									s += '<div class="desc-price">',
-									s += '<span class="price full ' + (c ? "show" : "hide") + '">' + l.oldprice + "</span>&nbsp;&nbsp;",
-									s += '<span class="price ' + (c ? "show" : "hide") + '" style="margin-left: 3px">' + window.ACC.messages.productPriceFromClean + "</span>",
+									s += '<span class="price full ' + (c ? "show" : "hide") + '">' + l.oldprice + "</span>",
+									s += '<span class="price ' + (c ? "show" : "hide") + '">' + window.ACC.messages.productPriceFromClean + "</span>",
 									s += '<span class="price special ' + (c ? "show" : "hide") + '">' + l.price + "</span>",
 									s += '<span class="price ' + (c ? "hide" : "show") + '">' + l.price + "</span>",
 									s += u ? '<div class="product-basic-price basicPrice">' + l.basicprice + "</div>" : "",
@@ -127,77 +123,69 @@
 									// KK: PS03: Klick auf das 3. Produkt aus Reco-Element
 									// KK: PS03: Klick auf das 4. Produkt aus Reco-Element
 									pushGoalAgain('click_product_' + (cellIndex + 1));
-									window.iridion.push(["segment", '32890']);
+									// window.iridion.push(["segment", '32890']);
 								});
 	
 								flickotySlider.on('dragStart', function() {
 									pushGoal('click_product_change');
 								});
-								
-								// var scrollGoalSend = false;
-								// flickotySlider.on('scroll', function() {
-								// 	if(!scrollGoalSend){
-								// 		scrollGoalSend = true;
-								// 		// KK: PS03: Klick auf Pfeil auf linken / rechten Seite - PDS - V1
-								// 		pushGoal('click_product_change');
-								// 	}
-								// });
-	
-								// WATO.elem('#kk_likethisproduct > button', (buttons) => {
-								// 	[...buttons].map((button) => {
-								// 		button.addEventListener('click', () => {
-								// 			// KK: PS03: Klick auf Pfeil auf linken / rechten Seite - PDS - V1
-								// 			pushGoal('click_product_change');
-								// 		});
-								// 	});
-								// });
-							};
-							
-							var n = $("#kk_likethisproduct"), 
-								a = n.data("accountid"), 
-								o = n.data("wid"), 
-								s = n.data("product"), 
-								r = n.data("count"),
-								l = new window.econda.recengine.Widget({
-									element: n,
-									renderer: {
-										type: "function",
-										rendererFn: i.horizontal
-									},
-									accountId: a,
-									id: o,
-									context: {
-										products: [{
-											id: s
-										}]
-									},
-									chunkSize: r,
-									empty: function(e) {
-										this._onSuccessfulResponse(e)
-									}
+							}else{
+								WATO.qs('#kk_likethis').style.display = "none";
+							}
+						};
+						
+						var n = $("#kk_likethisproduct"), 
+							a = n.data("accountid"), 
+							o = n.data("wid"), 
+							s = n.data("product"), 
+							r = n.data("count"),
+							l = new window.econda.recengine.Widget({
+								element: n,
+								renderer: {
+									type: "function",
+									rendererFn: i.horizontal
+								},
+								accountId: a,
+								id: o,
+								context: {
+									products: [{
+										id: s
+									}]
+								},
+								chunkSize: r,
+								empty: function(e) {
+									this._onSuccessfulResponse(e)
+								}
+							});
+
+						l.render();
+
+						WATO.elem('#kk_likethisproduct .flickity-prev-next-button.previous', function(prevBtn){
+							if(prevBtn){
+								prevBtn[0].addEventListener('click', function(){
+									pushGoal('click_product_change');
 								});
-	
-							l.render();
-	
-							WATO.elem('#kk_likethisproduct .flickity-prev-next-button.previous', function(prevBtn){
-								if(prevBtn){
-									prevBtn[0].addEventListener('click', function(){
-										pushGoal('click_product_change');
-									});
-								}
-							});
-							WATO.elem('#kk_likethisproduct .flickity-prev-next-button.next', function(nextBtn){
-								if(nextBtn){
-									nextBtn[0].addEventListener('click', function(){
-										pushGoal('click_product_change');
-									});
-								}
-							});
-						}
-					});
-				}
+							}
+						});
+						WATO.elem('#kk_likethisproduct .flickity-prev-next-button.next', function(nextBtn){
+							if(nextBtn){
+								nextBtn[0].addEventListener('click', function(){
+									pushGoal('click_product_change');
+								});
+							}
+						});
+					}
+				});
 			}
 		});
+
+		WATO.ajaxCallback("/cart/add", function(){
+			pushGoal('add_recoprod_tocart');
+		});
+		
+
+
+
 	}
 
 })(new window.WATO(), window);
