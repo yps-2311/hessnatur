@@ -1,0 +1,131 @@
+/* IMPORT VAR LESS FILE */
+@import "vars.less";
+
+// DEFINE GLOBAL CSS
+// Beispiel für die Verwendung der Variable base-url
+// background: url('@{base-url}sprite.png') no-repeat 0 0;
+
+
+
+.kk_ab26_1 {
+    
+    // Teil 1
+    [data-componentid="CrossSellingEconda"] {
+        .recommendation-headline {
+            margin-top: 0 !important;
+        }
+
+        .h-xxLargeOffset-bottom-outer.h-xxLargeOffset-bottom-outer.h-xxLargeOffset-bottom-outer {
+            margin-bottom: 40px !important;
+        }
+    }
+    .kk_sp17 {
+        [data-componentid="CrossSellingEconda"] {
+            .recommendation-headline {
+                margin: 0 !important;
+            }
+        }
+    }
+    .js-productSliderWrapper {
+        padding: 0;
+    }
+    .js-productSliderWrapper .recommendation-headline__text {
+        padding: 0 14px;
+    }
+
+    .js-product-references-wrapper {
+        margin-top: 40px;
+    }
+
+
+    // Teil 2
+
+    .kk_quali + .small-12.columns.js-product-reference {
+        // margin-top: -70px;
+        margin-top: 0;
+        display: block !important;
+        .desc-price {
+            display: flex;
+            .price.full {
+                order: -1;
+            }
+            .price:nth-child(2) {
+                // color: #e53e3e;
+                // margin: 0 3px 0 0 !important;
+                order: -4;
+            }
+            .price.special {
+                order: -3;
+                margin-right: 10px;
+            }
+            .price:last-child {
+                order: -2;
+            }
+        }
+    }
+    
+    #kk_recobottom {
+        .productitem {
+            padding: 0 0 0 24px;
+            width: 43%;
+            > a {
+                display: block;
+            }
+        }
+        
+    }
+    
+    [data-componentid="CrossSelling"] + [data-componentid="CrossSellingEconda"] {
+        padding: 0;
+        margin-top: 50px;
+    }
+
+    .js-productSliderWrapper {
+        .recommendation-headline.h4 {
+            margin: 30px 0 0 !important;
+            padding: 0 0 0 24px;
+            font-size: 2.5rem;
+            letter-spacing: .03em;
+            text-transform: uppercase;
+            font-family: 'Roboto Condensed Bold','Roboto Condensed',Helvetica,Arial,sans-serif;
+            font-style: normal;
+        }
+        > .column:first-child {
+            padding: 0;
+        }
+    }
+    #kk_likethisproduct .productitem {
+        padding: 0 0 0 24px;
+
+        .desc-price {
+            display: flex;
+            .price {
+                margin-right: 3px;
+                &.full {
+                    margin-right: 10px;
+                }
+                &.show + .show {
+                    color: #e53e3e;
+                }
+            }
+            .price.full {
+                order: -1;
+            }
+            .price:nth-child(2) {
+                order: -4;
+            }
+            .price.special {
+                order: -3;
+                margin-right: 10px;
+            }
+            .price:last-child {
+                order: -2;
+            }
+        }
+    }
+
+    .js-jump-references {
+        display: none !important;
+    }
+}
+
