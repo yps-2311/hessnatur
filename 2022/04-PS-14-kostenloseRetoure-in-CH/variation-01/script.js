@@ -34,7 +34,7 @@
     var boxContent =    '<div class="kk_main_text hn-headline">kostenlose Rücksendung</div>' +
                         '<div class="kk_sub_text hn-text-block"><div>Bei uns kaufen Sie <b>ohne Risiko</b>. Falls Ihnen etwas nicht gefällt, nutzen Sie einfach unsere <b>kostenlose Rücksendung</b>.**</div></div>';
 
-    var actionbar_additional_content = "KOSTENLOSE RÜCKSENDUNG** & ";
+    var actionbar_additional_content = "KOSTENLOSE RÜCKSENDUNG** +++ ";
     var actionbar_flyout_content = '**Gilt für Bestellungen zwischen dem 06.04. und 16.05.2022. Gilt nicht für Matratzen, Kissen, Bettdecken, Unterbetten, Lattenroste, Teppiche, Gardinen, Poufs und Baby-Bettwaren.';
 
 
