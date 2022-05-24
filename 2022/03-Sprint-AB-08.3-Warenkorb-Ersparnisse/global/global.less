@@ -1,0 +1,800 @@
+/* IMPORT VAR LESS FILE */
+// @import "vars.less";
+
+
+#kk_cart_hint {
+    background: #D6DEE4;
+    padding: 14px 14px 14px 52px; 
+    margin: 10px 0 42px;
+
+    font-weight: 300;
+    font-size: 16px;
+
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAAmVBMVEUAAAA5OTk7Ozs6Ojo6Ojo5OTk/Pz9NTU1UVFQ5OTk5OTk9PT05OTk6Ojo/Pz85OTk5OTk5OTk6Ojo6Ojo6Ojo6Ojo6Ojo7Ozs6Ojo+Pj45OTk5OTk5OTk6Ojo6Ojo6Ojo6Ojo6Ojo8PDw8PDw7Ozs9PT1FRUU5OTk5OTk5OTk5OTk6Ojo7Ozs7Ozs5OTk6Ojo6Ojo5OTk5OTl+/UPIAAAAMnRSTlMA4H6j+vYNCATWzRvpghfyxpeRtJx1aD46FO7l211Xh25JNC8mIgveu6+pY1FNQyvCgeuX0VYAAAH9SURBVDjLjZTZlqowEAAzyioogqiouI77bv3/x13COHNDQKVeyGnqNJ1OB1HGHnnrTcdyxCc6p57JE7e9eqcuuxSZNLYv1NX+mbEZhWG4D5D4A6eq0piMIEr+ct0GLTLc73KxsoJ0oH112JMJzpr7/QVEtigxnACNQmgzhl0iqhgdNNtyIfXEC9qAUkkPXNW1rmvVDiH42+UCxqo7HEOo2kdInWee7N1MfZeSsVTbmm1/8bOcw1F1t0j6augCviUXnonZESo7KV8KoR605bMPTVHgGpRCN5jIZxdWem8vpSNuQZKdM7TEZ/owF+IEUXFKombGUJM9cIWIYabnoOJrE3DkPteF6AzJly53wZKV6xPYrJKzoCd8DD3eqJLbsgKjpjyHm5jUlCPY5IXXkZswEgcY1pHvsJXpFzVk28TM29qsIV+hl42+ydj+LM9h8DOqp4+y7YO8eSdtEJzlEfDPhQsxgO7vBVsW46XpcNLfqzOFiaVNncxdPOv7/1sQKz+N/uPRzlC6nxiQPNfDbD0Vrxnt1PYueGd3XGjZhR+U8cr2Mtf31N3ugdiqcs8+BEkh5ISyWddyuUcZv+nhgQF0p44aW8UmcB+JEkkr7268WOWb2czmeSBoOKKKWUqOYZqm8VyGHfECZ3oIUHAfa/EOexkdujtz7O7j/kZ/+Q+j+VOyfQrvMgAAAABJRU5ErkJggg==');
+    background-size: 22px;
+    background-repeat: no-repeat;
+    background-position: 14px;
+}
+
+.kk_price {
+    flex-flow: row;
+
+    .strikeValue {
+        margin-left: -5px;
+    }
+}
+
+.column.shrink.price.strikeValue.h-no-padding-left.h-xsmallOffset-bottom-inner.h-smallOffset-left-outer {
+    color: #393939;
+}
+
+
+.kk_save {
+    color: #FFFFFF;
+    background: #9EB686;
+    padding: 10px;
+    text-align: center;
+    margin-top: 20px;
+    position: relative;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+
+    &:after {
+        content: "";
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 0 14px 14px 14px;
+        border-color: transparent transparent #9EB686 transparent;
+        position: absolute;
+        right: 20px;
+        top: -14px;
+    }
+}
+
+.kk_sums {
+    display: inline;
+    padding-right: 0;
+}
+
+#kk_upsell_wrapper {
+    margin-top: -16px;
+    > .column{
+        margin-bottom: 0px;
+        position: relative; 
+    }
+}
+
+#kk_upsell_inner {
+    margin: 0;
+    flex-direction: column;
+    background-color: #E3E2E0;
+}
+
+#kk_upsell_inner::before {
+    content: "";
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0px 18px 18px;
+    border-color: transparent transparent #E3E2E0;
+    position: absolute;
+    right: 80px;
+    top: -18px;
+}
+
+#kk_upsell_left {
+    text-align: center;
+
+    p:first-child {
+        font-family: "Roboto Condensed Bold",Helvetica,Arial,"Archer A",sans-serif;
+        font-size: 26px;
+        text-transform: uppercase;
+        margin-top: 21px;
+        margin-bottom: 14px;
+        line-height: 30px;
+        color: #393939;
+    }
+}
+
+.kk_seperation_line {
+    hr {
+        margin: 0;
+    }
+}
+
+#kk_upsell_right {
+    display: flex;
+    justify-content: center;
+    margin-top: 26px;
+    margin-left: 32px;
+    margin-bottom: 24px;
+    margin-right: 39px;
+
+
+    .kk_img_wrapper {
+        margin-right: 25px;
+        margin-left: 30px;
+        flex-shrink: 0;
+        align-items: center;
+        display: flex;
+    }
+
+    .kk_upsell_column {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .kk_product_name a {
+        margin-bottom:15px;
+        font-style: normal;
+        // width: 220px;
+        // min-width: 170px;
+        font-size: 20px;
+        line-height: 23px;
+        color: #393939;
+    }
+    
+    .kk_price_div {
+        flex-shrink:0;
+        margin: 0px;
+
+        div {
+            padding-left: 0px;
+            margin-bottom: 5px;
+        }
+    }
+
+    .kk_color_selection {
+        margin-bottom: 15px;
+
+        p {
+            display: flex;
+            flex-direction: row;
+        }
+        ul {
+            margin-top: 3px;
+
+            li a img{
+                border: 2px solid #fff;
+            }
+        }
+        #kk_colorname {
+            margin-left: 3px;
+        }
+    }
+
+    .kk_size_selection {
+        margin-bottom: 15px;
+        p {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    .kk_addToCartDiv {
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+}
+
+.kk_upsell_row {
+    width: 100%;
+    margin-top: 4px;
+
+    > :first-child {
+        float: left;
+        min-width: 170px;
+    }
+    > :nth-child(2) {
+        float: left;
+        margin-left: 30px;
+    }
+    > :last-child {
+        float: right;
+    }
+}
+
+.kk_pb_column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    margin: 0 10px 17px;
+    padding: 0 10px 17px;
+    background-color: #FFFCFC;
+
+    > .payback__form__container {
+        display: flex;
+        align-items: center;
+
+        margin-top: 17px;
+        // margin-left: 13px;
+        margin-left: 2px;
+        margin-bottom: 0px;
+
+
+    
+        .payback__form__text {
+            order: 2;
+            margin-left: 10px;
+            font-weight: 700;
+            
+            strong {
+                font-weight: 400;
+            }
+        }
+    
+        .payback__form__logo {
+            order: 1;
+            margin-left: 9px;
+        }  
+    
+    }
+
+    #paybackCardNumber {
+        margin-bottom: 33px;
+    }
+
+    > .payback__form__container:before {
+        content: "";
+        display: block;
+        
+        width: 20px;
+        height: 20px;
+        float: left;
+        margin-right: 7px;
+        background: url("https://media.hessnatur.com/kk/2022/Sprint%20AB%2008.3%20Warenkorb%20Ersparnisse/Right-small-bold.svg") no-repeat;
+        transform: rotate(-90deg);
+    }
+    > .payback__form__container.kk-extended:before{
+        transform: rotate(0deg);
+    }
+}
+
+
+#js-payback-form-container {
+    display: flex;
+    margin-left: 36px;
+}
+
+#paybackCardForm {
+    order: 2;
+    flex: 1;
+}
+
+.payback__form__info.payback__form__info {
+    order: 1;
+    flex: 1;
+    font-size: 12px;
+    margin-bottom: 0px;
+    margin-top: 9px;
+}
+
+
+
+#paybackCardFormButton {
+    font-family: 'Roboto Condensed';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 25px;
+    text-decoration-line: underline;
+    color: #393939;
+    text-transform: uppercase;
+}
+
+#kk_sizes {
+    width: auto;
+    margin: 3px 0;
+}
+
+#kk_addToCartButton {
+    width: 160px;
+    height: 40px;
+    background: #393939;
+    border-radius: 2px;
+
+    span {
+        font-style: normal;
+        font-size: 14px;
+        text-align: center;
+        text-transform: uppercase;
+        color: #FFFFFF;
+        margin-left: 20px;
+    }
+    img {
+        //margin-right: 10px;
+        position: absolute;
+        margin-top: 1px;
+
+    }
+}
+
+#kk_upsell_img {
+    height: 146px;
+}
+
+#kk_voucher {
+    margin-top: 20px;
+    background-color: #F5F5F5;
+
+    > :first-child {
+        margin-bottom: 13px;
+    }
+}
+
+// #kk_voucher + .row.h-xsmallOffset-bottom-outer {
+
+.kk_ordervalue {
+    display: flex;
+    justify-content: space-between;
+
+    :first-child {
+        font-family: 'Roboto Condensed';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 21px;
+        text-transform: uppercase;
+        color: #000000;
+    }
+    .price {
+        color: #000000 !important;
+        font-size: 18px;
+        line-height: 21px;
+    }
+
+}
+
+.kk_final_price_container {
+
+    hr {
+        display: none;
+    }
+
+    .text-right.h-text-muted {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 14px;
+        text-align: right;
+        color: #393939;
+    }
+
+    :last-child {
+        .column.small-6.medium-12.text-right {
+            display: flex;
+            justify-content: space-between;
+
+            :first-child{   // Gesamtsumme
+                font-family: 'Roboto Condensed';
+                font-style: normal;
+                font-weight: 700;
+                font-size: 18px;
+                line-height: 21px;
+                text-transform: uppercase;
+                color: #000000;
+            }
+            .discountPrice {
+                color: #000000;
+                font-size: 18px;
+                line-height: 21px;
+            }
+            .kk_sums {
+                display: none;
+            }
+        }
+    }
+}
+
+#kk_voucher .h-xsmallOffset-top-outer > #hessnaturVoucherForm {
+    margin-top: 25px;
+    & + .kk_save {
+        margin-top: 20px;
+    }
+    > .coupon-infos > div:last-child {
+        display: none;
+    }
+
+}
+
+#kk_voucher #hessnaturVoucherForm {
+    margin-top: 16px;
+
+    > :first-child {
+        >:first-child {
+            margin-left: 20px;
+            display: none;
+        }
+        > :last-child {
+            margin: auto;
+            margin-right: 20px;
+
+            .row.align-middle {
+                justify-content: flex-end;
+
+                
+                > :first-child {
+                    position: absolute;
+                    // margin-right: 19px;
+                    margin-right: 12px;
+                }
+
+                > :last-child {     
+                    margin: 0;
+                    max-width: 100%;
+                    // flex: 0 0 80%;
+                    flex: 0 0 100%;
+
+                    label {
+                        margin-right: -70px;
+
+                        #item__voucherno {
+                            width: 100%;
+                            max-width: unset;
+                        }
+                    }
+                    button {
+                        margin-left: -30px;
+                    }
+                }
+            }
+            
+        }
+
+    }
+}
+
+.kk_ordervalue_container, 
+.kk_shipping_info_container,
+.kk_payment_info_container {
+    > :last-child {
+        margin: auto;
+        margin-right: 20px;
+    }
+}
+
+.kk_shipping_info {
+    margin-top: 10px;
+    p {
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 14px;
+    }
+    hr {
+        margin-top: 3px;
+        margin-bottom: 0px;
+    }
+}
+
+.kk_payment_info {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 36px !important;
+    margin-top: 13px;
+
+    img {
+        width: 100%;
+        height: auto;
+        max-width: 621px;
+    }
+}
+
+.kk_border_container {
+    // border: 1px solid #E3E2E0;
+    //border: 1px solid #F2F2F2;
+    background-color: #F5F5F5;
+
+
+    .kk_final_price_container {
+        margin-bottom: 30px !important;
+
+
+        > :last-child {
+            margin: auto;
+            margin-right: 20px;
+
+        }
+
+        .column.shrink.price.strikeValue.h-no-padding-left.h-xsmallOffset-bottom-inner.h-smallOffset-left-outer {
+            color: #393939;
+            font-weight: 500;
+        }
+
+        .kk_save {
+            float: right;
+            padding: 9px 54px 5px;
+        }
+        .kk_save:after {
+            content: "";
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 10px 10px 10px;
+            border-color: transparent transparent #9EB686 transparent;
+            position: absolute;
+            right: 25px;
+            top: -10px;
+        }
+      
+    }
+
+    .kk_btn_redesign {
+        margin-bottom: 7px;
+        padding-bottom: 0px;
+
+        > :first-child {
+            margin-left: 20px;
+            
+            a{
+                background: #FFFFFF;
+                border: 1px solid #000000;
+                box-sizing: border-box;
+                border-radius: 3px;
+                color: #393939;
+                min-width: 277px;
+            }
+        }
+        > :last-child {
+            margin: auto;
+            margin-right: 20px;
+
+            a {
+                padding-left: 4rem;
+                padding-right: 4rem;
+            }
+        }
+    }
+
+}
+
+.kk_subtotal_styling {
+    margin-bottom: 39px !important;
+
+    > :nth-child(2){
+        > :first-child {
+            > :first-child {
+                > :first-child {
+                    font-family: 'Roboto Condensed';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 14px;
+                    line-height: 19px;
+                    text-transform: uppercase;
+                    color: #000;  
+                }
+            }
+        }
+        > :nth-child(2){
+            font-size: 12px;
+        }
+    }
+    .price.discountPrice.price.discountPrice.price.discountPrice {
+        color: #000;
+        margin-left: 75px;
+        font-size: 14px;
+    }
+    .kk_sums {
+        font-size: 14px;
+        font-weight: 500px;
+    }
+    > :last-child{
+        display: none;
+    }
+}
+
+
+.kk_active_voucher_container {
+
+    > :nth-child(2) {
+        margin: auto;
+        margin-right: 20px;
+    }
+
+    #hessnaturVoucherForm {
+        .coupon-infos {
+
+            display: flex;
+            justify-content: space-between;
+
+            > :first-child {
+                font-family: 'Roboto';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 16px;
+            }
+
+            .coupon-name {
+                font-size: 16px;
+                // display: flex;
+                align-items: center;
+                // margin-right: auto;
+                min-width: unset;
+
+                .kk_coupon_wrapper {
+                    background-color: #E3E2E0;
+                    padding: 5px 10px;
+
+                    strong {
+                        font-family: 'Roboto Condensed';
+                        font-style: normal;
+                        font-weight: 700;
+                        font-size: 16px;
+                        line-height: 19px;
+                        /* identical to box height */
+
+                        text-align: center;
+                        text-transform: uppercase;
+                    }
+
+                    img {
+                        height: 12px;
+                        display: flex;
+                        justify-content: center;
+                        margin-left: 8px;
+                    }
+                }
+            }
+            
+            .coupon-value {
+                min-width: unset;
+
+                .price {
+                    font-size: 18px;
+                }
+            }
+
+            > :last-child {
+                display: none;
+            }
+        }
+    }
+}
+
+#item__voucherno,
+#paybackCardNumber,
+.form-error {
+    width: 30vw;
+    max-width: 576px;
+    float: right;
+}
+
+.form-error {
+    width: 30vw !important; 
+}
+
+#hessnaturQuickAddForm {
+    display: none;
+}
+
+.button.success.expanded-small-only {
+    background-color: #393939;
+}
+
+.listing__table--item a > span {
+    max-width: 163px;
+}
+
+.kk_reason_wrapper {
+    // height: 130px;
+    width: 260px;
+    // width: 220px;
+    flex-shrink: 0;   
+}
+
+.kk_inner_reason_wrapper {
+    background-color: #F9F8F7;
+}
+
+.kk_reason_question {
+    padding-top: 17px;
+    // margin-top: 17px;
+    // margin-left: 34px;
+    margin-left: 7px;
+    // margin-right: 34px;
+    margin-right: 20px;
+    font-size: 15px;
+    font-family: "Roboto";
+    font-weight: 700;
+    line-height: 18px;
+
+}
+
+.kk_reason_question:before {
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin-right: 7px;
+    background: url("https://media.hessnatur.com/kk/2022/Sprint%20AB%2008.3%20Warenkorb%20Ersparnisse/Check%20green.svg") no-repeat;
+}
+
+.kk_reason_text {
+    margin-top: 6px;
+    margin-left: 34px;
+    // margin-right: 34px;
+    margin-right: 20px;
+    // margin-bottom: 17px;
+    padding-bottom: 17px;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 18px;
+}
+
+
+.kk-hidden {
+    display: none;
+}
+
+@media only screen and (max-width: 1249px) {
+
+    .kk_reason_wrapper {
+        width: 220px;
+    }
+    #kk_upsell_right {
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+}
+
+@media only screen and (max-width: 1199px) {
+
+    #kk_voucher #hessnaturVoucherForm {
+        > :first-child {
+            > :last-child {
+                .row.align-middle {
+                    > :last-child {     
+    
+                        // label {
+                        //     margin-right: -70px;
+                        // }
+                        button {
+                            margin-left: -15px;
+                        }
+                    }
+                }
+                
+            }
+    
+        }
+    }
+
+    #js-payback-form-container > #paybackCardForm {
+        // margin-right: 15px;
+    }
+
+
+    /* upsell Container Adjustments */
+    .kk_upsell_column.medium-4{
+        width: 50%;
+        max-width: none;
+    }
+    .kk_color_selection:not(.medium-4) {
+        width: 50%;
+        // margin-left: 0;
+    }
+
+    .kk_upsell_row .kk_addToCartDiv {
+        float: none;
+        clear: both;
+        height: auto !important;
+        text-align: right;
+        margin-left: calc(50% + 30px);
+        padding-top: 8px;
+    }
+
+}
