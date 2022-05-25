@@ -11,6 +11,9 @@
  (function(WATO) {
     "use strict";
 
+    // Econda
+    window.iridion.econda.push(["AB8.3", "V2"]);
+
     WATO.s8_3(2);
 
     WATO.s8_3_GOALS();
