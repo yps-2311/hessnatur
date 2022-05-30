@@ -10,74 +10,50 @@
  */
 (function(WATO) {
     "use strict";
+    console.log("v1");
 
-    /**
-     * CSS Prefix 
-     *
-    document.documentElement.classList.add('specific-experiment-class');
-    */
+    async function init (){
+        const location = window.location.pathname;
 
-    /**
-     * EXAMPLE - POLLING
-     *
-    WATO.elem(".btn-default", function(btnDefault) {
+        if(location.includes('/p/')){
+            
+            try{
 
-        if(btnDefault) {
+                let wrapper = await WATO.asyncElem('.kk_cta_uvps ul');
+                console.log("wrapper", wrapper);
+                wrapper = wrapper[0];
 
+                console.log("wrapper", wrapper);
+
+                wrapper.insertAdjacentHTML('beforeend', 
+                '<li>Kostenloser Versand ab 100€</li>'
+                );
+
+            } catch(e){
+                //push Error: Fail
+            }
+            
+        } else if(location.includes('/cart')){
+            
+            try{
+
+                let wrapper = await WATO.asyncElem('.kk_cta_uvps ul');
+                console.log("wrapper", wrapper);
+                wrapper = wrapper[0];
+
+                console.log("wrapper", wrapper);
+
+                wrapper.insertAdjacentHTML('beforeend', 
+                '<li>Kostenloser Versand ab 100€</li>'
+                );
+
+            } catch(e){
+                //push Error: Fail
+            }
+            
         }
-    });
+    }
 
-    // POLLING MIT FUNKTION
-    WATO.elem(function(){return window.numTest === 123;}, function(funcCallback) {
-
-        if(funcCallback){
-
-        }
-    });
-    */
-
-
-    /**
-     * EXAMPLE - MUTATION OBSERVER
-     * 
-     * MUSS ERST IN WATO AKTIVIERT WERDEN
-     *
-    // INIT MUTATION OBSERVER
-    WATO.initObserver(function(error){
-
-        console.log(error);
-    });
-
-    // FIND ELEMENT
-    WATO.observer('.col-md-4', function(cols){
-
-    });
-    */
-
-
-    /**
-     * DOM READY
-     *
-    WATO.ready(function() {
-
-    });
-    */
-
-    /**
-     * EXAMPLE - Event
-     *
-    // with polling
-    WATO.ev('#main-cta', 'click', function(){
-        console.log("click it");
-    });
-
-    // without polling
-    WATO.elem('#main-cta', function(elem){
-
-        WATO.ev(elem[0], 'click', function(){
-            console.log("click it");
-        });
-    });
-    */
-   
+    init();
+    //.kk_cta_uvps
 })(new window.WATO());

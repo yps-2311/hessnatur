@@ -84,7 +84,6 @@
      * 
      * @param {string} waitFor - CSS Selector des zu findenden DOM Elements.
      */
-    /*
     window.WATO.prototype.asyncElem = async function(waitFor) {
 
         return new Promise((resolve, reject) => {
@@ -98,7 +97,6 @@
             });
         });
     };
-    */
 
     /**
      * @function qs
