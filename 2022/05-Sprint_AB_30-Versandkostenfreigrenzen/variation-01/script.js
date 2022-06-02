@@ -1,5 +1,5 @@
 // load core and global js
-// @ codekit-prepend "../global/global.js";
+// @codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -96,3 +96,4 @@
     })();
 
 })(new window.WATO());
+//})(window.WATO); <- script standalone
