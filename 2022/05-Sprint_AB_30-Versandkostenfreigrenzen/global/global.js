@@ -6,12 +6,8 @@
  * @ codekit-append "pds.js"; 
  */
 
-/*
 (function(WATO){
 	"use strict";
 
-	WATO.prototype.MUSTERSPRINT = function(){
-	};
 	
 })(window.WATO);
-*/
