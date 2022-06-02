@@ -37,15 +37,14 @@
             
             try{
 
-                let wrapper = await WATO.asyncElem('.kk_cta_uvps ul');
-                console.log("wrapper", wrapper);
-                wrapper = wrapper[0];
+                let oldDeliv = await WATO.asyncElem('.column.small-12.text-right.h-text-muted.h-xsmallOffset-top-outer');
+                oldDeliv = oldDeliv[0].parentElement;// identifier war sonst irgendwie unklar
 
-                console.log("wrapper", wrapper);
+                oldDeliv.insertAdjacentHTML('afterend', 
+                '<div>Ich rede Zeug</div>'
+                )
 
-                wrapper.insertAdjacentHTML('beforeend', 
-                '<li>Kostenloser Versand ab 100€</li>'
-                );
+                console.log("oldDeliv",oldDeliv)
 
             } catch(e){
                 //push Error: Fail
