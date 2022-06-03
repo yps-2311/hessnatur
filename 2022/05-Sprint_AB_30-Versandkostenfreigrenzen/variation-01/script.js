@@ -8,6 +8,9 @@
  * @name Variation 01
  * @description
  */
+
+//window.iridion.econda.push(["AB26_1", "V3"]);
+
 (function(WATO) {
     "use strict";
     console.log("v1");
@@ -86,10 +89,11 @@
                     '</div>'
                 );
 
-                console.log("oldDeliv",oldDeliv)
+                console.log("oldDeliv",oldDeliv);
 
             } catch(e){
                 //push Error: Fail
+                window.iridion.push(['goal', "S05AB30: Error"]);
             }
             
         }
