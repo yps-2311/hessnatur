@@ -9,15 +9,11 @@
  * @description
  */
 
-//window.iridion.econda.push(["AB26_1", "V3"]);
-
 (function(WATO) {
     "use strict";
     console.log("v1");
 
     (async function init (){
-
-        const location = window.location.pathname;
 
         function insertHTML (elem, place, value) {
             if(elem){
@@ -27,11 +23,19 @@
 
         function getPriceValue (elem) {
             if(elem){
-                return parseFloat(elem.innerHTML.match(/\d+/g).join("."))
+                return parseFloat(elem.innerHTML.match(/\d+/g).join("."));
             }
         }
 
-        if(location.includes('/p/')){
+        function checkPath (url) {
+            return window.location.pathname.includes(url);
+        }
+
+        function pushError() {
+            window.iridion.push(['goal', "S05AB30: Error"]);
+        }
+
+        if(checkPath('/p/')){
             
             try{
 
@@ -41,59 +45,62 @@
                 console.log("wrapper", wrapper);
 
                 insertHTML(wrapper, 'beforeend', 
-                    '<li>Kostenloser Versand ab 100€</li>'
+                    '<li>Kostenloser Versand ab 100&euro;</li>'
                 );
 
             } catch(e){
-                //push Error: Fail
+                
+                pushError();
             }
             
-        } else if(location.includes('/cart')){
-
+        } else if(checkPath('/cart')){
             
             try{
 
                 let oldDeliv = await WATO.asyncElem('.column.small-12.text-right.h-text-muted.h-xsmallOffset-top-outer');
-                oldDeliv = oldDeliv[0].parentElement;// identifier war sonst irgendwie unklar
-
                 const currentValue = getPriceValue(WATO.qs('strong + strong.price.offset-price-left'));
 
-                //negativ
-                let redValue = `Nur noch ${ 100 - currentValue }€`;
-                let redText = "und ihre Bestellung ist versandkostenfrei";
-                let newValue = currentValue + 5.95;
+                if(currentValue){
+                    //default, Versankosten entfallen nicht
+                    let redValue = 'Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(100 - currentValue);
+                    let redText = "und ihre";
+                    let newValue = currentValue + 5.95;
 
-                //positiv
-                if(currentValue >= 100){
-                    redValue = "Gute Nachricht!";
-                    redText = "Ihre Bestellung ist versandkostenfrei";
-                    newValue = 0;
+                    oldDeliv = oldDeliv[0].parentElement;
+    
+                    //Versandkosten entfallen
+                    if(currentValue >= 100){
+                        redValue = "Gute Nachricht!";
+                        redText = "Ihre";
+                        newValue = 0;
+                    }
+    
+                    if(!WATO.qs('.kk_dBox')){
+
+                        insertHTML(oldDeliv, 'afterend', 
+                        `<div class="row align-right ${ newValue === 0 ? "kk_cW" : "" }">` +
+                            '<div class="kk_dBox">' +
+                                `<div class="kk05_svg ${ newValue === 0 ? "kk_check" : "" }"></div>` +
+                                '<div><strong>' + redValue + '</strong><br>' + redText + ' Bestellung ist versandkostenfrei</div>' +
+                            '</div>' +
+                        '</div>'
+                        );
+                    }
+    
+                    if(!WATO.qs('.kk_redP')){
+
+                        insertHTML(oldDeliv, 'beforebegin', 
+                            '<div class="kk_redP small-12 text-right h-text-muted">' +
+                                '<span>Versand (frei ab 100,00&euro;)</span>' +
+                                `<span class="price offset-price-left ${ newValue === 0 ? "kk_lt" : "" }">5,95 &euro;*</span>` +
+                            '</div>'
+                        );
+                    }
                 }
 
-
-                console.log("currentValue", currentValue);
-
-                insertHTML(oldDeliv, 'afterend', 
-                `<div class="row align-right ${ newValue === 0 ? "kk_cW" : "" }">` +
-                    '<div class="kk_dBox">' +
-                        `<div class="kk05_svg ${ newValue === 0 ? "kk_check" : "" }"></div>` +
-                        '<div><strong>' + redValue + '</strong><br>' + redText + '</div>' +
-                    '</div>' +
-                '</div>'
-                );
-
-                insertHTML(oldDeliv, 'beforebegin', 
-                    '<div class="kk_redP small-12 text-right h-text-muted">' +
-                        '<span>Versand (frei ab 100,00€)</span>' +
-                        `<span class="price offset-price-left ${ newValue === 0 ? "kk_lt" : "" }">5,95 €*</span>` +
-                    '</div>'
-                );
-
-                console.log("oldDeliv",oldDeliv);
-
             } catch(e){
-                //push Error: Fail
-                window.iridion.push(['goal', "S05AB30: Error"]);
+                
+                pushError();
             }
             
         }
