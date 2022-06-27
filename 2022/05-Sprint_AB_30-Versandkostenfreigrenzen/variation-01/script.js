@@ -45,7 +45,7 @@
                 console.log("wrapper", wrapper);
 
                 insertHTML(wrapper, 'beforeend', 
-                    '<li>Kostenloser Versand ab 100&euro;</li>'
+                    '<li>Kostenloser Versand ab 100 &euro;</li>'
                 );
 
             } catch(e){
@@ -57,10 +57,12 @@
             
             try{
 
-                let oldDeliv = await WATO.asyncElem('.column.small-12.text-right.h-text-muted.h-xsmallOffset-top-outer');
+                let oldDeliv = await WATO.asyncElem('.column.small-12.text-right.h-xsmallOffset-top-outer');
                 const currentValue = getPriceValue(WATO.qs('strong + strong.price.offset-price-left'));
 
-                if(currentValue){
+                console.log("cV",WATO.qs('.coupon-value .price.discountPrice'));//
+
+                if(currentValue && currentValue >= 70){
                     //default, Versankosten entfallen nicht
                     let redValue = 'Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(100 - currentValue);
                     let redText = "und ihre";
@@ -68,8 +70,8 @@
 
                     oldDeliv = oldDeliv[0].parentElement;
     
-                    //Versandkosten entfallen
-                    if(currentValue >= 100){
+                    //Versandkosten entfallen (+ eingelöster Promocode)
+                    if(currentValue >= 100 || WATO.qs('.coupon-value .price.discountPrice')){
                         redValue = "Gute Nachricht!";
                         redText = "Ihre";
                         newValue = 0;
@@ -91,7 +93,7 @@
 
                         insertHTML(oldDeliv, 'beforebegin', 
                             '<div class="kk_redP small-12 text-right h-text-muted">' +
-                                '<span>Versand (frei ab 100,00&euro;)</span>' +
+                                '<span>Versand (frei ab 100,00 &euro;)</span>' +
                                 `<span class="price offset-price-left ${ newValue === 0 ? "kk_lt" : "" }">5,95 &euro;*</span>` +
                             '</div>'
                         );
