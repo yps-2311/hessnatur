@@ -65,7 +65,7 @@
                 if(currentValue && currentValue >= 70){
                     //default, Versankosten entfallen nicht
                     let redValue = 'Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(100 - currentValue);
-                    let redText = "und ihre";
+                    let redText = "und Ihre";
                     let newValue = currentValue + 5.95;
 
                     oldDeliv = oldDeliv[0].parentElement;
