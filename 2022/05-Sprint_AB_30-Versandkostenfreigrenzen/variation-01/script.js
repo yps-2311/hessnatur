@@ -15,7 +15,7 @@
 
     (async function init (){
 
-        function insertHTML (elem, place, value) {
+        function insertHTML (elem, place, value){
             if(elem){
                 elem.insertAdjacentHTML(place, value);
             }
@@ -27,7 +27,7 @@
             }
         }
 
-        function checkPath (url) {
+        function checkPath (url){
             return window.location.pathname.includes(url);
         }
 
@@ -36,6 +36,19 @@
         }
 
         if(checkPath('/p/')){
+
+            WATO.ajax('de/cart/add?context=offCanvasRight', () => {
+                WATO.elem('.js-cart-total-unit-count + span', total => {
+                    if(total){
+
+                        if(parseInt(total[0].textContent.split(",")[0]) >= 100){
+                            
+                            console.log(WATO.qs('#offCanvasMiniCartWrapper .row .h-xsmallOffset-bottom-outer'));
+                            WATO.qs('#offCanvasMiniCartWrapper .row .h-xsmallOffset-bottom-outer').innerHTML = "inkl. MwSt.";
+                        }
+                    }
+                });
+            });
             
             try{
 
