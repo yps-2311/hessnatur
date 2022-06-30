@@ -32,7 +32,7 @@
         }
 
         function pushError() {
-            window.iridion.push(['goal', "S05AB30: Error"]);
+            window.iridion.push(['goal', "S05AB30_Error"]);
         }
 
         if(checkPath('/p/')){
@@ -42,7 +42,7 @@
                 WATO.elem('.js-cart-total-unit-count + span', total => {
                     if(total){
 
-                        if(parseInt(total[0].textContent.split(",")[0]) >= 100){
+                        if(total[0].textContent && parseInt(total[0].textContent.split(",")[0]) >= 100){
                             
                             console.log(WATO.qs('#offCanvasMiniCartWrapper .row .h-xsmallOffset-bottom-outer'));
                             WATO.qs('#offCanvasMiniCartWrapper .row .h-xsmallOffset-bottom-outer').innerHTML = "inkl. MwSt.";
