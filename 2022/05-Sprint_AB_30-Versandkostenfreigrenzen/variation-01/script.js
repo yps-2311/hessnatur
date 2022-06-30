@@ -3,7 +3,7 @@
 
 /**
  * @function
- * @author Max Mustermann
+ * @author Christian Knoth
  * @namespace V1
  * @name Variation 01
  * @description
@@ -37,6 +37,7 @@
 
         if(checkPath('/p/')){
 
+            //lösche Versandkosten wenn Gesmtkosten höher als 99 sind
             WATO.ajax('de/cart/add?context=offCanvasRight', () => {
                 WATO.elem('.js-cart-total-unit-count + span', total => {
                     if(total){
@@ -71,9 +72,9 @@
             try{
 
                 let oldDeliv = await WATO.asyncElem('.column.small-12.text-right.h-xsmallOffset-top-outer');
-                const currentValue = getPriceValue(WATO.qs('strong + strong.price.offset-price-left'));
+                const currentValue = getPriceValue(WATO.qsa('strong + strong.price.offset-price-left')[1]);
 
-                console.log("cV",WATO.qs('.coupon-value .price.discountPrice'));//
+                console.log("cV",WATO.qs('.coupon-value .price.discountPrice'), currentValue);//
 
                 if(currentValue && currentValue >= 70){
                     //default, Versankosten entfallen nicht
@@ -84,7 +85,7 @@
                     oldDeliv = oldDeliv[0].parentElement;
     
                     //Versandkosten entfallen (+ eingelöster Promocode)
-                    if(currentValue >= 100 || WATO.qs('.coupon-value .price.discountPrice')){
+                    if(currentValue >= 100 || WATO.qs('.coupon-value .price.discountPrice')){//TODO: Check portofrei
                         redValue = "Gute Nachricht!";
                         redText = "Ihre";
                         newValue = 0;
