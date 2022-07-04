@@ -11,8 +11,8 @@
 (function(WATO) {
     "use strict";
 
-    WATO.ps12(1);
-
     window.iridion.econda.push(["PS12", "V1"]);
+
+    WATO.ps12(1);
 
 })(new window.WATO());
