@@ -10,9 +10,15 @@
 	"use strict";
 
 
-	WATO.prototype.S0522 = (variation, cookie) => {
+	WATO.prototype.S0522 = function (props) {
+
+		var WATO = this;
+
+		const { variation, cookie } = props;
 		
-		console.log("AB30- Versandkostenfreigrenzen", variation, cookie);
+		console.log("AB30- Versandkostenfreigrenzen", variation, cookie, window.WATO);
+		console.log("WATO", WATO.qs('.test'));
+
 
 		(async function init (){
 	
@@ -36,7 +42,9 @@
 				window.iridion.push(['goal', "S05AB30_Error"]);
 			}
 	
-			if(checkPath('/p/')){
+			if(checkPath('/p/')){// vkf79hn2022 vkf99hn2022 vkf169hn2022
+
+				document.cookie = "iridionGroup=" + cookie;
 	
 				//lösche Versandkosten wenn Gesmtkosten höher als 99 sind
 				WATO.ajax('de/cart/add?context=offCanvasRight', () => {
@@ -69,8 +77,11 @@
 			} else if(checkPath('/cart')){
 				
 				try{
+
+					console.log("1");
 	
 					let oldDeliv = await WATO.asyncElem('.column.small-12.text-right.h-xsmallOffset-top-outer');
+					console.log("2");
 					const currentValue = getPriceValue(WATO.qsa('strong + strong.price.offset-price-left')[1]);
 	
 					console.log("cV",WATO.qs('.coupon-value .price.discountPrice'), currentValue);//
@@ -84,7 +95,7 @@
 						oldDeliv = oldDeliv[0].parentElement;
 		
 						//Versandkosten entfallen (+ eingelöster Promocode)
-						if(currentValue >= 100 || WATO.qs('.coupon-value .price.discountPrice')){//TODO: Check portofrei
+						if(currentValue >= 100 || WATO.qs('.coupon-value .price.discountPrice')){
 							redValue = "Gute Nachricht!";
 							redText = "Ihre";
 							newValue = 0;

@@ -12,7 +12,6 @@
 (function(WATO) {
     "use strict";
 
-    WATO.S0522("v1");
+    WATO.S0522({ variation: "v1", cookie: "vkf79hn2022" });
 
 })(new window.WATO());
-//})(window.WATO); <- script standalone
