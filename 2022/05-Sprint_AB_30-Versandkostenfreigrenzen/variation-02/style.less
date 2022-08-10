@@ -56,12 +56,19 @@
     }
 }
 
-.column.small-12.text-right.h-text-muted.h-xsmallOffset-top-outer{
+.column.small-12.text-right.h-text-muted.h-xsmallOffset-top-outer,
+.js_backstopWrapper .row .yCmsContentSlot:not(.kk_notifyOnSuccess){
     display: none;
 }
 
 .kk_lt{
     text-decoration: line-through;
+}
+
+.kk_notifyOnSuccess > div{
+
+    margin-top: 1rem;
+    margin-left: 4rem;
 }
 
 .kk_cW{
@@ -78,8 +85,12 @@
     .kk_dBox{
 
         margin-right: .76923rem;;
-        //padding-right: 2.30769rem;
-        //margin-top: 1.4rem;
+    }
+
+    .kk_notifyOnSuccess > div{
+
+        margin-top: 0;
+        margin-left: 0;
     }
 
 }
@@ -92,6 +103,3 @@
     }
 
 }
-
-
-

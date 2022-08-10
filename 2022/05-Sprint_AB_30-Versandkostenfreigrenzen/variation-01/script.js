@@ -12,6 +12,6 @@
 (function(WATO) {
     "use strict";
 
-    WATO.S0522({ variation: "v1", cookie: "vkf79hn2022" });
+    WATO.S0522({ variation: "v1", cookie: "vkf79hn2022", limit: 79 });
 
 })(new window.WATO());
