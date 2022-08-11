@@ -89,57 +89,57 @@
 			} else if(checkPath('/cart')){
 				
 				try{
-
-					console.log("1");
 	
 					let oldDeliv = await WATO.asyncElem('.column.small-12.text-right.h-xsmallOffset-top-outer');
+					oldDeliv = oldDeliv[0].parentElement;
 					const currentValue = getPriceValue(WATO.qsa('strong + strong.price.offset-price-left')[1]);
 	
-					console.log("cV",WATO.qs('.coupon-value .price.discountPrice'), currentValue);
-	
-					//if(currentValue && currentValue >= (limit - 30)){
-						//default, Versandkosten entfallen nicht
-						let redValue = 'Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(limit - currentValue);
-						let redText = "und Ihre";
-						let newValue = currentValue + 5.95;
-	
-						oldDeliv = oldDeliv[0].parentElement;
-		
-						//Versandkosten entfallen (+ eingelöster Promocode)
-						if(currentValue >= limit || WATO.qs('.coupon-value .price.discountPrice')){
-							redValue = "Gute Nachricht!";
-							redText = "Ihre";
-							newValue = 0;
+					//default, Versandkosten entfallen nicht
+					let redValue = 'Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(limit - currentValue);
+					let redText = "und Ihre";
+					let noDeliv = false;
 
-							insertHTML(WATO.qs('.js_backstopWrapper .row .yCmsContentSlot'), 'beforebegin', 
-								'<div class="kk_notifyOnSuccess yCmsContentSlot column small-12 medium-6 large-offset-1 h-text-muted">' +
-									`<div>*Versandkostenfrei: Für diese Bestellung ab einem Warenwert nach Retoure von ${ limit },00 €.</div>` + 
-								'</div>'
-							);
-						}
-		
-						if(!WATO.qs('.kk_dBox')){
-	
-							insertHTML(oldDeliv, 'afterend', 
-							`<div class="row align-right ${ newValue === 0 ? "kk_cW" : "" }">` +
-								'<div class="kk_dBox">' +
-									`<div class="kk05_svg ${ newValue === 0 ? "kk_check" : "" }"></div>` +
-									'<div><strong>' + redValue + '</strong><br>' + redText + ' Bestellung ist versandkostenfrei**</div>' +
-								'</div>' +
+					//Versandkosten entfallen (+ eingelöster Promocode)
+					if(currentValue >= limit || (WATO.qs('.price.discountPrice').innerHTML.indexOf('Portofrei') !== -1)){
+						console.log("Versandkosten entfallen", "currentValue",currentValue, "limit", limit);
+						redValue = "Gute Nachricht!";
+						redText = "Ihre";
+						noDeliv = true;
+
+						insertHTML(WATO.qs('.js_backstopWrapper .row .yCmsContentSlot'), 'beforebegin', 
+							'<div class="kk_notifyOnSuccess yCmsContentSlot column small-12 medium-6 large-offset-1 h-text-muted">' +
+								`<div>**Versandkostenfrei: Für diese Bestellung ab einem Warenwert nach Retoure von ${ limit },00 €.</div>` + 
 							'</div>'
-							);
-						}
-		
-						if(!WATO.qs('.kk_redP')){
+						);
+					}
 	
-							insertHTML(oldDeliv, 'beforebegin', 
-								'<div class="kk_redP small-12 text-right h-text-muted">' +
-									'<span>Versand (frei ab ' + limit + ' &euro;)</span>' +
-									`<span class="price offset-price-left ${ newValue === 0 ? "kk_lt" : "" }">5,95 &euro;*</span>` +
-								'</div>'
-							);
-						}
-					//}
+					if(!WATO.qs('.kk_dBox')){
+
+						insertHTML(oldDeliv, 'afterend', 
+						`<div class="row align-right${ noDeliv && " kk_cW" }">` +
+							'<div class="kk_dBox">' +
+								`<div class="kk05_svg${ noDeliv && " kk_check" }"></div>` +
+								'<div><strong>' + redValue + '</strong><br>' + redText + ` Bestellung ist versandkostenfrei${ noDeliv && "**" }</div>` +
+							'</div>' +
+						'</div>'
+						);
+					}
+	
+					if(!WATO.qs('.kk_redP')){
+
+						insertHTML(WATO.qs('.btn-deliverycosts'), 'afterend',
+							' (frei ab ' + limit + ',00 &euro;)'
+						)
+						/*
+						
+						insertHTML(oldDeliv, 'beforebegin', 
+							'<div class="kk_redP small-12 text-right h-text-muted">' +
+								'<span>Versand (frei ab ' + limit + ',00 &euro;)</span>' +
+								`<span class="price offset-price-left ${ noDeliv ? "kk_lt" : "" }">5,95 &euro;*</span>` +
+							'</div>'
+						);
+						*/
+					}
 	
 				} catch(e){
 					
