@@ -17,7 +17,6 @@
 (function(WATO){
 	"use strict";
 
-
 	WATO.prototype.S0522 = function (props) {
 
 		var WATO = this;
@@ -51,11 +50,12 @@
 	
 			if(checkPath('/p/')){// vkf79hn2022 vkf99hn2022 vkf169hn2022
 
+
 				if(document.cookie.indexOf("iridionGroup=") === -1){
 					WATO.setCookie("iridionGroup", cookie, ".hessnatur.com", true);
 				}
 	
-				//lösche Versandkosten wenn Gesmtkosten höher als 99 sind
+				//lösche Versandkosten wenn Gesamtkosten höher als 99 sind
 				WATO.ajax('de/cart/add?context=offCanvasRight', () => {
 					WATO.elem('.js-cart-total-unit-count + span', total => {
 						if(total){
@@ -82,7 +82,7 @@
 					}
 	
 				} catch(e){
-					
+					console.log("error",e);
 					pushError();
 				}
 				
@@ -124,7 +124,7 @@
 							`<div class="row align-right ${ newValue === 0 ? "kk_cW" : "" }">` +
 								'<div class="kk_dBox">' +
 									`<div class="kk05_svg ${ newValue === 0 ? "kk_check" : "" }"></div>` +
-									'<div><strong>' + redValue + '</strong><br>' + redText + ' Bestellung ist versandkostenfrei</div>' +
+									'<div><strong>' + redValue + '</strong><br>' + redText + ' Bestellung ist versandkostenfrei**</div>' +
 								'</div>' +
 							'</div>'
 							);
