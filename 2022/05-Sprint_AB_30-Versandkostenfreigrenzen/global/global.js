@@ -52,6 +52,7 @@
 
 
 				if(document.cookie.indexOf("iridionGroup=") === -1){
+					console.log("set cookie");
 					WATO.setCookie("iridionGroup", cookie, ".hessnatur.com", true);
 				}
 	
@@ -93,6 +94,7 @@
 					let oldDeliv = await WATO.asyncElem('.column.small-12.text-right.h-xsmallOffset-top-outer');
 					oldDeliv = oldDeliv[0].parentElement;
 					const currentValue = getPriceValue(WATO.qsa('strong + strong.price.offset-price-left')[1]);
+					const selectPortofrei = '.price.discountPrice';
 	
 					//default, Versandkosten entfallen nicht
 					let redValue = 'Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(limit - currentValue);
@@ -100,7 +102,7 @@
 					let noDeliv = false;
 
 					//Versandkosten entfallen (+ eingelöster Promocode)
-					if(currentValue >= limit || (WATO.qs('.price.discountPrice').innerHTML.indexOf('Portofrei') !== -1)){
+					if(currentValue >= limit || (  WATO.qs(selectPortofrei) !== null && WATO.qs(selectPortofrei).innerHTML.indexOf('Portofrei') !== -1)){
 						console.log("Versandkosten entfallen", "currentValue",currentValue, "limit", limit);
 						redValue = "Gute Nachricht!";
 						redText = "Ihre";
@@ -116,10 +118,10 @@
 					if(!WATO.qs('.kk_dBox')){
 
 						insertHTML(oldDeliv, 'afterend', 
-						`<div class="row align-right${ noDeliv && " kk_cW" }">` +
+						`<div class="row align-right${ noDeliv ? " kk_cW" : '' }">` +
 							'<div class="kk_dBox">' +
-								`<div class="kk05_svg${ noDeliv && " kk_check" }"></div>` +
-								'<div><strong>' + redValue + '</strong><br>' + redText + ` Bestellung ist versandkostenfrei${ noDeliv && "**" }</div>` +
+								`<div class="kk05_svg${ noDeliv ? " kk_check" : '' }"></div>` +
+								'<div><strong>' + redValue + '</strong><br>' + redText + ` Bestellung ist versandkostenfrei${ noDeliv ? "**" : '' }</div>` +
 							'</div>' +
 						'</div>'
 						);
