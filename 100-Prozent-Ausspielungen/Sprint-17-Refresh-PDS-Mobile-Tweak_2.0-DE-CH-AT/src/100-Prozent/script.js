@@ -36,9 +36,40 @@
             }
 
             imageAndCockpitWrapper.insertAdjacentElement('beforebegin', artNumber.parentNode);
-            imageAndCockpitWrapper.insertAdjacentElement('beforebegin', WATO.qs(".pds-cockpit__productName", cockpitWrapper).parentNode.parentNode);
+
+
+            WATO.elem(function(){
+                return WATO.qs(".pds-cockpit__productName", cockpitWrapper) && WATO.qs(".pds-cockpit__productName", cockpitWrapper).parentNode.parentNode;
+            }, function(element){
+                if(element){
+                    try {
+                        imageAndCockpitWrapper.insertAdjacentElement('beforebegin', WATO.qs(".pds-cockpit__productName", cockpitWrapper).parentNode.parentNode);
+                    } catch (error) {
+                        // console.log('Error1: ', error);
+                    }
+                }
+            });
             
-            WATO.qs(".show-for-large", cockpitWrapper).insertAdjacentElement('afterend', WATO.qs(".align-justify", cockpitWrapper));
+
+
+
+            WATO.elem(function(){
+                return WATO.qs(".show-for-large", cockpitWrapper) && WATO.qs(".align-justify", cockpitWrapper);
+            }, function(isReady){
+                if(isReady){
+                    // console.log('WATO.qs(".show-for-large", cockpitWrapper): ', WATO.qs(".show-for-large", cockpitWrapper));
+                    // console.log('WATO.qs(".align-justify", cockpitWrapper): ', WATO.qs(".align-justify", cockpitWrapper));
+                    try {
+                        WATO.qs(".show-for-large", cockpitWrapper).insertAdjacentElement('afterend', WATO.qs(".align-justify", cockpitWrapper));
+                    } catch (error) {
+                        // console.log('Error2: ', error);
+                    }
+                }
+            });
+
+
+            
+            
         }
     });
 

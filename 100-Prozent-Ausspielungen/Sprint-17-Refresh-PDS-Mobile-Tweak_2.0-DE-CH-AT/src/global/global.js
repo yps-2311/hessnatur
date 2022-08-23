@@ -228,20 +228,28 @@
                         if(farbID !== 0){
                             _self.elem(function(){
                                 // Falls noch nicht geladen
-                                return typeof window.MagicZoom !== "undefined";
+                                return typeof window.MagicZoom !== "undefined" && typeof window.MagicZoom.start !== "undefined";
 
                             }, function(){
                                 // init MagicZoom
-                                window.MagicZoom.start();
+                                try {
+                                    window.MagicZoom.start();
+                                } catch (error) {
+                                    console.log('Error: ', error);
+                                }
                             });
                         }
 
                         // Nur für Entwicklung
-                        setTimeout(function(){
-                            window.MagicZoom.start();
-                        }, 1000);
+                        // setTimeout(function(){
+                        //     try {
+                        //         window.MagicZoom.start();
+                        //     } catch (error) {
+                        //         console.log('Error: ', error);
+                        //     }
+                        // }, 2000);
                     } catch (error) {
-                        _self.goalPush("wa_setup_monitoring");
+                        // _self.goalPush("wa_setup_monitoring");
                         // console.log('Error: ', error);
                     }
                     
