@@ -412,10 +412,23 @@ WATO.exclude(1023, function () {
 		// 	}
 		// }
 
-	
+
+		// MK: 19.08.2022 Bugfix Teaser und HTML-Struktur gegen Slider ausgetauscht
+		// WATO.elem(".lpmHeroSlider", function (headline) {
 		WATO.elem(".lpmHero", function (headline) {
 	
 			if (headline) {
+
+				// Sicherstellen, dass sowohl alte wie auch neue Implmentierung funktioniert
+				let placeRecom = headline[0],
+					placePos = "afterend";
+
+				if(WATO.qs(".lpmHeroSlider")){
+
+					placeRecom = WATO.qs(".lpmSeparator:last-of-type",WATO.qs(".lpmHeroSlider").parentNode);
+					placePos = "beforebegin";
+				}
+
 				// var ref = "";
 				// ref = ref.concat(DOMAIN, CATEGORY_AFFINITY,  "/c/", CATEGORY_AFFINITY);
 
@@ -439,7 +452,7 @@ WATO.exclude(1023, function () {
 				// 	'</div>'	
 				// );
 
-				headline[0].insertAdjacentHTML("afterend",
+				placeRecom.insertAdjacentHTML(placePos,
 					'<div class="lpmSeparator">&nbsp;</div>'+
 					'<div id="kk_insertion" class="small-12 columns js-product-reference">' +
 						'<div class="small-12 columns">'+
@@ -559,9 +572,9 @@ WATO.exclude(1023, function () {
 				if(alreadyInitialized){
 					return;
 				} else {
-					alreadyInitialized=true
+					alreadyInitialized = true;
 				}
-	
+				
 				var itemsMarkup = insertTendencies(JSON.parse(rawData.response).items);
 
 				WATO.elem(function(){
