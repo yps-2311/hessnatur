@@ -38,6 +38,7 @@
 				if(elem){
 					return parseFloat(elem.innerHTML.match(/\d+/g).join("."));
 				}
+				else return undefined;
 			}
 	
 			function checkPath (url){
@@ -49,7 +50,6 @@
 			}
 	
 			if(checkPath('/p/')){// vkf79hn2022 vkf99hn2022 vkf169hn2022
-
 
 				if(document.cookie.indexOf("iridionGroup=") === -1){
 					console.log("set cookie");
@@ -63,7 +63,6 @@
 	
 							if(total[0].textContent && parseInt(total[0].textContent.split(",")[0]) >= limit){
 								
-								console.log(WATO.qs('#offCanvasMiniCartWrapper .row .h-xsmallOffset-bottom-outer'));
 								WATO.qs('#offCanvasMiniCartWrapper .row .h-xsmallOffset-bottom-outer').innerHTML = "inkl. MwSt.";
 							}
 						}
@@ -93,26 +92,27 @@
 	
 					let oldDeliv = await WATO.asyncElem('.column.small-12.text-right.h-xsmallOffset-top-outer');
 					oldDeliv = oldDeliv[0].parentElement;
-					const currentValue = getPriceValue(WATO.qsa('strong + strong.price.offset-price-left')[1]);
-					const selectPortofrei = '.price.discountPrice';
-	
-					//default, Versandkosten entfallen nicht
-					let redValue = 'Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(limit - currentValue);
-					let redText = "und Ihre";
-					let noDeliv = false;
 
+					const selectPortofrei = '.price.discountPrice';
+					const currentValue = getPriceValue(WATO.qs('.cart-promotions-potential b'));
+
+					let redValue,redText,noDeliv;
+
+					console.log("currentValue", currentValue);
+					//default, Versandkosten entfallen nicht
+					if(currentValue && !( WATO.qs(selectPortofrei) !== null && WATO.qs(selectPortofrei).innerHTML.indexOf('Portofrei') !== -1)){
+						console.log("Versandkosten entfallen nicht");
+						redValue = 'Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(currentValue);
+						redText = "und Ihre";
+						noDeliv = false;
+					}
+	
 					//Versandkosten entfallen (+ eingelöster Promocode)
-					if(currentValue >= limit || (  WATO.qs(selectPortofrei) !== null && WATO.qs(selectPortofrei).innerHTML.indexOf('Portofrei') !== -1)){
-						console.log("Versandkosten entfallen", "currentValue",currentValue, "limit", limit);
+					else {
+						console.log("Versandkosten entfallen");
 						redValue = "Gute Nachricht!";
 						redText = "Ihre";
 						noDeliv = true;
-
-						insertHTML(WATO.qs('.js_backstopWrapper .row .yCmsContentSlot'), 'beforebegin', 
-							'<div class="kk_notifyOnSuccess yCmsContentSlot column small-12 medium-6 large-offset-1 h-text-muted">' +
-								`<div>**Versandkostenfrei: Für diese Bestellung ab einem Warenwert nach Retoure von ${ limit },00 €.</div>` + 
-							'</div>'
-						);
 					}
 	
 					if(!WATO.qs('.kk_dBox')){
@@ -126,12 +126,18 @@
 						'</div>'
 						);
 					}
+
+					insertHTML(WATO.qs('.js_backstopWrapper .row .yCmsContentSlot'), 'beforebegin', 
+						'<div class="kk_notifyOnSuccess yCmsContentSlot column small-12 medium-6 large-offset-1 h-text-muted">' +
+							`<div>**Gilt für diese Bestellung ab einem Warenwert von ${ limit },00 Euro (abzüglich Versandkosten, Rabatten und Retouren).</div>` + 
+						'</div>'
+					);
 	
 					if(!WATO.qs('.kk_redP')){
 
 						insertHTML(WATO.qs('.btn-deliverycosts'), 'afterend',
 							' (frei ab ' + limit + ',00 &euro;)'
-						)
+						);
 						/*
 						
 						insertHTML(oldDeliv, 'beforebegin', 
