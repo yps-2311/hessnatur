@@ -38,7 +38,7 @@
 				if(elem){
 					return parseFloat(elem.innerHTML.match(/\d+/g).join("."));
 				}
-				else return undefined;
+				else return false;
 			}
 	
 			function checkPath (url){
@@ -93,14 +93,12 @@
 					let oldDeliv = await WATO.asyncElem('.column.small-12.text-right.h-xsmallOffset-top-outer');
 					oldDeliv = oldDeliv[0].parentElement;
 
-					const selectPortofrei = '.price.discountPrice';
+					const selectPortofrei = WATO.qs('.price.discountPrice');
 					const currentValue = getPriceValue(WATO.qs('.cart-promotions-potential b'));
-
 					let redValue,redText,noDeliv;
 
-					console.log("currentValue", currentValue);
 					//default, Versandkosten entfallen nicht
-					if(currentValue && !( WATO.qs(selectPortofrei) !== null && WATO.qs(selectPortofrei).innerHTML.indexOf('Portofrei') !== -1)){
+					if(currentValue && !( selectPortofrei && selectPortofrei.innerHTML.indexOf('Portofrei') !== -1)){
 						console.log("Versandkosten entfallen nicht");
 						redValue = 'Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(currentValue);
 						redText = "und Ihre";
@@ -121,14 +119,16 @@
 						`<div class="row align-right${ noDeliv ? " kk_cW" : '' }">` +
 							'<div class="kk_dBox">' +
 								`<div class="kk05_svg${ noDeliv ? " kk_check" : '' }"></div>` +
-								'<div><strong>' + redValue + '</strong><br>' + redText + ` Bestellung ist versandkostenfrei${ noDeliv ? "**" : '' }</div>` +
+								`<div><strong>${ redValue }</strong><br>${ redText } Bestellung ist versandkostenfrei${ noDeliv ? "**" : '' }</div>` +
 							'</div>' +
 						'</div>'
 						);
 					}
 
-					insertHTML(WATO.qs('.js_backstopWrapper .row .yCmsContentSlot'), 'beforebegin', 
-						'<div class="kk_notifyOnSuccess yCmsContentSlot column small-12 medium-6 large-offset-1 h-text-muted">' +
+					const cliff = WATO.qs('.js_backstopWrapper .row.h-xsmallOffset-bottom-outer .h-mediumOffset-bottom-outer');
+					cliff.classList.add('kk_d-none');
+					insertHTML(cliff, 'afterend', 
+						'<div class="kk_notifyOnSuccess column small-12 medium-6 large-5 large-offset-1 h-mediumOffset-bottom-outer h-text-muted">' +
 							`<div>**Gilt für diese Bestellung ab einem Warenwert von ${ limit },00 Euro (abzüglich Versandkosten, Rabatten und Retouren).</div>` + 
 						'</div>'
 					);
@@ -138,15 +138,6 @@
 						insertHTML(WATO.qs('.btn-deliverycosts'), 'afterend',
 							' (frei ab ' + limit + ',00 &euro;)'
 						);
-						/*
-						
-						insertHTML(oldDeliv, 'beforebegin', 
-							'<div class="kk_redP small-12 text-right h-text-muted">' +
-								'<span>Versand (frei ab ' + limit + ',00 &euro;)</span>' +
-								`<span class="price offset-price-left ${ noDeliv ? "kk_lt" : "" }">5,95 &euro;*</span>` +
-							'</div>'
-						);
-						*/
 					}
 	
 				} catch(e){
