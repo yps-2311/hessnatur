@@ -45,8 +45,8 @@
 				return window.location.pathname.includes(url);
 			}
 	
-			function pushError() {
-				window.iridion.push(['goal', "S05AB30_Error"]);
+			function pushGoal(value) {
+				if(value) window.iridion.push(['goal', "S05AB30_" + value]);
 			}
 	
 			if(checkPath('/p/')){// vkf79hn2022 vkf99hn2022 vkf169hn2022
@@ -82,8 +82,7 @@
 					}
 	
 				} catch(e){
-					console.log("error",e);
-					pushError();
+					pushGoal("error");
 				}
 				
 			} else if(checkPath('/cart')){
@@ -95,12 +94,17 @@
 
 					const selectPortofrei = WATO.qs('.price.discountPrice');
 					const currentValue = getPriceValue(WATO.qs('.cart-promotions-potential b'));
+					//.coupon-name
 					let redValue,redText,noDeliv;
+
+					if(selectPortofrei){
+						pushGoal("redeemedCoupon");
+					}
 
 					//default, Versandkosten entfallen nicht
 					if(currentValue && !( selectPortofrei && selectPortofrei.innerHTML.indexOf('Portofrei') !== -1)){
 						console.log("Versandkosten entfallen nicht");
-						redValue = 'Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(currentValue);
+						redValue = '**Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(currentValue);
 						redText = "und Ihre";
 						noDeliv = false;
 					}
@@ -141,8 +145,7 @@
 					}
 	
 				} catch(e){
-					
-					pushError();
+					pushGoal("error");
 				}
 				
 			}
