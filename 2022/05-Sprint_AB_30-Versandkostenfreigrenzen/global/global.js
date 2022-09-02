@@ -94,7 +94,7 @@
 
 					const selectPortofrei = WATO.qs('.price.discountPrice');
 					const currentValue = getPriceValue(WATO.qs('.cart-promotions-potential b'));
-					//.coupon-name
+					
 					let redValue,redText,noDeliv;
 
 					if(selectPortofrei){
