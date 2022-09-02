@@ -104,7 +104,7 @@
 					//default, Versandkosten entfallen nicht
 					if(currentValue && !( selectPortofrei && selectPortofrei.innerHTML.indexOf('Portofrei') !== -1)){
 						console.log("Versandkosten entfallen nicht");
-						redValue = '**Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(currentValue);
+						redValue = 'Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(currentValue);
 						redText = "und Ihre";
 						noDeliv = false;
 					}
@@ -123,7 +123,7 @@
 						`<div class="row align-right${ noDeliv ? " kk_cW" : '' }">` +
 							'<div class="kk_dBox">' +
 								`<div class="kk05_svg${ noDeliv ? " kk_check" : '' }"></div>` +
-								`<div><strong>${ redValue }</strong><br>${ redText } Bestellung ist versandkostenfrei${ noDeliv ? "**" : '' }</div>` +
+								`<div><strong>${ redValue }</strong><br>${ redText } Bestellung ist versandkostenfrei**</div>` +
 							'</div>' +
 						'</div>'
 						);
