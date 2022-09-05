@@ -84,21 +84,20 @@
      * 
      * @param {string} waitFor - CSS Selector des zu findenden DOM Elements.
      */
-    /*
     window.WATO.prototype.asyncElem = async function(waitFor) {
 
         return new Promise((resolve, reject) => {
 
             this.elem(waitFor, (results) => {
                 if(!results){
-                    reject();
+                    //reject();
+                    resolve(false);
                 }
 
                 resolve(results);
             });
         });
     };
-    */
 
     /**
      * @function qs
@@ -342,7 +341,7 @@
      * @param {string} url -
      * @param {function} callback -
      */
-    /*
+    
     window.WATO.prototype.ajax = function(url, callback) {
 
         var request = XMLHttpRequest.prototype.open;
@@ -366,7 +365,7 @@
             request.call(this, method, uri, async, user, pass);
         };
     };
-    */
+    
 
     /**
      * @function getCookie
@@ -404,7 +403,6 @@
      * @param {string} domain - Domain like .exaple.com
      * @param {Boolean} session - true = session cookie, false = permanent cookie
      */
-    /*
 	window.WATO.prototype.setCookie = function(name, value, domain, session){
 		
 		var exdate = new Date();
@@ -413,7 +411,6 @@
 		
 		document.cookie = name + "=" + encodeURIComponent(value) + ";" + (!session ? "expires=" + exdate.toUTCString() + ";" : "") + "domain=" + domain + ";path=/";
 	};
-	*/
 
     /**
      * @function removeCookie

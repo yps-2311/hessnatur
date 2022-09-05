@@ -4,14 +4,14 @@
 /**
  * @function
  * @author Christian Knoth
- * @namespace V1
- * @name Variation 01
+ * @namespace V2
+ * @name Variation 02
  * @description
  */
 
 (function(WATO) {
     "use strict";
 
-    WATO.S0522({ variation: "v1", cookie: "vkf79hn2022", limit: 79 });
+    WATO.S0522({ variation: "v2", cookie: "vkf99hn2022", limit: 99 });
 
 })(new window.WATO());
