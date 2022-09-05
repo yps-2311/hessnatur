@@ -133,7 +133,7 @@
 					cliff.classList.add('kk_d-none');
 					insertHTML(cliff, 'afterend', 
 						'<div class="kk_notifyOnSuccess column small-12 medium-6 large-5 large-offset-1 h-mediumOffset-bottom-outer h-text-muted">' +
-							`<div>**Gilt für diese Bestellung ab einem Warenwert von ${ limit },00 Euro (abzüglich Versandkosten, Rabatte und Retouren).</div>` + 
+							`<div>**Gilt für diese Bestellung ab einem Warenwert von ${ limit },00 Euro (abzüglich Versandkosten, Rabatt und Retouren).</div>` + 
 						'</div>'
 					);
 	
