@@ -22,9 +22,6 @@
 		var WATO = this;
 
 		const { variation, cookie, limit } = props;
-		
-		console.log("AB30 - Versandkostenfreigrenzen", variation, cookie, limit);
-
 
 		(async function init (){
 	
@@ -52,7 +49,7 @@
 			if(checkPath('/p/')){// vkf79hn2022 vkf99hn2022 vkf169hn2022
 
 				if(document.cookie.indexOf("iridionGroup=") === -1){
-					console.log("set cookie");
+					
 					WATO.setCookie("iridionGroup", cookie, ".hessnatur.com", true);
 				}
 	
@@ -75,7 +72,7 @@
 					wrapper = wrapper[0];
 	
 					if(!WATO.qs('.kk_noDeliv')){
-						console.log("do");
+
 						insertHTML(wrapper, 'beforeend',
 							'<li class="kk_noDeliv">Kostenloser Versand ab ' + limit + ' &euro;</li>'
 						);
@@ -103,7 +100,7 @@
 
 					//default, Versandkosten entfallen nicht
 					if(currentValue && !( selectPortofrei && selectPortofrei.innerHTML.indexOf('Portofrei') !== -1)){
-						console.log("Versandkosten entfallen nicht");
+						
 						redValue = 'Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(currentValue);
 						redText = "und Ihre";
 						noDeliv = false;
@@ -111,7 +108,7 @@
 	
 					//Versandkosten entfallen (+ eingelöster Promocode)
 					else {
-						console.log("Versandkosten entfallen");
+
 						redValue = "Gute Nachricht!";
 						redText = "Ihre";
 						noDeliv = true;
