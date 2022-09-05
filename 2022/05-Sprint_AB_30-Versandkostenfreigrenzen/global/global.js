@@ -65,34 +65,31 @@
 						}
 					});
 				});
-				
-				try{
 	
-					let wrapper = await WATO.asyncElem('.kk_cta_uvps ul');
+				let wrapper = await WATO.asyncElem('.kk_cta_uvps ul');
+				if(wrapper && !WATO.qs('.kk_noDeliv')){
+
 					wrapper = wrapper[0];
 	
-					if(!WATO.qs('.kk_noDeliv')){
-
-						insertHTML(wrapper, 'beforeend',
-							'<li class="kk_noDeliv">Kostenloser Versand ab ' + limit + ' &euro;</li>'
-						);
-					}
-	
-				} catch(e){
-					pushGoal("error");
+					insertHTML(wrapper, 'beforeend',
+						'<li class="kk_noDeliv">Kostenloser Versand ab ' + limit + ' &euro;</li>'
+					);
 				}
 				
 			} else if(checkPath('/cart')){
-				
-				try{
 	
-					let oldDeliv = await WATO.asyncElem('.column.small-12.text-right.h-xsmallOffset-top-outer');
+				let oldDeliv = await WATO.asyncElem('.column.small-12.text-right.h-xsmallOffset-top-outer');
+				if(oldDeliv){
+
 					oldDeliv = oldDeliv[0].parentElement;
 
 					const selectPortofrei = WATO.qs('.price.discountPrice');
 					const currentValue = getPriceValue(WATO.qs('.cart-promotions-potential b'));
 					
-					let redValue,redText,noDeliv;
+					//default - Versandkosten entfallen (+ eingelöster Promocode)
+					let redValue = "Gute Nachricht!",
+						redText = "Ihre",
+						noDeliv = true;
 
 					if(selectPortofrei){
 						pushGoal("redeemedCoupon");
@@ -104,14 +101,6 @@
 						redValue = 'Nur noch ' + new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(currentValue);
 						redText = "und Ihre";
 						noDeliv = false;
-					}
-	
-					//Versandkosten entfallen (+ eingelöster Promocode)
-					else {
-
-						redValue = "Gute Nachricht!";
-						redText = "Ihre";
-						noDeliv = true;
 					}
 	
 					if(!WATO.qs('.kk_dBox')){
@@ -127,12 +116,15 @@
 					}
 
 					const cliff = WATO.qs('.js_backstopWrapper .row.h-xsmallOffset-bottom-outer .h-mediumOffset-bottom-outer');
-					cliff.classList.add('kk_d-none');
-					insertHTML(cliff, 'afterend', 
-						'<div class="kk_notifyOnSuccess column small-12 medium-6 large-5 large-offset-1 h-mediumOffset-bottom-outer h-text-muted">' +
-							`<div>**Gilt für diese Bestellung ab einem Warenwert von ${ limit },00 Euro (abzüglich Versandkosten, Rabatt und Retouren).</div>` + 
-						'</div>'
-					);
+					if(cliff){
+
+						cliff.classList.add('kk_d-none');
+						insertHTML(cliff, 'afterend', 
+							'<div class="kk_notifyOnSuccess column small-12 medium-6 large-5 large-offset-1 h-mediumOffset-bottom-outer h-text-muted">' +
+								`<div>**Gilt für diese Bestellung ab einem Warenwert von ${ limit },00 Euro (abzüglich Versandkosten, Rabatt und Retouren).</div>` + 
+							'</div>'
+						);
+					}
 	
 					if(!WATO.qs('.kk_redP')){
 
@@ -140,9 +132,6 @@
 							' (frei ab ' + limit + ',00 &euro;)'
 						);
 					}
-	
-				} catch(e){
-					pushGoal("error");
 				}
 				
 			}

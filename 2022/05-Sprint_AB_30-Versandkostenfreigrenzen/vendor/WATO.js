@@ -90,7 +90,8 @@
 
             this.elem(waitFor, (results) => {
                 if(!results){
-                    reject();
+                    //reject();
+                    resolve(false);
                 }
 
                 resolve(results);
