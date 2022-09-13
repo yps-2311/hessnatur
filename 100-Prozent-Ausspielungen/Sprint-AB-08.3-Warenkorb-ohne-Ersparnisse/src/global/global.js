@@ -23,20 +23,16 @@
 	}
 
 	function goalPush(key, nextPageSend){
-
-		console.log('goalPush => ', key, nextPageSend);
-
-
-		// window.iridion.push(['goal', key, "", nextPageSend || false]);
+		window.iridion.push(['goal', key, "", nextPageSend || false]);
 	}	
 
-	function setCookie(name, value, domain, expiresDays) {
-		var exdate = new Date();
+	// function setCookie(name, value, domain, expiresDays) {
+	// 	var exdate = new Date();
 
-		exdate.setDate(exdate.getDate() + expiresDays);
+	// 	exdate.setDate(exdate.getDate() + expiresDays);
 		
-		document.cookie = name + "=" + encodeURIComponent(value) + ";" + "expires=" + exdate.toUTCString() + ";" + "domain=" + domain + ";path=/";
-	}
+	// 	document.cookie = name + "=" + encodeURIComponent(value) + ";" + "expires=" + exdate.toUTCString() + ";" + "domain=" + domain + ";path=/";
+	// }
 
 	// function gramatikAnpassung(word) {
 	// 	if(word.indexOf("Body") !== -1 || word.indexOf("Waschhandschuh") !== -1 || word.indexOf("Langarmbody") !== -1 ){
@@ -79,7 +75,7 @@
 				});
 			}
 		});
-	}
+	};
 
 
 	WATO.prototype.s8_3 = function(variant){
@@ -324,10 +320,10 @@
 							// 		['5178512']
 							// 	]
 							// },
-					},
-					upsellPreselect = {
-						'4793601': '479360151'
 					};
+					// upsellPreselect = {
+					// 	'4793601': '479360151'
+					// };
 
 					
 					var isVoucher = _self.qs('[name="voucherCode"][value="ALLES21"]'),
@@ -355,7 +351,7 @@
 
 					if(_youSaved > 0){
 						if(_youSavedOnlySale > 0){
-							addClass(kk_sum, 'discountPrice')
+							addClass(kk_sum, 'discountPrice');
 	
 							kk_sum.insertAdjacentHTML('afterend', ''+
 								'<div class="column shrink price strikeValue h-no-padding-left h-xsmallOffset-bottom-inner h-smallOffset-left-outer kk_sums">'+float2Price(price2Float(kk_sum.textContent) + _youSavedOnlySale)+' €*</div>'
@@ -386,7 +382,7 @@
 					} else if(variant === 1 || variant === 2) {
 						if((_youSaved + _additionalDiscountAmount) >= (isVoucher ? 29.95 : 29.95)) {
 							upsellIndex = 0;
-						} else if((_youSaved + + _additionalDiscountAmount) >= 10 ) {
+						} else if((_youSaved + _additionalDiscountAmount) >= 10 ) {
 							upsellIndex = 1;
 						}
 					}
@@ -394,7 +390,7 @@
 
 					var subtotalDiv = kk_sum.parentElement.parentElement.parentElement.parentElement;
 
-					var callout = _self.qs('.js_backstopWrapper > .callout.dark-gray');
+					// var callout = _self.qs('.js_backstopWrapper > .callout.dark-gray');
 
 					_self.elem('.js_backstopWrapper > .callout.dark-gray', function(calloutForm) {  
 						if(calloutForm){
@@ -557,365 +553,366 @@
 						// if product found get product info from API
 						if(promo) {
 
-							function getProductData(alternativKey) {
+							
+							// function getProductData(alternativKey) {
 
-								var prodUsk = parseInt(promo[alternativKey].substring(0,5));
+							// 	var prodUsk = parseInt(promo[alternativKey].substring(0,5));
 
-								if(_productsIDs.indexOf(prodUsk) !== -1){
-									// Liegt das Promo Produkt schon im WK dann nimm eine Alternative
-									alternativKey++;
-									if(alternativKey < 3){
-										getProductData(alternativKey);
-									}
-								} else {
-									_self.xhr_get('https://www.hessnatur.com/de/p/'+prodUsk+'/json', false, function(data){
+							// 	if(_productsIDs.indexOf(prodUsk) !== -1){
+							// 		// Liegt das Promo Produkt schon im WK dann nimm eine Alternative
+							// 		alternativKey++;
+							// 		if(alternativKey < 3){
+							// 			getProductData(alternativKey);
+							// 		}
+							// 	} else {
+							// 		_self.xhr_get('https://www.hessnatur.com/de/p/'+prodUsk+'/json', false, function(data){
 										
-										if(document.cookie.indexOf("kk_upsell_hide") === -1) {
+							// 			if(document.cookie.indexOf("kk_upsell_hide") === -1) {
 										
-											if(!data){
-												// Wenn das Produkt mit dieser ID nicht existiert
-												alternativKey++;
-												if(alternativKey < 3){
-													getProductData(alternativKey);
-												}
-											}else{
+							// 				if(!data){
+							// 					// Wenn das Produkt mit dieser ID nicht existiert
+							// 					alternativKey++;
+							// 					if(alternativKey < 3){
+							// 						getProductData(alternativKey);
+							// 					}
+							// 				}else{
 
-												var init_img_url = '',
-												init_color_text = '',
-												init_price = '',
-												name = data.name,
+							// 					var init_img_url = '',
+							// 					init_color_text = '',
+							// 					init_price = '',
+							// 					name = data.name,
 
-												colors = {},
-												colorsHTML = '',
-												sizesHTML = '',
+							// 					colors = {},
+							// 					colorsHTML = '',
+							// 					sizesHTML = '',
 
-												prod_variations = data.colors,
-												prod_variation_count = prod_variations.length,
+							// 					prod_variations = data.colors,
+							// 					prod_variation_count = prod_variations.length,
 
-												isGenerallyAvailable = false,
+							// 					isGenerallyAvailable = false,
 
-												buildSizesHTML = function(_sizes){
-													var _sizeCount = _sizes.length,
-													_sizesHTML = '';
+							// 					buildSizesHTML = function(_sizes){
+							// 						var _sizeCount = _sizes.length,
+							// 						_sizesHTML = '';
 
-													for(var s = 0; s < _sizeCount; s++) {
-														var thisSize = _sizes[s];
+							// 						for(var s = 0; s < _sizeCount; s++) {
+							// 							var thisSize = _sizes[s];
 
-														_sizesHTML += '<option '+(thisSize.available ? '' : 'disabled=""')+' value="'+thisSize.code+'" '+((sizesHTML === '' && upsellPreselect[promo[alternativKey]] === thisSize.code) ? 'selected="selected"' : '' )+'>'+thisSize.size+'</option>';
-													}
+							// 							_sizesHTML += '<option '+(thisSize.available ? '' : 'disabled=""')+' value="'+thisSize.code+'" '+((sizesHTML === '' && upsellPreselect[promo[alternativKey]] === thisSize.code) ? 'selected="selected"' : '' )+'>'+thisSize.size+'</option>';
+							// 						}
 
-													return _sizesHTML;
-												};
+							// 						return _sizesHTML;
+							// 					};
 
-											for(var p = 0; p < prod_variation_count; p++) {
-												var thisProd = prod_variations[p];
+							// 				for(var p = 0; p < prod_variation_count; p++) {
+							// 					var thisProd = prod_variations[p];
 
-												if(thisProd.availabilityIndex !== 100 && thisProd.available) {
-													if(init_img_url === '') {
-														init_img_url = thisProd.modelImageUrl || thisProd.articleImageUrl;
-														init_color_text = thisProd.color;
-														init_price = thisProd.price;
+							// 					if(thisProd.availabilityIndex !== 100 && thisProd.available) {
+							// 						if(init_img_url === '') {
+							// 							init_img_url = thisProd.modelImageUrl || thisProd.articleImageUrl;
+							// 							init_color_text = thisProd.color;
+							// 							init_price = thisProd.price;
 
-														sizesHTML = buildSizesHTML(thisProd.sizes);
-													}
+							// 							sizesHTML = buildSizesHTML(thisProd.sizes);
+							// 						}
 
-													var colorCode = thisProd.colorCode;
+							// 						var colorCode = thisProd.colorCode;
 
-													colors[colorCode] = thisProd;
+							// 						colors[colorCode] = thisProd;
 
-													colorsHTML += '<li data-color="'+colorCode+'" data-colorname="'+thisProd.color+'">'+
-														'<a class="productItemColor" href="#color" onclick="return false">'+
-															'<img itemprop="image" src="'+thisProd.colorUrl+'" alt="2312754" class="h-shape-circle">'+
-														'</a>'+
-													'</li>';
+							// 						colorsHTML += '<li data-color="'+colorCode+'" data-colorname="'+thisProd.color+'">'+
+							// 							'<a class="productItemColor" href="#color" onclick="return false">'+
+							// 								'<img itemprop="image" src="'+thisProd.colorUrl+'" alt="2312754" class="h-shape-circle">'+
+							// 							'</a>'+
+							// 						'</li>';
 
-													isGenerallyAvailable = true;
-												}
-											}
+							// 						isGenerallyAvailable = true;
+							// 					}
+							// 				}
 
-											if(!isGenerallyAvailable){
-												// Wenn das Produkt in keiner Farbe verfügbar ist wird die nächste Alternative gewählt
-												alternativKey++;
-												if(alternativKey < 3){
-													getProductData(alternativKey);
-												}
-											}
+							// 				if(!isGenerallyAvailable){
+							// 					// Wenn das Produkt in keiner Farbe verfügbar ist wird die nächste Alternative gewählt
+							// 					alternativKey++;
+							// 					if(alternativKey < 3){
+							// 						getProductData(alternativKey);
+							// 					}
+							// 				}
 
-											// Ersparnis-Box ausblenden
-											/*/
+							// 				// Ersparnis-Box ausblenden
+							// 				/*/
 
-											if(variant === 0 ) {								
-												subtotalDiv.insertAdjacentHTML('afterend', ''+
-													'<div id="kk_upsell_wrapper" class="row">'+
-														'<div class="medium-12 large-10 large-offset-1 h-largeOffset-bottom-outer">'+
-															'<div id="kk_upsell_inner" class="row">'+
-																'<div class="medium-5">'+
-																	'<div id="kk_upsell_left">'+
-																		'<p>Glückwunsch, <br/>Sie sparen '+float2Price(_youSaved)+'&nbsp€</p>'+ // !
-																		'<p>Warum nicht einfach die Ersparnis nutzen und '+ gramatikAnpassung(name) +' für nur <b id="kk_price_left">'+float2Price(init_price)+'&nbsp;€</b> hinzufügen?</p>'+
-																	'</div>'+
-																'</div>'+
-																'<div id="kk_upsell_right" class="medium-7">'+
-																	'<div class="kk_img_wrapper">'+
-																		'<img id="kk_upsell_img" src="'+init_img_url+'"/>'+
-																	'</div>'+
-																	'<div class="kk_upsell_column">'+
-																		'<div class="kk_upsell_spacebetween">'+
-																			'<div class="kk_product_name">'+
-																				'<a href="'+data.url+'" target="_blank" class="h4 cart__productname h-text-decoration-none-hover">'+name+'</a>'+
-																			'</div>'+
-																			'<div class="kk_price_div">'+
-																				'<div class="row align-right-for-medium">'+
-																					'<div class="column shrink price h-xsmallOffset-bottom-inner"><span id="kk_price">'+float2Price(init_price)+'</span>&nbsp;€*</div>'+
-																				'</div>'+
-																				'<p class="h-text-muted">inkl. 19% MwSt.</p>'+
-																			'</div>'+
-																		'</div>'+
-																		'<div>'+
-																			'<div class="kk_color_selection">'+
-																				'<p><span class="h-text-muted">Farbe:</span> <span id="kk_colorname">'+init_color_text+'</span></p>'+
-																				'<ul class="menu pds-cockpit__colorSwitch show-for-large js-color-bubbles">'+
-																					colorsHTML+
-																				'</ul>'+
-																			'</div>'+
-																			'<div class="kk_size_selection">'+
-																				'<p>'+
-																					'<span class="h-text-muted">Größe:</span> '+ 
-																					'<select id="kk_sizes" class="custom__select">'+sizesHTML+'</select>'+
-																				'</p>'+
-																			'</div>'+
-																		'</div>'+
-																		'<div class="kk_upsell_spacebetween">'+
-																			'<div>'+
-																				'<div class="kk_garbage_container column row align-self-bottom small-12">'+
-																					'<div class="align-self-bottom shrink h-no-padding-right">'+
-																						'<button id="kk_hide_upsell" type="button" class="js-entry-remove textLink">'+
-																							'<img src="/_ui/responsive/common/images/icons/garbage.svg" class="icon-trash">'+
-																						'</button>'+
-																					'</div>'+
-																					// '<div>'+
-																					// 	'<button type="button" class="js-entry-edit textLink" style="margin-right: 10px">'+
-																					// 		'<img src="/_ui/responsive/common/images/icons/edit.png" title="Details ändern" class="icon-edit">'+
-																					// 	'</button>'+
-																					// '</div>'+
-																				'</div>'+
-																			'</div>'+
-																			'<div>'+
-																				'<button id="kk_addToCartButton" class="button success expanded pds-cockpit__addToCartButton js-add-to-cart-button" type="submit">'+
-																					'<span class="pds-cockpit__addToCartButtonIconWrapper">Zum Warenkorb hinzufügen</span>'+
-																				'</button>'+
-																			'</div>'+
-																		'</div>'+
-																	'</div>'+
-																'</div>'+
-															'</div>'+
-														'</div>'+
-													'</div>'
-												);
-											}
+							// 				if(variant === 0 ) {								
+							// 					subtotalDiv.insertAdjacentHTML('afterend', ''+
+							// 						'<div id="kk_upsell_wrapper" class="row">'+
+							// 							'<div class="medium-12 large-10 large-offset-1 h-largeOffset-bottom-outer">'+
+							// 								'<div id="kk_upsell_inner" class="row">'+
+							// 									'<div class="medium-5">'+
+							// 										'<div id="kk_upsell_left">'+
+							// 											'<p>Glückwunsch, <br/>Sie sparen '+float2Price(_youSaved)+'&nbsp€</p>'+ // !
+							// 											'<p>Warum nicht einfach die Ersparnis nutzen und '+ gramatikAnpassung(name) +' für nur <b id="kk_price_left">'+float2Price(init_price)+'&nbsp;€</b> hinzufügen?</p>'+
+							// 										'</div>'+
+							// 									'</div>'+
+							// 									'<div id="kk_upsell_right" class="medium-7">'+
+							// 										'<div class="kk_img_wrapper">'+
+							// 											'<img id="kk_upsell_img" src="'+init_img_url+'"/>'+
+							// 										'</div>'+
+							// 										'<div class="kk_upsell_column">'+
+							// 											'<div class="kk_upsell_spacebetween">'+
+							// 												'<div class="kk_product_name">'+
+							// 													'<a href="'+data.url+'" target="_blank" class="h4 cart__productname h-text-decoration-none-hover">'+name+'</a>'+
+							// 												'</div>'+
+							// 												'<div class="kk_price_div">'+
+							// 													'<div class="row align-right-for-medium">'+
+							// 														'<div class="column shrink price h-xsmallOffset-bottom-inner"><span id="kk_price">'+float2Price(init_price)+'</span>&nbsp;€*</div>'+
+							// 													'</div>'+
+							// 													'<p class="h-text-muted">inkl. 19% MwSt.</p>'+
+							// 												'</div>'+
+							// 											'</div>'+
+							// 											'<div>'+
+							// 												'<div class="kk_color_selection">'+
+							// 													'<p><span class="h-text-muted">Farbe:</span> <span id="kk_colorname">'+init_color_text+'</span></p>'+
+							// 													'<ul class="menu pds-cockpit__colorSwitch show-for-large js-color-bubbles">'+
+							// 														colorsHTML+
+							// 													'</ul>'+
+							// 												'</div>'+
+							// 												'<div class="kk_size_selection">'+
+							// 													'<p>'+
+							// 														'<span class="h-text-muted">Größe:</span> '+ 
+							// 														'<select id="kk_sizes" class="custom__select">'+sizesHTML+'</select>'+
+							// 													'</p>'+
+							// 												'</div>'+
+							// 											'</div>'+
+							// 											'<div class="kk_upsell_spacebetween">'+
+							// 												'<div>'+
+							// 													'<div class="kk_garbage_container column row align-self-bottom small-12">'+
+							// 														'<div class="align-self-bottom shrink h-no-padding-right">'+
+							// 															'<button id="kk_hide_upsell" type="button" class="js-entry-remove textLink">'+
+							// 																'<img src="/_ui/responsive/common/images/icons/garbage.svg" class="icon-trash">'+
+							// 															'</button>'+
+							// 														'</div>'+
+							// 														// '<div>'+
+							// 														// 	'<button type="button" class="js-entry-edit textLink" style="margin-right: 10px">'+
+							// 														// 		'<img src="/_ui/responsive/common/images/icons/edit.png" title="Details ändern" class="icon-edit">'+
+							// 														// 	'</button>'+
+							// 														// '</div>'+
+							// 													'</div>'+
+							// 												'</div>'+
+							// 												'<div>'+
+							// 													'<button id="kk_addToCartButton" class="button success expanded pds-cockpit__addToCartButton js-add-to-cart-button" type="submit">'+
+							// 														'<span class="pds-cockpit__addToCartButtonIconWrapper">Zum Warenkorb hinzufügen</span>'+
+							// 													'</button>'+
+							// 												'</div>'+
+							// 											'</div>'+
+							// 										'</div>'+
+							// 									'</div>'+
+							// 								'</div>'+
+							// 							'</div>'+
+							// 						'</div>'
+							// 					);
+							// 				}
 
-											else if(variant === 1 || variant === 2) {
+							// 				else if(variant === 1 || variant === 2) {
 
-												var upsellPosition = '';
-												if(variant === 1 && subtotalDiv){
-													upsellPosition = subtotalDiv;
-												} else if (variant === 2 && _self.qs('.kk_pb_row')){
-													upsellPosition = _self.qs('.kk_pb_row').parentElement.parentElement;
-												} else { // Fallback
-													upsellPosition = kk_sum.parentElement.parentElement.parentElement.parentElement;
-												}
-												upsellPosition.insertAdjacentHTML('afterend', ''+
-													'<div id="kk_upsell_wrapper" class="row">'+
-														'<div class="medium-12 large-10 large-offset-1 h-largeOffset-bottom-outer column">'+
-															'<div id="kk_upsell_inner" class="row">'+
-																'<div id="kk_upsell_left">'+
-																	'<p>Glückwunsch! Sie sparen '+float2Price(_youSaved + _additionalDiscountAmount)+'&nbsp€</p>'+ 
-																'</div>'+
-																'<div class="kk_seperation_line">' +
-																	'<hr>' +
-																'</div>' +
-																'<div id="kk_upsell_right" class="medium-12">'+
+							// 					var upsellPosition = '';
+							// 					if(variant === 1 && subtotalDiv){
+							// 						upsellPosition = subtotalDiv;
+							// 					} else if (variant === 2 && _self.qs('.kk_pb_row')){
+							// 						upsellPosition = _self.qs('.kk_pb_row').parentElement.parentElement;
+							// 					} else { // Fallback
+							// 						upsellPosition = kk_sum.parentElement.parentElement.parentElement.parentElement;
+							// 					}
+							// 					upsellPosition.insertAdjacentHTML('afterend', ''+
+							// 						'<div id="kk_upsell_wrapper" class="row">'+
+							// 							'<div class="medium-12 large-10 large-offset-1 h-largeOffset-bottom-outer column">'+
+							// 								'<div id="kk_upsell_inner" class="row">'+
+							// 									'<div id="kk_upsell_left">'+
+							// 										'<p>Glückwunsch! Sie sparen '+float2Price(_youSaved + _additionalDiscountAmount)+'&nbsp€</p>'+ 
+							// 									'</div>'+
+							// 									'<div class="kk_seperation_line">' +
+							// 										'<hr>' +
+							// 									'</div>' +
+							// 									'<div id="kk_upsell_right" class="medium-12">'+
 
-																	'<div class="kk_reason_wrapper">' +
-																		'<div class="kk_inner_reason_wrapper">' +
-																		'<div class="kk_reason_question">Warum nicht einfach die Ersparnis nutzen?</div>' +
-																		// '<div class="kk_reason_text">Fügen Sie ein Paar Socken aus Bio-Baumwolle für nur 7.95</div>' +
-																		'<p class="kk_reason_text">Fügen Sie '+ gramatikAnpassung(name) +' für nur <b id="kk_price_left">'+float2Price(init_price)+'&nbsp;€</b> hinzu. Erhältlich in verschiedenen Farben.</p>'+
-																		'</div>' +
-																	'</div>' +
+							// 										'<div class="kk_reason_wrapper">' +
+							// 											'<div class="kk_inner_reason_wrapper">' +
+							// 											'<div class="kk_reason_question">Warum nicht einfach die Ersparnis nutzen?</div>' +
+							// 											// '<div class="kk_reason_text">Fügen Sie ein Paar Socken aus Bio-Baumwolle für nur 7.95</div>' +
+							// 											'<p class="kk_reason_text">Fügen Sie '+ gramatikAnpassung(name) +' für nur <b id="kk_price_left">'+float2Price(init_price)+'&nbsp;€</b> hinzu. Erhältlich in verschiedenen Farben.</p>'+
+							// 											'</div>' +
+							// 										'</div>' +
 
-																	'<div class="kk_img_wrapper">'+
-																		'<img id="kk_upsell_img" src="'+init_img_url+'"/>'+
-																	'</div>'+
-																	'<div class="kk_upsell_row">'+
-																		'<div class="kk_upsell_column medium-4">'+
-																			'<div class="kk_product_name">'+
-																				'<a href="'+data.url+'" target="_blank" class="h4 cart__productname h-text-decoration-none-hover">'+name+'</a>'+
-																			'</div>'+
-																			'<div class="kk_price_div">'+
-																					'<div class="column shrink price h-xsmallOffset-bottom-inner"><span id="kk_price">'+float2Price(init_price)+'</span>&nbsp;€*</div>'+
-																				'<p class="h-text-muted">inkl. 19% MwSt.</p>'+
-																			'</div>'+
-																		'</div>'+
-																		'<div class="kk_upsell_column">'+
-																			'<div class="kk_color_selection">'+
-																				'<p><span class="h-text-muted">Farbe:</span> <span id="kk_colorname">'+init_color_text+'</span></p>'+
-																				'<ul class="menu pds-cockpit__colorSwitch show-for-large js-color-bubbles">'+
-																					colorsHTML+
-																				'</ul>'+
-																			'</div>'+
-																			'<div class="kk_size_selection">'+
-																				'<p>'+
-																					'<span class="h-text-muted">Größe:</span> '+ 
-																					'<select id="kk_sizes" class="custom__select">'+sizesHTML+'</select>'+
-																				'</p>'+
-																			'</div>'+
-																		'</div>'+
-																		'<div class="kk_addToCartDiv">'+
-																			'<div>'+
-																				'<button id="kk_addToCartButton" class="button success expanded js-add-to-cart-button" type="submit">'+
-																					'<img src="https://media.hessnatur.com/kk/2022/Sprint%20AB%2008.3%20Warenkorb%20Ersparnisse/%2B.svg" alt="">'+
-																					'<span class="pds-cockpit__addToCartButtonIconWrapper">Hinzufügen</span>'+
-																				'</button>'+
-																			'</div>'+
-																		'</div>'+
-																	'</div>'+
-																'</div>'+
-															'</div>'+
-														'</div>'+
-													'</div>'
-												);
+							// 										'<div class="kk_img_wrapper">'+
+							// 											'<img id="kk_upsell_img" src="'+init_img_url+'"/>'+
+							// 										'</div>'+
+							// 										'<div class="kk_upsell_row">'+
+							// 											'<div class="kk_upsell_column medium-4">'+
+							// 												'<div class="kk_product_name">'+
+							// 													'<a href="'+data.url+'" target="_blank" class="h4 cart__productname h-text-decoration-none-hover">'+name+'</a>'+
+							// 												'</div>'+
+							// 												'<div class="kk_price_div">'+
+							// 														'<div class="column shrink price h-xsmallOffset-bottom-inner"><span id="kk_price">'+float2Price(init_price)+'</span>&nbsp;€*</div>'+
+							// 													'<p class="h-text-muted">inkl. 19% MwSt.</p>'+
+							// 												'</div>'+
+							// 											'</div>'+
+							// 											'<div class="kk_upsell_column">'+
+							// 												'<div class="kk_color_selection">'+
+							// 													'<p><span class="h-text-muted">Farbe:</span> <span id="kk_colorname">'+init_color_text+'</span></p>'+
+							// 													'<ul class="menu pds-cockpit__colorSwitch show-for-large js-color-bubbles">'+
+							// 														colorsHTML+
+							// 													'</ul>'+
+							// 												'</div>'+
+							// 												'<div class="kk_size_selection">'+
+							// 													'<p>'+
+							// 														'<span class="h-text-muted">Größe:</span> '+ 
+							// 														'<select id="kk_sizes" class="custom__select">'+sizesHTML+'</select>'+
+							// 													'</p>'+
+							// 												'</div>'+
+							// 											'</div>'+
+							// 											'<div class="kk_addToCartDiv">'+
+							// 												'<div>'+
+							// 													'<button id="kk_addToCartButton" class="button success expanded js-add-to-cart-button" type="submit">'+
+							// 														'<img src="https://media.hessnatur.com/kk/2022/Sprint%20AB%2008.3%20Warenkorb%20Ersparnisse/%2B.svg" alt="">'+
+							// 														'<span class="pds-cockpit__addToCartButtonIconWrapper">Hinzufügen</span>'+
+							// 													'</button>'+
+							// 												'</div>'+
+							// 											'</div>'+
+							// 										'</div>'+
+							// 									'</div>'+
+							// 								'</div>'+
+							// 							'</div>'+
+							// 						'</div>'
+							// 					);
 												
 
-											}
+							// 				}
 
-											//*/
-										}
+							// 				//*/
+							// 			}
 
 
-										// set first color active
-										addClass(_self.qs('.js-color-bubbles li'), 'active');
+							// 			// set first color active
+							// 			addClass(_self.qs('.js-color-bubbles li'), 'active');
 										
-										var changeColor = function(e){
-											try {
-												e.preventDefault();
-											} catch (error) {
-											}
+							// 			var changeColor = function(e){
+							// 				try {
+							// 					e.preventDefault();
+							// 				} catch (error) {
+							// 				}
 											
-											try {
-												var _li = this ? this.parentElement : e.parentElement,
-												_color = colors[_li.getAttribute('data-color')];
+							// 				try {
+							// 					var _li = this ? this.parentElement : e.parentElement,
+							// 					_color = colors[_li.getAttribute('data-color')];
 
-												// update sizes dropdown
-												_self.qs('#kk_sizes').innerHTML = buildSizesHTML(_color.sizes);
+							// 					// update sizes dropdown
+							// 					_self.qs('#kk_sizes').innerHTML = buildSizesHTML(_color.sizes);
 
-												// update product image 
+							// 					// update product image 
 
-												if(variant === 0) {
-													_self.qs('#kk_upsell_img').setAttribute('src', (_color.modelImageUrl || _color.articleImageUrl));
-												} else if(variant === 1 || variant === 2) {
-													_self.qs('#kk_upsell_img').setAttribute('src', (_color.modelImageUrl || _color.articleImageUrl).replace('_1.','_7.'));
-												}
+							// 					if(variant === 0) {
+							// 						_self.qs('#kk_upsell_img').setAttribute('src', (_color.modelImageUrl || _color.articleImageUrl));
+							// 					} else if(variant === 1 || variant === 2) {
+							// 						_self.qs('#kk_upsell_img').setAttribute('src', (_color.modelImageUrl || _color.articleImageUrl).replace('_1.','_7.'));
+							// 					}
 
-												// set selected color active
-												// _self.qs('.active', kk_upsell_wrapper).classList.remove('active');
-												removeClass(_self.qs('.active', kk_upsell_wrapper), 'active');
-												addClass(_li, 'active')
+							// 					// set selected color active
+							// 					// _self.qs('.active', kk_upsell_wrapper).classList.remove('active');
+							// 					removeClass(_self.qs('.active'), 'active');
+							// 					addClass(_li, 'active');
 
-												_self.qs("#kk_colorname").innerHTML = _li.getAttribute('data-colorname');
+							// 					_self.qs("#kk_colorname").innerHTML = _li.getAttribute('data-colorname');
 
-												// trigger change for price update
-												if ("createEvent" in document) {
-													var evt = document.createEvent("HTMLEvents");
-													evt.initEvent("change", false, true);
-													_self.qs('#kk_sizes').dispatchEvent(evt);
-												}else {
-													_self.qs('#kk_sizes').fireEvent("onchange");
-												}
-											}
-											catch(err) {
+							// 					// trigger change for price update
+							// 					if ("createEvent" in document) {
+							// 						var evt = document.createEvent("HTMLEvents");
+							// 						evt.initEvent("change", false, true);
+							// 						_self.qs('#kk_sizes').dispatchEvent(evt);
+							// 					}else {
+							// 						_self.qs('#kk_sizes').fireEvent("onchange");
+							// 					}
+							// 				}
+							// 				catch(err) {
 												
-											}
+							// 				}
 
-											return false;
-										},
-										changeSize = function(){
-											try {
-												var _val = this.value,
-												_li = _self.qs('.active .productItemColor', kk_upsell_wrapper),
-												_color = colors[_li.parentElement.getAttribute('data-color')];
+							// 				return false;
+							// 			},
+							// 			changeSize = function(){
+							// 				try {
+							// 					var _val = this.value,
+							// 					_li = _self.qs('.active .productItemColor'),
+							// 					_color = colors[_li.parentElement.getAttribute('data-color')];
 
-												var _price = _color.sizes.filter(function(k){ 
-													return k.code === _val;
-												})[0].price;
+							// 					var _price = _color.sizes.filter(function(k){ 
+							// 						return k.code === _val;
+							// 					})[0].price;
 
-												// update price
-												_self.qs('#kk_price').innerHTML = float2Price(_price);
-												_self.qs('#kk_price_left').innerHTML = float2Price(_price)+'&nbsp;€';
-											}
-											catch(err) {}
-										};
+							// 					// update price
+							// 					_self.qs('#kk_price').innerHTML = float2Price(_price);
+							// 					_self.qs('#kk_price_left').innerHTML = float2Price(_price)+'&nbsp;€';
+							// 				}
+							// 				catch(err) {}
+							// 			};
 
-										var _color_bopsels = _self.qsa('.productItemColor', kk_upsell_wrapper);
+							// 			var _color_bopsels = _self.qsa('.productItemColor', kk_upsell_wrapper);
 
-										for(var c = 0; c < _color_bopsels.length; c++) {
-											_color_bopsels[c].addEventListener('click', changeColor);
-										}
+							// 			for(var c = 0; c < _color_bopsels.length; c++) {
+							// 				_color_bopsels[c].addEventListener('click', changeColor);
+							// 			}
 
-										// set right color active
-										changeColor(_self.qs('.js-color-bubbles li[data-color="'+promo[alternativKey].substring(5,7)+'"] a', kk_upsell_wrapper));
+							// 			// set right color active
+							// 			changeColor(_self.qs('.js-color-bubbles li[data-color="'+promo[alternativKey].substring(5,7)+'"] a', kk_upsell_wrapper));
 
 										
-										_self.qs('#kk_sizes').addEventListener('change', changeSize);
+							// 			_self.qs('#kk_sizes').addEventListener('change', changeSize);
 
 
-										_self.qs('#kk_addToCartButton', kk_upsell_wrapper).addEventListener('click', function(){
-											var _prodId = _self.qs('#kk_sizes').value,
-											params = { 
-												productCodePost: _prodId,
-												ff_id: _prodId,
-												ff_masterId: data.code,
-												ff_title: encodeURIComponent(name),
-												ff_price: price2Float(_self.qs('#kk_price').textContent),
-												qty: 1,
-												CSRFToken: window.ACC.config.CSRFToken
-											};
+							// 			_self.qs('#kk_addToCartButton', kk_upsell_wrapper).addEventListener('click', function(){
+							// 				var _prodId = _self.qs('#kk_sizes').value,
+							// 				params = { 
+							// 					productCodePost: _prodId,
+							// 					ff_id: _prodId,
+							// 					ff_masterId: data.code,
+							// 					ff_title: encodeURIComponent(name),
+							// 					ff_price: price2Float(_self.qs('#kk_price').textContent),
+							// 					qty: 1,
+							// 					CSRFToken: window.ACC.config.CSRFToken
+							// 				};
 
-											// goalPush('kk_s8_a2c');
+							// 				// goalPush('kk_s8_a2c');
 
-											if(_prodId !== '') {
-												_self.xhr_post('https://www.hessnatur.com/de/cart/add', 
-													Object.keys(params).map(function(k){ 
-														return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]);
-														}).join('&'), 
-												function(){
-													// localStorage.setItem('kk_upsell_hide', 1);
+							// 				if(_prodId !== '') {
+							// 					_self.xhr_post('https://www.hessnatur.com/de/cart/add', 
+							// 						Object.keys(params).map(function(k){ 
+							// 							return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]);
+							// 							}).join('&'), 
+							// 					function(){
+							// 						// localStorage.setItem('kk_upsell_hide', 1);
 													
-													setCookie('kk_upsell_hide', 'true', ".hessnatur.com", 5);
+							// 						setCookie('kk_upsell_hide', 'true', ".hessnatur.com", 5);
 
-													location.href=location.href.split('#')[0];
-													location.reload();
-												});
-											}
-										});
+							// 						location.href=location.href.split('#')[0];
+							// 						location.reload();
+							// 					});
+							// 				}
+							// 			});
 
-										if(variant === 0) {
-											_self.qs('#kk_hide_upsell', kk_upsell_wrapper).addEventListener('click', function(){
-											// goalPush('kk_s8_del');
+							// 			if(variant === 0) {
+							// 				_self.qs('#kk_hide_upsell', kk_upsell_wrapper).addEventListener('click', function(){
+							// 				// goalPush('kk_s8_del');
 
-											setCookie('kk_upsell_hide', 'true', ".hessnatur.com", 5);
+							// 				setCookie('kk_upsell_hide', 'true', ".hessnatur.com", 5);
 
-											// localStorage.setItem('kk_upsell_hide', 1);
-											kk_upsell_wrapper.outerHTML = '';
-											});
-										}
+							// 				// localStorage.setItem('kk_upsell_hide', 1);
+							// 				kk_upsell_wrapper.outerHTML = '';
+							// 				});
+							// 			}
 
-										}
-									});
+							// 			}
+							// 		});
 
-								}
+							// 	}
 
-							}
+							// }
 
 							//getProductData(0);
 
@@ -1013,7 +1010,7 @@
 
 				_self.ajax('removePaybackNumber', function() {
 					_self.elem('#paybackCardForm #paybackCardNumber', function(pbCardNumber){
-						if(pbCardNumber){;
+						if(pbCardNumber){
 							buildPaybackContainer();
 						}
 					});
