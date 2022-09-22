@@ -195,13 +195,28 @@
         padding-left: 0;
         padding-right: 24px;
     }
+    
     .js-size-advisor-wrapper {
         -ms-flex: 0 0 20%;
         flex: 0 0 20%;
         max-width: 20%;
+        min-width: 73px;
         justify-content: flex-end;
         display: flex !important;
+        flex-wrap: wrap;
+        padding: 0;
+        #size_advisor {
+            &::after {
+                position: absolute;
+                bottom: 0px;
+                width: 100%;
+            }
+        }
     }
+    #desc__size {
+        margin-left: -10px;
+    }
+    
     .column.small-9.large-10 {
         padding-left: 0;
     }
@@ -330,7 +345,10 @@
             &::before {
                 font-family: "FontAwesome";
                 font-weight: normal;
-                content: "\f104";
+
+                // Hier tritt der Komprimiertungsfehler auf
+                // content: "\f104";
+
                 font-size: 22px;
                 background-image: none;
                 width: 13px;
@@ -339,6 +357,7 @@
                 top: 5.5px;
                 line-height: 20px;
             }
+
             a {
                 font-family: "Roboto Condensed Bold";
                 font-weight: normal;
@@ -644,6 +663,11 @@
     }
 }
 
+.js-thirty-day-cheapest-price .h-nowrap {
+    white-space: normal;
+    display: block;
+    padding-top: 5px;
+}
 
 .kk_show {
     display: block !important;
