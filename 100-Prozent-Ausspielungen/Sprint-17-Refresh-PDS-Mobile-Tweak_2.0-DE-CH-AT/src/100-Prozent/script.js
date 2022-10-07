@@ -21,6 +21,7 @@
     WATO.elem('.pds-cockpit__wrapper', function(cockpitWrapper){
         if(cockpitWrapper){
             cockpitWrapper = cockpitWrapper[0];
+            // console.log('cockpitWrapper: ', cockpitWrapper);
             
             var imageAndCockpitWrapper = WATO.qs(".pds__imageAndCockpitWrapper"),
                 artNumber = WATO.qs(".pds-cockpit__articleNumber", cockpitWrapper),
@@ -39,11 +40,16 @@
 
 
             WATO.elem(function(){
-                return WATO.qs(".pds-cockpit__productName", cockpitWrapper) && WATO.qs(".pds-cockpit__productName", cockpitWrapper).parentNode.parentNode;
+                // console.log('WATO.qs(".pds-cockpit__productName"): ', WATO.qs(".pds-cockpit__productName, h1"));
+                // console.log('WATO.qs(".pds-cockpit__productName, h1").parentNode.parentNode: ', WATO.qs(".pds-cockpit__productName, h1").parentNode.parentNode);
+                // console.log('typeof WATO.qs(".pds-cockpit__productName") !== "undefined" && typeof WATO.qs(".pds-cockpit__productName, h1").parentNode.parentNode !== "undefined": ', typeof WATO.qs(".pds-cockpit__productName") !== "undefined" && typeof WATO.qs(".pds-cockpit__productName, h1").parentNode.parentNode !== "undefined");
+                return typeof WATO.qs(".pds-cockpit__productName") !== "undefined" && typeof WATO.qs(".pds-cockpit__productName, h1").parentNode.parentNode !== "undefined";
             }, function(element){
                 if(element){
                     try {
-                        imageAndCockpitWrapper.insertAdjacentElement('beforebegin', WATO.qs(".pds-cockpit__productName", cockpitWrapper).parentNode.parentNode);
+                        // console.log('WATO.qs(".pds-cockpit__productName", cockpitWrapper): ', WATO.qs(".pds-cockpit__productName, h1"));
+                        // console.log('imageAndCockpitWrapper: ', imageAndCockpitWrapper);
+                        imageAndCockpitWrapper.insertAdjacentElement('beforebegin', WATO.qs(".pds-cockpit__productName, h1").parentNode.parentNode);
                     } catch (error) {
                         // console.log('Error1: ', error);
                     }
@@ -54,7 +60,7 @@
 
 
             WATO.elem(function(){
-                return WATO.qs(".show-for-large", cockpitWrapper) && WATO.qs(".align-justify", cockpitWrapper);
+                return typeof WATO.qs(".show-for-large", cockpitWrapper) !== "undefined" && typeof WATO.qs(".align-justify", cockpitWrapper) !== "undefined";
             }, function(isReady){
                 if(isReady){
                     // console.log('WATO.qs(".show-for-large", cockpitWrapper): ', WATO.qs(".show-for-large", cockpitWrapper));
