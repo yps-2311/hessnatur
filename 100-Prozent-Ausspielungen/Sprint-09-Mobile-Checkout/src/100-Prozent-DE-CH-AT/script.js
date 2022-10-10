@@ -208,10 +208,18 @@
                 loginForm = loginForm[0];
 
                 // Change headline
-                WATO.qs('.h3', loginForm).innerHTML = 'Ich bin bereits Kunde & möchte mich anmelden';
+                WATO.elem('#loginForm .h3', function(loginFormHeadline){
+                    if(loginFormHeadline){
+                        loginFormHeadline[0].innerHTML = 'Ich bin bereits Kunde & möchte mich anmelden';
+                    }
+                });
 
-                WATO.qs('.button', loginForm).addEventListener('click', function () {
-                    setStorage(STORAGE, true);
+                WATO.elem('#loginForm .button', function(loginFormCTA){
+                    if(loginFormCTA){
+                        loginFormCTA[0].addEventListener('click', function () {
+                            setStorage(STORAGE, true);
+                        });
+                    }
                 });
 
                 // Add toggle
@@ -219,9 +227,14 @@
                     '<div class="columns align-self-bottom small-12">' +
                     '<div class="button expanded-small-only" id="kk09_login_toggle">Zum Kundenlogin</div>' +
                     '</div>');
-                WATO.qs('#kk09_login_toggle', loginForm).addEventListener('click', function () {
-                    addClass(loginForm, 'show');
-                    // WATO.AB09_sendGoal('kk_ab09_click_login_toggle');
+
+                WATO.elem('#loginForm #kk09_login_toggle', function(loginFormToggle){
+                    if(loginFormToggle){
+                        loginFormToggle[0].addEventListener('click', function () {
+                            addClass(loginForm, 'show');
+                            // WATO.AB09_sendGoal('kk_ab09_click_login_toggle');
+                        });
+                    }
                 });
             }
         });
