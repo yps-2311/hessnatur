@@ -14,7 +14,7 @@
 
 	/*jshint loopfunc: true */
 
-	window.iridion.econda.push(["SprintAB24", "V1"]);
+	// window.iridion.econda.push(["SprintAB24", "V1"]);
 
 	WATO.ab24goals();
 

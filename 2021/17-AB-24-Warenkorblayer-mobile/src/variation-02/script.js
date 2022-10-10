@@ -1,5 +1,5 @@
 // load core and global js
-// @ codekit-prepend "../global/global.js";
+// @codekit-prepend "../global/global.js";
 // @ codekit-prepend "../../../debugging/enabled.js";
 
 /**
@@ -14,7 +14,7 @@
 
 	/*jshint loopfunc: true */
 
-	window.iridion.econda.push(["SprintAB24", "V2"]);
+	// window.iridion.econda.push(["SprintAB24", "V2"]);
 
 	WATO.ab24goals();
 
