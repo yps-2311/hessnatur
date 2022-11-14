@@ -138,7 +138,10 @@
 						// fold and extend logic
 						if(payback_points_container) {
 
-							addClass(payback_points_container, 'kk-extended');
+							// DL 14.11.2022 folgende zwei Zeilen - Payback ist zuerst ausgeblendet
+							// addClass(payback_points_container, 'kk-extended');
+							addClass(kk_pb_extended, 'kk-hidden');
+
 							kk_pb_column.insertAdjacentElement('afterbegin', payback_points_container);
 
 							payback_points_container.addEventListener('click', function(){
