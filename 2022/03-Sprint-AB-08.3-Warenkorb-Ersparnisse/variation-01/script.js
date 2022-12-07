@@ -12,7 +12,7 @@
     "use strict";
 
     // Econda
-    // window.iridion.econda.push(["AB8.3", "V1"]);
+    window.iridion.econda.push(["AB8.3", "V1"]);
 
     WATO.s8_3(1);
 
