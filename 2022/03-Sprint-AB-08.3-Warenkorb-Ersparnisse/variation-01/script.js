@@ -1,5 +1,5 @@
 // load core and global js
-// @ codekit-prepend "../global/global.js";
+// @codekit-prepend "../global/global.js";
 
 /**
  * @function
@@ -12,7 +12,7 @@
     "use strict";
 
     // Econda
-    window.iridion.econda.push(["AB8.3", "V1"]);
+    // window.iridion.econda.push(["AB8.3", "V1"]);
 
     WATO.s8_3(1);
 

@@ -567,6 +567,7 @@
 										getProductData(alternativKey);
 									}
 								} else {
+
 									_self.xhr_get('https://www.hessnatur.com/de/p/'+prodUsk+'/json', false, function(data){
 										
 										if(document.cookie.indexOf("kk_upsell_hide") === -1) {
@@ -783,115 +784,118 @@
 													'</div>'
 												);
 
-											}
-										}
+												const kk_upsell_wrapper = _self.qs('#kk_upsell_wrapper');
 
-
-										// set first color active
-										addClass(_self.qs('.js-color-bubbles li'), 'active');
-										
-										var changeColor = function(e){
-											try {
-												e.preventDefault();
-											} catch (error) {
-											}
-											
-											try {
-												var _li = this ? this.parentElement : e.parentElement,
-												_color = colors[_li.getAttribute('data-color')];
-
-												// update sizes dropdown
-												_self.qs('#kk_sizes').innerHTML = buildSizesHTML(_color.sizes);
-
-												// update product image 
-
-												if(variant === 0) {
-													_self.qs('#kk_upsell_img').setAttribute('src', (_color.modelImageUrl || _color.articleImageUrl));
-												} else if(variant === 1 || variant === 2) {
-													_self.qs('#kk_upsell_img').setAttribute('src', (_color.modelImageUrl || _color.articleImageUrl).replace('_1.','_7.'));
-												}
-
-												// set selected color active
-												// _self.qs('.active', kk_upsell_wrapper).classList.remove('active');
-												removeClass(_self.qs('.active', kk_upsell_wrapper), 'active');
-												addClass(_li, 'active')
-
-												_self.qs("#kk_colorname").innerHTML = _li.getAttribute('data-colorname');
-
-												// trigger change for price update
-												if ("createEvent" in document) {
-													var evt = document.createEvent("HTMLEvents");
-													evt.initEvent("change", false, true);
-													_self.qs('#kk_sizes').dispatchEvent(evt);
-												}else {
-													_self.qs('#kk_sizes').fireEvent("onchange");
-												}
-											}
-											catch(err) {
+												// set first color active
+												addClass(_self.qs('.js-color-bubbles li'), 'active');
 												
-											}
-
-											return false;
-										},
-										changeSize = function(){
-											try {
-												var _val = this.value,
-												_li = _self.qs('.active .productItemColor', kk_upsell_wrapper),
-												_color = colors[_li.parentElement.getAttribute('data-color')];
-
-												var _price = _color.sizes.filter(function(k){ 
-													return k.code === _val;
-												})[0].price;
-
-												// update price
-												_self.qs('#kk_price').innerHTML = float2Price(_price);
-												_self.qs('#kk_price_left').innerHTML = float2Price(_price)+'&nbsp;€';
-											}
-											catch(err) {}
-										};
-
-										var _color_bopsels = _self.qsa('.productItemColor', kk_upsell_wrapper);
-
-										for(var c = 0; c < _color_bopsels.length; c++) {
-											_color_bopsels[c].addEventListener('click', changeColor);
-										}
-
-										// set right color active
-										changeColor(_self.qs('.js-color-bubbles li[data-color="'+promo[alternativKey].substring(5,7)+'"] a', kk_upsell_wrapper));
-
-										
-										_self.qs('#kk_sizes').addEventListener('change', changeSize);
-
-
-										_self.qs('#kk_addToCartButton', kk_upsell_wrapper).addEventListener('click', function(){
-											var _prodId = _self.qs('#kk_sizes').value,
-											params = { 
-												productCodePost: _prodId,
-												ff_id: _prodId,
-												ff_masterId: data.code,
-												ff_title: encodeURIComponent(name),
-												ff_price: price2Float(_self.qs('#kk_price').textContent),
-												qty: 1,
-												CSRFToken: window.ACC.config.CSRFToken
-											};
-
-											// goalPush('kk_s8_a2c');
-
-											if(_prodId !== '') {
-												_self.xhr_post('https://www.hessnatur.com/de/cart/add', 
-													Object.keys(params).map(function(k){ 
-														return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]);
-														}).join('&'), 
-												function(){
-													// localStorage.setItem('kk_upsell_hide', 1);
+												var changeColor = function(e){
+													try {
+														e.preventDefault();
+													} catch (error) {
+													}
 													
-													setCookie('kk_upsell_hide', 'true', ".hessnatur.com", 5);
-
-													location.href=location.href.split('#')[0];
-													location.reload();
+													try {
+														var _li = this ? this.parentElement : e.parentElement,
+														_color = colors[_li.getAttribute('data-color')];
+		
+														// update sizes dropdown
+														_self.qs('#kk_sizes').innerHTML = buildSizesHTML(_color.sizes);
+		
+														// update product image 
+		
+														if(variant === 0) {
+															_self.qs('#kk_upsell_img').setAttribute('src', (_color.modelImageUrl || _color.articleImageUrl));
+														} else if(variant === 1 || variant === 2) {
+															_self.qs('#kk_upsell_img').setAttribute('src', (_color.modelImageUrl || _color.articleImageUrl).replace('_1.','_7.'));
+														}
+		
+														// set selected color active
+														// _self.qs('.active', kk_upsell_wrapper).classList.remove('active');
+														removeClass(_self.qs('.active', kk_upsell_wrapper), 'active');
+														addClass(_li, 'active')
+		
+														_self.qs("#kk_colorname").innerHTML = _li.getAttribute('data-colorname');
+		
+														// trigger change for price update
+														if ("createEvent" in document) {
+															var evt = document.createEvent("HTMLEvents");
+															evt.initEvent("change", false, true);
+															_self.qs('#kk_sizes').dispatchEvent(evt);
+														}else {
+															_self.qs('#kk_sizes').fireEvent("onchange");
+														}
+													}
+													catch(err) {
+														
+													}
+		
+													return false;
+												},
+												changeSize = function(){
+													try {
+														var _val = this.value,
+														_li = _self.qs('.active .productItemColor', kk_upsell_wrapper),
+														_color = colors[_li.parentElement.getAttribute('data-color')];
+		
+														var _price = _color.sizes.filter(function(k){ 
+															return k.code === _val;
+														})[0].price;
+		
+														// update price
+														_self.qs('#kk_price').innerHTML = float2Price(_price);
+														_self.qs('#kk_price_left').innerHTML = float2Price(_price)+'&nbsp;€';
+													}
+													catch(err) {}
+												};
+		
+												var _color_bopsels = _self.qsa('.productItemColor', kk_upsell_wrapper);
+		
+												for(var c = 0; c < _color_bopsels.length; c++) {
+													_color_bopsels[c].addEventListener('click', changeColor);
+												}
+		
+												// set right color active
+												changeColor(_self.qs('.js-color-bubbles li[data-color="'+promo[alternativKey].substring(5,7)+'"] a', kk_upsell_wrapper));
+		
+												
+												_self.qs('#kk_sizes').addEventListener('change', changeSize);
+		
+		
+												_self.qs('#kk_addToCartButton', kk_upsell_wrapper).addEventListener('click', function(){
+													var _prodId = _self.qs('#kk_sizes').value,
+													params = { 
+														productCodePost: _prodId,
+														ff_id: _prodId,
+														ff_masterId: data.code,
+														ff_title: encodeURIComponent(name),
+														ff_price: price2Float(_self.qs('#kk_price').textContent),
+														qty: 1,
+														CSRFToken: window.ACC.config.CSRFToken
+													};
+		
+													// goalPush('kk_s8_a2c');
+		
+													if(_prodId !== '') {
+														_self.xhr_post('https://www.hessnatur.com/de/cart/add', 
+															Object.keys(params).map(function(k){ 
+																return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]);
+																}).join('&'), 
+														function(){
+															// localStorage.setItem('kk_upsell_hide', 1);
+															
+															setCookie('kk_upsell_hide', 'true', ".hessnatur.com", 5);
+		
+															location.href=location.href.split('#')[0];
+															location.reload();
+														});
+													}
 												});
 											}
-										});
+										}
+
+
+
 
 										if(variant === 0) {
 											_self.qs('#kk_hide_upsell', kk_upsell_wrapper).addEventListener('click', function(){
