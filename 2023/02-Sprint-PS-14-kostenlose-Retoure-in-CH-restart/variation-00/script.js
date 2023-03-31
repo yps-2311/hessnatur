@@ -1,0 +1,18 @@
+// load core and global js
+// @ codekit-prepend "../global/global.js";
+
+/**
+ * @function
+ * @author Denis Leno
+ * @namespace V0
+ * @name Variation 00
+ * @description Original von Jonas Hoeppe
+ */
+ (function(WATO) {
+    "use strict";
+
+    // Cookie setzen
+    document.cookie = "PromotionMediumNo=DMR; expires=Mon, 17 May 2023 00:00:00 GMT; path=/ch/;";
+    window.iridion.econda.push(["PS14CHrestart", "V0"]);
+       
+})(new window.WATO());
