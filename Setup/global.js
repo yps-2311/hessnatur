@@ -117,6 +117,11 @@
         window.iridion.push(['goal', 'profile_error', err.toString()]);
     }
 
+    // DL 04.04.2023
+    // function removeSegment(thisID) {
+    //     window.iridion.push(['removeSegment', String(thisID)]);
+    // }
+
 
     /** CATEGORY AFFINITY **/
     var URL                         = document.URL,
@@ -242,9 +247,19 @@
                             if (response.indexOf('Bestandskunde') !== -1){
                                 // Bestandskunde
                                 setProfileValue("customerType", "Bestandskunde");
+
+                                // DL 04.04.2023 Remove Interessent Segment
+                                // removeSegment(32854);
+
+                                // DL 04.04.2023 Remove Neukunde Segment
+                                // removeSegment(32856);
+
                             } else if (response.indexOf('Neukunde') !== -1 && CUSTOMERTYPE === "Interessent") {
                                 // neukunde
                                 setProfileValue("customerType", "Neukunde");
+
+                                // DL 04.04.2023 Remove Interessent Segment
+                                // removeSegment(32854);
                             }
                         }
                     });
@@ -269,6 +284,8 @@
             // Noch nicht hochgeladen
             if(getProfileValue("hasbought") === "true" && CUSTOMERTYPE === "Interessent"){
                 setProfileValue("customerType", "Neukunde");
+                // DL 04.04.2023 Remove Interessent Segment
+                // removeSegment(32854);
             }
             
             if(PATHNAME.indexOf("/addresses/") !== -1){
@@ -285,6 +302,8 @@
                             clearInterval(interval3);
 
                             setProfileValue("customerType", "Neukunde");
+                            // DL 04.04.2023 Remove Interessent Segment
+                            // removeSegment(32854);
 
                             xhr_get('https://www.hessnatur.com/de/my-account/orders', function(response){
                                 try {
@@ -293,6 +312,9 @@
                                         if(response.split("js_orderHistoryItem-").length > 1){
                                             // bestandskunde, more than 1 order
                                             setProfileValue("customerType", "Bestandskunde");
+
+                                            // DL 04.04.2023 Remove Neukunde Segment
+                                            // removeSegment(32856);
                                         }
                                     }
                                     
