@@ -1,84 +1,123 @@
 // load core and global js
-// @codekit-prepend "../global/global.js";
-// @prepros-prepend "../global/global.js";
+// @ codekit-prepend "../global/global.js";
+// @ prepros-prepend "../global/global.js";
 
 /**
  * @function
- * @author Max Mustermann
+ * @author AH
  * @namespace V1
  * @name Variation 01
  * @description
  */
-(function(WATO) {
+(function(WATO, window) {
     "use strict";
 
-    /**
-     * CSS Prefix 
-     *
-    document.documentElement.classList.add('specific-experiment-class');
-    */
-
-    /**
-     * EXAMPLE - POLLING
-     *
-    WATO.elem(".btn-default", function(btnDefault) {
-
-        if(btnDefault) {
-
+    window.iridion.econda.push(["AB33", "V1"]);
+    const insert = (el, where, insertion) => {
+        return el && insertion && where && el["insertAdjacent" + (typeof insertion !== "string" ? "Element" : "HTML")](where, insertion);
+    },
+    getLength = (kkArray) => {
+        return kkArray && kkArray.length || 0;
+    },
+    getElementClassList = (element) => {
+        return element && element.classList;
+    },
+    addClass = (element, value) => {
+        if (typeof(value) === 'string') {
+            element && value && getElementClassList(element) && getElementClassList(element).add(value);
+        } else if (Array.isArray(value)) {
+            if (getLength(value) > 0) {
+                for (let i = 0; i < getLength(value); i++) {
+                    element && value && getElementClassList(element) && getElementClassList(element).add(value[i]);
+                }
+            }
+        } 
+    },
+    removeClass = (element, value) => {
+        element && value && getElementClassList(element) && getElementClassList(element).remove(value);
+    },
+    //preloadiamge function to prvent flickering
+    preloadImage = (ImageUrl) => {
+        var img=new Image();
+        img.src=ImageUrl;
+    },
+    goalPush = (key) => {
+        window.iridion.push(['goal', key]);
+    };
+    // insert new banner after end of parent node
+    WATO.elem ('#trustedShopsBanner', (trustedBanner) => {
+        const trustedBanners = trustedBanner[0].closest('.row');
+        const trustedBannersParent = trustedBanners.parentElement;
+        insert(trustedBanners, 'afterend',
+        '<div class="row medium-6">' +
+            '<div class="small-12 columns h-offset-bottom-inner kk-ab33-wrap">'+
+                '<div class="kk_trustpilot">' +
+                '<div>' +
+                    '<div class="kk-header">Wie gut hat Ihnen der Einkauf bei hessnatur gefallen?</div>' +
+                        '<div class="kk_stars_wrapper">' +
+                            '<a class="kk_stars" href="https://de.trustpilot.com/review/www.hessnatur.com"target="_blank" > ' +
+                            '<div data-value="stars-1"></div>' +
+                                '<div data-value="stars-2"></div>' +
+                                '<div data-value="stars-3"></div>' +
+                                '<div data-value="stars-4"></div>' +
+                                '<div data-value="stars-5"></div>' +
+                            '</a>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+        '</div>' 
+        );
+        // remove and add some classes for the bootstrap grid
+        const wrapperCol = WATO.qs('.small-12.columns.xlarge-offset-1.xlarge-10.xxlarge-offset-2.xxlarge-8');
+        removeClass(wrapperCol,'xxlarge-offset-2');
+        addClass(wrapperCol,['xxlarge-offset-1', 'xxlarge-10']);
+        addClass(trustedBannersParent, 'kk_row');
+        const rowChilds = WATO.qsa('.row', trustedBannersParent);
+        //check length to get the right elements
+        if (getLength(rowChilds) > 5) {
+            for (let i = 2; i < 5; i++) {
+                removeClass(rowChilds[i], 'row');
+                addClass(rowChilds[i], ['small-12', 'xlarge-4', 'medium-8', 'large-6']);
+                if (i === 3) {
+                    addClass(rowChilds[i],['xlarge-6', 'xxlarge-4']);
+                    addClass(WATO.qs('.small-12',rowChilds[i]), 'h-offset-bottom-inner');
+                }
+            }
         }
-    });
+        // change background url to get the different rating svg´s
+        const imgURL = "https://media.hessnatur.com/kk/2023/ab33/"
+        const stars = WATO.qsa('.kk_stars div', trustedBannersParent);
+        let ratingSend = false;
+        for (let i = 0; i < getLength(stars); i++) {
+            const thisStar =  stars[i];
+            WATO.ev(thisStar,'mouseenter', (ratingEnter) => { 
+                    const ratingTarget = ratingEnter.target;
+                if (ratingTarget.dataset.value) {
+                    ratingTarget.parentElement.style.background = "url(" + imgURL + ratingTarget.dataset.value + ".svg) transparent no-repeat bottom center  / cover";
+                }
+            });
+            // switch to 0 stars image when mouse leaves
+            // WATO.ev(thisStar,'mouseleave', (ratingLeave) => {
+            //     if (ratingLeave.target) {
+            //         ratingLeave.target.parentElement.style.background = "url(" + imgURL + "stars-0.svg) transparent no-repeat bottom center  / cover";
+            //     }
+            // });
 
-    // POLLING MIT FUNKTION
-    WATO.elem(function(){return window.numTest === 123;}, function(funcCallback) {
-
-        if(funcCallback){
-
+            //Goals
+            //trustpilot click
+            WATO.ev(thisStar,'click', (trustpilotClick) => {
+                if (trustpilotClick && !ratingSend) {
+                    ratingSend = true;
+                    goalPush('click_trustpilot_' + trustpilotClick.target.dataset.value)
+                    goalPush('click_thankyou_trustpilot');
+                    window.iridion.push(["segment", "32925"]);
+                }
+            });
+            //Preload image to prevent more flickering
+            preloadImage(imgURL + 'stars-' + (i+1) + '.svg');
         }
-    });
-    */
-
-
-    /**
-     * EXAMPLE - MUTATION OBSERVER
-     * 
-     * MUSS ERST IN WATO AKTIVIERT WERDEN
-     *
-    // INIT MUTATION OBSERVER
-    WATO.initObserver(function(error){
-
-        console.log(error);
+        WATO.ab33();
     });
 
-    // FIND ELEMENT
-    WATO.observer('.col-md-4', function(cols){
-
-    });
-    */
-
-
-    /**
-     * DOM READY
-     *
-    WATO.ready(function() {
-
-    });
-    */
-
-    /**
-     * EXAMPLE - Event
-     *
-    // with polling
-    WATO.ev('#main-cta', 'click', function(){
-        console.log("click it");
-    });
-
-    // without polling
-    WATO.elem('#main-cta', function(elem){
-
-        WATO.ev(elem[0], 'click', function(){
-            console.log("click it");
-        });
-    });
-    */
-   
-})(new window.WATO());
+})(new window.WATO(),window);

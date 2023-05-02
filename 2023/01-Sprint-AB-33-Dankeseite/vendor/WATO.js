@@ -174,7 +174,7 @@
      * @param {string} eventType
      * @param {function} callback
      */
-    /*
+
     window.WATO.prototype.ev = function (selector, eventType, callback) {
 
         if(typeof selector === "string"){
@@ -191,7 +191,6 @@
             selector.addEventListener(eventType, callback);
         }
     };
-    */
    
     /**
      * @function ready
