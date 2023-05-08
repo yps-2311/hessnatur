@@ -50,6 +50,10 @@
         align-items: center;
 
         color: #393939;
+
+        span {
+            white-space: nowrap;
+        }
     }
 
 }
@@ -88,6 +92,28 @@
     border-color: transparent transparent #E1DCD6 transparent;
     top: -20px;
     left: calc(50% - 10px);
+}
+.kk_sub_text {
+    flex-direction: column;
+    img {
+        margin: 0 0 2px 3px;
+        cursor: pointer;
+        width: 19px;
+        height: 18px;
+    }
+}
+.kk_asterisk {
+    overflow: hidden;
+    max-height: 150px;
+    font-size: 12px;
+    transition: 1s all;
+    line-height: 18px;
+    width: 100%;
+    text-align: left;
+
+    &.kk_hidden {
+        max-height: 0;
+    }
 }
 
 
@@ -160,6 +186,7 @@
     
         .kk_main_text {
             font-size: 21px;
+            line-height: 26px;
         }
     
         .kk_main_text::before {
@@ -188,6 +215,7 @@
     
         .kk_main_text {
             font-size: 21px;
+            line-height: 26px;
         }
     
         .kk_main_text::before {
