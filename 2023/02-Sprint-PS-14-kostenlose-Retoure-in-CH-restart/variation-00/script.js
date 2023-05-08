@@ -8,11 +8,14 @@
  * @name Variation 00
  * @description Original von Jonas Hoeppe
  */
- (function(WATO) {
-    "use strict";
+//  (function(WATO) {
+//     "use strict";
 
-    // Cookie setzen
-    document.cookie = "PromotionMediumNo=DMR; expires=Mon, 17 May 2023 00:00:00 GMT; path=/ch/;";
-    window.iridion.econda.push(["PS14CHrestart", "V0"]);
+//     // Cookie setzen
+//     // TODO Ablaufdatum des Cookies anpassen wenn Datum vorliegt
+//     document.cookie = "PromotionMediumNo=DMR; expires=Mon, 17 May 2023 00:00:00 GMT; path=/ch/;";
+    
+//     // TODO Zum Teststart wieder einbauen
+//     // window.iridion.econda.push(["PS14CHrestart", "V0"]);
        
-})(new window.WATO());
+// })(new window.WATO());
