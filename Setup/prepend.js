@@ -258,6 +258,15 @@ window.iridion.econda = (function(window){
     }
 
     function goalPush(key){
+        // Added by DL 25.05.2023 integration old new system
+        try {
+            if(typeof window.kkiridionhook === "function"){
+                window.kkiridionhook(key);
+            }
+        } catch (error) {
+            console.log('Error: ', error);
+        }
+        // end
         window.iridion.push(['goal', key]);
     }
     
