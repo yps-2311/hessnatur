@@ -534,7 +534,7 @@
 												'<div class="column small-12 medium-6 large-5">' +
 													'<div class="row align-right">' +
 														'<div class="kk_payment_info column small-6 medium-12 h-xsmallOffset-bottom-outer">' +
-															'<img src="https://media.hessnatur.com/kk/2022/Sprint%20AB%2008.3%20Warenkorb%20Ersparnisse/paymentoptions.svg"></div>' +
+															'<img src="https://media.hessnatur.com/kk/2022/Sprint%20AB%2008.3%20Warenkorb%20Ersparnisse/paymentoptions.png"></div>' +
 														'</div>' +	
 													'</div>' +
 												'</div>' +
