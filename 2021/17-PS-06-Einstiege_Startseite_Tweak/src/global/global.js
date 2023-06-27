@@ -415,7 +415,7 @@ WATO.exclude(1023, function () {
 
 		// MK: 19.08.2022 Bugfix Teaser und HTML-Struktur gegen Slider ausgetauscht
 		// WATO.elem(".lpmHeroSlider", function (headline) {
-		WATO.elem(".lpmHero", function (headline) {
+		WATO.elem(".lpmHeroSlider .lpmHero", function (headline) {
 	
 			if (headline) {
 
@@ -425,8 +425,13 @@ WATO.exclude(1023, function () {
 
 				if(WATO.qs(".lpmHeroSlider")){
 
-					placeRecom = WATO.qs(".lpmSeparator:last-of-type",WATO.qs(".lpmHeroSlider").parentNode);
-					placePos = "beforebegin";
+					const temp = WATO.qs(".lpmSeparator:last-of-type", WATO.qs(".lpmHeroSlider").parentNode);
+
+					if(temp){
+						placeRecom = temp;
+						placePos = "beforebegin";
+					}
+					
 				}
 
 				// var ref = "";
@@ -452,21 +457,24 @@ WATO.exclude(1023, function () {
 				// 	'</div>'	
 				// );
 
-				placeRecom.insertAdjacentHTML(placePos,
-					'<div class="lpmSeparator">&nbsp;</div>'+
-					'<div id="kk_insertion" class="small-12 columns js-product-reference">' +
-						'<div class="small-12 columns">'+
-							'<div class="row js-productSliderWrapper">'+ // h-xxLargeOffset-bottom-outer
-								'<div class="recommendation-headline column small-12 h-mediumOffset-bottom-outer">'+
-									'<div class="h2 text-left recommendation-headline__text">Nachhaltige Produkte für Sie ausgewählt</div>'+
-								'</div>'+
-								'<div class="column small-12 h-no-padding-medium-down">'+
-									initKkSliderContainer("kk_Tendencies_content") +
+				if(placeRecom){
+					placeRecom.insertAdjacentHTML(placePos,
+						'<div class="lpmSeparator">&nbsp;</div>'+
+						'<div id="kk_insertion" class="small-12 columns js-product-reference">' +
+							'<div class="small-12 columns">'+
+								'<div class="row js-productSliderWrapper">'+ // h-xxLargeOffset-bottom-outer
+									'<div class="recommendation-headline column small-12 h-mediumOffset-bottom-outer">'+
+										'<div class="h2 text-left recommendation-headline__text">Nachhaltige Produkte für Sie ausgewählt</div>'+
+									'</div>'+
+									'<div class="column small-12 h-no-padding-medium-down">'+
+										initKkSliderContainer("kk_Tendencies_content") +
+									'</div>'+
 								'</div>'+
 							'</div>'+
-						'</div>'+
-					'</div>'
-				);
+						'</div>'
+					);
+				}
+				
 
 				// WATO.elem('.pusActionModule', function(pusActionModule){
 				// 	if(pusActionModule){
