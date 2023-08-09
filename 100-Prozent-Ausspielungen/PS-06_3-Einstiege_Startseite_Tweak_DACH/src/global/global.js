@@ -157,6 +157,7 @@ WATO.exclude(1023, function () {
             ];
 		}
 
+		// console.log('CATEGORIES: ', CATEGORIES);
 		return CATEGORIES;
 	};
 
@@ -167,6 +168,7 @@ WATO.exclude(1023, function () {
 		}
 
 		CATEGORY_AFFINITY = CATEGORY_AFFINITY.replace(/"/g, '');
+		// console.log('CATEGORY_AFFINITY: ', CATEGORY_AFFINITY);
 
 
 		// var IMG_PATH = "https://media.hessnatur.com/kk/2021/ps06-startseite/";
@@ -200,10 +202,12 @@ WATO.exclude(1023, function () {
 		if(userAlignment === "baby"){
 			userAlignment = "Kinder";
 		}
+		// console.log('userAlignment: ', userAlignment);
 
 		// WATO.PS06_Tweak_Goals();
 
 		function initFlickity(slide){
+			// console.log('slide: ', slide);
 			var props = {
 				cellAlign: 'left',
 				contain: true,
@@ -308,10 +312,12 @@ WATO.exclude(1023, function () {
 		}
 	
 		function insertTendencies(items) {
+			// console.log('items: ', items);
 			
 			var result = '';
 	
 			for(var item in items){
+				// console.log('item: ', item);
 				
 			//var product = dataTendencies[category].response;
 	
@@ -411,14 +417,14 @@ WATO.exclude(1023, function () {
 		// 		}
 		// 	}
 		// }
-
+		// console.log(3);
 
 		// MK: 19.08.2022 Bugfix Teaser und HTML-Struktur gegen Slider ausgetauscht
 		// WATO.elem(".lpmHeroSlider", function (headline) {
 		WATO.elem(".lpmHeroSlider .lpmHero", function (headline) {
 	
 			if (headline) {
-
+				// console.log(7);
 				// Sicherstellen, dass sowohl alte wie auch neue Implmentierung funktioniert
 				let placeRecom = headline[0],
 					placePos = "afterend";
@@ -426,6 +432,7 @@ WATO.exclude(1023, function () {
 				if(WATO.qs(".lpmHeroSlider")){
 
 					const temp = WATO.qs(".lpmSeparator:last-of-type", WATO.qs(".lpmHeroSlider").parentNode);
+					// console.log('temp: ', temp);
 
 					if(temp){
 						placeRecom = temp;
@@ -456,8 +463,9 @@ WATO.exclude(1023, function () {
 				// 		'</div>' +
 				// 	'</div>'	
 				// );
-
+				// console.log(8);
 				if(placeRecom){
+					// console.log('placeRecom: ', placeRecom);
 					placeRecom.insertAdjacentHTML(placePos,
 						'<div class="lpmSeparator">&nbsp;</div>'+
 						'<div id="kk_insertion" class="small-12 columns js-product-reference">' +
@@ -491,7 +499,7 @@ WATO.exclude(1023, function () {
 				// });
 			}
 		});
-
+		// console.log(9);
 
 		// DL 03.12.21
 		// WATO.elem('#kk_popularities_content',function(popularities){
@@ -540,33 +548,36 @@ WATO.exclude(1023, function () {
 
 		
 		var econdaWidgetIds = {
-				de: {
-					accountID: 1,
-					damen: 96,
-					herren: 93,
-					baby: 94,
-					home: 95
-				},
-				ch: {
-					accountID: 2,
-					damen: 11,
-					herren: 84,
-					baby: 85,
-					home: 86
-				},
-				at: {
-					accountID: 3,
-					damen: 88,
-					herren: 80,
-					baby: 81,
-					home: 82
-				}
+			de: {
+				accountID: 1,
+				damen: 96,
+				herren: 93,
+				baby: 94,
+				home: 95
 			},
-			econdaId = econdaWidgetIds[urlPathName[1]][CATEGORY_AFFINITY];
+			ch: {
+				accountID: 2,
+				damen: 11,
+				herren: 84,
+				baby: 85,
+				home: 86
+			},
+			at: {
+				accountID: 3,
+				damen: 88,
+				herren: 80,
+				baby: 81,
+				home: 82
+			}
+		},
+		econdaId = econdaWidgetIds[urlPathName[1]][CATEGORY_AFFINITY];
+		
+		// console.log('econdaId: ', econdaId);
 
 		econdaAccountID = econdaAccountID + econdaWidgetIds[urlPathName[1]].accountID;
+		// console.log('econdaAccountID: ', econdaAccountID);
 
-		
+		// console.log(10);
 		WATO.elem(function(){
 			return (
 				typeof window.econda !== "undefined" && 
@@ -576,14 +587,22 @@ WATO.exclude(1023, function () {
 		},function(){
 
 			WATO.ajaxCallback(`https://widgets.crosssell.info/eps/crosssell/recommendations/${econdaAccountID}.do?`, function (rawData) {
+				// console.log('rawData: ', rawData);
 
-				if(alreadyInitialized){
+
+				const recoJson = JSON.parse(rawData.response);
+
+				if(alreadyInitialized || recoJson.size === 0){
 					return;
-				} else {
+				} else if(recoJson.items.length > 0 && recoJson.widgetdetails.tracking.emcs0.indexOf(String(econdaId)) !== -1){
 					alreadyInitialized = true;
 				}
 				
-				var itemsMarkup = insertTendencies(JSON.parse(rawData.response).items);
+				// console.log('JSON.parse(rawData.response).items: ', JSON.parse(rawData.response).items);
+
+				var itemsMarkup = insertTendencies(recoJson.items);
+
+				// console.log('itemsMarkup: ', itemsMarkup);
 
 				WATO.elem(function(){
 					return typeof window.Flickity !== "undefined"; //  && WATO.qsa('a > img', slide)[items.length-1].clientHeight > 0
@@ -594,6 +613,7 @@ WATO.exclude(1023, function () {
 						WATO.elem('#kk_Tendencies_content',function(slide){
 							if(slide){
 								slide=slide[0];
+								// console.log('slide: ', slide);
 
 								slide.innerHTML = '';
 								slide.style.opacity = "0";
@@ -603,6 +623,7 @@ WATO.exclude(1023, function () {
 									return WATO.qs('.kk_productitem_tendency img', slide).offsetHeight > 140;
 								}, function(img){
 									if(img){
+										// console.log('img: ', img);
 										initFlickity(slide);
 									}
 								});
