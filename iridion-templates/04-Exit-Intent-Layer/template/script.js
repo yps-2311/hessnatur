@@ -39,6 +39,7 @@
         DROPDOWN_NEWSLETTER_TRIGGER = "{{name=NewsletterONOFF&desc=Newsletter Eingabefeld wird angezeigt&type=webarts.watt.editor.impl.SelectEditor&values=on;off}}",
         TEXT_NEWSLETTER_BUTTON = "{{name=Newsletter_Button_Text&desc=Wenn Sie den Newsletter anzeigen, können Sie den Text des Buttons ändern (optional)&type=webarts.watt.editor.impl.TextEditor}}",
         TEXT_FUSSNOTE = "{{name=Fussnote&desc=Sie können zusätzlichen Text als Fußnote angeben (optional). Schriftgröße 10&type=webarts.watt.editor.impl.TextEditor}}",
+        DROPDOWN_FUSSNOTE_SIZE = "{{name=Fußnotengroesse&desc=Schriftgröße der Fußnote&type=webarts.watt.editor.impl.SelectEditor&values=10;11;12}}",
         DROPDOWN_BADGE_TRIGGER = "{{name=BadgeONOFF&desc=Badge über dem Bild wird angezeigt&type=webarts.watt.editor.impl.SelectEditor&values=on;off}}",
         TEXT_BADGE1 = "{{name=Badge_Text1&hint=max. 5 Zeichen&desc=Die Zeile des Badges hat nicht mehr Platz als 5 Zeichen (optional)&type=webarts.watt.editor.impl.TextEditor}}",
         TEXT_BADGE2 = "{{name=Badge_Text2&desc=Dieser Text wird klein im Badge unter dem ersten Text angezeigt (optional)&type=webarts.watt.editor.impl.TextEditor}}",
@@ -72,6 +73,7 @@
                 subline = htmlDecode(TEXT_SUBLINE),
                 flowtext = htmlDecode(TEXT_FLOWTEXT),
                 fussnote = htmlDecode(TEXT_FUSSNOTE),
+                fussnoteSize = htmlDecode(DROPDOWN_FUSSNOTE_SIZE),
                 newsletterBoxOn = htmlDecode(DROPDOWN_NEWSLETTER_TRIGGER).toLowerCase().indexOf("on") !== -1,
                 BadgeOn = htmlDecode(DROPDOWN_BADGE_TRIGGER).toLowerCase().indexOf("on") !== -1,
                 badgeText1 = htmlDecode(TEXT_BADGE1),
@@ -82,7 +84,7 @@
             // Modal wird eingebaut
             WATO.qs('body').insertAdjacentHTML('afterbegin', 
                 '<div class="reveal-overlay kk_template_modal">'+
-                    '<div id="availability-matrix" class="availability-matrix reveal" data-reveal="wlkcnt-reveal" data-close-on-click="true" data-animation-in="fade-in" '+
+                    '<div id="availability-matrix" class="availability-matrix reveal kk_asterisksize'+fussnoteSize+'" data-reveal="wlkcnt-reveal" data-close-on-click="true" data-animation-in="fade-in" '+
                     'data-animation-out="fade-out" role="dialog" aria-hidden="false" data-yeti-box="availability-matrix" data-resize="availability-matrix" style="display: block; top: 185px;" tabindex="-1">'+
                         '<div class="row">'+
                             '<div class="kk_left" '+(valideImgURL(IMG_IMAGE_LEFT) ? 'style="background-image: url('+IMG_IMAGE_LEFT+')" ' : '')+'>'+
