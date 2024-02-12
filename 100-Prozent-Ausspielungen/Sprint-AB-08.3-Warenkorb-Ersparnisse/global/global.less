@@ -538,7 +538,7 @@
         > :first-child {
             margin-left: 20px;
             
-            a{
+            a {
                 background: #FFFFFF;
                 border: 1px solid #000000;
                 box-sizing: border-box;
@@ -547,14 +547,10 @@
                 min-width: 277px;
             }
         }
-        > :last-child {
+
+        > :not(:first-of-type) {
             margin: auto;
             margin-right: 20px;
-
-            a {
-                padding-left: 4rem;
-                padding-right: 4rem;
-            }
         }
     }
 
