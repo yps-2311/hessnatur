@@ -816,13 +816,24 @@
 }
 
 .kk_payment_info {
-    display: flex;
-    justify-content: flex-end;
+    // display: flex;
+    // justify-content: flex-end;
+    display: grid;
+    grid-template-columns: 1fr 11%;
+    gap: 1.2%;
 
-    img {
+    img:first-of-type {
         width: 100%;
         height: auto;
         max-width: 621px;
+        justify-self: end;
+    }
+
+    img:last-of-type {
+        padding: 5px;
+        background: #fefcfb;
+        height: 100%;
+        border-radius: 3px;
     }
 }
 
@@ -1055,8 +1066,9 @@
 }
 
 .button.success.expanded-small-only {
-    background-color: #393939;
-    margin-bottom: 5px;
+    // background-color: #393939;
+    margin-bottom: 10px;
+    background: #63B524;
 }
 
 .listing__table--item a > span {
@@ -1108,4 +1120,10 @@
 
 .kk-hidden {
     display: none;
+}
+
+@media only screen and (min-width: 640px) {
+    .kk_payment_info_container>:last-child {
+        margin-right: 0;
+    }
 }

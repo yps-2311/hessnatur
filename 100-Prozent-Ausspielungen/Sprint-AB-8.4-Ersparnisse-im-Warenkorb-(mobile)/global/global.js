@@ -194,7 +194,7 @@
 		function insertBorderContainerElementLayout(element, positioning, className, content) {
 			element.insertAdjacentHTML(positioning,
 			'<div class="' + className + '_container row h-xsmallOffset-bottom-outer">' +
-				'<div class="column small-12 medium-6 large-5">' +
+				'<div class="column ' + (className === 'kk_payment_info' ? ' small-12 medium-8 large-6">' : ' small-12 medium-6 large-5">') +
 					'<div class="row align-right">' +
 						'<div class="' + className + ' column small-6 medium-12 h-xsmallOffset-bottom-outer">' +
 							content +
@@ -286,11 +286,14 @@
 				);
 			}
 		});
-	
-	
+
 		// find bottom CTA so products a loaded
 		_self.elem('.h-mediumOffset-bottom-inner .button.success', function(bottomCTA) {
 			if(bottomCTA) {
+
+				_self.qsa('.button.success').forEach(cta => {
+					cta.innerText = "Zur Kasse";
+				});
 
 				var _products = _self.qsa('.listing__table--item'), 
 				_productCount = _products.length,
@@ -668,7 +671,8 @@
 										if(continue_or_payment_btn_container) {
 											
 											insertBorderContainerElementLayout(continue_or_payment_btn_container, 'afterend', 'kk_payment_info', 
-												'<img src="https://media.hessnatur.com/kk/2022/Sprint%20AB%2008.3%20Warenkorb%20Ersparnisse/paymentoptions.png"></div>'
+												'<img src="https://media.hessnatur.com/kk/2022/Sprint%20AB%2008.3%20Warenkorb%20Ersparnisse/paymentoptions.png">' +
+												'<img src="https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2024/100%25-AB-8.3-Warenkorb-Ersparnisse/amazonpay.png">'
 											);
 										}
 

@@ -484,10 +484,19 @@
     margin-bottom: 36px !important;
     margin-top: 13px;
 
-    img {
-        width: 100%;
-        height: auto;
-        max-width: 621px;
+    img:first-of-type {
+        width: auto;
+        height: 34px;
+        max-height: 34px;
+    }
+
+    img:last-of-type {
+        height: 34px;
+        background: #fefcfb;
+        border-radius: 3px;
+        padding: 6px;
+        margin-left: 5px;
+        width: auto;
     }
 }
 
@@ -677,7 +686,9 @@
 }
 
 .button.success.expanded-small-only {
-    background-color: #393939;
+    // background-color: #393939;
+    background: #63B524;
+    min-width: 277px;
 }
 
 .listing__table--item a > span {

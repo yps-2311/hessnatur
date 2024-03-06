@@ -185,10 +185,13 @@
 			}
 		});
 	
-	
 		// find bottom CTA so products a loaded
 		_self.elem('.h-mediumOffset-bottom-inner .button.success', function(bottomCTA) {
 			if(bottomCTA) {
+
+				_self.qsa('.button.success').forEach(cta => {
+					cta.innerText = "Zur Kasse";
+				});
 
 				var _products = _self.qsa('.listing__table--item'), 
 					_productCount = _products.length,
@@ -294,7 +297,7 @@
                                 // ['3658101', '1786201', '5204336']
                                 // ['3658101', '1786201', '3984501']    // updated products
                                 // ['3984501', '1786201', '5309101']   // updated 08.12.2022
-                                ['3984501', '1786201', '5202377'], // updated 24.04.2023
+                                ['3984501', '1786201', '5202377'] // updated 24.04.2023
                             ],
                             'home': [
                                 // Ersparniss >= 25 || 29.95
@@ -307,7 +310,7 @@
                                 // ['4953996', '5289101', '5320412']  // updated 16.12.2022
                                 // ['4953996', '5289101', '5288601']  // updated 14.02.2023
                                 // ['4953996', '5289101', '52887011'], // updated 24.04.2023
-                                ['4980196', '5289101', '52887011'], // updated 24.07.2023
+                                ['4980196', '5289101', '52887011'] // updated 24.07.2023
                             ],
                             // Default von Damen
                             'sonstiges': [
@@ -410,7 +413,7 @@
 
 					var subtotalDiv = kk_sum.parentElement.parentElement.parentElement.parentElement;
 
-					var callout = _self.qs('.js_backstopWrapper > .callout.dark-gray');
+					// var callout = _self.qs('.js_backstopWrapper > .callout.dark-gray');
 
 					_self.elem('.js_backstopWrapper > .callout.dark-gray', function(calloutForm) {  
 						if(calloutForm){
@@ -536,7 +539,8 @@
 												'<div class="column small-12 medium-6 large-5">' +
 													'<div class="row align-right">' +
 														'<div class="kk_payment_info column small-6 medium-12 h-xsmallOffset-bottom-outer">' +
-															'<img src="https://media.hessnatur.com/kk/2022/Sprint%20AB%2008.3%20Warenkorb%20Ersparnisse/paymentoptions.png"></div>' +
+															'<img src="https://media.hessnatur.com/kk/2022/Sprint%20AB%2008.3%20Warenkorb%20Ersparnisse/paymentoptions.png">' +
+															'<img src="https://kk-ffm.s3.eu-central-1.amazonaws.com/hessnatur/2024/100%25-AB-8.3-Warenkorb-Ersparnisse/amazonpay.png">' +
 														'</div>' +	
 													'</div>' +
 												'</div>' +
