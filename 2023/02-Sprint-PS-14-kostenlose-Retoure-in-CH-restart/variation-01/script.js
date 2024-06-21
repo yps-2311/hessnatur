@@ -61,7 +61,7 @@
     // Set Cookie
     // Ablaufdatum des Cookies anpassen wenn Datum vorliegt
     // document.cookie = "PromotionMediumNo=EOR F23 Test ohne Retourekosten FS23; expires=Mon, 13 May 2024 00:00:00 GMT; path=/ch/;";
-    document.cookie = "PromotionMediumNo=EOR; expires=Mon, 13 May 2024 00:00:00 GMT; path=/ch/;";
+    document.cookie = "PromotionMediumNo=EOR; expires=Mon, 13 May 2028 00:00:00 GMT; path=/ch/;";
 
     // Econda
     // Zum Teststart wieder einbauen
