@@ -47,6 +47,9 @@
         return;
       }
 
+      // Tastatur verhindern via readonly
+      input.setAttribute("readonly", "readonly");
+
       input.focus();
       input.dispatchEvent(
         new KeyboardEvent("keydown", {
@@ -57,6 +60,10 @@
           cancelable: true
         })
       );
+
+      setTimeout(() => {
+        input.removeAttribute("readonly");
+      }, 100);
 
 
     });
