@@ -48,7 +48,7 @@
       }
 
       // Tastatur verhindern via readonly
-      input.setAttribute("readonly", "readonly");
+      // input.setAttribute("readonly", "readonly");
 
       input.focus();
       input.dispatchEvent(
@@ -61,9 +61,9 @@
         })
       );
 
-      setTimeout(() => {
-        input.removeAttribute("readonly");
-      }, 100);
+      // setTimeout(() => {
+      //   input.removeAttribute("readonly");
+      // }, 100);
 
 
     });
