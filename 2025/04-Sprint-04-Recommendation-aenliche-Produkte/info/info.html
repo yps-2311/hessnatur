@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+
+<h1 id="hessnatur:s4-pdprecommendationÄhnlicheartikel">Hessnatur: S4 - PDP Recommendation Ähnliche Artikel</h1>
+
+<h2 id="linkzumticket:https:app.asana.com1764572328486306project1208332833642930task1211754451002366focustrue">Link zum Ticket: https://app.asana.com/1/764572328486306/project/1208332833642930/task/1211754451002366?focus=true</h2>
+
+<h2 id="recowidget202ähnlicheartikel">Reco Widget 202 ähnliche Artikel</h2>
+
+<p>&lt;div id=&quot;ecRecommendationsContainer_202&gt;Loading&#8230;</div>
+<script type="text/javascript">
+// Setup widget, load data and render using defined template
+var widget = new econda.recengine.Widget({
+element: document.getElementById(&#8216;ecRecommendationsContainer_202&#8217;),
+renderer: {
+ type: &#8216;template&#8217;,
+ uri: &#8216;/path/to/my/template.html&#8217;
+},
+accountId: &#8216;00002762&#8211;7fbb585b-0c52&#8211;33a0-ad30-b2319526ea2f-1&#8217;,
+id: &#8216;202&#8217;
+});
+widget.render();
+</script></p>
+
+<h2 id="programmieransatz">Programmier Ansatz</h2>
+
+<ul>
+<li>API Request nachbauen, un dann in Bestehende Reco integrieren, und Produkte tauschen.</li>
+<li>Preisdarstellung manchmal konfus über die verscheidenen Objects</li>
+<li>Innerhalb der Regel, werden Gleiche Produkte in unterschiedlichen Größen ausgewiesen -&gt; Entscheidung diese zu deduplizieren</li>
+<li>Produkte aus der Reco werden im Session Storage gecached um performanter zu werden</li>
+</ul>
+
+<h2 id="zutesten:">Zu Testen:</h2>
+
+<ul>
+<li>keine Produkt dopplungen</li>
+<li>Wishlist Funktion für verschiedene Countries</li>
+<li>Performance, läsdt es ähnlich schnell wie die alte Reco
+-Klappt aktuell gut für: https://www.hessnatur.com/de/strick-pullover-regular-aus-bio-merinowolle-mit-kaschmir/p/5751696M?queryID=92af9603190ae205feeda4bf9281c2ed&amp;objectID=id_5751606XXL&amp;indexName=hna-product-de-de-styleCode</li>
+<li>Bei manchen Referenz Produkten kommt von Econda nicht genug zurück</li>
+</ul>
+
+<h2 id="offentodo:">OFFEN / TODO:</h2>
+
+<ul>
+<li><strong>Wishlist-Button funktioniert nicht:</strong> Die GUID für die Wishlist-API wird nicht korrekt ermittelt. Muss geprüft werden wo hessnatur die GUID speichert (Cookie, localStorage, sessionStorage, <strong>NEXT_DATA</strong>). Aktuell wird eine neue GUID generiert, aber die API akzeptiert diese möglicherweise nicht.</li>
+</ul>
+
+<h2 id="tbd:">TBD:</h2>
+
+<ul>
+<li>sollte der Produktlink gleich auf die Variantengröße Linken? Wäre eigenlich sehr komfortabel, dann müsste man den link ensprechend über die SKU modfizieren</li>
+<li>sollte man generell die entsprechenden größen anzeigen labeln? (nicht in diesem Test) </li>
+</ul>
+
+</body>
+</html>
+
