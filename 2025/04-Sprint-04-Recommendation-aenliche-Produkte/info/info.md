@@ -20,8 +20,6 @@ widget.render();
 </script>
 
 
-
-
 ## Programmier Ansatz
 - API Request nachbauen, un dann in Bestehende Reco integrieren, und Produkte tauschen. 
 - Preisdarstellung manchmal konfus über die verscheidenen Objects 
@@ -37,7 +35,11 @@ widget.render();
 
 ## OFFEN / TODO:
 - **Wishlist-Button funktioniert nicht:** Die GUID für die Wishlist-API wird nicht korrekt ermittelt. Muss geprüft werden wo hessnatur die GUID speichert (Cookie, localStorage, sessionStorage, __NEXT_DATA__). Aktuell wird eine neue GUID generiert, aber die API akzeptiert diese möglicherweise nicht.
+- select_reco_item als Klick Goal für den DataLayer aufzeichen  
+- Goal Datalayer vervielfältigen 
 
 ## TBD: 
 - sollte der Produktlink gleich auf die Variantengröße Linken? Wäre eigenlich sehr komfortabel, dann müsste man den link ensprechend über die SKU modfizieren
-- sollte man generell die entsprechenden größen anzeigen labeln? (nicht in diesem Test) 
+- sollte man generell die entsprechenden größen anzeigen labeln? (nicht in diesem Test)
+- Performance check, macht es Sinn die Items in einem Object oder Storage zwischen zu speichern, damit nicht X Api Calls entstehen
+-   

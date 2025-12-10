@@ -29,6 +29,49 @@
     };
 
     /**
+     * Toast-Benachrichtigung anzeigen (wie hessnatur native)
+     */
+    function showToast(message, type) {
+        // Bestehenden Toast entfernen
+        var existingToast = document.querySelector('.ec-reco-toast');
+        if (existingToast) existingToast.remove();
+
+        var toast = document.createElement('div');
+        toast.className = 'ec-reco-toast';
+        
+        var isSuccess = type === 'success';
+        var iconSvg = isSuccess 
+            ? '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#4CAF50"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+            : '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FFC107"/><path d="M12 8v4M12 16h.01" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg>';
+        
+        toast.innerHTML = iconSvg + '<span>' + message + '</span><button class="ec-toast-close">&times;</button>';
+        
+        // Styles inline setzen
+        toast.style.cssText = 'position:fixed;top:20px;right:20px;background:#fff;padding:16px 20px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:flex;align-items:center;gap:12px;z-index:99999;font-family:inherit;font-size:14px;max-width:350px;animation:ecToastIn 0.3s ease;';
+        
+        // Close Button Style
+        var closeBtn = toast.querySelector('.ec-toast-close');
+        closeBtn.style.cssText = 'background:none;border:none;font-size:20px;cursor:pointer;color:#999;padding:0;margin-left:8px;';
+        closeBtn.onclick = function() { toast.remove(); };
+        
+        // Animation CSS hinzufügen
+        if (!document.querySelector('#ec-toast-styles')) {
+            var style = document.createElement('style');
+            style.id = 'ec-toast-styles';
+            style.textContent = '@keyframes ecToastIn{from{opacity:0;transform:translateX(100px)}to{opacity:1;transform:translateX(0)}}@keyframes ecToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(100px)}}';
+            document.head.appendChild(style);
+        }
+        
+        document.body.appendChild(toast);
+        
+        // Nach 4 Sekunden ausblenden
+        setTimeout(function() {
+            toast.style.animation = 'ecToastOut 0.3s ease forwards';
+            setTimeout(function() { toast.remove(); }, 300);
+        }, 4000);
+    }
+
+    /**
      * Country aus URL oder HTML-Lang ermitteln
      * Hessnatur URLs: /de/, /at/, /ch/, /fr/, /nl/, /be/, etc.
      */
@@ -126,12 +169,21 @@
     }
 
     /**
-     * GUID aus verschiedenen Quellen holen oder generieren
+     * GUID aus verschiedenen Quellen holen
      */
     function getGuid() {
         if (cache.guid) return cache.guid;
         
-        // 1. Aus Cookie (verschiedene mögliche Namen)
+        // 1. Aus hessnatur Wishlist-Cookie (primäre Quelle!)
+        // Format: HessnaturDESite-wishlist, HessnaturATSite-wishlist, etc.
+        var wishlistCookieMatch = document.cookie.match(/Hessnatur[A-Z]{2}Site-wishlist=([^;]+)/);
+        if (wishlistCookieMatch) {
+            cache.guid = wishlistCookieMatch[1];
+            console.log('[econda Reco] GUID aus Wishlist-Cookie gefunden:', cache.guid);
+            return cache.guid;
+        }
+        
+        // 2. Aus Cookie (verschiedene mögliche Namen)
         var cookiePatterns = [/guid=([^;]+)/, /hn_guid=([^;]+)/, /customer_guid=([^;]+)/];
         for (var i = 0; i < cookiePatterns.length; i++) {
             var match = document.cookie.match(cookiePatterns[i]);
@@ -142,7 +194,7 @@
             }
         }
         
-        // 2. Aus localStorage
+        // 3. Aus localStorage
         try {
             var lsKeys = ['guid', 'hn_guid', 'customer_guid', 'wishlist_guid'];
             for (var j = 0; j < lsKeys.length; j++) {
@@ -157,7 +209,7 @@
             // localStorage nicht verfügbar
         }
         
-        // 3. Aus sessionStorage
+        // 4. Aus sessionStorage
         try {
             var ssKeys = ['guid', 'hn_guid', 'customer_guid'];
             for (var k = 0; k < ssKeys.length; k++) {
@@ -172,40 +224,9 @@
             // sessionStorage nicht verfügbar
         }
         
-        // 4. Aus __NEXT_DATA__ (Next.js State)
-        try {
-            var nextDataEl = document.getElementById('__NEXT_DATA__');
-            if (nextDataEl) {
-                var nextData = JSON.parse(nextDataEl.textContent);
-                if (nextData.props && nextData.props.pageProps) {
-                    var pageProps = nextData.props.pageProps;
-                    cache.guid = pageProps.guid || pageProps.customerGuid || pageProps.wishlistGuid;
-                    if (cache.guid) {
-                        console.log('[econda Reco] GUID aus __NEXT_DATA__ gefunden:', cache.guid);
-                        return cache.guid;
-                    }
-                }
-            }
-        } catch (_) {
-            // JSON parse error
-        }
-        
-        // 5. Neue GUID generieren und speichern
-        cache.guid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random() * 16 | 0;
-            var v = c === 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-        console.log('[econda Reco] Neue GUID generiert:', cache.guid);
-        
-        // In localStorage speichern für spätere Verwendung
-        try {
-            localStorage.setItem('guid', cache.guid);
-        } catch (_) {
-            // localStorage nicht verfügbar
-        }
-        
-        return cache.guid;
+        // 5. Keine GUID gefunden - nicht generieren, sondern null zurückgeben
+        console.warn('[econda Reco] Keine Wishlist-GUID gefunden');
+        return null;
     }
 
     /**
@@ -238,10 +259,33 @@
         .then(function(res) { return res.json(); })
         .then(function(data) {
             console.log('[econda Reco] Wishlist Response:', data);
-            if (data.data && data.data.updateWishlistEntry) {
-                button.classList.add('is-active');
-                var svg = button.querySelector('svg');
-                if (svg) svg.setAttribute('data-prefix', 'fas');
+            var entry = data.data && data.data.updateWishlistEntry;
+            if (entry) {
+                // Erfolg prüfen - quantityAdded > 0 = neu hinzugefügt, quantityAdded === 0 = bereits vorhanden
+                if (entry.quantityAdded !== undefined) {
+                    if (entry.quantityAdded > 0) {
+                        console.log('[econda Reco] ✅ Wishlist Erfolg - neu hinzugefügt!');
+                        showToast('Der Artikel wurde zum Merkzettel hinzugefügt.', 'success');
+                    } else {
+                        console.log('[econda Reco] ⚠️ Artikel bereits auf Merkzettel');
+                        showToast('Der Artikel ist bereits auf deinem Merkzettel.', 'warning');
+                    }
+                    // Visuelles Feedback - Herz füllen
+                    button.classList.add('is-active');
+                    var svg = button.querySelector('svg');
+                    if (svg) {
+                        svg.setAttribute('data-prefix', 'fas');
+                        svg.style.color = '#c00'; // Rotes Herz
+                    }
+                    // Kurze Animation
+                    button.style.transform = 'scale(1.2)';
+                    setTimeout(function() {
+                        button.style.transform = '';
+                    }, 200);
+                } else if (entry.invalidFields) {
+                    console.warn('[econda Reco] Wishlist Fehler:', entry.invalidFields);
+                    showToast('Fehler beim Hinzufügen zum Merkzettel.', 'warning');
+                }
             }
         })
         .catch(function(err) {
@@ -299,6 +343,11 @@
             img.src = image;
             img.alt = name;
             img.title = name; // Tooltip auch auf Bild
+            if (index === 0) {
+                console.log('[econda Reco] Bild gesetzt:', image);
+            }
+        } else if (index === 0) {
+            console.log('[econda Reco] Bild Problem - img:', !!img, 'image:', image);
         }
 
         // Titel
