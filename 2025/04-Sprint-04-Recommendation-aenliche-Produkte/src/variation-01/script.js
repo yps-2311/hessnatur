@@ -29,46 +29,21 @@
     };
 
     /**
-     * Toast-Benachrichtigung anzeigen (wie hessnatur native)
+     * CSS für Wishlist-Button Hover-Effekt und Fade-Transition hinzufügen
      */
-    function showToast(message, type) {
-        // Bestehenden Toast entfernen
-        var existingToast = document.querySelector('.ec-reco-toast');
-        if (existingToast) existingToast.remove();
-
-        var toast = document.createElement('div');
-        toast.className = 'ec-reco-toast';
+    function addRecoStyles() {
+        if (document.querySelector('#ec-reco-styles')) return;
         
-        var isSuccess = type === 'success';
-        var iconSvg = isSuccess 
-            ? '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#4CAF50"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-            : '<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#FFC107"/><path d="M12 8v4M12 16h.01" stroke="#000" stroke-width="2" stroke-linecap="round"/></svg>';
-        
-        toast.innerHTML = iconSvg + '<span>' + message + '</span><button class="ec-toast-close">&times;</button>';
-        
-        // Styles inline setzen
-        toast.style.cssText = 'position:fixed;top:20px;right:20px;background:#fff;padding:16px 20px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);display:flex;align-items:center;gap:12px;z-index:99999;font-family:inherit;font-size:14px;max-width:350px;animation:ecToastIn 0.3s ease;';
-        
-        // Close Button Style
-        var closeBtn = toast.querySelector('.ec-toast-close');
-        closeBtn.style.cssText = 'background:none;border:none;font-size:20px;cursor:pointer;color:#999;padding:0;margin-left:8px;';
-        closeBtn.onclick = function() { toast.remove(); };
-        
-        // Animation CSS hinzufügen
-        if (!document.querySelector('#ec-toast-styles')) {
-            var style = document.createElement('style');
-            style.id = 'ec-toast-styles';
-            style.textContent = '@keyframes ecToastIn{from{opacity:0;transform:translateX(100px)}to{opacity:1;transform:translateX(0)}}@keyframes ecToastOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(100px)}}';
-            document.head.appendChild(style);
-        }
-        
-        document.body.appendChild(toast);
-        
-        // Nach 4 Sekunden ausblenden
-        setTimeout(function() {
-            toast.style.animation = 'ecToastOut 0.3s ease forwards';
-            setTimeout(function() { toast.remove(); }, 300);
-        }, 4000);
+        var style = document.createElement('style');
+        style.id = 'ec-reco-styles';
+        style.textContent = [
+            // Wishlist Hover
+            '.ec-reco-updated .ec-wishlist-btn:hover svg { color: #c00 !important; }',
+            // Fade Transition für Anti-Flicker (schnell: 100ms)
+            '.ec-reco-fade { transition: opacity 0.1s ease-out; }',
+            '.ec-reco-fade.ec-fading { opacity: 0; }'
+        ].join('\n');
+        document.head.appendChild(style);
     }
 
     /**
@@ -101,13 +76,14 @@
         wishlistButton: '[data-testid="add-to-wishlist-button"]'
     };
 
-    // Cache für Template und GUID
+    // Cache für Template, GUID und Request-Tracking
     var cache = {
         template: null,
         guid: null,
-        productId: null,
-        lastRenderedProductId: null,
-        wrapper: null
+        lastRenderedUrl: null,
+        wrapper: null,
+        isLoading: false,
+        currentRequestToken: null // Verhindert Race Conditions bei schnellen URL-Wechseln
     };
 
     var STORAGE_KEY = 'econda_reco_cache';
@@ -115,23 +91,24 @@
 
     /**
      * Produkte aus sessionStorage laden
+     * Nutzt vollständige URL als Key für Farbvarianten-Support
      */
-    function getCachedProducts(productId) {
+    function getCachedProducts(productUrl) {
         try {
             var cached = sessionStorage.getItem(STORAGE_KEY);
             if (!cached) return null;
             
             var data = JSON.parse(cached);
-            var entry = data[productId];
+            var entry = data[productUrl];
             
             if (entry && (Date.now() - entry.timestamp) < CACHE_TTL) {
-                console.log('[econda Reco] Cache Hit für Produkt:', productId);
+                console.log('[econda Reco] Cache Hit für URL:', productUrl);
                 return entry.products;
             }
             
             // Abgelaufenen Eintrag löschen
             if (entry) {
-                delete data[productId];
+                delete data[productUrl];
                 sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
             }
         } catch (e) {
@@ -142,19 +119,29 @@
 
     /**
      * Produkte in sessionStorage speichern
+     * Nutzt vollständige URL als Key für Farbvarianten-Support
      */
-    function setCachedProducts(productId, products) {
+    function setCachedProducts(productUrl, products) {
         try {
             var cached = sessionStorage.getItem(STORAGE_KEY);
             var data = cached ? JSON.parse(cached) : {};
             
-            data[productId] = {
+            // Alte Einträge limitieren (max 10 behalten)
+            var keys = Object.keys(data);
+            if (keys.length > 10) {
+                var oldest = keys.reduce(function(a, b) {
+                    return data[a].timestamp < data[b].timestamp ? a : b;
+                });
+                delete data[oldest];
+            }
+            
+            data[productUrl] = {
                 products: products,
                 timestamp: Date.now()
             };
             
             sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-            console.log('[econda Reco] Cache gespeichert für Produkt:', productId, '(' + products.length + ' Produkte)');
+            console.log('[econda Reco] Cache gespeichert für URL:', productUrl, '(' + products.length + ' Produkte)');
         } catch (e) {
             console.warn('[econda Reco] Cache Schreibfehler:', e);
         }
@@ -166,6 +153,51 @@
     function getProductId() {
         var match = window.location.pathname.match(/\/p\/(\d+)/);
         return match ? match[1] : null;
+    }
+
+    /**
+     * Vollständige Produkt-URL für Cache-Key (inkl. Farbvarianten)
+     * Nutzt nur den Pathname - die Produkt-ID ändert sich bei Farbwechsel
+     */
+    function getProductUrl() {
+        // Bei Hessnatur ändert sich die Produkt-ID im Pfad bei Farbwechsel
+        // z.B. /de/p/5751788 -> /de/p/5751706
+        // Daher ist der Pathname allein ausreichend als Cache-Key
+        return window.location.pathname;
+    }
+
+    /**
+     * Ausgewählte Größe aus der aktuellen URL extrahieren
+     * Hessnatur Format: /p/5709863XL oder /p/5733876M
+     * @returns {string|null} Die Größe (z.B. "XL", "M", "XXL") oder null
+     */
+    function getSelectedSizeFromUrl() {
+        // Suche nach Produkt-ID mit angehängter Größe: /p/1234567XL
+        var match = window.location.pathname.match(/\/p\/(\d+)([A-Z]+)(?:\?|$|\/)/i);
+        if (match && match[2]) {
+            var size = match[2].toUpperCase();
+            // Validiere dass es eine echte Größe ist (nicht Teil der ID)
+            var validSizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', '2XL', '3XL'];
+            if (validSizes.indexOf(size) > -1) {
+                console.log('[econda Reco] Größe aus URL erkannt:', size);
+                return size;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Größe an Produkt-URL anhängen (Hessnatur Format)
+     * @param {string} url - Die Original-URL (z.B. https://www.hessnatur.com/de/p/5668959)
+     * @param {string} size - Die Größe (z.B. "M")
+     * @returns {string} URL mit Größe (z.B. https://www.hessnatur.com/de/p/5668959M)
+     */
+    function appendSizeToProductUrl(url, size) {
+        if (!size || !url || url === '#') return url;
+        
+        // Finde /p/1234567 und hänge Größe an
+        // Beachte: URL könnte schon Query-Parameter haben
+        return url.replace(/(\/p\/\d+)([^A-Z]|$)/i, '$1' + size + '$2');
     }
 
     /**
@@ -205,7 +237,7 @@
                     return cache.guid;
                 }
             }
-        } catch (_) {
+        } catch (e) {
             // localStorage nicht verfügbar
         }
         
@@ -220,7 +252,7 @@
                     return cache.guid;
                 }
             }
-        } catch (_) {
+        } catch (e) {
             // sessionStorage nicht verfügbar
         }
         
@@ -232,7 +264,7 @@
     /**
      * Wishlist Mutation aufrufen
      */
-    function addToWishlist(productCode, button) {
+    function addToWishlist(productCode) {
         var guid = getGuid();
         console.log('[econda Reco] Wishlist Add:', productCode, 'GUID:', guid, 'Country:', getCountry());
         if (!guid) {
@@ -261,30 +293,14 @@
             console.log('[econda Reco] Wishlist Response:', data);
             var entry = data.data && data.data.updateWishlistEntry;
             if (entry) {
-                // Erfolg prüfen - quantityAdded > 0 = neu hinzugefügt, quantityAdded === 0 = bereits vorhanden
                 if (entry.quantityAdded !== undefined) {
                     if (entry.quantityAdded > 0) {
                         console.log('[econda Reco] ✅ Wishlist Erfolg - neu hinzugefügt!');
-                        showToast('Der Artikel wurde zum Merkzettel hinzugefügt.', 'success');
                     } else {
                         console.log('[econda Reco] ⚠️ Artikel bereits auf Merkzettel');
-                        showToast('Der Artikel ist bereits auf deinem Merkzettel.', 'warning');
                     }
-                    // Visuelles Feedback - Herz füllen
-                    button.classList.add('is-active');
-                    var svg = button.querySelector('svg');
-                    if (svg) {
-                        svg.setAttribute('data-prefix', 'fas');
-                        svg.style.color = '#c00'; // Rotes Herz
-                    }
-                    // Kurze Animation
-                    button.style.transform = 'scale(1.2)';
-                    setTimeout(function() {
-                        button.style.transform = '';
-                    }, 200);
                 } else if (entry.invalidFields) {
                     console.warn('[econda Reco] Wishlist Fehler:', entry.invalidFields);
-                    showToast('Fehler beim Hinzufügen zum Merkzettel.', 'warning');
                 }
             }
         })
@@ -294,15 +310,66 @@
     }
 
     /**
+     * Discount in Prozent berechnen aus Streichpreis und aktuellem Preis
+     * @param {string} oldPrice - Alter Preis z.B. "149,99 €"
+     * @param {string} currentPrice - Aktueller Preis z.B. "99,99 €"
+     * @returns {number|null} - Rabatt in Prozent (gerundet) oder null
+     */
+    function calculateDiscount(oldPrice, currentPrice) {
+        if (!oldPrice || !currentPrice) return null;
+        
+        // Preis-String zu Zahl konvertieren: "149,99 €" -> 149.99
+        var parsePrice = function(priceStr) {
+            var cleaned = priceStr.replace(/[^\d,\.]/g, '').replace(',', '.');
+            return parseFloat(cleaned);
+        };
+        
+        var oldNum = parsePrice(oldPrice);
+        var currentNum = parsePrice(currentPrice);
+        
+        if (isNaN(oldNum) || isNaN(currentNum) || oldNum <= 0) return null;
+        
+        var discount = Math.round((1 - currentNum / oldNum) * 100);
+        return discount > 0 ? discount : null;
+    }
+
+    /**
+     * DataLayer Event pushen für Tracking
+     * @param {string} eventType - 'click' oder 'wishlist'
+     * @param {object} product - Produkt-Objekt mit id, name, price, etc.
+     * @param {number} index - Position im Reco-Slider (0-basiert)
+     */
+    function pushDataLayerEvent(eventType, product, index) {
+        window.dataLayer = window.dataLayer || [];
+        
+        // Discount berechnen wenn Streichpreis vorhanden
+        var discount = calculateDiscount(product.oldprice1, product.price);
+        
+        var eventData = {
+            event: "select_item_from_list",
+            item_id: product.id || '',
+            item_name: product.name || '',
+            index: index,
+            price: product.price || '',
+            item_list_name: "Ähnliche Produkte",
+            item_variant: product.sku || '',
+            currency: "EUR",
+            interaction_type: eventType // 'click' oder 'wishlist'
+        };
+        
+        // Discount nur hinzufügen wenn vorhanden
+        if (discount !== null) {
+            eventData.discount = discount;
+        }
+        
+        window.dataLayer.push(eventData);
+        console.log('[econda Reco] DataLayer Event gepusht:', eventData);
+    }
+
+    /**
      * ProductCard mit econda-Daten befüllen
      */
     function fillProductCard(card, product, index) {
-        // Debug erstes Produkt
-        if (index === 0) {
-            console.log('[econda Reco] Erstes Produkt:', product);
-            console.log('[econda Reco] Verfügbare Keys:', Object.keys(product));
-        }
-
         var id = product.id || '';
         var name = product.name || '';
         var image = product.iconurl || product.imageurl || '';
@@ -313,27 +380,40 @@
         // URL bauen: deeplink verwenden oder aus ID generieren
         var url = product.deeplink || '';
         if (!url && id) {
-            // Fallback: URL aus Produkt-ID bauen (hessnatur Format)
             var country = getCountry();
             url = 'https://www.hessnatur.com/' + country + '/p/' + id;
         }
         if (!url) url = '#';
 
-        // Debug URL
-        if (index === 0) {
-            console.log('[econda Reco] URL für erstes Produkt:', url);
-            console.log('[econda Reco] deeplink:', product.deeplink);
-            console.log('[econda Reco] id:', id);
-        }
-
         // Link - href direkt setzen
         var link = card.querySelector('a');
         if (link) {
             link.href = url;
-            link.title = name; // Tooltip aktualisieren
-            // Produkt-ID als Data-Attribut für Wishlist speichern
+            link.title = name;
             link.setAttribute('data-product-id', id);
-            console.log('[econda Reco] Link href gesetzt:', url);
+            link.setAttribute('data-reco-index', index);
+            link.setAttribute('data-original-href', url);
+            
+            // Alten Handler entfernen um Memory Leak zu verhindern
+            if (link._clickHandler) {
+                link.removeEventListener('click', link._clickHandler);
+            }
+            
+            // Neuen Handler erstellen und speichern
+            link._clickHandler = function() {
+                pushDataLayerEvent('click', product, index);
+                
+                // Größe an URL anhängen falls vorhanden
+                var currentSize = getSelectedSizeFromUrl();
+                if (currentSize) {
+                    var originalUrl = link.getAttribute('data-original-href');
+                    var urlWithSize = appendSizeToProductUrl(originalUrl, currentSize);
+                    if (urlWithSize !== originalUrl) {
+                        link.href = urlWithSize;
+                    }
+                }
+            };
+            link.addEventListener('click', link._clickHandler);
         }
 
         // Bild
@@ -342,12 +422,7 @@
             img.removeAttribute('srcset');
             img.src = image;
             img.alt = name;
-            img.title = name; // Tooltip auch auf Bild
-            if (index === 0) {
-                console.log('[econda Reco] Bild gesetzt:', image);
-            }
-        } else if (index === 0) {
-            console.log('[econda Reco] Bild Problem - img:', !!img, 'image:', image);
+            img.title = name;
         }
 
         // Titel
@@ -360,20 +435,27 @@
         var priceStriked = card.querySelector(selectors.priceLabelStriked);
 
         if (showAsDiscounted) {
+            // Reduzierter Preis anzeigen (rot)
             if (priceDiscounted) {
-                priceDiscounted.innerHTML = '<div>' + currentPrice + '</div>';
+                priceDiscounted.innerHTML = '<div style="color:#c00">' + currentPrice + '</div>';
                 priceDiscounted.parentElement.style.display = '';
             }
             if (priceStriked) {
                 priceStriked.textContent = originalPrice;
+                // Streichpreis: normale Farbe, durchgestrichen
+                priceStriked.style.color = '';
+                priceStriked.style.textDecoration = 'line-through';
                 priceStriked.parentElement.style.display = '';
             }
-            if (priceLabel) priceLabel.parentElement.style.display = 'none';
+            if (priceLabel && priceLabel.parentElement) priceLabel.parentElement.style.display = 'none';
         } else {
+            // Normaler Preis (nicht reduziert)
             if (priceLabel) {
                 priceLabel.textContent = currentPrice;
+                priceLabel.style.color = '#000';
                 priceLabel.parentElement.style.display = '';
             } else if (priceDiscounted) {
+                // Fallback wenn nur discounted Element vorhanden
                 priceDiscounted.innerHTML = '<div style="color:#000!important">' + currentPrice + '</div>';
                 priceDiscounted.style.color = '#000';
                 priceDiscounted.parentElement.style.display = '';
@@ -388,17 +470,15 @@
             // Button klonen um alle React-Event-Handler zu entfernen
             var newBtn = wishlistBtn.cloneNode(true);
             newBtn.setAttribute('data-code', id);
+            newBtn.setAttribute('data-reco-index', index);
+            // Produkt-Daten für DataLayer speichern
+            newBtn.setAttribute('data-product-json', JSON.stringify({
+                id: product.id || '',
+                name: product.name || '',
+                price: product.price || '',
+                sku: product.sku || ''
+            }));
             newBtn.classList.add('ec-wishlist-btn');
-            
-            // Click-Handler direkt binden
-            newBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-                console.log('[econda Reco] Wishlist Button geklickt, code:', id);
-                addToWishlist(id, newBtn);
-                return false;
-            }, true);
             
             wishlistBtn.parentNode.replaceChild(newBtn, wishlistBtn);
         }
@@ -421,8 +501,22 @@
                 e.stopPropagation();
                 e.stopImmediatePropagation();
                 var code = btn.getAttribute('data-code');
+                var index = parseInt(btn.getAttribute('data-reco-index') || '0', 10);
+                var productJson = btn.getAttribute('data-product-json');
+                
                 console.log('[econda Reco] Wishlist Button geklickt, code:', code);
-                if (code) addToWishlist(code, btn);
+                
+                // DataLayer Event feuern
+                if (productJson) {
+                    try {
+                        var product = JSON.parse(productJson);
+                        pushDataLayerEvent('wishlist', product, index);
+                    } catch (err) {
+                        console.warn('[econda Reco] Product JSON parse error:', err);
+                    }
+                }
+                
+                if (code) addToWishlist(code);
                 return false;
             };
             
@@ -431,11 +525,19 @@
     }
 
     /**
-     * Produkte deduplizieren
+     * Produkte deduplizieren und aktuelles PDP-Produkt ausschließen
+     * @param {Array} products - Array von Produkten
+     * @param {string} [excludeId] - Produkt-ID die ausgeschlossen werden soll (aktuelles PDP-Produkt)
      */
-    function dedupeProducts(products) {
+    function dedupeProducts(products, excludeId) {
         var seen = {};
         return products.filter(function(p) {
+            // Aktuelles PDP-Produkt ausschließen
+            if (excludeId && p.id === excludeId) {
+                console.log('[econda Reco] Produkt ausgeschlossen (aktuelles PDP):', p.id);
+                return false;
+            }
+            // Duplikate filtern
             if (seen[p.id]) return false;
             seen[p.id] = true;
             return true;
@@ -443,7 +545,7 @@
     }
 
     /**
-     * Reco mit econda-Daten befüllen
+     * Reco mit econda-Daten befüllen (mit Anti-Flicker Fade-Transition)
      */
     function initEcondaReco(wrapper, products) {
         console.log('[econda Reco] initEcondaReco mit', products.length, 'Produkten');
@@ -460,6 +562,9 @@
             return;
         }
 
+        // Styles hinzufügen (einmalig)
+        addRecoStyles();
+
         // Template cachen
         if (!cache.template) {
             var templateSlide = KEK.qs('.swiper-slide', swiperWrapper);
@@ -469,7 +574,7 @@
 
         console.log('[econda Reco] Rendere', products.length, 'Produkte');
 
-        // DocumentFragment für bessere Performance
+        // DocumentFragment für bessere Performance vorbereiten
         var fragment = document.createDocumentFragment();
 
         products.forEach(function(product, index) {
@@ -484,28 +589,42 @@
             fragment.appendChild(newSlide);
         });
 
-        // DOM nur einmal manipulieren
-        swiperWrapper.innerHTML = '';
-        swiperWrapper.appendChild(fragment);
-
-        // Swiper updaten
-        var swiperContainer = KEK.qs('.swiper', oldReco);
-        if (swiperContainer && swiperContainer.swiper) {
-            swiperContainer.swiper.update();
-            swiperContainer.swiper.slideTo(0, 0);
-            console.log('[econda Reco] Swiper aktualisiert');
-        }
-
-        // Wishlist-Buttons binden (bei jedem Rendern neu binden)
-        bindWishlistButtons(oldReco);
+        // Prüfe ob es ein Update ist (Farbwechsel) oder erstes Laden
+        var isUpdate = oldReco.classList.contains('ec-reco-updated');
+        var fadeDelay = isUpdate ? 100 : 0; // Nur bei Updates faden, nicht beim ersten Laden
         
-        // Marker-Klasse hinzufügen
-        oldReco.classList.add('ec-reco-updated');
+        if (isUpdate) {
+            // Anti-Flicker: Fade-out nur bei Updates
+            swiperWrapper.classList.add('ec-reco-fade');
+            swiperWrapper.classList.add('ec-fading');
+        }
+        
+        // Content tauschen (sofort oder nach Fade-out)
+        setTimeout(function() {
+            swiperWrapper.innerHTML = '';
+            swiperWrapper.appendChild(fragment);
 
-        // Aktuelle Produkt-ID merken für Variantenwechsel-Erkennung
-        cache.lastRenderedProductId = getProductId();
+            // Swiper updaten
+            var swiperContainer = KEK.qs('.swiper', oldReco);
+            if (swiperContainer && swiperContainer.swiper) {
+                swiperContainer.swiper.update();
+                swiperContainer.swiper.slideTo(0, 0);
+                console.log('[econda Reco] Swiper aktualisiert');
+            }
 
-        console.log('[econda Reco] ✅ Reco erfolgreich aktualisiert mit', products.length, 'Produkten für Produkt:', cache.lastRenderedProductId);
+            // Wishlist-Buttons binden
+            bindWishlistButtons(oldReco);
+            
+            // Fade-in (nur bei Updates)
+            if (isUpdate) {
+                swiperWrapper.classList.remove('ec-fading');
+            }
+            
+            // Marker-Klasse hinzufügen
+            oldReco.classList.add('ec-reco-updated');
+
+            console.log('[econda Reco] ✅ Reco erfolgreich aktualisiert mit', products.length, 'Produkten');
+        }, fadeDelay);
     }
 
     /**
@@ -529,11 +648,30 @@
             return;
         }
 
-        // Erst Cache prüfen (nur beim ersten Aufruf)
+        var productUrl = getProductUrl();
+        
+        // Verhindere doppelte API-Calls für dieselbe URL
+        if (!existingProducts && !start && cache.isLoading && cache.lastRenderedUrl === productUrl) {
+            console.log('[econda Reco] Bereits am Laden für URL:', productUrl, '- Skip');
+            return;
+        }
+        
+        console.log('[econda Reco] Lade Reco für URL:', productUrl);
+        
+        // URL SOFORT merken um Race Conditions zu vermeiden
+        cache.lastRenderedUrl = productUrl;
+        cache.isLoading = true;
+        
+        // Request-Token für Race Condition Schutz
+        var requestToken = Date.now();
+        cache.currentRequestToken = requestToken;
+
+        // Erst Cache prüfen (nur beim ersten Aufruf) - nutzt vollständige URL
         if (!existingProducts && !start) {
-            var cachedProducts = getCachedProducts(productId);
+            var cachedProducts = getCachedProducts(productUrl);
             if (cachedProducts && cachedProducts.length >= 5) {
-                console.log('[econda Reco] Verwende gecachte Produkte');
+                console.log('[econda Reco] Verwende gecachte Produkte für URL:', productUrl);
+                cache.isLoading = false;
                 initEcondaReco(wrapper, cachedProducts);
                 return;
             }
@@ -548,35 +686,51 @@
         fetch(apiUrl)
             .then(function(res) { return res.json(); })
             .then(function(data) {
+                // Race Condition Check: Ist dieser Request noch aktuell?
+                if (cache.currentRequestToken !== requestToken) {
+                    console.log('[econda Reco] Veralteter Request ignoriert (Token:', requestToken, 'vs', cache.currentRequestToken, ')');
+                    return;
+                }
+                
                 console.log('[econda Reco] API Response:', data);
                 var newProducts = data.items || data.products || [];
                 
                 if (!newProducts.length && !existingProducts.length) {
                     console.warn('[econda Reco] Keine Produkte in Response');
+                    cache.isLoading = false;
                     return;
                 }
 
-                // Alle Produkte zusammenführen
+                // Alle Produkte zusammenführen und aktuelles Produkt ausschließen
                 var allProducts = existingProducts.concat(newProducts);
-                var uniqueProducts = dedupeProducts(allProducts);
+                var uniqueProducts = dedupeProducts(allProducts, productId);
                 
                 console.log('[econda Reco] Unique Produkte bisher:', uniqueProducts.length);
 
-                // Wenn weniger als 5 unique Produkte UND neue Produkte geladen wurden, nachladen
+                // Wenn weniger als 5 unique Produkte, prüfen ob Nachladen sinnvoll ist
                 var minProducts = 5;
                 var maxRetries = 3;
                 var currentRetry = Math.floor(start / CONFIG.csize);
                 
-                if (uniqueProducts.length < minProducts && newProducts.length > 0 && currentRetry < maxRetries) {
+                // Nur nachladen wenn:
+                // 1. Weniger als minProducts unique Produkte
+                // 2. API hat neue Produkte geliefert
+                // 3. Max Retries nicht erreicht
+                // 4. Die neuen Produkte haben tatsächlich neue unique Produkte gebracht
+                var previousUniqueCount = dedupeProducts(existingProducts, productId).length;
+                var gotNewUniqueProducts = uniqueProducts.length > previousUniqueCount;
+                
+                if (uniqueProducts.length < minProducts && newProducts.length > 0 && currentRetry < maxRetries && gotNewUniqueProducts) {
                     console.log('[econda Reco] Nur', uniqueProducts.length, 'unique Produkte - lade weitere nach...');
                     loadAndRenderReco(wrapper, allProducts, start + CONFIG.csize);
                     return;
                 }
 
                 // Genug Produkte oder max. Versuche erreicht - rendern
+                cache.isLoading = false;
                 if (uniqueProducts.length) {
-                    // In Cache speichern
-                    setCachedProducts(productId, uniqueProducts);
+                    // In Cache speichern - mit vollständiger URL als Key
+                    setCachedProducts(productUrl, uniqueProducts);
                     initEcondaReco(wrapper, uniqueProducts);
                 } else {
                     console.warn('[econda Reco] Keine unique Produkte gefunden');
@@ -584,18 +738,26 @@
             })
             .catch(function(err) {
                 console.error('[econda Reco] API Error:', err);
+                cache.isLoading = false;
             });
     }
 
     /**
-     * Reco aktualisieren bei Produktwechsel
+     * Reco aktualisieren bei Produktwechsel (inkl. Farbvarianten)
      */
     function refreshRecoIfNeeded() {
-        var currentProductId = getProductId();
+        // Nur auf PDP-Seiten
+        if (!/\/p\/\d+/.test(window.location.pathname)) {
+            console.log('[econda Reco] Keine PDP - Skip refresh');
+            return;
+        }
         
-        // Nur aktualisieren wenn sich die Produkt-ID geändert hat
-        if (currentProductId && currentProductId !== cache.lastRenderedProductId) {
-            console.log('[econda Reco] Produktwechsel erkannt:', cache.lastRenderedProductId, '->', currentProductId);
+        var currentUrl = getProductUrl();
+        console.log('[econda Reco] Check refresh - current:', currentUrl, 'lastRendered:', cache.lastRenderedUrl);
+        
+        // Aktualisieren wenn sich die URL geändert hat (inkl. Farbvarianten!)
+        if (currentUrl && currentUrl !== cache.lastRenderedUrl) {
+            console.log('[econda Reco] URL-Wechsel erkannt:', cache.lastRenderedUrl, '->', currentUrl);
             
             // Marker-Klasse entfernen für Re-Rendering
             var oldReco = document.querySelector(selectors.oldReco);
@@ -610,6 +772,16 @@
             var wrapper = oldReco ? (oldReco.closest(selectors.recoWrapper) || oldReco.parentElement) : cache.wrapper;
             if (wrapper) {
                 loadAndRenderReco(wrapper);
+            } else {
+                // Wrapper noch nicht vorhanden - warte auf Element
+                console.log('[econda Reco] Wrapper nicht gefunden - warte auf Element');
+                KEK.elem(selectors.oldReco, function(recos) {
+                    if (recos && recos.length) {
+                        var w = recos[0].closest(selectors.recoWrapper) || recos[0].parentElement;
+                        cache.wrapper = w;
+                        loadAndRenderReco(w);
+                    }
+                });
             }
         }
     }
