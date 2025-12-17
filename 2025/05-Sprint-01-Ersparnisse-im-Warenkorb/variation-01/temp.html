@@ -1,0 +1,901 @@
+<html lang="de"><head><script id="emarsys_webpersonalization_es6" src="//static.scarabresearch.com/wpjs/wpes6.js?ts=2919" charset="utf-8"></script><script id="emarsys_webpersonalization_loader" src="//static.scarabresearch.com/wpjs/wploader.js?ts=2919" charset="utf-8"></script><script src="https://www.paypal.com/sdk/js?client-id=ARE1c3d1g4OhFpj7k3ISYezySE5HBJc9yK35niXj9ed5XSBNe-Cv-3Z7o7c9i3TgyB9QHko0L62cr23V&amp;components=buttons,messages&amp;currency=EUR&amp;intent=capture&amp;commit=false&amp;locale=de_DE" data-js-sdk-library="react-paypal-js" data-sdk-integration-source="react-paypal-js" data-react-paypal-script-id="react-paypal-js-iiuovjsckceqfjrfhdsazfvxysycjhhvhhymhrhtuyrvpjzzseumvfqqiswufvntnbmoxlvvpbamdhvfaohtsycuomrfiisedpswuuowplwiowiaphdpldxhtvjliiswxtqkaifnambbcuisvvqawsccowfromkymisajzrnosiktxzzwsambtweckwyndouims" data-uid-auto="uid_nbtbmymapfhlqifnxdvlmidtrdampn"></script><style type="text/css">:root, :host {
+  --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Free";
+  --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Free";
+  --fa-font-light: normal 300 1em/1 "Font Awesome 6 Pro";
+  --fa-font-thin: normal 100 1em/1 "Font Awesome 6 Pro";
+  --fa-font-duotone: normal 900 1em/1 "Font Awesome 6 Duotone";
+  --fa-font-duotone-regular: normal 400 1em/1 "Font Awesome 6 Duotone";
+  --fa-font-duotone-light: normal 300 1em/1 "Font Awesome 6 Duotone";
+  --fa-font-duotone-thin: normal 100 1em/1 "Font Awesome 6 Duotone";
+  --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";
+  --fa-font-sharp-solid: normal 900 1em/1 "Font Awesome 6 Sharp";
+  --fa-font-sharp-regular: normal 400 1em/1 "Font Awesome 6 Sharp";
+  --fa-font-sharp-light: normal 300 1em/1 "Font Awesome 6 Sharp";
+  --fa-font-sharp-thin: normal 100 1em/1 "Font Awesome 6 Sharp";
+  --fa-font-sharp-duotone-solid: normal 900 1em/1 "Font Awesome 6 Sharp Duotone";
+  --fa-font-sharp-duotone-regular: normal 400 1em/1 "Font Awesome 6 Sharp Duotone";
+  --fa-font-sharp-duotone-light: normal 300 1em/1 "Font Awesome 6 Sharp Duotone";
+  --fa-font-sharp-duotone-thin: normal 100 1em/1 "Font Awesome 6 Sharp Duotone";
+}
+
+svg:not(:root).svg-inline--fa, svg:not(:host).svg-inline--fa {
+  overflow: visible;
+  box-sizing: content-box;
+}
+
+.svg-inline--fa {
+  display: var(--fa-display, inline-block);
+  height: 1em;
+  overflow: visible;
+  vertical-align: -0.125em;
+}
+.svg-inline--fa.fa-2xs {
+  vertical-align: 0.1em;
+}
+.svg-inline--fa.fa-xs {
+  vertical-align: 0em;
+}
+.svg-inline--fa.fa-sm {
+  vertical-align: -0.0714285705em;
+}
+.svg-inline--fa.fa-lg {
+  vertical-align: -0.2em;
+}
+.svg-inline--fa.fa-xl {
+  vertical-align: -0.25em;
+}
+.svg-inline--fa.fa-2xl {
+  vertical-align: -0.3125em;
+}
+.svg-inline--fa.fa-pull-left {
+  margin-right: var(--fa-pull-margin, 0.3em);
+  width: auto;
+}
+.svg-inline--fa.fa-pull-right {
+  margin-left: var(--fa-pull-margin, 0.3em);
+  width: auto;
+}
+.svg-inline--fa.fa-li {
+  width: var(--fa-li-width, 2em);
+  top: 0.25em;
+}
+.svg-inline--fa.fa-fw {
+  width: var(--fa-fw-width, 1.25em);
+}
+
+.fa-layers svg.svg-inline--fa {
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.fa-layers-counter, .fa-layers-text {
+  display: inline-block;
+  position: absolute;
+  text-align: center;
+}
+
+.fa-layers {
+  display: inline-block;
+  height: 1em;
+  position: relative;
+  text-align: center;
+  vertical-align: -0.125em;
+  width: 1em;
+}
+.fa-layers svg.svg-inline--fa {
+  transform-origin: center center;
+}
+
+.fa-layers-text {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+}
+
+.fa-layers-counter {
+  background-color: var(--fa-counter-background-color, #ff253a);
+  border-radius: var(--fa-counter-border-radius, 1em);
+  box-sizing: border-box;
+  color: var(--fa-inverse, #fff);
+  line-height: var(--fa-counter-line-height, 1);
+  max-width: var(--fa-counter-max-width, 5em);
+  min-width: var(--fa-counter-min-width, 1.5em);
+  overflow: hidden;
+  padding: var(--fa-counter-padding, 0.25em 0.5em);
+  right: var(--fa-right, 0);
+  text-overflow: ellipsis;
+  top: var(--fa-top, 0);
+  transform: scale(var(--fa-counter-scale, 0.25));
+  transform-origin: top right;
+}
+
+.fa-layers-bottom-right {
+  bottom: var(--fa-bottom, 0);
+  right: var(--fa-right, 0);
+  top: auto;
+  transform: scale(var(--fa-layers-scale, 0.25));
+  transform-origin: bottom right;
+}
+
+.fa-layers-bottom-left {
+  bottom: var(--fa-bottom, 0);
+  left: var(--fa-left, 0);
+  right: auto;
+  top: auto;
+  transform: scale(var(--fa-layers-scale, 0.25));
+  transform-origin: bottom left;
+}
+
+.fa-layers-top-right {
+  top: var(--fa-top, 0);
+  right: var(--fa-right, 0);
+  transform: scale(var(--fa-layers-scale, 0.25));
+  transform-origin: top right;
+}
+
+.fa-layers-top-left {
+  left: var(--fa-left, 0);
+  right: auto;
+  top: var(--fa-top, 0);
+  transform: scale(var(--fa-layers-scale, 0.25));
+  transform-origin: top left;
+}
+
+.fa-1x {
+  font-size: 1em;
+}
+
+.fa-2x {
+  font-size: 2em;
+}
+
+.fa-3x {
+  font-size: 3em;
+}
+
+.fa-4x {
+  font-size: 4em;
+}
+
+.fa-5x {
+  font-size: 5em;
+}
+
+.fa-6x {
+  font-size: 6em;
+}
+
+.fa-7x {
+  font-size: 7em;
+}
+
+.fa-8x {
+  font-size: 8em;
+}
+
+.fa-9x {
+  font-size: 9em;
+}
+
+.fa-10x {
+  font-size: 10em;
+}
+
+.fa-2xs {
+  font-size: 0.625em;
+  line-height: 0.1em;
+  vertical-align: 0.225em;
+}
+
+.fa-xs {
+  font-size: 0.75em;
+  line-height: 0.0833333337em;
+  vertical-align: 0.125em;
+}
+
+.fa-sm {
+  font-size: 0.875em;
+  line-height: 0.0714285718em;
+  vertical-align: 0.0535714295em;
+}
+
+.fa-lg {
+  font-size: 1.25em;
+  line-height: 0.05em;
+  vertical-align: -0.075em;
+}
+
+.fa-xl {
+  font-size: 1.5em;
+  line-height: 0.0416666682em;
+  vertical-align: -0.125em;
+}
+
+.fa-2xl {
+  font-size: 2em;
+  line-height: 0.03125em;
+  vertical-align: -0.1875em;
+}
+
+.fa-fw {
+  text-align: center;
+  width: 1.25em;
+}
+
+.fa-ul {
+  list-style-type: none;
+  margin-left: var(--fa-li-margin, 2.5em);
+  padding-left: 0;
+}
+.fa-ul > li {
+  position: relative;
+}
+
+.fa-li {
+  left: calc(-1 * var(--fa-li-width, 2em));
+  position: absolute;
+  text-align: center;
+  width: var(--fa-li-width, 2em);
+  line-height: inherit;
+}
+
+.fa-border {
+  border-color: var(--fa-border-color, #eee);
+  border-radius: var(--fa-border-radius, 0.1em);
+  border-style: var(--fa-border-style, solid);
+  border-width: var(--fa-border-width, 0.08em);
+  padding: var(--fa-border-padding, 0.2em 0.25em 0.15em);
+}
+
+.fa-pull-left {
+  float: left;
+  margin-right: var(--fa-pull-margin, 0.3em);
+}
+
+.fa-pull-right {
+  float: right;
+  margin-left: var(--fa-pull-margin, 0.3em);
+}
+
+.fa-beat {
+  animation-name: fa-beat;
+  animation-delay: var(--fa-animation-delay, 0s);
+  animation-direction: var(--fa-animation-direction, normal);
+  animation-duration: var(--fa-animation-duration, 1s);
+  animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  animation-timing-function: var(--fa-animation-timing, ease-in-out);
+}
+
+.fa-bounce {
+  animation-name: fa-bounce;
+  animation-delay: var(--fa-animation-delay, 0s);
+  animation-direction: var(--fa-animation-direction, normal);
+  animation-duration: var(--fa-animation-duration, 1s);
+  animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.28, 0.84, 0.42, 1));
+}
+
+.fa-fade {
+  animation-name: fa-fade;
+  animation-delay: var(--fa-animation-delay, 0s);
+  animation-direction: var(--fa-animation-direction, normal);
+  animation-duration: var(--fa-animation-duration, 1s);
+  animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+}
+
+.fa-beat-fade {
+  animation-name: fa-beat-fade;
+  animation-delay: var(--fa-animation-delay, 0s);
+  animation-direction: var(--fa-animation-direction, normal);
+  animation-duration: var(--fa-animation-duration, 1s);
+  animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));
+}
+
+.fa-flip {
+  animation-name: fa-flip;
+  animation-delay: var(--fa-animation-delay, 0s);
+  animation-direction: var(--fa-animation-direction, normal);
+  animation-duration: var(--fa-animation-duration, 1s);
+  animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  animation-timing-function: var(--fa-animation-timing, ease-in-out);
+}
+
+.fa-shake {
+  animation-name: fa-shake;
+  animation-delay: var(--fa-animation-delay, 0s);
+  animation-direction: var(--fa-animation-direction, normal);
+  animation-duration: var(--fa-animation-duration, 1s);
+  animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  animation-timing-function: var(--fa-animation-timing, linear);
+}
+
+.fa-spin {
+  animation-name: fa-spin;
+  animation-delay: var(--fa-animation-delay, 0s);
+  animation-direction: var(--fa-animation-direction, normal);
+  animation-duration: var(--fa-animation-duration, 2s);
+  animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  animation-timing-function: var(--fa-animation-timing, linear);
+}
+
+.fa-spin-reverse {
+  --fa-animation-direction: reverse;
+}
+
+.fa-pulse,
+.fa-spin-pulse {
+  animation-name: fa-spin;
+  animation-direction: var(--fa-animation-direction, normal);
+  animation-duration: var(--fa-animation-duration, 1s);
+  animation-iteration-count: var(--fa-animation-iteration-count, infinite);
+  animation-timing-function: var(--fa-animation-timing, steps(8));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fa-beat,
+.fa-bounce,
+.fa-fade,
+.fa-beat-fade,
+.fa-flip,
+.fa-pulse,
+.fa-shake,
+.fa-spin,
+.fa-spin-pulse {
+    animation-delay: -1ms;
+    animation-duration: 1ms;
+    animation-iteration-count: 1;
+    transition-delay: 0s;
+    transition-duration: 0s;
+  }
+}
+@keyframes fa-beat {
+  0%, 90% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(var(--fa-beat-scale, 1.25));
+  }
+}
+@keyframes fa-bounce {
+  0% {
+    transform: scale(1, 1) translateY(0);
+  }
+  10% {
+    transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);
+  }
+  30% {
+    transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));
+  }
+  50% {
+    transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);
+  }
+  57% {
+    transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));
+  }
+  64% {
+    transform: scale(1, 1) translateY(0);
+  }
+  100% {
+    transform: scale(1, 1) translateY(0);
+  }
+}
+@keyframes fa-fade {
+  50% {
+    opacity: var(--fa-fade-opacity, 0.4);
+  }
+}
+@keyframes fa-beat-fade {
+  0%, 100% {
+    opacity: var(--fa-beat-fade-opacity, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(var(--fa-beat-fade-scale, 1.125));
+  }
+}
+@keyframes fa-flip {
+  50% {
+    transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));
+  }
+}
+@keyframes fa-shake {
+  0% {
+    transform: rotate(-15deg);
+  }
+  4% {
+    transform: rotate(15deg);
+  }
+  8%, 24% {
+    transform: rotate(-18deg);
+  }
+  12%, 28% {
+    transform: rotate(18deg);
+  }
+  16% {
+    transform: rotate(-22deg);
+  }
+  20% {
+    transform: rotate(22deg);
+  }
+  32% {
+    transform: rotate(-12deg);
+  }
+  36% {
+    transform: rotate(12deg);
+  }
+  40%, 100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes fa-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.fa-rotate-90 {
+  transform: rotate(90deg);
+}
+
+.fa-rotate-180 {
+  transform: rotate(180deg);
+}
+
+.fa-rotate-270 {
+  transform: rotate(270deg);
+}
+
+.fa-flip-horizontal {
+  transform: scale(-1, 1);
+}
+
+.fa-flip-vertical {
+  transform: scale(1, -1);
+}
+
+.fa-flip-both,
+.fa-flip-horizontal.fa-flip-vertical {
+  transform: scale(-1, -1);
+}
+
+.fa-rotate-by {
+  transform: rotate(var(--fa-rotate-angle, 0));
+}
+
+.fa-stack {
+  display: inline-block;
+  vertical-align: middle;
+  height: 2em;
+  position: relative;
+  width: 2.5em;
+}
+
+.fa-stack-1x,
+.fa-stack-2x {
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: var(--fa-stack-z-index, auto);
+}
+
+.svg-inline--fa.fa-stack-1x {
+  height: 1em;
+  width: 1.25em;
+}
+.svg-inline--fa.fa-stack-2x {
+  height: 2em;
+  width: 2.5em;
+}
+
+.fa-inverse {
+  color: var(--fa-inverse, #fff);
+}
+
+.sr-only,
+.fa-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.sr-only-focusable:not(:focus),
+.fa-sr-only-focusable:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.svg-inline--fa .fa-primary {
+  fill: var(--fa-primary-color, currentColor);
+  opacity: var(--fa-primary-opacity, 1);
+}
+
+.svg-inline--fa .fa-secondary {
+  fill: var(--fa-secondary-color, currentColor);
+  opacity: var(--fa-secondary-opacity, 0.4);
+}
+
+.svg-inline--fa.fa-swap-opacity .fa-primary {
+  opacity: var(--fa-secondary-opacity, 0.4);
+}
+
+.svg-inline--fa.fa-swap-opacity .fa-secondary {
+  opacity: var(--fa-primary-opacity, 1);
+}
+
+.svg-inline--fa mask .fa-primary,
+.svg-inline--fa mask .fa-secondary {
+  fill: black;
+}</style><style type="text/css">:root{--toastify-color-light: #fff;--toastify-color-dark: #121212;--toastify-color-info: #3498db;--toastify-color-success: #07bc0c;--toastify-color-warning: #f1c40f;--toastify-color-error: hsl(6, 78%, 57%);--toastify-color-transparent: rgba(255, 255, 255, .7);--toastify-icon-color-info: var(--toastify-color-info);--toastify-icon-color-success: var(--toastify-color-success);--toastify-icon-color-warning: var(--toastify-color-warning);--toastify-icon-color-error: var(--toastify-color-error);--toastify-container-width: fit-content;--toastify-toast-width: 320px;--toastify-toast-offset: 16px;--toastify-toast-top: max(var(--toastify-toast-offset), env(safe-area-inset-top));--toastify-toast-right: max(var(--toastify-toast-offset), env(safe-area-inset-right));--toastify-toast-left: max(var(--toastify-toast-offset), env(safe-area-inset-left));--toastify-toast-bottom: max(var(--toastify-toast-offset), env(safe-area-inset-bottom));--toastify-toast-background: #fff;--toastify-toast-padding: 14px;--toastify-toast-min-height: 64px;--toastify-toast-max-height: 800px;--toastify-toast-bd-radius: 6px;--toastify-toast-shadow: 0px 4px 12px rgba(0, 0, 0, .1);--toastify-font-family: sans-serif;--toastify-z-index: 9999;--toastify-text-color-light: #757575;--toastify-text-color-dark: #fff;--toastify-text-color-info: #fff;--toastify-text-color-success: #fff;--toastify-text-color-warning: #fff;--toastify-text-color-error: #fff;--toastify-spinner-color: #616161;--toastify-spinner-color-empty-area: #e0e0e0;--toastify-color-progress-light: linear-gradient(to right, #4cd964, #5ac8fa, #007aff, #34aadc, #5856d6, #ff2d55);--toastify-color-progress-dark: #bb86fc;--toastify-color-progress-info: var(--toastify-color-info);--toastify-color-progress-success: var(--toastify-color-success);--toastify-color-progress-warning: var(--toastify-color-warning);--toastify-color-progress-error: var(--toastify-color-error);--toastify-color-progress-bgo: .2}.Toastify__toast-container{z-index:var(--toastify-z-index);-webkit-transform:translate3d(0,0,var(--toastify-z-index));position:fixed;width:var(--toastify-container-width);box-sizing:border-box;color:#fff;display:flex;flex-direction:column}.Toastify__toast-container--top-left{top:var(--toastify-toast-top);left:var(--toastify-toast-left)}.Toastify__toast-container--top-center{top:var(--toastify-toast-top);left:50%;transform:translate(-50%);align-items:center}.Toastify__toast-container--top-right{top:var(--toastify-toast-top);right:var(--toastify-toast-right);align-items:end}.Toastify__toast-container--bottom-left{bottom:var(--toastify-toast-bottom);left:var(--toastify-toast-left)}.Toastify__toast-container--bottom-center{bottom:var(--toastify-toast-bottom);left:50%;transform:translate(-50%);align-items:center}.Toastify__toast-container--bottom-right{bottom:var(--toastify-toast-bottom);right:var(--toastify-toast-right);align-items:end}.Toastify__toast{--y: 0;position:relative;touch-action:none;width:var(--toastify-toast-width);min-height:var(--toastify-toast-min-height);box-sizing:border-box;margin-bottom:1rem;padding:var(--toastify-toast-padding);border-radius:var(--toastify-toast-bd-radius);box-shadow:var(--toastify-toast-shadow);max-height:var(--toastify-toast-max-height);font-family:var(--toastify-font-family);z-index:0;display:flex;flex:1 auto;align-items:center;word-break:break-word}@media only screen and (max-width: 480px){.Toastify__toast-container{width:100vw;left:env(safe-area-inset-left);margin:0}.Toastify__toast-container--top-left,.Toastify__toast-container--top-center,.Toastify__toast-container--top-right{top:env(safe-area-inset-top);transform:translate(0)}.Toastify__toast-container--bottom-left,.Toastify__toast-container--bottom-center,.Toastify__toast-container--bottom-right{bottom:env(safe-area-inset-bottom);transform:translate(0)}.Toastify__toast-container--rtl{right:env(safe-area-inset-right);left:initial}.Toastify__toast{--toastify-toast-width: 100%;margin-bottom:0;border-radius:0}}.Toastify__toast-container[data-stacked=true]{width:var(--toastify-toast-width)}.Toastify__toast--stacked{position:absolute;width:100%;transform:translate3d(0,var(--y),0) scale(var(--s));transition:transform .3s}.Toastify__toast--stacked[data-collapsed] .Toastify__toast-body,.Toastify__toast--stacked[data-collapsed] .Toastify__close-button{transition:opacity .1s}.Toastify__toast--stacked[data-collapsed=false]{overflow:visible}.Toastify__toast--stacked[data-collapsed=true]:not(:last-child)>*{opacity:0}.Toastify__toast--stacked:after{content:"";position:absolute;left:0;right:0;height:calc(var(--g) * 1px);bottom:100%}.Toastify__toast--stacked[data-pos=top]{top:0}.Toastify__toast--stacked[data-pos=bot]{bottom:0}.Toastify__toast--stacked[data-pos=bot].Toastify__toast--stacked:before{transform-origin:top}.Toastify__toast--stacked[data-pos=top].Toastify__toast--stacked:before{transform-origin:bottom}.Toastify__toast--stacked:before{content:"";position:absolute;left:0;right:0;bottom:0;height:100%;transform:scaleY(3);z-index:-1}.Toastify__toast--rtl{direction:rtl}.Toastify__toast--close-on-click{cursor:pointer}.Toastify__toast-icon{margin-inline-end:10px;width:22px;flex-shrink:0;display:flex}.Toastify--animate{animation-fill-mode:both;animation-duration:.5s}.Toastify--animate-icon{animation-fill-mode:both;animation-duration:.3s}.Toastify__toast-theme--dark{background:var(--toastify-color-dark);color:var(--toastify-text-color-dark)}.Toastify__toast-theme--light,.Toastify__toast-theme--colored.Toastify__toast--default{background:var(--toastify-color-light);color:var(--toastify-text-color-light)}.Toastify__toast-theme--colored.Toastify__toast--info{color:var(--toastify-text-color-info);background:var(--toastify-color-info)}.Toastify__toast-theme--colored.Toastify__toast--success{color:var(--toastify-text-color-success);background:var(--toastify-color-success)}.Toastify__toast-theme--colored.Toastify__toast--warning{color:var(--toastify-text-color-warning);background:var(--toastify-color-warning)}.Toastify__toast-theme--colored.Toastify__toast--error{color:var(--toastify-text-color-error);background:var(--toastify-color-error)}.Toastify__progress-bar-theme--light{background:var(--toastify-color-progress-light)}.Toastify__progress-bar-theme--dark{background:var(--toastify-color-progress-dark)}.Toastify__progress-bar--info{background:var(--toastify-color-progress-info)}.Toastify__progress-bar--success{background:var(--toastify-color-progress-success)}.Toastify__progress-bar--warning{background:var(--toastify-color-progress-warning)}.Toastify__progress-bar--error{background:var(--toastify-color-progress-error)}.Toastify__progress-bar-theme--colored.Toastify__progress-bar--info,.Toastify__progress-bar-theme--colored.Toastify__progress-bar--success,.Toastify__progress-bar-theme--colored.Toastify__progress-bar--warning,.Toastify__progress-bar-theme--colored.Toastify__progress-bar--error{background:var(--toastify-color-transparent)}.Toastify__close-button{color:#fff;position:absolute;top:6px;right:6px;background:transparent;outline:none;border:none;padding:0;cursor:pointer;opacity:.7;transition:.3s ease;z-index:1}.Toastify__toast--rtl .Toastify__close-button{left:6px;right:unset}.Toastify__close-button--light{color:#000;opacity:.3}.Toastify__close-button>svg{fill:currentColor;height:16px;width:14px}.Toastify__close-button:hover,.Toastify__close-button:focus{opacity:1}@keyframes Toastify__trackProgress{0%{transform:scaleX(1)}to{transform:scaleX(0)}}.Toastify__progress-bar{position:absolute;bottom:0;left:0;width:100%;height:100%;z-index:1;opacity:.7;transform-origin:left}.Toastify__progress-bar--animated{animation:Toastify__trackProgress linear 1 forwards}.Toastify__progress-bar--controlled{transition:transform .2s}.Toastify__progress-bar--rtl{right:0;left:initial;transform-origin:right;border-bottom-left-radius:initial}.Toastify__progress-bar--wrp{position:absolute;overflow:hidden;bottom:0;left:0;width:100%;height:5px;border-bottom-left-radius:var(--toastify-toast-bd-radius);border-bottom-right-radius:var(--toastify-toast-bd-radius)}.Toastify__progress-bar--wrp[data-hidden=true]{opacity:0}.Toastify__progress-bar--bg{opacity:var(--toastify-color-progress-bgo);width:100%;height:100%}.Toastify__spinner{width:20px;height:20px;box-sizing:border-box;border:2px solid;border-radius:100%;border-color:var(--toastify-spinner-color-empty-area);border-right-color:var(--toastify-spinner-color);animation:Toastify__spin .65s linear infinite}@keyframes Toastify__bounceInRight{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(3000px,0,0)}60%{opacity:1;transform:translate3d(-25px,0,0)}75%{transform:translate3d(10px,0,0)}90%{transform:translate3d(-5px,0,0)}to{transform:none}}@keyframes Toastify__bounceOutRight{20%{opacity:1;transform:translate3d(-20px,var(--y),0)}to{opacity:0;transform:translate3d(2000px,var(--y),0)}}@keyframes Toastify__bounceInLeft{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(-3000px,0,0)}60%{opacity:1;transform:translate3d(25px,0,0)}75%{transform:translate3d(-10px,0,0)}90%{transform:translate3d(5px,0,0)}to{transform:none}}@keyframes Toastify__bounceOutLeft{20%{opacity:1;transform:translate3d(20px,var(--y),0)}to{opacity:0;transform:translate3d(-2000px,var(--y),0)}}@keyframes Toastify__bounceInUp{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(0,3000px,0)}60%{opacity:1;transform:translate3d(0,-20px,0)}75%{transform:translate3d(0,10px,0)}90%{transform:translate3d(0,-5px,0)}to{transform:translateZ(0)}}@keyframes Toastify__bounceOutUp{20%{transform:translate3d(0,calc(var(--y) - 10px),0)}40%,45%{opacity:1;transform:translate3d(0,calc(var(--y) + 20px),0)}to{opacity:0;transform:translate3d(0,-2000px,0)}}@keyframes Toastify__bounceInDown{0%,60%,75%,90%,to{animation-timing-function:cubic-bezier(.215,.61,.355,1)}0%{opacity:0;transform:translate3d(0,-3000px,0)}60%{opacity:1;transform:translate3d(0,25px,0)}75%{transform:translate3d(0,-10px,0)}90%{transform:translate3d(0,5px,0)}to{transform:none}}@keyframes Toastify__bounceOutDown{20%{transform:translate3d(0,calc(var(--y) - 10px),0)}40%,45%{opacity:1;transform:translate3d(0,calc(var(--y) + 20px),0)}to{opacity:0;transform:translate3d(0,2000px,0)}}.Toastify__bounce-enter--top-left,.Toastify__bounce-enter--bottom-left{animation-name:Toastify__bounceInLeft}.Toastify__bounce-enter--top-right,.Toastify__bounce-enter--bottom-right{animation-name:Toastify__bounceInRight}.Toastify__bounce-enter--top-center{animation-name:Toastify__bounceInDown}.Toastify__bounce-enter--bottom-center{animation-name:Toastify__bounceInUp}.Toastify__bounce-exit--top-left,.Toastify__bounce-exit--bottom-left{animation-name:Toastify__bounceOutLeft}.Toastify__bounce-exit--top-right,.Toastify__bounce-exit--bottom-right{animation-name:Toastify__bounceOutRight}.Toastify__bounce-exit--top-center{animation-name:Toastify__bounceOutUp}.Toastify__bounce-exit--bottom-center{animation-name:Toastify__bounceOutDown}@keyframes Toastify__zoomIn{0%{opacity:0;transform:scale3d(.3,.3,.3)}50%{opacity:1}}@keyframes Toastify__zoomOut{0%{opacity:1}50%{opacity:0;transform:translate3d(0,var(--y),0) scale3d(.3,.3,.3)}to{opacity:0}}.Toastify__zoom-enter{animation-name:Toastify__zoomIn}.Toastify__zoom-exit{animation-name:Toastify__zoomOut}@keyframes Toastify__flipIn{0%{transform:perspective(400px) rotateX(90deg);animation-timing-function:ease-in;opacity:0}40%{transform:perspective(400px) rotateX(-20deg);animation-timing-function:ease-in}60%{transform:perspective(400px) rotateX(10deg);opacity:1}80%{transform:perspective(400px) rotateX(-5deg)}to{transform:perspective(400px)}}@keyframes Toastify__flipOut{0%{transform:translate3d(0,var(--y),0) perspective(400px)}30%{transform:translate3d(0,var(--y),0) perspective(400px) rotateX(-20deg);opacity:1}to{transform:translate3d(0,var(--y),0) perspective(400px) rotateX(90deg);opacity:0}}.Toastify__flip-enter{animation-name:Toastify__flipIn}.Toastify__flip-exit{animation-name:Toastify__flipOut}@keyframes Toastify__slideInRight{0%{transform:translate3d(110%,0,0);visibility:visible}to{transform:translate3d(0,var(--y),0)}}@keyframes Toastify__slideInLeft{0%{transform:translate3d(-110%,0,0);visibility:visible}to{transform:translate3d(0,var(--y),0)}}@keyframes Toastify__slideInUp{0%{transform:translate3d(0,110%,0);visibility:visible}to{transform:translate3d(0,var(--y),0)}}@keyframes Toastify__slideInDown{0%{transform:translate3d(0,-110%,0);visibility:visible}to{transform:translate3d(0,var(--y),0)}}@keyframes Toastify__slideOutRight{0%{transform:translate3d(0,var(--y),0)}to{visibility:hidden;transform:translate3d(110%,var(--y),0)}}@keyframes Toastify__slideOutLeft{0%{transform:translate3d(0,var(--y),0)}to{visibility:hidden;transform:translate3d(-110%,var(--y),0)}}@keyframes Toastify__slideOutDown{0%{transform:translate3d(0,var(--y),0)}to{visibility:hidden;transform:translate3d(0,500px,0)}}@keyframes Toastify__slideOutUp{0%{transform:translate3d(0,var(--y),0)}to{visibility:hidden;transform:translate3d(0,-500px,0)}}.Toastify__slide-enter--top-left,.Toastify__slide-enter--bottom-left{animation-name:Toastify__slideInLeft}.Toastify__slide-enter--top-right,.Toastify__slide-enter--bottom-right{animation-name:Toastify__slideInRight}.Toastify__slide-enter--top-center{animation-name:Toastify__slideInDown}.Toastify__slide-enter--bottom-center{animation-name:Toastify__slideInUp}.Toastify__slide-exit--top-left,.Toastify__slide-exit--bottom-left{animation-name:Toastify__slideOutLeft;animation-timing-function:ease-in;animation-duration:.3s}.Toastify__slide-exit--top-right,.Toastify__slide-exit--bottom-right{animation-name:Toastify__slideOutRight;animation-timing-function:ease-in;animation-duration:.3s}.Toastify__slide-exit--top-center{animation-name:Toastify__slideOutUp;animation-timing-function:ease-in;animation-duration:.3s}.Toastify__slide-exit--bottom-center{animation-name:Toastify__slideOutDown;animation-timing-function:ease-in;animation-duration:.3s}@keyframes Toastify__spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}
+</style><meta charset="utf-8"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0"><meta content="114216165230" property="fb:admins"><meta content="1489796138010160" property="fb:app_id"><meta content="1489796138010160" property="fb:page_id"><meta content="44f02e81f092f3903c6f029d4935cf1a" name="p:domain_verify"><meta content="hessnatur Online Shop" property="og:site_name"><meta content="https://www.hessnatur.com" property="og:site"><meta content="hessnatur" property="og:provider_name"><meta content="summary" name="twitter:card"><meta content="@hessnatur" name="twitter:site"><meta content="@hessnatur" name="twitter:creator"><meta content="hessnatur Online Shop" name="twitter:domain"><meta property="og:image" content="https://www.hessnatur.com/images/hessnatur-logo-desktop.jpg"><meta property="og:image:width" content="426"><meta property="og:image:height" content="210"><meta property="twitter:image" content="https://www.hessnatur.com/images/hessnatur-logo-desktop.jpg"><meta property="og:author" content="hessnatur"><link rel="preconnect" href="https://app.usercentrics.eu"><link rel="preconnect" href="https://api.usercentrics.eu"><link rel="preconnect" href="//privacy-proxy.usercentrics.eu"><link rel="preconnect" href="https://graphql.usercentrics.eu"><link rel="preload" href="https://web.cmp.usercentrics.eu/ui/loader.js" as="script"><link rel="preload" href="/images/hessnatur-logo-desktop.svg" as="image" fetchpriority="high"><meta name="next-head-count" content="26"><link rel="preload" href="https://w0vn7qgklx.kameleoon.io/engine.js" as="script" fetchpriority="high"><link rel="preload" href="/_next/static/media/7b0b24f36b1a6d0b-s.p.woff2" as="font" type="font/woff2" crossorigin="anonymous" data-next-font="size-adjust"><link rel="preload" href="/_next/static/css/6bd7f992693a9f48.css" as="style"><link rel="stylesheet" href="/_next/static/css/6bd7f992693a9f48.css" data-n-g=""><link rel="preload" href="/_next/static/css/85abcf7cf8b850da.css" as="style"><link rel="stylesheet" href="/_next/static/css/85abcf7cf8b850da.css" data-n-g=""><link rel="preload" href="/_next/static/css/a423bd5d3da6888d.css" as="style"><link rel="stylesheet" href="/_next/static/css/a423bd5d3da6888d.css" data-n-p=""><noscript data-n-css=""></noscript><script async="" src="https://s.pinimg.com/ct/lib/main.817db39b.js"></script><script id="scarab-js-api" src="https://recommender.scarabresearch.com/js/1507AF8E95303CD3/scarab-v2.js"></script><script type="text/javascript" async="" src="https://tags.creativecdn.com/fM0vtcEljoezGd2p7bQn.js"></script><script src="https://connect.facebook.net/signals/config/3737505736493355?v=2.9.248&amp;r=stable&amp;domain=www.hessnatur.com&amp;hme=17590b9a2e1b26755cdc9ecb401f9f46bca979d3ccce95d786db0936167af731&amp;ex_m=94%2C156%2C134%2C20%2C67%2C68%2C127%2C63%2C43%2C128%2C72%2C62%2C10%2C141%2C80%2C15%2C93%2C28%2C122%2C115%2C70%2C73%2C121%2C138%2C102%2C143%2C7%2C3%2C4%2C6%2C5%2C2%2C81%2C91%2C144%2C224%2C167%2C57%2C226%2C227%2C50%2C183%2C27%2C69%2C232%2C231%2C170%2C30%2C56%2C9%2C59%2C87%2C88%2C89%2C95%2C118%2C29%2C26%2C120%2C117%2C116%2C135%2C71%2C137%2C136%2C45%2C55%2C111%2C14%2C140%2C40%2C213%2C215%2C177%2C23%2C24%2C25%2C17%2C18%2C39%2C35%2C37%2C36%2C76%2C82%2C86%2C100%2C126%2C129%2C41%2C101%2C21%2C19%2C107%2C64%2C33%2C131%2C130%2C132%2C123%2C22%2C32%2C54%2C99%2C139%2C65%2C16%2C133%2C104%2C31%2C193%2C163%2C284%2C211%2C154%2C196%2C189%2C164%2C97%2C119%2C75%2C109%2C49%2C44%2C103%2C42%2C108%2C114%2C53%2C60%2C113%2C48%2C51%2C47%2C90%2C142%2C0%2C112%2C13%2C110%2C11%2C1%2C52%2C83%2C58%2C61%2C106%2C79%2C78%2C145%2C146%2C84%2C85%2C8%2C92%2C46%2C124%2C77%2C74%2C66%2C105%2C96%2C38%2C125%2C34%2C98%2C12%2C147%2C238%2C237%2C239%2C244%2C245%2C246%2C242%2C234%2C169%2C219%2C286%2C212%2C209%2C233%2C235%2C229%2C157%2C203%2C185%2C165%2C283%2C151%2C173%2C158%2C191%2C263%2C262%2C259%2C225%2C260%2C261%2C148%2C205%2C252%2C150%2C178%2C201" async=""></script><script src="https://connect.facebook.net/signals/config/900821563290618?v=2.9.248&amp;r=stable&amp;domain=www.hessnatur.com&amp;hme=17590b9a2e1b26755cdc9ecb401f9f46bca979d3ccce95d786db0936167af731&amp;ex_m=94%2C156%2C134%2C20%2C67%2C68%2C127%2C63%2C43%2C128%2C72%2C62%2C10%2C141%2C80%2C15%2C93%2C28%2C122%2C115%2C70%2C73%2C121%2C138%2C102%2C143%2C7%2C3%2C4%2C6%2C5%2C2%2C81%2C91%2C144%2C224%2C167%2C57%2C226%2C227%2C50%2C183%2C27%2C69%2C232%2C231%2C170%2C30%2C56%2C9%2C59%2C87%2C88%2C89%2C95%2C118%2C29%2C26%2C120%2C117%2C116%2C135%2C71%2C137%2C136%2C45%2C55%2C111%2C14%2C140%2C40%2C213%2C215%2C177%2C23%2C24%2C25%2C17%2C18%2C39%2C35%2C37%2C36%2C76%2C82%2C86%2C100%2C126%2C129%2C41%2C101%2C21%2C19%2C107%2C64%2C33%2C131%2C130%2C132%2C123%2C22%2C32%2C54%2C99%2C139%2C65%2C16%2C133%2C104%2C31%2C193%2C163%2C284%2C211%2C154%2C196%2C189%2C164%2C97%2C119%2C75%2C109%2C49%2C44%2C103%2C42%2C108%2C114%2C53%2C60%2C113%2C48%2C51%2C47%2C90%2C142%2C0%2C112%2C13%2C110%2C11%2C1%2C52%2C83%2C58%2C61%2C106%2C79%2C78%2C145%2C146%2C84%2C85%2C8%2C92%2C46%2C124%2C77%2C74%2C66%2C105%2C96%2C38%2C125%2C34%2C98%2C12%2C147" async=""></script><script type="text/javascript" async="" src="https://connect.facebook.net/en_US/fbevents.js"></script><script type="text/javascript" async="" src="https://s.pinimg.com/ct/core.js"></script><script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/js?id=G-EB41YTW0QC&amp;cx=c&amp;gtm=4e5ca1"></script><script type="text/javascript" async="" charset="utf-8" src="https://www.gstatic.com/recaptcha/releases/7gg7H51Q-naNfhmCP3_R47ho/recaptcha__de.js" crossorigin="anonymous" integrity="sha384-jsehgnx3ppwloqfSKmiqpw/vc0Ym64b6pD4DdIcQa3EBFsRk2uai0sLapw9qHvBO"></script><script async="" src="//www.googletagmanager.com/gtm.js?id=GTM-9TR7J"></script><script async="" src="https://matomo.hessnatur.com/matomo.js"></script><script defer="" nomodule="" src="/_next/static/chunks/polyfills-42372ed130431b0a.js"></script><script id="kameleoon-engine" src="https://w0vn7qgklx.kameleoon.io/engine.js" async="" data-nscript="beforeInteractive"></script><script src="/_next/static/chunks/webpack-bb97197819c16c3f.js" defer=""></script><script src="/_next/static/chunks/vendors-edf250d6e8894c33.js" defer=""></script><script src="/_next/static/chunks/main-7a0fa53f72c86d66.js" defer=""></script><script src="/_next/static/chunks/pages/_app-119ddbee7c92fa45.js" defer=""></script><script src="/_next/static/chunks/6853-9b0b6d60e8a5edb1.js" defer=""></script><script src="/_next/static/chunks/pages/cart-7810d2f252e98650.js" defer=""></script><script src="/_next/static/sMWoaCGJABPRzGETS5zGJ/_buildManifest.js" defer=""></script><script src="/_next/static/sMWoaCGJABPRzGETS5zGJ/_ssgManifest.js" defer=""></script><style id="__jsx-3825094100">html{font-family:'__Outfit_058b78', '__Outfit_Fallback_058b78',system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"}</style><script src="http://localhost/GIT/hessnatur/2025/05-Sprint-01-Ersparnisse-im-Warenkorb/Variation-01/script.min.js?time=1765980085103" type="text/javascript" id="mja7tk8t.9r"></script><link rel="stylesheet" href="http://localhost/GIT/hessnatur/2025/05-Sprint-01-Ersparnisse-im-Warenkorb/Variation-01/style.css?time=1765980085104" id="mja56m3t.jog"><style></style><link rel="stylesheet" type="text/css" href="/_next/static/css/6a8ea62998c7224e.css"><link rel="stylesheet" type="text/css" href="/_next/static/css/dcf25db806124f90.css"><title>Dein Warenkorb</title><link href="https://web.cmp.usercentrics.eu/ui/v/3.88.0/WebSdk.lib.84e6532f.js" rel="preload" as="script"><script async="" type="text/javascript" src="https://web.cmp.usercentrics.eu/ui/v/3.88.0/WebSdk.lib.84e6532f.js"></script><link as="script" rel="prefetch" href="/_next/static/chunks/5940-2fdb635583a36c6e.js"><link as="script" rel="prefetch" href="/_next/static/chunks/3215-d9e39e50b884078a.js"><link as="script" rel="prefetch" href="/_next/static/chunks/1734-c003c3342ee5e294.js"><link as="script" rel="prefetch" href="/_next/static/chunks/pages/index-ced114eb045b1034.js"><link as="script" rel="prefetch" href="/_next/static/chunks/3068-bf6f8409ba1fcce8.js"><link as="script" rel="prefetch" href="/_next/static/chunks/9387-30c3490ffd83b755.js"><link as="script" rel="prefetch" href="/_next/static/chunks/pages/login-f7ed55343eacf8b9.js"><link as="script" rel="prefetch" href="/_next/static/chunks/pages/cms/%5Bslug%5D-1d963e6212857a02.js"><link as="script" rel="prefetch" href="/_next/static/chunks/pages/merkzettel-3bc34ec73c11a963.js"><link href="https://web.cmp.usercentrics.eu/ui/v/3.88.0/GdprCmpController.d99aedc0.js" rel="preload" as="script"><script async="" type="text/javascript" src="https://web.cmp.usercentrics.eu/ui/v/3.88.0/GdprCmpController.d99aedc0.js"></script><link as="script" rel="prefetch" href="/_next/static/chunks/477-584e44a5fe9d7240.js"><link as="script" rel="prefetch" href="/_next/static/chunks/6259-230decb2b9cb919c.js"><link as="script" rel="prefetch" href="/_next/static/chunks/pages/c/%5BcategoryCode%5D-ecf013c8531efed8.js"><link rel="stylesheet" type="text/css" href="/_next/static/css/560204ec426f5894.css"><link rel="stylesheet" type="text/css" href="/_next/static/css/0a621ff133160128.css"><link rel="stylesheet" type="text/css" href="/_next/static/css/83cd98f97805fe27.css"><link as="script" rel="prefetch" href="/_next/static/chunks/pages/%5Bslug%5D/p/%5BproductCode%5D-8797c10e57cc97d4.js"><style>[data-wps-guard] {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden; }
+
+[data-wps-guard="hidden"] {
+  display: none; }
+
+[data-wps-href], [data-wps-popup-close-intent] {
+  cursor: pointer; }
+@charset "UTF-8";
+[data-wps-popup] {
+  display: flex;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+  background: rgba(128, 128, 128, 0.5);
+  flex-direction: column;
+  box-sizing: content-box;
+  z-index: 2147483647 !important; }
+
+[data-wps-popup].hide-popup,
+[data-wps-popup="hidden"] {
+  display: none; }
+
+[data-wps-popup-content] {
+  max-width: 80%;
+  max-height: 90%;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  box-sizing: content-box; }
+
+[data-wps-popup-content-body] {
+  background: transparent;
+  /* padding: 1em; */
+  border: none;
+  max-height: 100%;
+  overflow: auto;
+  box-sizing: content-box; }
+  [data-wps-popup-content-body].bordered {
+    background: white;
+    border: 1em solid white; }
+
+[data-wps-popup-close] {
+  background: white;
+  align-self: flex-end;
+  position: relative;
+  left: 0;
+  cursor: pointer;
+  font-size: 25px;
+  box-sizing: content-box; }
+
+[data-wps-popup-close]:before {
+  width: 1em;
+  height: 1em;
+  content: '×';
+  text-align: center;
+  line-height: 1em;
+  padding: 0.2em;
+  display: block;
+  box-sizing: content-box;
+  color: #000000; }
+
+.wps-e-form {
+  max-width: 650px; }
+
+.wps-e-form img[src*='trans.gif'] {
+  height: 5px; }
+
+.wps-e-form table > thead > tr > th,
+.wps-e-form table > tbody > tr > th,
+.wps-e-form table > tfoot > tr > th,
+.wps-e-form table > thead > tr > td,
+.wps-e-form table > tbody > tr > td,
+.wps-e-form table > tfoot > tr > td {
+  padding: 0; }
+
+.wps-ribbon-hidden {
+  position: absolute;
+  left: 10000px; }
+@charset "UTF-8";
+[data-wps-ribbon] {
+  display: block;
+  width: 100%;
+  min-height: 35px;
+  height: auto;
+  box-sizing: content-box;
+  z-index: 2147483640 !important;
+  background-color: white; }
+
+[data-wps-ribbon="hidden"] {
+  display: none; }
+
+[data-wps-ribbon-placement="TOP"] {
+  top: 0; }
+
+[data-wps-ribbon-placement="BOTTOM"] {
+  bottom: 0; }
+
+[data-wps-ribbon-floating="true"] {
+  position: relative;
+  z-index: 0; }
+
+[data-wps-ribbon-floating="false"] {
+  position: fixed;
+  left: 0;
+  right: 0; }
+
+[data-wps-ribbon-content-body] {
+  width: 100%;
+  height: auto;
+  display: block;
+  position: relative; }
+  [data-wps-ribbon-content-body] iframe {
+    width: 100%; }
+
+[data-wps-ribbon-close] {
+  cursor: pointer;
+  font-size: 25px;
+  box-sizing: content-box;
+  position: absolute;
+  right: 7px;
+  top: 0;
+  color: white; }
+
+[data-wps-ribbon-close]:before {
+  width: 1em;
+  height: 1em;
+  content: '×';
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  line-height: 1em;
+  padding: 0.2em;
+  display: block;
+  box-sizing: content-box;
+  font-family: Arial, sans-serif;
+  font-size: 28px; }
+</style></head><body cz-shortcut-listen="true"><div id="__next"><style>
+:root {
+  --bprogress-color: #4ba880;
+  --bprogress-height: 5px;
+  --bprogress-spinner-size: 18px;
+  --bprogress-spinner-animation-duration: 400ms;
+  --bprogress-spinner-border-size: 2px;
+  --bprogress-box-shadow: 0 0 10px #4ba880, 0 0 5px #4ba880;
+  --bprogress-z-index: 99999;
+  --bprogress-spinner-top: 15px;
+  --bprogress-spinner-bottom: auto;
+  --bprogress-spinner-right: 15px;
+  --bprogress-spinner-left: auto;
+}
+
+.bprogress {
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: var(--bprogress-z-index);
+}
+
+.bprogress .bar {
+  background: var(--bprogress-color);
+  position: fixed;
+  z-index: var(--bprogress-z-index);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--bprogress-height);
+}
+
+/* Fancy blur effect */
+.bprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0;
+  width: 100px;
+  height: 100%;
+  box-shadow: var(--bprogress-box-shadow);
+  opacity: 1.0;
+  transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* Remove these to get rid of the spinner */
+.bprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: var(--bprogress-z-index);
+  top: var(--bprogress-spinner-top);
+  bottom: var(--bprogress-spinner-bottom);
+  right: var(--bprogress-spinner-right);
+  left: var(--bprogress-spinner-left);
+}
+
+.bprogress .spinner-icon {
+  width: var(--bprogress-spinner-size);
+  height: var(--bprogress-spinner-size);
+  box-sizing: border-box;
+  border: solid var(--bprogress-spinner-border-size) transparent;
+  border-top-color: var(--bprogress-color);
+  border-left-color: var(--bprogress-color);
+  border-radius: 50%;
+  -webkit-animation: bprogress-spinner var(--bprogress-spinner-animation-duration) linear infinite;
+  animation: bprogress-spinner var(--bprogress-spinner-animation-duration) linear infinite;
+}
+
+.bprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
+.bprogress-custom-parent .bprogress .spinner,
+.bprogress-custom-parent .bprogress .bar {
+  position: absolute;
+}
+
+.bprogress .indeterminate {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--bprogress-height);
+  overflow: hidden;
+}
+
+.bprogress .indeterminate .inc,
+.bprogress .indeterminate .dec {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background-color: var(--bprogress-color);
+}
+
+.bprogress .indeterminate .inc {
+  animation: bprogress-indeterminate-increase 2s infinite;
+}
+
+.bprogress .indeterminate .dec {
+  animation: bprogress-indeterminate-decrease 2s 0.5s infinite;
+}
+
+@-webkit-keyframes bprogress-spinner {
+  0%   { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+}
+
+@keyframes bprogress-spinner {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes bprogress-indeterminate-increase {
+  from { left: -5%; width: 5%; }
+  to { left: 130%; width: 100%; }
+}
+
+@keyframes bprogress-indeterminate-decrease {
+  from { left: -80%; width: 80%; }
+  to { left: 110%; width: 10%; }
+}
+</style><div class=""><div class="layout_layout__site__BeUf8"><div class="ActionbarContainer_actionbar-container__N__wI" data-testid="actionbar-container"><div class="Actionbar_actionbar__6X84l" style="background-color: rgb(56, 23, 24); color: rgb(249, 82, 82);" data-testid="actionbar"><span class="Actionbar_actionbar__text__tWGLT">WINTER SALE bis zu 50%* | Geschenke portofrei bestellen**</span><div class="Actionbar_actionbar__interaction__okoV1"><div class="Actionbar_actionbar__promocode_container__fm3AR"></div><div class="Actionbar_actionbar__link__wrapper__uvxXl"><a class="Actionbar_actionbar__link__Itd2h" style="text-decoration-color: rgb(249, 82, 82);" href="/de/sale/c/sale">Jetzt entdecken</a></div></div><button class="Actionbar_actionbar-button__gm_b1 Actionbar_actionbar-show-flyout-button__TzY4X"><span class="sr-only">Mehr anzeigen</span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" class="svg-inline--fa fa-chevron-down fa-fw " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 14px; height: 14px;" data-testid="iconundefined" height="14" width="14"><path fill="currentColor" d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"></path></svg></button></div><div class="Actionbar_actionbar-flyout-wrapper__qbxl9"><div style="background-color: rgb(56, 23, 24); color: rgb(249, 82, 82);" class="Actionbar_actionbar-flyout__He_fy"><span>*Gilt nur auf reduzierte Artikel und nur solange der Vorrat reicht. **Alle Bestellungen, die bis Mittwoch, den 18.12.2025 eingehen, werden rechtzeitig zu Weihnachten geliefert. hessnatur garantiert, dass Aufträge die zu dem oben genannten Termin aufgegeben wurden, rechtzeitig an den Paketdienstleister übergeben werden. Voraussetzung ist die sofortige Verfügbarkeit in unserem Lager. Eine Garantie der rechtzeitigen Zustellung durch den Paketdienstleister können wir leider nicht übernehmen. Bei kleineren Warensendungen (weniger als 500 Gramm) können wir eine rechtzeitige Zustellung durch den Versand-Partner nicht garantieren. Nur mit dem Aktionscode ADVENT25 wird die Bestellung innerhalb von Deutschland portofrei geliefert. Ab einem Warenwert nach Retoure von 29,- € , nicht kombinierbar mit anderen Aktionen. Keine Auszahlung möglich. Gültig bis 18.12.25.</span></div></div></div><header class="Header_header__EqZ20" data-testid="header"><div class="Header_header__row__jZlCg" data-testid="header-top-row"><div class="Header_header__row__col__AyBrA Header_header__searchBox__PvKo7 display-flex"><div class="SearchBox_searchBox__Bu6f9" data-testid="search-box"><div class="SearchBox_input-form__pBLY9"><div class="Input_input__TgANq"><input id="input-search-box" name="search-box" tabindex="1" type="text" placeholder="Best.-Nr. / Suchbegriff" aria-label="Produktsuche" autocomplete="off" data-testid="search-input" class=""></div><button class="Button_button__ZpQ68 Button_button--tertiary__AZUzs" data-testid="button" id="search-box-button"><span class="sr-only"> Suche</span>Suche</button></div></div></div><div class="Header_header__row__col__AyBrA Header_header__logoBox__CS774"><a class="Header_header__logoBox--desktop__Vmd2P" data-testid="header-logo-desktop" title="Zurück zur Startseite" href="/de"><img alt="hessnatur Logo" data-testid="header-logo" fetchpriority="high" width="195" height="58" decoding="async" data-nimg="1" style="color: transparent;" src="/images/hessnatur-logo-desktop.svg"></a><script type="application/ld+json" id="rich-snippet-logo">{"@context":"https://schema.org","@type":"Organization","url":"/de/","logo":"/images/hessnatur-logo-desktop.svg","legalName":"Hess Natur - Textilien GmbH","name":"Hessnatur Deutschland","alternateName":"Hessnatur","brand":{"@type":"Thing","name":"Hessnatur"},"location":{"@type":"PostalAddress","streetAddress":"Marie-Curie-Str. 7","postalCode":35510,"addressLocality":"Butzbach, Germany"},"contactPoint":{"@type":"ContactPoint","areaServed":"BE,BG,DE,DK,EE,FI,FR,GR,GB,HR,IE,IT,LV,LT,LU,MT,NL,PL,PT,RO,SE,SK,SI,ES,CZ,HU,CY","availableLanguage":"German,English,Spanish,Greek,Turkish,Italian","contactType":"customer service","email":"kundenservice@hess-natur.de","telephone":"+4960331813333","faxNumber":"+4960339917800","hoursAvailable":{"name":"Mo-Su 07:00-23:00","@type":"OpeningHoursSpecification"}}}</script></div><div class="Header_header__row__col__AyBrA display-flex"><div class="AccountBoxDesktop_accountBoxDesktop__rXdia" data-testid="account-box-desktop"><div data-testid="newsletter-box-trigger" class="NewsletterLinkDesktop_newsletterBox__6_OgD"><a class="NewsletterLinkDesktop_newsletterBox__newsletterLink__M38up" href="/de/newsletter-registrierung?nlregsource=HeaderLink"><img data-testid="icon-newsletter" alt="Icon newsletter" loading="lazy" width="20" height="20" decoding="async" data-nimg="1" style="color: transparent;" src="/images/icons/newsletter.svg"><span data-testid="newsletter-box-newsletter-text" class="NewsletterLinkDesktop_newsletterBox__newsletterLink__newsletterText__JYzaR">Newsletter</span></a></div><div class="LoginBox_loginBox__56jem" data-testid="login-box"><button type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:r0:" data-state="closed" style="background-color: transparent; padding: 0px; margin: 0px; border: medium;"><div data-testid="login-box-trigger" class="LoginBox_loginBox__56jem"><a class="LoginBox_loginBox__loginLink__KYN0b" href="/de/login"><img data-testid="icon-account-user" alt="Icon account-user" loading="lazy" width="20" height="20" decoding="async" data-nimg="1" style="color: transparent;" src="/images/icons/account-user.svg"><span data-testid="login-box-login-text" class="LoginBox_loginBox__loginLink__loginText__A8z6a">Anmelden</span></a></div></button><div></div></div><div class="WishlistBox_wishlistBox__cGSh4" data-testid="wishlist-box"><button type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:r1:" data-state="closed" style="background-color: transparent; padding: 0px; margin: 0px; border: medium;"><div class="WishlistBox_wishlistBox__cGSh4" data-testid="mini-wishlist-box-trigger"><a class="WishlistBox_wishlistBox__wishlistLink__XCTGo" href="/de/merkzettel"><img data-testid="icon-heart" alt="Icon heart" loading="lazy" width="20" height="20" decoding="async" data-nimg="1" style="color: transparent;" src="/images/icons/heart.svg"><span class="WishlistBox_wishlistBox__wishlistCounter__btlx_" data-testid="wishlist-counter"><span>&nbsp;</span></span></a></div></button><div></div></div><div class="MiniCartBox_miniCartBox__gKUIA" data-testid="mini-cart-box"><button type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:r2:" data-state="closed" style="background-color: transparent; padding: 0px; margin: 0px; border: medium;"><div class="MiniCartBox_miniCartBox__gKUIA" data-testid="mini-cart-box-trigger"><a class="MiniCartBox_miniCartBox__miniCartLink__AQrWf" href="/de/cart"><img data-testid="icon-shopping-bag" alt="Icon shopping-bag" loading="lazy" width="20" height="20" decoding="async" data-nimg="1" style="color: transparent;" src="/images/icons/shopping-bag.svg"><span class="MiniCartBox_miniCartBox__miniCartCounter__Zm85T" data-testid="mini-cart-counter">2</span></a></div></button><div></div></div></div></div></div><div class="Header_header__row__jZlCg Header_header__row--navbar__RHKMM" data-testid="header-navbar-row"><div class="Header_header__row__col__AyBrA"><div><div data-testid="language-switcher"><span data-testid="language-switcher-item-de" class="LanguageSwitcher_languageSwitcher__item__I0E_O LanguageSwitcher_languageSwitcher__item--active__PEAYE">DE</span><a class="LanguageSwitcher_languageSwitcher__item__I0E_O" data-testid="language-switcher-item-en" title="Zur englischen Seite wechseln" href="/en-DE/cart">EN</a></div></div></div><div class="Header_header__row__col__AyBrA Header_header__navigationBox__3Zj7E"><div data-testid="navigation-desktop"><nav aria-label="Main" data-orientation="horizontal" dir="ltr"><div style="position: relative;"><ul data-orientation="horizontal" class="NavigationDesktop_navigationDesktop__navbar__vhy5_" dir="ltr"><li data-testid="navigation-desktop-flyout-0" class="NavigationDesktop_navigationDesktop__navbar__entry__VcrtF"><button id="radix-:r5:-trigger-submenu-0" data-state="closed" aria-expanded="false" aria-controls="radix-:r5:-content-submenu-0" data-radix-collection-item=""><a title="Nachhaltigkeit" href="/de/nachhaltigkeit">Nachhaltigkeit</a></button></li><li data-testid="navigation-desktop-flyout-1" class="NavigationDesktop_navigationDesktop__navbar__entry__VcrtF"><button id="radix-:r5:-trigger-submenu-1" data-state="closed" aria-expanded="false" aria-controls="radix-:r5:-content-submenu-1" data-radix-collection-item=""><a title="Neu" href="/de/NEU">Neu</a></button></li><li data-testid="navigation-desktop-flyout-2" class="NavigationDesktop_navigationDesktop__navbar__entry__VcrtF"><button id="radix-:r5:-trigger-submenu-2" data-state="closed" aria-expanded="false" aria-controls="radix-:r5:-content-submenu-2" data-radix-collection-item=""><a title="Damen" href="/de/damen">Damen</a></button></li><li data-testid="navigation-desktop-flyout-3" class="NavigationDesktop_navigationDesktop__navbar__entry__VcrtF"><button id="radix-:r5:-trigger-submenu-3" data-state="closed" aria-expanded="false" aria-controls="radix-:r5:-content-submenu-3" data-radix-collection-item=""><a title="Herren" href="/de/herren">Herren</a></button></li><li data-testid="navigation-desktop-flyout-4" class="NavigationDesktop_navigationDesktop__navbar__entry__VcrtF"><button id="radix-:r5:-trigger-submenu-4" data-state="closed" aria-expanded="false" aria-controls="radix-:r5:-content-submenu-4" data-radix-collection-item=""><a title="Junior" href="/de/baby">Junior</a></button></li><li data-testid="navigation-desktop-flyout-5" class="NavigationDesktop_navigationDesktop__navbar__entry__VcrtF"><button id="radix-:r5:-trigger-submenu-5" data-state="closed" aria-expanded="false" aria-controls="radix-:r5:-content-submenu-5" data-radix-collection-item=""><a title="Wäsche" href="/de/waesche">Wäsche</a></button></li><li data-testid="navigation-desktop-flyout-6" class="NavigationDesktop_navigationDesktop__navbar__entry__VcrtF"><button id="radix-:r5:-trigger-submenu-6" data-state="closed" aria-expanded="false" aria-controls="radix-:r5:-content-submenu-6" data-radix-collection-item=""><a title="Home" href="/de/home">Home</a></button></li><li data-testid="navigation-desktop-flyout-7" class="NavigationDesktop_navigationDesktop__navbar__entry__VcrtF"><button id="radix-:r5:-trigger-submenu-7" data-state="closed" aria-expanded="false" aria-controls="radix-:r5:-content-submenu-7" data-radix-collection-item=""><a title="Sale" href="/de/sale">Sale</a></button></li></ul></div></nav></div></div><div class="Header_header__row__col__AyBrA"><div class="HeaderLinks_headerLinks__Bk4lM" data-testid="header-links"><a href="/magazin/" data-testid="magazin-link">Magazin</a><a data-testid="secondhand-link" href="/de/secondhand">Secondhand</a></div></div></div></header><div data-testid="cartPage" class="layout_wrapper__Dh_bB"><div class="cart_cart-page__CuJ_h"><div class="cart_content__2hqVv"><h1 class="text-sm cart_cart-page__headline__wDw49">Dein Warenkorb</h1><p class="cart_subline__RuBAZ">Artikel im Warenkorb werden nicht reserviert.</p><div class="cart_cart-page__wrapper___x6ut"><div class="cart_cart-page__wrapper__cart-entries-list__mCay5"><div><div class="CartEntry_cartEntry__6pFOF"><div class="CartEntry_cartEntry__threeDots__ZLKpR"><button type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:ru:" data-state="closed" style="background-color: transparent; padding: 0px; margin: 0px; border: medium;"><img alt="More options icon" loading="lazy" width="4" height="16" decoding="async" data-nimg="1" style="color: transparent;" src="/images/icons/more-options.svg"></button><div></div></div><div class="CartEntry_cartEntry__detailsWrapper__ufzUb"><div class="CartEntry_cartEntry__detailsWrapper__image__3y1VY"><div><a href="/de/strick-pullover-relaxed-aus-alpaka-mit-bio-baumwolle/p/5709978S"><div class="Media_media__xv333" data-testid="media"><figure><div id="img-container-https://images.hessnatur.com/images/2902769/webshop_product-small/product-shop-model-01/Strick_Pullover_Relaxed_aus_Alpaka_mit_Bio_Baumwolle-57099_78_1.webp" class="Media_wrapper__nAZUr"><img alt="https://images.hessnatur.com/images/2902769/webshop_product-small/product-shop-model-01/Strick_Pullover_Relaxed_aus_Alpaka_mit_Bio_Baumwolle-57099_78_1.webp" loading="lazy" decoding="async" data-nimg="fill" class="Media_element__Q1DDR Media_fill__eMe2a" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;" src="https://images.hessnatur.com/images/2902769/webshop_product-small/product-shop-model-01/Strick_Pullover_Relaxed_aus_Alpaka_mit_Bio_Baumwolle-57099_78_1.webp"></div></figure></div></a></div></div><div class="CartEntry_cartEntry__detailsWrapper__details__IFwWE"><div class="CartEntry_cartEntry__headline__JQKsM"><a href="/de/strick-pullover-relaxed-aus-alpaka-mit-bio-baumwolle/p/5709978S">Strick Pullover Relaxed aus Alpaka mit Bio-Baumwolle</a></div><div class="CartEntry_cartEntry__detailsWrapper__details__subline__dnLuO"><div class="CartEntry_cartEntry__subline__JAHeL">Artikel 57099</div><div class="CartEntry_cartEntry__detailsWrapper__details--detail__BsQu1">Farbe: Naturgrau</div></div><div class="CartEntry_cartEntry__detailsWrapper__details__availability__UPqPX"><span class="ProductAvailability_available__zjuhf" data-testid="product-availability-deliveryTime-available">3-5 Werktage</span></div><div class="CartEntry_cartEntry__detailsWrapper__details__box__H2ZF2"><div class="CartEntry_cartEntry__detailsWrapper__details__size__zOaRA">Größe <p><select id="cart-entry-size-0" class="Select_special__bJJJ0"><option value="XS">XS</option><option value="S">S</option><option value="M">M</option><option value="L">L</option><option value="XL">XL</option></select></p></div><div>Menge <p><select id="cart-entry-quantity-0" class="Select_special__bJJJ0"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option></select></p></div></div><div class="CartEntry_cartEntry__detailsWrapper__details__price__oo_cN"><div class="PriceLabel_priceRow__1sb0z"><span class="sr-only">Erhältlich für 179,99&nbsp;€ anstatt 299,99&nbsp;€</span><div class="PriceLabel_priceRow__priceLabel--cartEntry__kJU_x PriceLabel_priceRow__priceLabel--discounted__rpPhy PriceLabel_priceRow__priceLabel--discounted--bold__0yqY5"><span aria-hidden="true" data-testid="price-label-discounted"><div>179,99&nbsp;€</div></span></div><div class="PriceLabel_priceRow__priceLabel--cartEntry__kJU_x PriceLabel_priceRow__priceLabel--striked__F_I_p PriceLabel_priceRow__priceLabel--striked--cartEntry__wXUbx"><span aria-hidden="true" data-testid="price-label-striked">299,99&nbsp;€</span></div><div class="PriceLabel_priceRow__priceInfo--cartEntry__Rh3lR"></div></div></div><div class="CartEntry_cartEntry__detailsWrapper__details__ecoPoints__lteLs">180 Eco Points</div></div></div></div><div class="CartEntry_cartEntry__6pFOF"><div class="CartEntry_cartEntry__threeDots__ZLKpR"><button type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="radix-:rv:" data-state="closed" style="background-color: transparent; padding: 0px; margin: 0px; border: medium;"><img alt="More options icon" loading="lazy" width="4" height="16" decoding="async" data-nimg="1" style="color: transparent;" src="/images/icons/more-options.svg"></button><div></div></div><div class="CartEntry_cartEntry__detailsWrapper__ufzUb"><div class="CartEntry_cartEntry__detailsWrapper__image__3y1VY"><div><a href="/de/strick-pullover-relaxed-aus-alpaka-mit-bio-baumwolle/p/5709717S"><div class="Media_media__xv333" data-testid="media"><figure><div id="img-container-https://images.hessnatur.com/images/2902690/webshop_product-small/product-shop-model-01/Strick_Pullover_Relaxed_aus_Alpaka_mit_Bio_Baumwolle-57097_17_1.webp" class="Media_wrapper__nAZUr"><img alt="https://images.hessnatur.com/images/2902690/webshop_product-small/product-shop-model-01/Strick_Pullover_Relaxed_aus_Alpaka_mit_Bio_Baumwolle-57097_17_1.webp" loading="lazy" decoding="async" data-nimg="fill" class="Media_element__Q1DDR Media_fill__eMe2a" style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;" src="https://images.hessnatur.com/images/2902690/webshop_product-small/product-shop-model-01/Strick_Pullover_Relaxed_aus_Alpaka_mit_Bio_Baumwolle-57097_17_1.webp"></div></figure></div></a></div></div><div class="CartEntry_cartEntry__detailsWrapper__details__IFwWE"><div class="CartEntry_cartEntry__headline__JQKsM"><a href="/de/strick-pullover-relaxed-aus-alpaka-mit-bio-baumwolle/p/5709717S">Strick Pullover Relaxed aus Alpaka mit Bio-Baumwolle</a></div><div class="CartEntry_cartEntry__detailsWrapper__details__subline__dnLuO"><div class="CartEntry_cartEntry__subline__JAHeL">Artikel 57097</div><div class="CartEntry_cartEntry__detailsWrapper__details--detail__BsQu1">Farbe: Marine</div></div><div class="CartEntry_cartEntry__detailsWrapper__details__availability__UPqPX"><span class="ProductAvailability_available__zjuhf" data-testid="product-availability-deliveryTime-available">3-5 Werktage</span></div><div class="CartEntry_cartEntry__detailsWrapper__details__box__H2ZF2"><div class="CartEntry_cartEntry__detailsWrapper__details__size__zOaRA">Größe <p><select id="cart-entry-size-1" class="Select_special__bJJJ0"><option value="XS">XS</option><option value="S">S</option><option value="M">M</option><option value="L">L</option><option value="XL">XL</option><option value="XXL">XXL</option></select></p></div><div>Menge <p><select id="cart-entry-quantity-1" class="Select_special__bJJJ0"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option></select></p></div></div><div class="CartEntry_cartEntry__detailsWrapper__details__price__oo_cN"><div class="PriceLabel_priceRow__1sb0z"><span class="sr-only">Erhältlich für 167,99&nbsp;€ anstatt 239,99&nbsp;€</span><div class="PriceLabel_priceRow__priceLabel--cartEntry__kJU_x PriceLabel_priceRow__priceLabel--discounted__rpPhy PriceLabel_priceRow__priceLabel--discounted--bold__0yqY5"><span aria-hidden="true" data-testid="price-label-discounted"><div>167,99&nbsp;€</div></span></div><div class="PriceLabel_priceRow__priceLabel--cartEntry__kJU_x PriceLabel_priceRow__priceLabel--striked__F_I_p PriceLabel_priceRow__priceLabel--striked--cartEntry__wXUbx"><span aria-hidden="true" data-testid="price-label-striked">239,99&nbsp;€</span></div><div class="PriceLabel_priceRow__priceInfo--cartEntry__Rh3lR"></div></div></div><div class="CartEntry_cartEntry__detailsWrapper__details__ecoPoints__lteLs">168 Eco Points</div></div></div></div></div></div><div class="cart_cart-page__wrapper__cart-checkout__3bCWj"><div class="CartCheckout_wrapper__oP9XU" data-testid="cart-checkout"><div class="EcoPoints_eco-points__lHdCK EcoPoints_eco-points--cart__dJbij"><div class="EcoPoints_eco-points__content__9xMjA"><img data-testid="iconundefined" alt="Icon eco-points" loading="lazy" width="20" height="20" decoding="async" data-nimg="1" class="" style="color: transparent;" src="/_next/static/media/eco-points.0963ac9a.svg"><div class="EcoPoints_eco-points__value__5mF4S">348&nbsp;</div><div>Eco Points</div></div><div class="EcoPoints_eco-points__link__NEBIH"><a href="/de/hessnatur-friends" target="_blank">Details</a></div></div><div><div class="CouponBox_coupon-box__FMHET"><form class="CouponBox_coupon-box__redeem-form__BMT8r" novalidate=""><div data-testid="form-input-redeemCode" class="formElement formInput_form-input__zd5iU formInput_form-input__new-design__LLPjE"><div class="formInput_form-input-container__paoq5"><input name="redeemCode" id=":r10:" class="" placeholder="Gutscheincode hier einlösen (optional)"></div></div><button type="submit" class="btn-primary-dark CouponBox_coupon-box__redeem-form__submit-button__gltF1">Anwenden</button></form></div></div><div><div class="AmountBox_amountBox__x5OBp AmountBox_amountBox__cart__7oEpE" data-testid="amount-box"><div class="AmountBox_headline__fyMmL AmountBox_headline__cart__My1Pd text-sm">Du zahlst</div><div class="AmountBox_subtotal__A04TL"><div>Zwischensumme:</div><div>347,98&nbsp;€</div></div><div class="AmountBox_voucher__iQoAE"><div>Gutschein:</div><div>0,00&nbsp;€</div></div><div class="AmountBox_sticky__iAfDW"><div class="AmountBox_total__AH6tN"><div>Gesamtsumme <span class="AmountBox_total_vat__OCZeR">(Inkl. MwSt.)</span></div><div>347,98&nbsp;€</div></div><div class="AmountBox_shipping__qQtt3">*zzgl. <span>Versandkosten</span></div></div></div></div><div class="CartCheckout_checkout-btn__Jo0Hb"><div data-testid="cart-checkout-button"><button class="btn btn-block btn-primary-dark">Zur Kasse</button></div></div><div class="CartCheckout_ctas-box__pdPbo"><div class="CartCheckout_ctas-box__quick-checkout__9sYx1"><div class="AmazonPayButton_amazonPayButton__kpz4B AmazonPayButton_amazonPayButton__cart__dBtIj amazonpay-merchant-shadow-root-parent-element-for-executing-modal-script amazonpay-button-parent-container-checkout-A3FO0SIBX5J79J" id="amazon-pay-button" style="position: relative; width: 144.3px; height: 55.5px;" role="button" aria-label="Amazon Pay - Verwenden Sie Ihr Amazon-Konto" title="Nutzen Sie zum Bezahlen die Angaben, die Sie bereits in Ihrem Amazon-Konto gespeichert haben" rendered="true"></div><div class="PaypalButton_paypal-button-wrapper__O46vO"><div class=""><div id="zoid-paypal-buttons-uid_4e141b92b6_mtq6mde6mjy" class="paypal-buttons paypal-buttons-context-iframe paypal-buttons-label-unknown paypal-buttons-layout-horizontal" data-paypal-smart-button-version="5.0.520" style="height: 42px; transition: 0.2s ease-in-out;"><style nonce="">
+                    #zoid-paypal-buttons-uid_4e141b92b6_mtq6mde6mjy {
+                        position: relative;
+                        display: inline-block;
+                        width: 100%;
+                        min-height: 25px;
+                        min-width: 150px;
+                        font-size: 0;
+                    }
+
+                    #zoid-paypal-buttons-uid_4e141b92b6_mtq6mde6mjy > iframe {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    #zoid-paypal-buttons-uid_4e141b92b6_mtq6mde6mjy > iframe.component-frame {
+                        z-index: 100;
+                    }
+
+                    #zoid-paypal-buttons-uid_4e141b92b6_mtq6mde6mjy > iframe.prerender-frame {
+                        transition: opacity .2s linear;
+                        z-index: 200;
+                    }
+
+                    #zoid-paypal-buttons-uid_4e141b92b6_mtq6mde6mjy > iframe.visible {
+                        opacity: 1;
+                    }
+
+                    #zoid-paypal-buttons-uid_4e141b92b6_mtq6mde6mjy > iframe.invisible {
+                        opacity: 0;
+                        pointer-events: none;
+                    }
+
+                    #zoid-paypal-buttons-uid_4e141b92b6_mtq6mde6mjy > .smart-menu {
+                        position: absolute;
+                        z-index: 300;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                    }
+                </style><iframe style="background-color: transparent; border: medium;" allowtransparency="true" name="__zoid__paypal_buttons__eyJzZW5kZXIiOnsiZG9tYWluIjoiaHR0cHM6Ly93d3cuaGVzc25hdHVyLmNvbSJ9LCJtZXRhRGF0YSI6eyJ3aW5kb3dSZWYiOnsidHlwZSI6InBhcmVudCIsImRpc3RhbmNlIjowfX0sInJlZmVyZW5jZSI6eyJ0eXBlIjoicmF3IiwidmFsIjoie1widWlkXCI6XCJ6b2lkLXBheXBhbC1idXR0b25zLXVpZF80ZTE0MWI5MmI2X210cTZtZGU2bWp5XCIsXCJjb250ZXh0XCI6XCJpZnJhbWVcIixcInRhZ1wiOlwicGF5cGFsLWJ1dHRvbnNcIixcImNoaWxkRG9tYWluTWF0Y2hcIjp7XCJfX3R5cGVfX1wiOlwicmVnZXhcIixcIl9fdmFsX19cIjpcIlxcXFwucGF5cGFsXFxcXC4oY29tfGNuKSg6XFxcXGQrKT8kXCJ9LFwidmVyc2lvblwiOlwiMTBfNF8wXCIsXCJwcm9wc1wiOntcIm9uQ2xpY2tcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF8wYTYyYmMzNWZhX210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJvbkNsaWNrXCJ9fSxcImNyZWF0ZU9yZGVyXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfNThmYWJmMDYxNl9tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwiY3JlYXRlT3JkZXJcIn19LFwib25BcHByb3ZlXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfYmY5ODNjZmM2M19tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwib25BcHByb3ZlXCJ9fSxcIm9uU2hpcHBpbmdBZGRyZXNzQ2hhbmdlXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfOWMxYTM4OWZiMl9tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwib25TaGlwcGluZ0FkZHJlc3NDaGFuZ2VcIn19LFwiZnVuZGluZ1NvdXJjZVwiOlwicGF5cGFsXCIsXCJzdHlsZVwiOntcImxhYmVsXCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcImxheW91dFwiOlwiaG9yaXpvbnRhbFwiLFwiY29sb3JcIjpcImdvbGRcIixcInNoYXBlXCI6XCJyZWN0XCIsXCJ0YWdsaW5lXCI6ZmFsc2UsXCJoZWlnaHRcIjo0MixcInBlcmlvZFwiOntcIl9fdHlwZV9fXCI6XCJ1bmRlZmluZWRcIn0sXCJtZW51UGxhY2VtZW50XCI6XCJiZWxvd1wiLFwiZGlzYWJsZU1heFdpZHRoXCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcImRpc2FibGVNYXhIZWlnaHRcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwiYm9yZGVyUmFkaXVzXCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcInNob3VsZEFwcGx5UmVicmFuZGVkU3R5bGVzXCI6ZmFsc2UsXCJpc0J1dHRvbkNvbG9yQUJUZXN0TWVyY2hhbnRcIjpmYWxzZX0sXCJvbkluaXRcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF9mZjM1MmJhMjhlX210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJvbkluaXRcIn19LFwiY3NwTm9uY2VcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwiYXBwU3dpdGNoV2hlbkF2YWlsYWJsZVwiOntcIl9fdHlwZV9fXCI6XCJ1bmRlZmluZWRcIn0sXCJzaG93UGF5UGFsQXBwU3dpdGNoT3ZlcmxheVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkXzg3YzIwMTY2ZGJfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcInNob3dQYXlQYWxBcHBTd2l0Y2hPdmVybGF5XCJ9fSxcImhpZGVQYXlQYWxBcHBTd2l0Y2hPdmVybGF5XCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfZWZmOWM2MDM2Nl9tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwiaGlkZVBheVBhbEFwcFN3aXRjaE92ZXJsYXlcIn19LFwicmVkaXJlY3RcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF9mMWRhZDYyZDgxX210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJyZWRpcmVjdFwifX0sXCJsaXN0ZW5Gb3JIYXNoQ2hhbmdlc1wiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkXzcwNGQ4OGJlYTRfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcImxpc3RlbkZvckhhc2hDaGFuZ2VzXCJ9fSxcInJlbW92ZUxpc3RlbmVyRm9ySGFzaENoYW5nZXNcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF84M2VlOTAzMmU1X210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJyZW1vdmVMaXN0ZW5lckZvckhhc2hDaGFuZ2VzXCJ9fSxcImxpc3RlbkZvclZpc2liaWxpdHlDaGFuZ2VcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF82NDcyOThmNTYwX210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJsaXN0ZW5Gb3JWaXNpYmlsaXR5Q2hhbmdlXCJ9fSxcInJlbW92ZUxpc3RlbmVyRm9yVmlzaWJpbGl0eUNoYW5nZXNcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF8zMDFiNGU2NDdlX210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJyZW1vdmVMaXN0ZW5lckZvclZpc2liaWxpdHlDaGFuZ2VzXCJ9fSxcImFsbG93QmlsbGluZ1BheW1lbnRzXCI6dHJ1ZSxcImFtb3VudFwiOntcIl9fdHlwZV9fXCI6XCJ1bmRlZmluZWRcIn0sXCJhcGlTdGFnZUhvc3RcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwiYXBwbGVQYXlcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwiYXBwbGVQYXlTdXBwb3J0XCI6ZmFsc2UsXCJicmFuZGVkXCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcImJ1dHRvbkxvY2F0aW9uXCI6XCJ3d3cuaGVzc25hdHVyLmNvbVwiLFwiYnV0dG9uU2Vzc2lvbklEXCI6XCJ1aWRfMzNiNTlhMWFmM19tdHE2bWRlNm1qeVwiLFwiYnV0dG9uU2l6ZVwiOlwidGlueVwiLFwiYnV5ZXJDb3VudHJ5XCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcImNsaWVudEFjY2Vzc1Rva2VuXCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcImN1c3RvbWVySWRcIjpcIlwiLFwiY2xpZW50SURcIjpcIkFSRTFjM2QxZzRPaEZwajdrM0lTWWV6eVNFNUhCSmM5eUszNW5pWGo5ZWQ1WFNCTmUtQ3YtM1o3bzdjOWkzVGd5QjlRSGtvMEw2MmNyMjNWXCIsXCJjbGllbnRNZXRhZGF0YUlEXCI6XCJ1aWRfMmQ3MGI5ZTExZF9tdG02bmRjNm16YVwiLFwiY29tbWl0XCI6ZmFsc2UsXCJjb21wb25lbnRzXCI6W1wiYnV0dG9uc1wiLFwibWVzc2FnZXNcIl0sXCJjcmVhdGVCaWxsaW5nQWdyZWVtZW50XCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcImNyZWF0ZVN1YnNjcmlwdGlvblwiOntcIl9fdHlwZV9fXCI6XCJ1bmRlZmluZWRcIn0sXCJjcmVhdGVWYXVsdFNldHVwVG9rZW5cIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwiY3NwXCI6e1wibm9uY2VcIjpcIlwifSxcImN1cnJlbmN5XCI6XCJFVVJcIixcImRlYnVnXCI6ZmFsc2UsXCJkaXNhYmxlQ2FyZFwiOltdLFwiZGlzYWJsZUZ1bmRpbmdcIjpbXSxcImRpc2FibGVTZXRDb29raWVcIjp0cnVlLFwiZGlzcGxheU9ubHlcIjpbXSxcImVhZ2VyT3JkZXJDcmVhdGlvblwiOmZhbHNlLFwiZW5hYmxlRnVuZGluZ1wiOltdLFwiZW5hYmxlVGhyZWVEb21haW5TZWN1cmVcIjpmYWxzZSxcImVuYWJsZVZhdWx0XCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcImVudlwiOlwicHJvZHVjdGlvblwiLFwiZXhwZXJpbWVudFwiOntcImVuYWJsZVZlbm1vXCI6ZmFsc2UsXCJ2ZW5tb1ZhdWx0V2l0aG91dFB1cmNoYXNlXCI6ZmFsc2UsXCJzcGJFYWdlck9yZGVyQ3JlYXRpb25cIjpmYWxzZSxcInZlbm1vV2ViRW5hYmxlZFwiOmZhbHNlLFwiaXNXZWJWaWV3RW5hYmxlZFwiOmZhbHNlLFwiaXNQYXlwYWxSZWJyYW5kRW5hYmxlZFwiOmZhbHNlLFwiaXNQYXlwYWxSZWJyYW5kQUJUZXN0RW5hYmxlZFwiOmZhbHNlLFwiZGVmYXVsdEJsdWVCdXR0b25Db2xvclwiOlwiZGVmYXVsdEJsdWVfbGlnaHRCbHVlXCIsXCJpc0VkZ2VDYWNoZVN0YWxlRW5hYmxlZFwiOmZhbHNlLFwiaXNDc253RXJyb3JUZXN0aW5nRW5hYmxlZFwiOmZhbHNlLFwidmVubW9FbmFibGVXZWJPbk5vbk5hdGl2ZUJyb3dzZXJcIjpmYWxzZSxcInBheXBhbENyZWRpdEJ1dHRvbkNyZWF0ZVZhdWx0U2V0dXBUb2tlbkV4aXN0c1wiOmZhbHNlfSxcImV4cGVyaW1lbnRhdGlvblwiOnt9LFwiZmxvd1wiOlwicHVyY2hhc2VcIixcImZ1bmRpbmdFbGlnaWJpbGl0eVwiOntcInBheXBhbFwiOntcImVsaWdpYmxlXCI6dHJ1ZSxcInZhdWx0YWJsZVwiOnRydWV9LFwicGF5bGF0ZXJcIjp7XCJlbGlnaWJsZVwiOmZhbHNlLFwidmF1bHRhYmxlXCI6ZmFsc2UsXCJwcm9kdWN0c1wiOntcInBheUluM1wiOntcImVsaWdpYmxlXCI6ZmFsc2UsXCJ2YXJpYW50XCI6bnVsbH0sXCJwYXlJbjRcIjp7XCJlbGlnaWJsZVwiOmZhbHNlLFwidmFyaWFudFwiOm51bGx9LFwicGF5bGF0ZXJcIjp7XCJlbGlnaWJsZVwiOmZhbHNlLFwidmFyaWFudFwiOm51bGx9fX0sXCJjYXJkXCI6e1wiZWxpZ2libGVcIjp0cnVlLFwiYnJhbmRlZFwiOnRydWUsXCJpbnN0YWxsbWVudHNcIjpmYWxzZSxcInZlbmRvcnNcIjp7XCJ2aXNhXCI6e1wiZWxpZ2libGVcIjp0cnVlLFwidmF1bHRhYmxlXCI6dHJ1ZX0sXCJtYXN0ZXJjYXJkXCI6e1wiZWxpZ2libGVcIjp0cnVlLFwidmF1bHRhYmxlXCI6dHJ1ZX0sXCJhbWV4XCI6e1wiZWxpZ2libGVcIjp0cnVlLFwidmF1bHRhYmxlXCI6dHJ1ZX0sXCJkaXNjb3ZlclwiOntcImVsaWdpYmxlXCI6dHJ1ZSxcInZhdWx0YWJsZVwiOnRydWV9LFwiaGlwZXJcIjp7XCJlbGlnaWJsZVwiOmZhbHNlLFwidmF1bHRhYmxlXCI6ZmFsc2V9LFwiZWxvXCI6e1wiZWxpZ2libGVcIjpmYWxzZSxcInZhdWx0YWJsZVwiOnRydWV9LFwiamNiXCI6e1wiZWxpZ2libGVcIjpmYWxzZSxcInZhdWx0YWJsZVwiOnRydWV9LFwibWFlc3Ryb1wiOntcImVsaWdpYmxlXCI6dHJ1ZSxcInZhdWx0YWJsZVwiOnRydWV9LFwiZGluZXJzXCI6e1wiZWxpZ2libGVcIjp0cnVlLFwidmF1bHRhYmxlXCI6dHJ1ZX0sXCJjdXBcIjp7XCJlbGlnaWJsZVwiOnRydWUsXCJ2YXVsdGFibGVcIjp0cnVlfSxcImNiX25hdGlvbmFsZVwiOntcImVsaWdpYmxlXCI6ZmFsc2UsXCJ2YXVsdGFibGVcIjp0cnVlfX0sXCJndWVzdEVuYWJsZWRcIjpmYWxzZX0sXCJ2ZW5tb1wiOntcImVsaWdpYmxlXCI6ZmFsc2UsXCJ2YXVsdGFibGVcIjpmYWxzZX0sXCJpdGF1XCI6e1wiZWxpZ2libGVcIjpmYWxzZX0sXCJjcmVkaXRcIjp7XCJlbGlnaWJsZVwiOmZhbHNlfSxcImFwcGxlcGF5XCI6e1wiZWxpZ2libGVcIjpmYWxzZX0sXCJzZXBhXCI6e1wiZWxpZ2libGVcIjp0cnVlfSxcImlkZWFsXCI6e1wiZWxpZ2libGVcIjpmYWxzZX0sXCJiYW5jb250YWN0XCI6e1wiZWxpZ2libGVcIjpmYWxzZX0sXCJnaXJvcGF5XCI6e1wiZWxpZ2libGVcIjpmYWxzZX0sXCJlcHNcIjp7XCJlbGlnaWJsZVwiOmZhbHNlfSxcInNvZm9ydFwiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwibXliYW5rXCI6e1wiZWxpZ2libGVcIjpmYWxzZX0sXCJwMjRcIjp7XCJlbGlnaWJsZVwiOmZhbHNlfSxcIndlY2hhdHBheVwiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwicGF5dVwiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwiYmxpa1wiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwidHJ1c3RseVwiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwib3h4b1wiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwiYm9sZXRvXCI6e1wiZWxpZ2libGVcIjpmYWxzZX0sXCJib2xldG9iYW5jYXJpb1wiOntcImVsaWdpYmxlXCI6ZmFsc2V9LFwibWVyY2Fkb3BhZ29cIjp7XCJlbGlnaWJsZVwiOmZhbHNlfSxcIm11bHRpYmFuY29cIjp7XCJlbGlnaWJsZVwiOmZhbHNlfSxcInNhdGlzcGF5XCI6e1wiZWxpZ2libGVcIjpmYWxzZX0sXCJwYWlkeVwiOntcImVsaWdpYmxlXCI6ZmFsc2V9fSxcImdldFBhZ2VVcmxcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF85ODhhYzM5MDE0X210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJnZXRQYWdlVXJsXCJ9fSxcImdldFBvcHVwQnJpZGdlXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfMjRlZThjNmM0OF9tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwiZ2V0UG9wdXBCcmlkZ2VcIn19LFwiZ2V0UHJlcmVuZGVyRGV0YWlsc1wiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkXzY3MzkzZjkzOGJfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcImdldFByZXJlbmRlckRldGFpbHNcIn19LFwiZ2V0UXVlcmllZEVsaWdpYmxlRnVuZGluZ1wiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkX2E2MDQzZmJjM2RfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcImdldFF1ZXJpZWRFbGlnaWJsZUZ1bmRpbmdcIn19LFwiaG9zdGVkQnV0dG9uSWRcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwiaW50ZW50XCI6XCJjYXB0dXJlXCIsXCJqc1Nka0xpYnJhcnlcIjpcInJlYWN0LXBheXBhbC1qc1wiLFwibG9jYWxlXCI6e1wibGFuZ1wiOlwiZGVcIixcImNvdW50cnlcIjpcIkRFXCJ9LFwibWVyY2hhbnRJRFwiOltdLFwibWVyY2hhbnRSZXF1ZXN0ZWRQb3B1cHNEaXNhYmxlZFwiOmZhbHNlLFwibWVzc2FnZVwiOntcIl9fdHlwZV9fXCI6XCJ1bmRlZmluZWRcIn0sXCJub25jZVwiOlwiXCIsXCJvbkNhbmNlbFwiOntcIl9fdHlwZV9fXCI6XCJ1bmRlZmluZWRcIn0sXCJvbkNvbXBsZXRlXCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcIm9uTWVzc2FnZUNsaWNrXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfYTJjZmNjMjAzOV9tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwib25NZXNzYWdlQ2xpY2tcIn19LFwib25NZXNzYWdlSG92ZXJcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF9kNTE5NDIxYmVhX210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJvbk1lc3NhZ2VIb3ZlclwifX0sXCJvbk1lc3NhZ2VSZWFkeVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkX2M2YTBkMDczNTBfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcIm9uTWVzc2FnZVJlYWR5XCJ9fSxcIm9uU2hpcHBpbmdDaGFuZ2VcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwib25TaGlwcGluZ09wdGlvbnNDaGFuZ2VcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwiaGFzU2hpcHBpbmdDYWxsYmFja1wiOnRydWUsXCJwYWdlVHlwZVwiOntcIl9fdHlwZV9fXCI6XCJ1bmRlZmluZWRcIn0sXCJwYXJ0bmVyQXR0cmlidXRpb25JRFwiOntcIl9fdHlwZV9fXCI6XCJ1bmRlZmluZWRcIn0sXCJwYXltZW50TWV0aG9kTm9uY2VcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwicGF5bWVudE1ldGhvZFRva2VuXCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcInBheW1lbnRSZXF1ZXN0XCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcInBsYXRmb3JtXCI6XCJkZXNrdG9wXCIsXCJyZWZlcnJlckRvbWFpblwiOntcIl9fdHlwZV9fXCI6XCJ1bmRlZmluZWRcIn0sXCJyZW1lbWJlclwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkX2E2MzZmNjQ5NzdfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcInJlbWVtYmVyXCJ9fSxcInJlbWVtYmVyZWRcIjpbXSxcInJlbmRlcmVkQnV0dG9uc1wiOltcInBheXBhbFwiXSxcInNlc3Npb25JRFwiOlwidWlkXzJkNzBiOWUxMWRfbXRtNm5kYzZtemFcIixcInNka0NvcnJlbGF0aW9uSURcIjpcInByZWJ1aWxkXCIsXCJzZGtJbml0VGltaW5nc1wiOntcInNka0luaXRUaW1lU3RhbXBcIjoxNzY1OTgwMDg2MDIwLFwic2RrU2NyaXB0RG93bmxvYWREdXJhdGlvblwiOjQ5LFwiaXNTZGtDYWNoZWRcIjpcIm5vXCJ9LFwic2RrVG9rZW5cIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwic2Vzc2lvblN0YXRlXCI6e1wiZ2V0XCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfOWRlNmJkODU2Y19tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwiZ2V0XCJ9fSxcInNldFwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkX2Y0ODczNjA2OWZfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcInNldFwifX19LFwic2hvcHBlclNlc3Npb25JZFwiOlwiXCIsXCJnZXRTaG9wcGVySW5zaWdodHNVc2VkXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfMDU5MDk3ZjRjMF9tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwiUHJcIn19LFwic3RhZ2VIb3N0XCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcInN0b3JhZ2VJRFwiOlwidWlkXzQ3MzkyMmY2YzVfbXRhNm1kYTZtenVcIixcInN0b3JhZ2VTdGF0ZVwiOntcImdldFwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkXzhjMzNmNWUzOWJfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcImdldFwifX0sXCJzZXRcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF9hNjJkYjUxMzBiX210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJzZXRcIn19fSxcImJ1dHRvbkNvbG9yXCI6e1wic2hvdWxkQXBwbHlSZWJyYW5kZWRTdHlsZXNcIjpmYWxzZSxcImNvbG9yXCI6XCJnb2xkXCIsXCJpc0J1dHRvbkNvbG9yQUJUZXN0TWVyY2hhbnRcIjpmYWxzZX0sXCJzdXBwb3J0ZWROYXRpdmVCcm93c2VyXCI6ZmFsc2UsXCJzdXBwb3J0ZWROYXRpdmVWZW5tb0Jyb3dzZXJcIjpmYWxzZSxcInN1cHBvcnRzUG9wdXBzXCI6dHJ1ZSxcInN1cHBvcnRzVmVubW9Qb3B1cHNcIjp0cnVlLFwidGVzdFwiOntcImFjdGlvblwiOlwiY2hlY2tvdXRcIn0sXCJ1c2VyRXhwZXJpZW5jZUZsb3dcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwidXNlcklEVG9rZW5cIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwic2RrU291cmNlXCI6XCJyZWFjdC1wYXlwYWwtanNcIixcInZhdWx0XCI6ZmFsc2UsXCJ3YWxsZXRcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwiaGlkZVN1Ym1pdEJ1dHRvbkZvckNhcmRGb3JtXCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcInVzZXJBZ2VudFwiOlwiTW96aWxsYS81LjAgKE1hY2ludG9zaDsgSW50ZWwgTWFjIE9TIFggMTAuMTU7IHJ2OjE0Ni4wKSBHZWNrby8yMDEwMDEwMSBGaXJlZm94LzE0Ni4wXCJ9LFwiZXhwb3J0c1wiOntcImluaXRcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF9lNjI5NGZlOWI0X210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJpbml0XCJ9fSxcImNsb3NlXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfYTE1MmI4YTMyZl9tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwiY2xvc2U6Om1lbW9pemVkXCJ9fSxcImNoZWNrQ2xvc2VcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF8wZWFhMDkwMzA1X210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJjaGVja0Nsb3NlXCJ9fSxcInJlc2l6ZVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkXzgyOTUzODQ3ZWZfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcIlNuXCJ9fSxcIm9uRXJyb3JcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF8yYTM5ZTg2ZTAwX210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJCblwifX0sXCJzaG93XCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfYmI4YWQ1ODA1ZV9tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwic25cIn19LFwiaGlkZVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkXzUxMjc4ZTdhMjVfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcImNuXCJ9fSxcImV4cG9ydFwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkXzlhYzEzODA3ZDVfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcIk1uXCJ9fX19In19__" title="PayPal-paypal" allowpaymentrequest="allowpaymentrequest" scrolling="no" id="jsx-iframe-2d8b472d34" class="component-frame visible"></iframe><div id="smart-menu" class="smart-menu"></div><div id="installments-modal" class="installments-modal"></div><iframe name="__detect_close_uid_2fa8285618_mtq6mde6mjy__" style="display: none;"></iframe></div></div><div class="PaypalButton_paypal-button-wrapper__messages__siZF2" data-pp-id="1"><span id="zoid-paypal-message-uid_82c75b2735_mtq6mde6mjy"><style nonce="">
+                
+        #zoid-paypal-message-uid_82c75b2735_mtq6mde6mjy > iframe {
+            width: 100%;
+            height: 0;
+        }
+
+        #zoid-paypal-message-uid_82c75b2735_mtq6mde6mjy > iframe:nth-of-type(2) {
+            display: none;
+        }
+    
+                
+            </style><iframe style="background-color: transparent; border: medium; height: 65px; opacity: 1;" allowtransparency="true" name="__zoid__paypal_message__eyJzZW5kZXIiOnsiZG9tYWluIjoiaHR0cHM6Ly93d3cuaGVzc25hdHVyLmNvbSJ9LCJtZXRhRGF0YSI6eyJ3aW5kb3dSZWYiOnsidHlwZSI6InBhcmVudCIsImRpc3RhbmNlIjowfX0sInJlZmVyZW5jZSI6eyJ0eXBlIjoicmF3IiwidmFsIjoie1widWlkXCI6XCJ6b2lkLXBheXBhbC1tZXNzYWdlLXVpZF84MmM3NWIyNzM1X210cTZtZGU2bWp5XCIsXCJjb250ZXh0XCI6XCJpZnJhbWVcIixcInRhZ1wiOlwicGF5cGFsLW1lc3NhZ2VcIixcImNoaWxkRG9tYWluTWF0Y2hcIjp7XCJfX3R5cGVfX1wiOlwicmVnZXhcIixcIl9fdmFsX19cIjpcIlxcXFwucGF5cGFsXFxcXC5jb20oOlxcXFxkKyk/JFwifSxcInZlcnNpb25cIjpcIjEwXzRfMFwiLFwicHJvcHNcIjp7XCJhY2NvdW50XCI6XCJjbGllbnQtaWQ6QVJFMWMzZDFnNE9oRnBqN2szSVNZZXp5U0U1SEJKYzl5SzM1bmlYajllZDVYU0JOZS1Ddi0zWjdvN2M5aTNUZ3lCOVFIa28wTDYyY3IyM1ZcIixcIm1lcmNoYW50SWRcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwiY3VzdG9tZXJJZFwiOntcIl9fdHlwZV9fXCI6XCJ1bmRlZmluZWRcIn0sXCJjdXJyZW5jeVwiOlwiRVVSXCIsXCJhbW91bnRcIjozNDcuOTgsXCJidXllckNvdW50cnlcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwibGFuZ3VhZ2VcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwiaWdub3JlQ2FjaGVcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwiY2hhbm5lbFwiOlwiVVBTVFJFQU1cIixcImVjVG9rZW5cIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwiY29udGV4dHVhbENvbXBvbmVudHNcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwiY3NwTm9uY2VcIjpcIlwiLFwiZmVhdHVyZXNcIjpcIm5hdGl2ZS1tb2RhbFwiLFwiaW5kZXhcIjpcIjFcIixcInBhZ2VUeXBlXCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcInN0eWxlXCI6e1wibGF5b3V0XCI6XCJ0ZXh0XCJ9LFwib2ZmZXJcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwib25DbGlja1wiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkX2U2MTNlZGY5ZDVfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcIm9uQ2xpY2tcIn19LFwib25BcHBseVwiOntcIl9fdHlwZV9fXCI6XCJ1bmRlZmluZWRcIn0sXCJvblJlYWR5XCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfZmVkMTMzZjc4Ml9tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwib25SZWFkeVwifX0sXCJnZXRDb250YWluZXJcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF8xOTUwMGZkMDM3X210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJnZXRDb250YWluZXJcIn19LFwibW9kYWxcIjp7XCJyZW5kZXJcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF9kYjQ1YjU2MWI1X210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJOXCJ9fSxcInNob3dcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF81Zjc5MjhkYzQ2X210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJSXCJ9fSxcImhpZGVcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF85ZWNiOGZhMmRlX210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJPXCJ9fSxcInVwZGF0ZVByb3BzXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfYzJhN2ZlZTk5NF9tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwidXBkYXRlUHJvcHNcIn19fSxcIm9uRGVzdHJveVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkXzFmNmVjOTJiMjJfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcIm9uRGVzdHJveVwifX0sXCJvbkhvdmVyXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfYzI2ODA2MTZmY19tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwib25Ib3ZlclwifX0sXCJvbk1hcmt1cFwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkX2NhNzU4NzNmMDZfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcIm9uTWFya3VwXCJ9fSxcInBheWVySWRcIjpudWxsLFwiY2xpZW50SWRcIjpcIkFSRTFjM2QxZzRPaEZwajdrM0lTWWV6eVNFNUhCSmM5eUszNW5pWGo5ZWQ1WFNCTmUtQ3YtM1o3bzdjOWkzVGd5QjlRSGtvMEw2MmNyMjNWXCIsXCJtZXJjaGFudENvbmZpZ0hhc2hcIjpcImMwZmY3OTIyZjNkMGY4YTE3YzdjZjJjZTRjY2IyMzg2NTcyZTE2ZDZcIixcInRyZWF0bWVudHNIYXNoXCI6XCJlYzU1NmNmYmQ5NDUwNTc1MGZlYzdhZDUxNDU0NWZkNTRjMjM4MDQ4XCIsXCJlbnZcIjpcInByb2R1Y3Rpb25cIixcInZlcnNpb25cIjpcIjEuNzUuMFwiLFwiaW50ZWdyYXRpb25UeXBlXCI6XCJTREtcIixcImRldmljZUlEXCI6XCJ1aWRfNDczOTIyZjZjNV9tdGE2bWRhNm16dVwiLFwic2Vzc2lvbklEXCI6XCJ1aWRfMmQ3MGI5ZTExZF9tdG02bmRjNm16YVwiLFwic2NyaXB0VUlEXCI6XCJ1aWRfbmJ0Ym15bWFwZmhscWlmbnhkdmxtaWR0cmRhbXBuXCIsXCJtZXNzYWdlUmVxdWVzdElkXCI6XCJ1aWRfNzYzMzdkOTY3NF9tdHE2bWRlNm1qeVwiLFwiZGVidWdcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwibWVzc2FnZUxvY2F0aW9uXCI6XCJodHRwczovL3d3dy5oZXNzbmF0dXIuY29tL2RlL2NhcnRcIixcInN0YWdlVGFnXCI6e1wiX190eXBlX19cIjpcInVuZGVmaW5lZFwifSxcInBhcnRuZXJBdHRyaWJ1dGlvbklkXCI6bnVsbCxcImRldlRvdWNocG9pbnRcIjp7XCJfX3R5cGVfX1wiOlwidW5kZWZpbmVkXCJ9LFwiZGlzYWJsZVNldENvb2tpZVwiOnRydWV9LFwiZXhwb3J0c1wiOntcImluaXRcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF9mMzZlNjBmZGNmX210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJpbml0XCJ9fSxcImNsb3NlXCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfYjMyNWI5MDM5OF9tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwiY2xvc2U6Om1lbW9pemVkXCJ9fSxcImNoZWNrQ2xvc2VcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF8zY2EzMzZjNTIyX210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJjaGVja0Nsb3NlXCJ9fSxcInJlc2l6ZVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkXzkyMDY2NGU1MzhfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcIlNuXCJ9fSxcIm9uRXJyb3JcIjp7XCJfX3R5cGVfX1wiOlwiY3Jvc3NfZG9tYWluX2Z1bmN0aW9uXCIsXCJfX3ZhbF9fXCI6e1wiaWRcIjpcInVpZF9lNDFlNDBiN2Y0X210cTZtZGU2bWp5XCIsXCJuYW1lXCI6XCJCblwifX0sXCJzaG93XCI6e1wiX190eXBlX19cIjpcImNyb3NzX2RvbWFpbl9mdW5jdGlvblwiLFwiX192YWxfX1wiOntcImlkXCI6XCJ1aWRfOWRmMTRiODA0NV9tdHE2bWRlNm1qeVwiLFwibmFtZVwiOlwic25cIn19LFwiaGlkZVwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkXzg4MjYwZDhlMDVfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcImNuXCJ9fSxcImV4cG9ydFwiOntcIl9fdHlwZV9fXCI6XCJjcm9zc19kb21haW5fZnVuY3Rpb25cIixcIl9fdmFsX19cIjp7XCJpZFwiOlwidWlkXzMzMzU5MzI0NWZfbXRxNm1kZTZtanlcIixcIm5hbWVcIjpcIk1uXCJ9fX19In19__" title="PayPal Message 1" scrolling="no" id="jsx-iframe-dff4785c43" data-width="150" data-height="65"></iframe><iframe name="__detect_close_uid_99888303c3_mtq6mde6mjy__" style="display: none;"></iframe></span></div></div></div></div><div><div class="CartPaymentOptions_cartPaymentOptions__EhL3i" data-testid="cart-payment-options"><div class="CartPaymentOptions_cartPaymentOptions__headline__FREeH">Akzeptierte Zahlarten</div><div class="CartPaymentOptions_cartPaymentOptions__logos-box__mDA9L"><div><img alt="Invoice payment" loading="lazy" width="70" height="25" decoding="async" data-nimg="1" style="color: transparent;" src="/images/invoice-black.svg"></div><div><img alt="Amazon pay" loading="lazy" width="97" height="25" decoding="async" data-nimg="1" style="color: transparent;" src="/images/amazonpay-black.svg"></div><div><img alt="Paypal" loading="lazy" width="65" height="25" decoding="async" data-nimg="1" style="color: transparent;" src="/images/paypal-black.svg"></div><div><img alt="Visa" loading="lazy" width="57" height="25" decoding="async" data-nimg="1" style="color: transparent;" src="/images/visa-black.svg"></div><div><img alt="Mastercard" loading="lazy" width="108" height="25" decoding="async" data-nimg="1" style="color: transparent;" src="/images/mastercard-black.svg"></div></div></div></div></div></div></div></div></div></div><hr class="hide-for-print"><footer class="Footer_footerContainer__sQxV5" data-testid="footer"><div class="Benefits_benefits__EAniF"><ul><li><a href="/de/ihre-vorteile"><img alt="" loading="lazy" width="32" height="32" decoding="async" data-nimg="1" style="color: transparent;" src="/_next/static/media/footer-secure.99eec593.svg">Sicher Einkaufen</a></li><li><a href="/de/ihre-vorteile"><img alt="" loading="lazy" width="32" height="32" decoding="async" data-nimg="1" style="color: transparent;" src="/_next/static/media/footer-invoice.ad1ac9f7.svg">Kauf auf Rechnung</a></li><li><a href="/de/ihre-vorteile"><img alt="" loading="lazy" width="32" height="32" decoding="async" data-nimg="1" style="color: transparent;" src="/_next/static/media/footer-retoure.0b6bbf6d.svg">Einfache Retoure</a></li></ul></div><div class="Footer_wrapper__yeX_z"><div class="Footer_boxes__dpcPO"><div class="Box_box__WF2SD Newsletter_newsletter__kUj1J"><div class="Box_subtitle___JvtJ">Trends &amp; Styles</div><div class="Box_title__fasxW">Newsletter</div><div><div class="Newsletter_badge__6L292"><div class="Newsletter_top__iOHXU">20 Euro</div><div>Gutschein</div></div><p>Jetzt anmelden und <strong>20 Euro</strong> bei deinem nächsten Einkauf auf alles sparen (ab 99,- € Mindestbestellwert, Geschenk-Gutscheine ausgenommen, 30 Tage gültig ab Erhalt).</p><p>Ich habe die <a href="/de/datenschutz" target="_blank">Datenschutz-Information</a> gelesen und stimme zu, dass zur Bestätigung meiner Angaben eine Nachricht an unten genannte E-Mail-Adresse verschickt wird.</p><form novalidate="" id="footer-newsletter"><div data-testid="form-input-email" class="formElement formInput_form-input__zd5iU formInput_form-input__new-design__LLPjE formInput_form-input__new-design-touched__pm26w"><div class="formInput_form-input-container__paoq5"><input id="newsletter-email" type="email" data-testid="footer-newsletter-email" name="email" class="formInput_form-input--valid__6N3FH formInput_form-input--dirty__new-design__gvR9D" placeholder=""><label for="newsletter-email">E-Mail</label><div style="position: relative !important; height: 0px !important; width: 0px !important; display: initial !important; float: left !important;" data-lastpass-icon-root=""></div></div></div><button form="footer-newsletter" class="btn-primary-dark">Anmelden</button></form></div></div><div class="Box_box__WF2SD Contact_contact__43IgG"><div class="Box_subtitle___JvtJ">Service &amp; Beratung</div><div class="Box_title__fasxW">Wir sind für dich da!</div><div><p>Du erreichst unser Beratungsteam von Montag bis Sonntag, von 7:00 bis 23:00 Uhr.</p><div><a href="tel:+4960331813333"><img id="footer-contact" data-testid="icon-footer-contact" alt="Icon telephone" loading="lazy" width="20" height="20" decoding="async" data-nimg="1" class="" style="color: transparent;" src="/_next/static/media/telephone.2b6411ca.svg"><span>06033 / 181 33 33</span></a></div></div></div><div class="Box_box__WF2SD"><div class="Box_subtitle___JvtJ">hessnatur hautnah erleben</div><div class="Box_title__fasxW">hessnatur Stores</div><div><label for="store-selector"><p>Unsere Mode und Materialien in entspannter Atmosphäre hautnah erleben, anprobieren und kombinieren.<br><br>Nutze die kompetente Beratung, attraktive Angebote, Aktionen und Shopping-Events.</p></label><div data-testid="form-select-store-selector" class="formSelect_form-select__RJZmP"><select name="store-selector" id="store-selector" class="js-store-selector"><option value="">Store auswählen</option><option value="/store/laden-butzbach">Butzbach</option><option value="/store/laden-hamburg">Hamburg</option><option value="/store/laden-muenchen">München</option><option value="/store/laden-duesseldorf">Düsseldorf</option><option value="/store/laden-frankfurt">Frankfurt am Main</option><option value="/store/outlet-butzbach">hessnatur Outlet</option></select></div></div></div></div><div class="Footer_navigation__FzDpl"><div aria-label="Informationen" class="NavigationColumn_navigation__QEkrD"><p class="NavigationColumn_title__Pz9qF">Informationen</p><div aria-hidden="false" class="rah-static rah-static--height-auto " style="height: auto; overflow: visible;"><div><ul><li class=""><a href="/de/service">Hilfe &amp; Kontakt</a></li><li class=""><a href="/de/newsletter-registrierung?nlregsource=Footer-Link">Newsletter</a></li><li class=""><a href="/de/returns">Retoure</a></li><li class=""><a href="/de/agb">AGB</a></li><li class=""><a href="/de/datenschutz">Datenschutz</a></li><li class=""><button class="btn-link NavigationColumn_userCentricsLink__6k6s_">Datenschutz-Einstellungen</button></li><li class=""><a href="/de/impressum">Impressum</a></li></ul></div></div></div><div aria-label="Service" class="NavigationColumn_navigation__QEkrD"><p class="NavigationColumn_title__Pz9qF">Service</p><div aria-hidden="false" class="rah-static rah-static--height-auto " style="height: auto; overflow: visible;"><div><ul><li class=""><a href="/de/geschenkgutschein">Geschenkgutscheine</a></li><li class=""><a href="/de/hessnatur-friends">hessnatur friends</a></li><li class=""><a href="/de/groessenberatung">Größentabelle</a></li><li class=""><a href="/magazin/textillexikon">Textillexikon</a></li></ul></div></div></div><div aria-label="Social Media" class="NavigationColumn_navigation__QEkrD"><p class="NavigationColumn_title__Pz9qF">Social Media</p><div aria-hidden="false" class="rah-static rah-static--height-auto " style="height: auto; overflow: visible;"><div><ul><li class="NavigationColumn_icon__6KRbB"><a href="https://www.facebook.com/hessnatur" rel="nofollow noreferrer" title="hessnatur bei Facebook" target="_blank"><svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="facebook" class="svg-inline--fa fa-facebook fa-fw " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 30px; height: 30px;" data-testid="iconundefined" height="30" width="30"><path fill="currentColor" d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256h0z"></path></svg></a></li><li class="NavigationColumn_icon__6KRbB"><a href="https://instagram.com/hessnatur" rel="nofollow noreferrer" title="hessnatur bei Instagram" target="_blank"><svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="instagram" class="svg-inline--fa fa-instagram fa-fw " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 30px; height: 30px;" data-testid="iconundefined" height="30" width="30"><path fill="currentColor" d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path></svg></a></li><li class="NavigationColumn_icon__6KRbB"><a href="https://de.pinterest.com/hessnatur/" rel="nofollow noreferrer" title="hessnatur bei Pinterest" target="_blank"><svg aria-hidden="true" focusable="false" data-prefix="fab" data-icon="pinterest" class="svg-inline--fa fa-pinterest fa-fw " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" style="width: 30px; height: 30px;" data-testid="iconundefined" height="30" width="30"><path fill="currentColor" d="M496 256c0 137-111 248-248 248-25.6 0-50.2-3.9-73.4-11.1 10.1-16.5 25.2-43.5 30.8-65 3-11.6 15.4-59 15.4-59 8.1 15.4 31.7 28.5 56.8 28.5 74.8 0 128.7-68.8 128.7-154.3 0-81.9-66.9-143.2-152.9-143.2-107 0-163.9 71.8-163.9 150.1 0 36.4 19.4 81.7 50.3 96.1 4.7 2.2 7.2 1.2 8.3-3.3.8-3.4 5-20.3 6.9-28.1.6-2.5.3-4.7-1.7-7.1-10.1-12.5-18.3-35.3-18.3-56.6 0-54.7 41.4-107.6 112-107.6 60.9 0 103.6 41.5 103.6 100.9 0 67.1-33.9 113.6-78 113.6-24.3 0-42.6-20.1-36.7-44.8 7-29.5 20.5-61.3 20.5-82.6 0-19-10.2-34.9-31.4-34.9-24.9 0-44.9 25.7-44.9 60.2 0 22 7.4 36.8 7.4 36.8s-24.5 103.8-29 123.2c-5 21.4-3 51.6-.9 71.2C65.4 450.9 0 361.1 0 256 0 119 111 8 248 8s248 111 248 248z"></path></svg></a></li></ul></div></div></div><div aria-label="Über uns" class="NavigationColumn_navigation__QEkrD"><p class="NavigationColumn_title__Pz9qF">Über uns</p><div aria-hidden="false" class="rah-static rah-static--height-auto " style="height: auto; overflow: visible;"><div><ul><li class=""><a href="/corporate/" rel="nofollow noreferrer">Unternehmen</a></li><li class=""><a href="/corporate/karriere/offene-stellen" rel="nofollow noreferrer">Jobs</a></li><li class=""><a href="/pressday/" rel="nofollow noreferrer">Presse</a></li><li class=""><a href="/de/laden">Unsere Stores</a></li></ul></div></div></div><div aria-label="Bezahlarten" class="NavigationColumn_navigation__QEkrD"><p class="NavigationColumn_title__Pz9qF">Bezahlarten</p><div aria-hidden="false" class="rah-static rah-static--height-auto " style="height: auto; overflow: visible;"><div><ul><li class=""><a href="/de/ihre-vorteile">Rechnung</a></li><li class=""><a href="/de/ihre-vorteile">Amazon Pay</a></li><li class=""><a href="/de/ihre-vorteile">Paypal</a></li><li class=""><a href="/de/ihre-vorteile">Mastercard</a></li><li class=""><a href="/de/ihre-vorteile">VISA</a></li><li class=""><a href="/de/ihre-vorteile">Diners / Discover</a></li></ul></div></div></div></div><div class="Footer_images__mn_aB"><div aria-label="Vertrauen &amp; Sicherheit" class="NavigationColumn_navigation__QEkrD NavigationColumn_trust__ccmPr"><p class="NavigationColumn_title__Pz9qF">Vertrauen &amp; Sicherheit</p><div aria-hidden="false" class="rah-static rah-static--height-auto " style="height: auto; overflow: visible;"><div><ul><li class=""><a href="https://www.trustedshops.com/shop/certificate.php?shop_id=X8D9A686B9B7023E4691C3978FF67BB50" rel="nofollow noreferrer" title="Trusted Shops" target="_blank"><img alt="Trusted Shops" loading="lazy" width="40" height="40" decoding="async" data-nimg="1" style="color: transparent;" srcset="/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FTrusted-Shops.882dc5a8.png&amp;w=238&amp;q=75 1x" src="/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FTrusted-Shops.882dc5a8.png&amp;w=238&amp;q=75"></a></li><li class=""><a href="https://zertifikat.ehi-siegel.de/de/zertifikat/s/f20dc430bf957b52da7bf0d51c2e03e7/zertifikat.html" rel="nofollow noreferrer" title="BEVH EHI Geprüfter Online-Shop" target="_blank"><img alt="BEVH EHI Geprüfter Online-Shop" loading="lazy" width="94" height="40" decoding="async" data-nimg="1" style="color: transparent;" srcset="/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FBEVH.11892db8.png&amp;w=238&amp;q=75 1x" src="/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FBEVH.11892db8.png&amp;w=238&amp;q=75"></a></li><li class=""><a title="Amazon Pay" href="/de/ihre-vorteile"><img alt="Amazon Pay" loading="lazy" width="205" height="40" decoding="async" data-nimg="1" style="color: transparent;" src="/_next/static/media/Amazon-pay.7abe66ad.svg"></a></li><li class=""><a title="Paypal" href="/de/ihre-vorteile"><img alt="Paypal" loading="lazy" width="42" height="40" decoding="async" data-nimg="1" style="color: transparent;" src="/_next/static/media/PayPal.4992b329.svg"></a></li></ul></div></div></div><div aria-label="Kooperationen &amp; Awards" class="NavigationColumn_navigation__QEkrD NavigationColumn_cooperations__txtT6"><p class="NavigationColumn_title__Pz9qF">Kooperationen &amp; Awards</p><div aria-hidden="false" class="rah-static rah-static--height-auto " style="height: auto; overflow: visible;"><div><ul><li class=""><a href="https://www.fairwear.org/brands/hess-natur-textilien-gmbh" rel="nofollow noreferrer" title="Fair Wear Leader" target="_blank"><img alt="Fair Wear Leader" loading="lazy" width="63" height="40" decoding="async" data-nimg="1" style="color: transparent;" srcset="/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FFairWear.44d810bd.png&amp;w=238&amp;q=75 1x" src="/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FFairWear.44d810bd.png&amp;w=238&amp;q=75"></a></li><li class=""><a href="https://textileexchange.org/" rel="nofollow noreferrer" title="Textile Exchange Member" target="_blank"><img alt="Textile Exchange Member" loading="lazy" width="40" height="40" decoding="async" data-nimg="1" style="color: transparent;" src="/_next/static/media/TextileExchange.a72386c7.svg"></a></li><li class=""><a href="https://www.nachhaltigkeitspreis.de/unternehmen/preistraeger-unternehmen/2021/lieferkette-finalisten/hess-natur-textilien-gmbh-co-kg/?c=index" rel="nofollow noreferrer" title="Deutscher Nachhaltigkeitspreis 2022 - Finalist" target="_blank"><img alt="Deutscher Nachhaltigkeitspreis 2022 - Finalist" loading="lazy" width="40" height="40" decoding="async" data-nimg="1" style="color: transparent;" src="/_next/static/media/Deutscher-Nachhaltigkeitspreis-2022.c0474d57.svg"></a></li><li class=""><a href="https://www.bundespreis-ecodesign.de/de/gewinner/2021-natuerlicher-softshell" rel="nofollow noreferrer" title="bundespreis ecodesign" target="_blank"><img alt="bundespreis ecodesign" loading="lazy" width="97" height="40" decoding="async" data-nimg="1" style="color: transparent;" src="/_next/static/media/Bundespreis-ecodesign.0087d2d6.svg"></a></li><li class=""><a href="https://www.red-dot.org/de/" rel="nofollow noreferrer" title="reddot winner 2022 - fashion design" target="_blank"><img alt="reddot winner 2022 - fashion design" loading="lazy" width="58" height="40" decoding="async" data-nimg="1" style="color: transparent;" src="/_next/static/media/reddot.7837b515.svg"></a></li><li class=""><a href="https://www.german-brand-award.com/preistraeger/galerie/detail/40708-mit-performantem-onlineshop-zu-45-prozentigem-wachstum.html" rel="nofollow noreferrer" title="german brand award 22 - gold" target="_blank"><img alt="german brand award 22 - gold" loading="lazy" width="69" height="40" decoding="async" data-nimg="1" style="color: transparent;" src="/_next/static/media/GermanBrandAward22.26df2e95.svg"></a></li><li class=""><a title="Global organic textile standard" href="/de/GOTS"><img alt="Global organic textile standard" loading="lazy" width="71" height="40" decoding="async" data-nimg="1" style="color: transparent;" src="/_next/static/media/Gots.a19dfc59.svg"></a></li></ul></div></div></div><div class="StoreAndLanguageSelect_store-selector__JRc_Z"><button aria-haspopup="dialog" aria-describedby="storeSelectorDescription"><span class="sr-only" id="storeSelectorDescription">Öffnen der Länder- und Sprachauswahl</span><img alt="" loading="lazy" width="28" height="17" decoding="async" data-nimg="1" style="color: transparent;" src="/_next/static/media/Deutschland.181f0ecb.svg"><span class="sr-only">Gewähltes Land und Sprache:</span>Deutschland / de</button></div></div></div></footer></div></div><section class="Toastify" aria-live="polite" aria-atomic="false" aria-relevant="additions text" aria-label="Notifications Alt+T"></section></div><script id="__NEXT_DATA__" type="application/json">{"props":{"pageProps":{"locale":"de","canonicalUrl":"https://www.hessnatur.com/de/cart","relativeCanonicalUrl":"/de/cart","messages":{"CategoryPage":{"ActionBanner":{"CopiedToClipboard":"Der Gutscheincode wurde in deine Zwischenablage kopiert."},"OrderBy":{"Availability":"Verfügbarkeit","Caption":"Sortieren nach","Popularity":"Beliebtheit","PriceAsc":"Preis aufsteigend","PriceDesc":"Preis absteigend","Reviews":"Bewertung","Sort":"Sortieren","Topicality":"Aktualität"},"RecommendationBookend":{"Headline":{"Back":"Noch mehr Neuheiten entdecken?","Front":"Neu bei uns eingetroffen."},"Linktext":{"Back":"\u003e zu allen Neuheiten","Front":""},"Text":{"Back":"","Front":"Lass dich von unseren neuen Outfits inspirieren."}},"View":{"Headline":"Bildansicht:","Model":"Model","Product":"Produkt"}},"Common":{"A11y":{"Slider":{"FirstSlideMessage":"Erster Slide","LastSlideMessage":"Letzter Slide","NextSlide":"nächster Slide","PreviousSlide":"vorheriger Slide","Pause":"Pausieren","Start":"Starten"}},"Accept":"Akzeptieren","Actionbar":{"promoCodeCopy":"Code wurde in deine Zwischenablage kopiert.","showLess":"Weniger anzeigen","showMore":"Mehr anzeigen"},"PageProcessing":"Die Anfrage wird verarbeitet.","Breadcrumbs":{"BackButton":{"DEFAULT":"Startseite","NAVIGATION":"Zurück zur Übersicht","REASONALLCAPS":"keys get assigned by ENUM in all caps","SEARCH":"Suche"},"HomepageLabel":"Startseite"},"Cancel":"Abbrechen","DeliveryCountries":{"AT":"Österreich","BE":"Belgien","BG":"Bulgarien","CH":"Schweiz","CY":"Zypern","CZ":"Tschechische Republik","DE":"Deutschland","DK":"Dänemark","EE":"Estland","ES":"Spanien","FI":"Finnland","FR":"Frankreich","GB":"Großbritannien","GR":"Griechenland","HR":"Kroatien","HU":"Ungarn","IE":"Irland","IT":"Italien","LI":"Liechtenstein","LT":"Litauen","LU":"Luxemburg","LV":"Lettland","MT":"Malta","NL":"Niederlande","PL":"Polen","PT":"Portugal","RO":"Rumänien","SE":"Schweden","SI":"Slowenien","SK":"Slowakei"},"Error":{"BtnDisabled":"Derzeit leider außer Funktion. Wir arbeiten daran","VoucherBtnDisabled":"Bitte wähle den Betrag.","GeneralMessage":"Da ist etwas schief gelaufen.","General":"Beim Bearbeiten der Anfrage ist ein Fehler aufgetreten. Bitte versuche es später noch einmal.","Headline":"Fehler","InvalidEmail":"Dies ist keine gültige E-Mail-Adresse. E-Mail Adressen dürfen keine Umlaute enthalten.","ExceededQuantity":"Die maximal bestellbare Stückzahl von 9 bei diesem Produkt ist überschritten. Dein Warenkorb wurde entsprechend angepasst.","ExistingVoucher":"Im Warenkorb befindet sich ein Geschenkgutschein, es können keine weiteren Produkte hinzugefügt werden."},"Success":{"Headline":"Erfolg","Action":"Aktion erfolgreich"},"Info":{"Headline":"Zu deiner Information"},"FilterBar":{"Filter":"Filter","Sort":"Sortieren","allCategories":{"assortementNames":"Sortiment","productGroupNames":"Kategorie"},"clearRefinements":"alle zurücksetzen","closeButton":"Übernehmen","fitData":{"bodyShape":"Körperform","braFit":"BH-Form","fillingMaterial":"Füllung","fit":"Passform","length":"Länge","pantType":"Unterhosen-Form","sleepingPosition":"Schlaf-Typ","temper":"Härtegrad","waistHeight":"Hüfthöhe","weightClass":"Gewicht","width":"Hosenweite"},"material":"Material","priceClass":"Preis","sharedAttributes":{"groupFacet":"Farbe","pattern":"Muster"},"styleVariants":{"sizes":"Größe"},"vegan":"Vegan","yourSelection":"Deine Auswahl:"},"FlagTerm":{"customerFavorite":"Kundenfavorit","discount10":"-10%","discount15":"-15%","discount20":"-20%","discount25":"-25%","discount30":"-30%","extra10":"10% extra","extra15":"15% extra","extra20":"20% extra","extra25":"25% extra","greenChoices":"Green Week","highlight":"Highlight","innovation":"Innovation","limitedEdition":"Limited Edition","loyaltyEcoPoints":"+ {0} Eco Points","natureShell":"Nature shell","new":"Neu","newQuality":"Neue Qualität","offer":"Aktion","popularProduct":"Aktuell sehr gefragt!","popularProductDiscription":"Dieser Artikel verkauft sich schnell","sale":"Sale","soldOut":"Ausverkauft","sustainable":"Nachhaltig","valuePack":"Multipack","vegan":"Vegan","vip":"VIP"},"Footer":{"NewsletterSuccessMessage":"Fast geschafft. Bitte bestätige die Anmeldung. Wir haben dir eine E-Mail geschickt."},"Header":{"AboutUs":"Über uns","AccountBox":{"LoginBox":{"Login":"Anmelden"}},"BackToHomePage":"Zurück zur Startseite","Magazine":"Magazin","Newsletter":"Newsletter","Secondhand":"Secondhand","Stores":"Stores","MiniCart":{"Headline":"Deine zuletzt hinzugefügten Artikel","Empty":"Dein Warenkorb enthält noch keine Artikel","Entry":{"Size":"Größe","Style":"Farbe"},"Total":"Gesamtsumme ({0} Artikel):","Hint":"*Inkl. Mwst., zzgl. Versandkosten","Button":"Zum Warenkorb","Remove":"Entfernen"},"MiniWishlist":{"Headline":"Deine gemerkten Artikel","Empty":"Dein Merkzettel enthält noch keine Artikel","Entry":{"Size":"Größe:","Style":"Farbe:"},"Hint":"*Inkl. Mwst., zzgl. Versandkosten","Button":"Zum Merkzettel"}},"LanguageSwitch":{"SwitchLanguage":{"DE":"Zur deutschen Seite wechseln","EN":"Zur englischen Seite wechseln"}},"Languages":{"DE":"Deutsch","EN":"Englisch"},"Navigation":{"AllProducts":"Alle Artikel","AllProductsFor":"Alle Artikel für {0}","Close":" Navigation schließen","Login":{"LogIn":"Einloggen","LogOut":"Abmelden","Title":"Mein hessnatur","MyAccountLogin":"Kundenkonto einloggen","MyAccount":"Kundenkonto"},"Navigation":"Navigation","Open":"Navigation öffnen","Root":"Übersicht"},"Price":{"ThirtyDaysBestPrice":"30-Tage-Bestpreis: {0}","lastCheapestPrice":"Zuletzt niedrigster Preis: {0}"},"SearchBox":{"BrandSuggestions":"Marken","CategorySuggestions":"Kategorievorschläge","ContentSuggestions":"Seiten","FromPrice":"ab {0}","ProductSuggestions":"Produktvorschläge","SearchButtonLabel":"Suche","SearchInputPlaceholder":"Best.-Nr. / Suchbegriff","SearchInputLabel":"Produktsuche","SuggestCountPlural":"{0} Produkte","SuggestCountSingular":"Ein Produkt","SuggestSearchTerm":"Suchvorschläge","SuggestShowAllMessage":"Alle Ergebnisse für \"{0}\" anzeigen"},"SearchBoxNewDesign":{"SearchInputPlaceholder":"Suchbegriff"},"close":"schließen","Close":"Schließen"},"ContentPage":{"ToC":{"JumpTo":"Springe zu: {0}"}},"Coupon":{"success":"Der Gutschein wurde dem Warenkorb hinzugefügt.","basket":{"error":{"voucher":{"redeem":{"invalid":"Der Gutschein konnte nicht eingelöst werden."},"message":{"general":"Der Gutschein kann leider nicht verwendet werden.","notfound":"Entschuldigung, wir konnten den angegebenen Gutschein leider nicht finden. Bitte kontrolliere die Eingabe.","wrongcustomer":"Diesen Gutschein kannst du leider nicht einlösen.","invalidordervalue":"Der Mindestbestellwert zum Einlösen dieses Gutscheins ist noch nicht erreicht.","redemptionquantitylimitexceeded":"Die maximale Anzahl an einlösbaren Gutscheinen ist erreicht.","orderalreadyfreeshipping":"Der Auftrag ist bereits Portofrei.","fornewcustomersonly":"Diesen Gutschein kannst du leider nicht einlösen.","notbillable":"Entschuldigung, du kannst den Gutschein erst einlösen, wenn der Betrag von unserer Buchhaltung verarbeitet wurde.","invalidstatus":"Entschuldigung, wir konnten den angegebenen Gutschein derzeit leider nicht finden. Bitte versuche es später erneut.","expired":"Der Gutschein ist leider bereits abgelaufen.","invalidchannel":"Diesen Gutschein kannst du im Online Shop leider nicht einlösen.","alreadyredeemed":"Dieser Gutschein wurde bereits eingelöst.","alreadyredeemedbycustomer":"Dieser Gutschein wurde bereits eingelöst.","invalidcustomer":"Dieser Gutschein ist personalisiert und kann von dir nicht eingelöst werden. Wenn dir dieser Gutschein persönlich übersandt wurde, melde dich bitte mit deinen Zugangsdaten an.","notpaid":"Entschuldigung, wir können den Gutschein noch nicht einlösen. Du kannst den Gutschein einlösen, sobald die offene Rechnung beglichen oder durch uns abgebucht wurde.","accumulativeOnExclusive":"Es wurde bereits ein Gutschein eingelöst, welcher nicht zusammen mit anderen Gutscheinen kombinierbar ist.","exclusiveOnAccumulative":"Dieser Gutschein ist nicht mit anderen Gutscheinen kombinierbar und es wurde bereits ein Gutschein eingelöst.","alreadyAddedToCart":"Ein Gutscheincode kann nur einmal zu dem Warenkorb hinzugefügt werden."}}}},"Form":{"Analog":{"Label":{"Amount":"Betrag","Text":"Text","Edit":"Gutschein bearbeiten","Line":"Zeile {0} des Gutscheins"},"HintMessages":{"AmountError":"Der eingegebene Gutscheinwert ist ungültig. Der Wert muss zwischen 10 und 500 Euro liegen.","AmountHeadline":"Gutscheinwert wählen","AmountHint":"Der Wert muss zwischen 10 und 500 Euro liegen.","TextHeadline":"Dein Text","TextHint":"Deine Nachricht für den Beschenkten darf maximal 6 Zeilen á 48 Zeichen beinhalten."}}},"Modal":{"Warn":{"Headline":"Bitte beachten","Content":"Im Warenkorb befinden sich bereits Produkte. Diese können nicht gemeinsam mit dem Gutschein bestellt werden. Soll der Warenkorb jetzt geleert und der Gutschein hinzugefügt werden?","RemoveProducts":"Produkte entfernen"},"Success":{"Headline":"Aktion erfolgreich","Content":"Der Gutschein wurde erfolgreich zum Warenkorb hinzugefügt","Edit":"Der Gutschein wurde erfolgreich bearbeitet.","ToCart":"Zum Warenkorb"}}},"FAQ":{"Form":{"Select":{"Placeholder":"Bitte wählen"}},"List":{"Entries":"{0} Einträge","EntryList":"Antwortliste","NoResults":"Keine Ergebnisse"},"Search":{"Keyword":"Stichwortsuche","Topic":"Themenauswahl"},"Topic":{"about":"Über hessnatur","consulting":"Beratung Waschen - Pflege - Bettwaren","contact":"Kontakt","customer_account":"Kundenkonto","friend_referral":"Freundschaftswerbung","measure_table":"Maßtabelle + Passform","newsletter":"Newsletter","order_process":"Bestellprozess","returns":"Retouren / Umtausch","search":"Suchen im Shop","shipping":"Versand","shipping_international":"Versand (International)","technical_requirements":"Technische Vorraussetzungen","textile_lexicon":"Textillexikon","tos":"AGB","vouchers":"Gutscheine","wishlist":"Merkzettel"}},"FormComponent":{"AddressValidation":{"headline":"Bitte beachten:","text":"Die Adresse \u003cspan\u003e{0}\u003c/span\u003e  wurde nicht in unserer Datenbank gefunden. Möglicherweise hast du dich vertippt.","continue":"Möchtest du dennoch fortfahren?"},"ErrorMessages":{"General":"Beim Bearbeiten der Anfrage ist ein Fehler aufgetreten. Bitte versuche es später noch einmal.","MissingEmail":"Bitte gib eine gültige E-Mail Adresse ein. E-Mail Adressen dürfen keine Umlaute enthalten.","MissingFirstName":"Bitte gib einen Vornamen an.","MissingHouseNumber":"Bitte gib eine Hausnummer an.","MissingLastName":"Bitte gib einen Nachnamen an.","MissingMessage":"Bitte gib eine Nachricht an.","MissingStreet":"Bitte gib eine Straße an.","MissingTheme":"Bitte wähle ein Thema aus.","MissingTown":"Bitte gib eine Stadt an.","MissingZip":"Bitte gib eine Postleitzahl an.","MissingSalutation":"Bitte gib eine Anrede anä","MissingPhone":"Bitte gib eine Telefonnummer an.","MissingCellphone":"Bitte gib eine Telefonnummer an.","MissingLine1":"Bitte gib eine Straße und Hausnummer an.","MissingLine2":"Bitte gib zusätzliche Informationen zu deiner Adresse an.","MissingCountry":"Bitte gib ein Land an.","MissingStationNumber":"Bitte gib eine Packstationsnummer an.","MissingPostNumber":"Bitte gib eine Postnummer an.","UnknownAddress":"Unbekannte Adresse.","MissingIban":"Bitte gib eine gültige IBAN ein.","MissingBankAccountHolder":"Bitte gib den Kontoinhaber ein.","MissingBankName":"Bitte gib den Banknamen ein.","IncorrectStore":"Bitte wähle einen Store aus.","Recaptcha":"Deine Anfrage konnte nicht gesendet werden, da die Sicherheitsüberprüfung (reCAPTCHA) fehlgeschlagen ist. Bitte leere den Browsercache und versuche es erneut."},"Label":{"AddressExtension":"Adresszusatz","Country":"Land","CustomerNumber":"Kundennummer","Email":"E-Mail","FirstName":"Vorname","HouseNumber":"Hausnummer","LastName":"Nachname","Message":"Nachricht","PhoneNumber":"Telefonnummer","CellPhoneNumber":"Mobil","Line1":"Adresszeile 1 (Straße, Hausnummer)","Line2":"Adresszusatz","PostalCode":"Postleitzahl","Salutation":"Anrede","Street":"Straße","StreetHouseNumber":"Straße und Hausnummer","Title":"Titel","Town":"Stadt","Zip":"PLZ","StationNumber":"Packstationsnummer","PostNumber":"Postnummer","Iban":"IBAN","BankAccountHolder":"Kontoinhaber","BankName":"Name der Bank","FindPackingStation":"Packstation finden","Password":"Passwort"},"Salutation":{"Divers":"Divers","Man":"Herr","Woman":"Frau"},"SubmitBtn":"Jetzt absenden","AddressCheckConfirmation":{"Positive":"Ja","Negative":"Nein"}},"LoginPage":{"Title":"Anmelden","Headline":"Anmelden","HeadlineHeader":"Mein hessnatur","PasswordReset":{"confirmation":{"backBtn":"Startseite","headline":"Passwort zurücksetzen","subline":"Eine E-Mail zum Zurücksetzen des Passworts wurde an die angegebene E-Mail Adresse verschickt. Prüfe jetzt ob du eine E-Mail von uns erhalten hast!","body":"Du hast keine E-Mail erhalten? Das kannst du tun:","list_1":"Prüfe, ob deine eingegebene E-Mail-Adresse korrekt ist und ob du mit dieser ein hessnatur-Konto erstellt hast.","list_2":"Schaue in deinen Spam-Ordner.","list_3":"Weitere Informationen findest du in unserem \u003ca\u003e[text=Hilfecenter]||[href=https://service.hessnatur.com/portal/de/kb/articles/mein-passwort-funktioniert-nicht]||[target=_blank]\u003c/a\u003e.","title":"Vergessenes Kennwort aktualisieren"},"headline":"Passwort zurücksetzen","subline1":"Wenn Du dein Passwort vergessen hast, kannst du es hier neu anfordern. Du erhältst eine E-Mail mit einem Link zu unserer Website, auf der Du ein neues Passwort anlegen kannst.","subline2":"Bitte verwende deine E-Mail Adresse, um ein neues Passwort anzufordern.","submitBtn":"Weiter"},"RegistrationBox":{"Benefits":{"FastOrders":"Schnelles Einkaufen durch Abspeichern der persönlichen Daten","HessnaturFriend":"hessnatur friends: Punkte sammeln \u0026 exklusive Benefits sichern","OrderHistory":"Einblick in die Bestellhistorie \u0026 Versandinformation"},"Headline":"Neu hier?","RegistrationBtn":"Jetzt registrieren","Subline":"Beim nächsten Mal einloggen und Vorteile genießen:"},"LoginForm":{"ErrorMessages":{"Email":"Bitte gib eine E-Mail Adresse an. E-Mail Adressen dürfen keine Umlaute enthalten.","Password":"Bitte gib ein Passwort ein.","Modal":{"ResetPasswortHint":{"Header":"Wichtiger Hinweis","Message":"Dein Login zum Kundenkonto wurde auf E-Mail Adresse umgestellt. Bitte über die “\u003ca\u003e[text=Passwort zurücksetzen]||[href=/{0}/login/pw/request]\u003c/a\u003e” Funktion ein neues Passwort anlegen."},"Header":"Ups, vertippt?","Message":"Die eingegebene E-Mail Adresse und das Passwort stimmen mit keinem Konto bei hessnatur überein.","HeaderCheckout":"Ups, Login fehlgeschlagen.","MessageCheckout":"Hast du dich vertippt? Die eingegebene E-Mail Adresse und das Passwort stimmen mit keinem Konto bei hessnatur überein. Bitte versuche es erneut oder nutze gerne unseren Service der Gast-Bestellung.","Subline":{"CloseButton":"Schliessen","Or":"oder","PasswordReset":"Passwort zurücksetzen"}}},"HintMessages":{"MissingEmail":"Bitte gib eine E-Mail Adresse an.","MissingPassword":"Bitte gib ein Passwort ein."},"Label":{"Email":"E-Mail","Password":"Passwort"},"SubmitBtn":"Anmelden","Links":{"PasswordForgotten":"Du hast dein Passwort vergessen?","PasswordForgottenHeader":"Passwort vergessen?"}}},"NewsletterRegistration":{"DataProtection":{"ErrorMessage":"Bitte bestätige  uns, dass du die Datenschutzhinweise gelesen haben.","Text":"Ich habe die \u003ca\u003e[text=Datenschutz-Information]||[href=/{0}/datenschutz]||[target=_blank]\u003c/a\u003e gelesen und stimme zu, dass zur Bestätigung meiner Angaben eine Nachricht an oben genannte E-Mail-Adresse verschickt wird.\u003cbr\u003e\u003c/br\u003eDeine Daten werden selbstverständlich vertraulich behandelt. Eine Abmeldung vom Newsletter ist jederzeit möglich."},"Email":"E-Mail Adresse:","Error":"Die Anmeldung kann im Moment nicht durchgeführt werden. Bitte \u003ca\u003e[text=kontaktiere unsere Kundenbetreuung]||[href=/{0}/service]\u003c/a\u003e.","SubmitBtn":"Anmeldung absenden","reCAPTCHANewsletterRegistration":"Zum Schutz vor Missbrauch des Newsletter Anmeldeformular wird dieses durch den Drittanbieter ReCaptcha abgesichert. Bitte akzeptiere ReCaptcha, um das Newsletter Anmeldeformular nutzen zu können.","success":{"YourData":{"headline":"Deine Daten werden selbstverständlich vertraulich behandelt.","text":"Deine E-Mail-Adresse wird nicht an Dritte weitergegeben. Du kannst dich jederzeit von dem Newsletter abmelden. Klicke dazu auf den Abmelde-Link am Ende jeder E-Mail."},"headline":"Du hast es fast geschafft!","subline":"Vielen Dank und nicht vergessen: ","sublineContent":"Zur Bestätigung deiner Anmeldung haben wir dir eine E-Mail geschickt.","text":"Bitte besuche dein Postfach und klicke auf den in der E-Mail enthaltenen Link."},"Doi":{"Contact":"Wir konnten leider deine Anmeldung nicht finden. Bitte versuche es erneut.","Error":"Bei deiner Newsletter Anmeldung ist etwas schief gelaufen. Bitte versuche es erneut."}},"NewsletterSettings":{"Headline":"Newsletter Einstellungen","Sections":{"PersonalData":{"Headline":"Persönliche Daten"},"Interests":{"Headline":"Deine Interessen","Subline":"Bitte wähle eine oder mehrere Interessen aus.","Topics":{"Dob":"Damen","Haka":"Herren","Baby":"Junior"},"BirthDate":{"Headline":"Möchtest Du ein Geburtstagsgeschenk? Dann gib bitte dein Geburtsdatum ein."},"Stores":{"Headline":"Du interessierst dich für Aktionen der hessnatur Stores?"},"Frequency":{"Headline":"Wie oft möchtest du Newsletter erhalten?"}},"Children":{"Headline":"Deine Kinder","Subline":"Verrate uns die Geburtstage deiner Kinder, es erwartet dich an diesem Tag eine kleine Überraschung.","AsteriskText":"Gilt nur für Kinder bis 5 Jahren.","Child":"Kind"}},"Form":{"PersonalData":{"BirthDate":{"Label":"Geburtsdatum","Hint":"Bitte gib ein gültiges Geburtsdatum ein"}},"Stores":{"default":"Store auswählen"},"Frequencies":{"Weekly":"1-2 x Woche","Monthly":"1 x Monat"},"Children":{"Gender":"Geschlecht","Genders":{"Girl":"Weiblich","Boy":"Männlich"}},"SubmitButton":{"Label":"Daten speichern"},"Disclaimer":{"Text":"Deine Daten werden selbstverständlich vertraulich behandelt. Deine E-Mail Adresse wird nicht an Dritte weitergegeben. Du kannst dich jederzeit von dem Newsletter abmelden. Klicke dazu auf den Abmelde-Link am Ende jeder E-Mail."}},"Errors":{"Loading":"Es ist ein Fehler beim Laden deiner Newsletter-Daten aufgetreten. Bitte versuche es später noch einmal oder wende dich an unseren \u003ca\u003e[text=Kundenservice]||[href={0}]\u003c/a\u003e.","NoSubscription":"Du bist noch nicht zum Newsletter angemeldet. Melde dich \u003ca\u003e[text=hier]||[href={0}]\u003c/a\u003e zum Newsletter an."},"SaveSuccessful":"Deine Daten wurden erfolgreich gespeichert.","SaveError":"Deine Daten konnten nicht gespeichert werden. Bitte versuch es später noch einmal.","Doi":{"Success":"Deine Anmeldung zu unserem Newsletter war erfolgreich."}},"NewsletterUnsubscribe":{"Sections":{"Interests":{"Intro":"Bevor du dich abmeldest, kannst du deine persönlichen Einstellungen ändern."}},"Form":{"UnsubscribeButton":{"Label":"Newsletter abmelden"}},"UnsubscribeSuccessful":"Du wurdest erfolgreich vom Newsletter abgemeldet.","UnsubscribeError":"Die Abmeldung vom Newsletter war nicht erfolgreich. Bitte versuche es später noch einmal oder wende dich an unseren Kundendienst."},"PasswordResetPage":{"Headline":"Neues Passwort erstellen","NewPasswordField":{"PasswordText":"Bitte gib min. 6 Zeichen, min. einen Großbuchstaben, min. einen Kleinbuchstaben, min. eine Zahl und min. ein Sonderzeichen ein.","Label":"Neues Passwort"},"RepeatPasswordField":{"ErrorMessage":"Passwörter stimmen nicht überein.","Label":"Passwort wiederholen"},"SubmitButton":"Bestätigen","SuccessMessage":"Dein Passwort wurde erfolgreich geändert."},"ProductPage":{"AddToCartBtn":{"productMissingSizeWarning":"Leider hast du keine Größe ausgewählt. Um den Bestellvorgang fortzusetzen, wähle diese bitte aus.","productNotAvailableWarning":"Artikel ist derzeit ausverkauft","text":"In den Warenkorb"},"AddToCartPopup":{"ContinueShoppingBtn":"Weiter stöbern","Headline":"Gute Wahl","ProductInfo":{"Amount":"\u003cb\u003eMenge: \u003c/b\u003e{0}","Color":"\u003cb\u003eFarbe: \u003c/b\u003e{0}","Size":"\u003cb\u003eGrösse: \u003c/b\u003e{0}"},"Subline":"Der Artikel liegt in deinem Warenkorb."},"AddToWishlistBtn":"Zur Merkliste hinzufügen","AvailabilityIcon":{"AvailabilityInXSRend":" Wochen lieferbar","AvailabilityInXSRendOne":" Woche lieferbar","AvailabilityInXSRstart":"voraussichtlich in ","AvailabilityNone":"vergriffen","AvailabilityNow":"verfügbar"},"AvailabilityInformationBox":{"Claimslist":{"claimOne":"Echte Nachhaltigkeit: Wir produzieren nicht auf Masse","claimThree":"Natürliche Ressourcen werden geschont","claimTwo":"Faire Arbeitsbedingungen im Produktionsland"},"Headline":"Warum kann die Lieferung länger dauern?","Infotext":"Wegen erhöhter Nachfrage dieses Artikels, ist es wahrscheinlich, dass er in ihrer getroffenen Auswahl nicht mehr lange lieferbar sein wird. Andere Größen oder Farben sind evtl. schneller lieferbar.","Subheadline":"Trotzdem bestellen oder keine Zeit zu warten?","Topline":"Good-to-know"},"ConsentServices":{"reCAPTCHA":"Zum Schutz vor Missbrauch des Bewertungsformulars wird dieses durch den Drittanbieter ReCaptcha abgesichert. Bitte akzeptieren sie ReCaptcha, um eine Bewertung abschicken zu können."},"EcoFootprint":{"Co2claim":"{0} Gramm weniger CO\u003csub\u003e2\u003c/sub\u003e-Ausstoß","Co2description":"46% CO\u003csub\u003e2\u003c/sub\u003e Einsparung durch weniger energieintensive Arbeitsmethoden im Bio-Anbau und den Verzicht auf Mineraldünger und Pestizide.","Earthclaim":"{0} m\u003csup\u003e2\u003c/sup\u003e mehr gesunde Erde","Earthdescription":"{0} m\u003csup\u003e2\u003c/sup\u003e mehr gesunde Erde durch Vermeidung von Pestiziden, künstlichen Düngemitteln und Entlaubungsmitteln.","Headline":"Im Vergleich zum konventionellen Baumwollanbau","Image":"ökologischer Fußabdruck Baumwolle Symbolbild ","Topline":"Ökologische Ersparnis","Waterclaim":"{0} l weniger Wasserverbrauch","Waterdescription":"91% Einsparung von Wasser durch Verwendung von Regenwasser, im Boden gespeicherter Feuchtigkeit und verbrauchsarmen Bewässerungsmethoden."},"Fitform":{"Details":"Details","headline":"Produktmaße","Fitform":"Passform","Fittable":"Zur Größentabelle","Link":"/groessenberatung","content":{"headline":"Richtig messen. Richtig entscheiden.","description1":"Um deine passende Größe zu finden, vergleiche ein gut sitzendes Kleidungsstück mit unserer Maßtabelle.","description2":"Unsere Maße zeigen die tatsächliche Größe des Kleidungsstücks – nicht die deines Körpers.\u003cbr\u003e\u003c/br\u003eLege dein Teil flach hin und miss direkt am Stoff. Toleranzen von ±1,5 cm sind möglich und völlig normal."}},"FurtherAvailabilities":{"Headline":"Verfügbarkeiten der Größen und Farben","LegendInX":"Wochen","LegendInXSR":"in x wochen lieferbar","LegendNone":"Vergriffen","LegendNowSR":"Lieferbar in: ","LegendTitle":"Legende zur Verfügbarkeitstabelle","OpenButton":"Weitere Verfügbarkeiten","OrderSize":"Bestellgröße"},"RetracedHeadline":"Transparenz entlang der Lieferkette","Meta":{"Title":"{0} von hessnatur"},"PaymentOptions":{"DirectDebit":"Bankeinzug","Invoice":"Rechnung"},"Product":{"Amount":"Menge","Bullets":"Produkteigenschaften","Care":"Pflege","Color":"Farbe","CompleteTheLook":{"Topline":"Complete the Look","Headline":{"Default":"Für mehr Stil: dein perfektes Outfit","BabyAndChild":"Perfekt ergänzt – nachhaltig wohlfühlen","Home":"Für dein nachhaltiges Zuhause"}},"Details":{"ItemNumber":"Art-Nr {0}","ParagraphTwo":"Für mehr Natur"},"Flags":{"Action":"aktion","CustomerFavorite":"Kundenfavorit","Nachhaltig":"nachhaltig","NeueQualität":"neue Qualität","New":"new","Sale":"sale","ValuePack":"Vorteilspack","Vegan":"vegan"},"FreeReturns":"Kostenlose Rücksendung","EasyReturns":"Einfache Retoure","EcoPoints":"Mehr erfahren über \u003ca\u003e[text=Eco Points]||[href=/{0}/hessnatur-friends]||[target=_blank]\u003c/a\u003e","Information":{"Accordion":{"Fitform":"Passform","MadeIn":"Made in","Material":"Material und Pflege","MaterialCareHeadline":"Pflege","MaterialWeight":{"Content":"{0} g/m\u003csup\u003e2\u003c/sup\u003e","Headline":"Stoffgewicht"},"ProductDetails":"Produktdetails","Quality":"Auszeichnungen"},"Slogan":{"Claim":"Fair, natürlich, nachhaltig","MoreInformation":"Erfahre mehr über diesen Artikel"},"Manufacturer":{"Trigger":"Herstellerdetails anzeigen","Title":"Herstellerdetails","Name":"Name:","Address":"Adresse:","Contact":"Kontakt:"}},"NoSize":"vergriffen","PacketDelivery":"Versand der Pakete mit GLS oder DHL","PacketDeliveryCH":"Versand der Pakete mit der Schweizer Post","PacketDeliveryAT":"Versand der Pakete mit GLS","Price":{"Ally":{"fromPriceMessage":"Erhältlich ab {0}","priceMessage":"Erhältlich für {0}","strikePriceMessage":"Erhältlich für {0} anstatt {1}"},"LowestPrice":"Zuletzt niedrigster Preis: ","Promotion":{"endDate":"gültig bis {0}"},"deliverycosts":"Versandkosten","fromPrice":"ab {0}","lastCheapestPrice":"Zuletzt niedrigster Preis: {0}","notdiscountable":"nicht rabattierfähig","plus":"zzgl.","vat":"inkl. MwSt."},"ProductDescriptionBullets":{"Produktdetails":"Produktdetails","mehr":"Mehr"},"ReturnPeriod":"14 Tage Widerrufsrecht (gesetzl. Verpflichtung)","PleaseSelect":"Bitte wählen","SelectSize":"Größe wählen","Size":"Größe","ToCart":"Zum Warenkorb"},"Recommendation":{"AddToCartHeadline":{"BabyAndChild":"Andere Eltern kauften auch:","Default":"Andere Kunden kaufen auch:"},"Headline":{"BabyAndChild":"Nachhaltige Produkte für dein Kind","BabyAndChildSo005":"Alternative Produkte für dein Kind","Family":"Neuheiten für die ganze Familie","Default":"Nachhaltige Produkte für dich"}},"Review":{"Anonymous":"Anonym","CustomerReviews":"{0} Kundenbewertungen","InvalidEmailMessage":"Bitte gebe eine gültige E-Mail Adresse ein","InvalidReviewTextMessage":"Bitte gebe deine Bewertung ein","LoadMore":"Weitere Bewertungen laden","Mandatory":"(Pflichtfeld)","NoReviews":"Es sind noch keine Kundenbewertungen vorhanden. Schreibe dein eigenes Review. Bewerte dieses Produkt als Erster.","RateProduct":"Bewerte das Produkt von 1 bis 5","RecaptchaText":"Diese Seite ist durch reCAPTCHA geschützt und es gelten die \u003ca\u003e[text=Datenschutzbestimmungen]||[href=https://policies.google.com/privacy?hl=de]||[target=_blank]||[rel=noopener]\u003c/a\u003e und \u003ca\u003e[text=Nutzungsbedingungen]||[href=https://policies.google.com/terms?hl=de]||[target=_blank]||[rel=noopener]\u003c/a\u003e von Google.","RequiredEmail":"Deine E-Mail Adresse ","ReviewProduct":"Bewerte dieses Produkt","ReviewText":"Bewertungstext ","ReviewTitle":"Titel deiner Bewertung","Reviews":"{0} Bewertungen","SRRatingsLink":"Zu den Reviews","SendBtn":"Abschicken","SuccessMessageModal":"Vielen Dank für deine Bewertung. Sie wird noch durch unser Team geprüft und demnächst freigeschaltet.","UserName":"Dein Name (wird über der Bewertung angezeigt)","Good":"Hervorragend","Bad":"Schlecht","SuccessModal":{"Title":"Danke für Deine Bewertung","Text":"\u003cb\u003eSchön, dass Du Deine Erfahrung mit uns teilst.\u003c/b\u003e Wir möchten an dieser Stelle darauf hinweisen, dass wir Bewertungen nicht systematisch auf Echtheit prüfen."}},"Shipping":{"AdditionalAvailabilities":"Weitere Verfügbarkeiten","AvailableNow":"Sofort verfügbar","AvailableInOne":"{0} Woche Lieferzeit","AvailableInSome":"{0} Wochen Lieferzeit","AvailableSoon":"Demnächst Lieferbar","NotAvailable":"Vergriffen","SustainabilityClaim":"Nachhaltige Produktion"},"StoryTelling":{"ComfortText":"Kleidung, die Mensch \u0026 Natur gut tut","Headline":"Natürliche Qualität für dein Wohlbefinden","MaterialText":"Besonderer Tragekomfort \u0026 Verzicht auf Schadstoffe","QualityText":"Naturfasern in höchster Qualität"}},"RegistrationPage":{"BackToLoginBtn":"zurück zur Anmeldung","DataProtection":"Ich habe die \u003ca\u003e[text=Datenschutz-Information]||[href=/{0}/datenschutz]||[target=_blank]\u003c/a\u003e und die \u003ca\u003e[text=AGB]||[href=/{0}/agb]||[target=_blank]\u003c/a\u003e gelesen und stimme mit der Registrierung zu.","ErrorMessages":{"ExistingEmail":"Die E-Mail Adresse ist bereits vergeben.","IncorrectEmail":"Bitte gib eine gültige E-Mail Adresse ein. E-Mail Adressen dürfen keine Umlaute enthalten.","PasswordText":"Bitte gib min. 6 Zeichen, min. einen Großbuchstaben, min. einen Kleinbuchstaben, min. eine Zahl und min. ein Sonderzeichen ein."},"Headline":"Registrieren","HintMessages":{"MissingEmail":"Bitte gib eine E-Mail Adresse an.","MissingFirstName":"Bitte gib einen Vornamen an.","MissingLastName":"Bitte gib einen Nachnamen an.","MissingPassword":"Bitte gib ein Passwort an."},"Label":{"Email":"E-Mail","FirstName":"Vorname","LastName":"Nachname","Password":"Passwort"},"Newsletter":{"Headline":"Newsletter Anmeldung","Text":"Ich habe die \u003ca\u003e[text=Datenschutz-Information]||[href=/{0}/datenschutz]||[target=_blank]\u003c/a\u003e gelesen und stimme zu, dass zur Bestätigung meiner Angaben eine Nachricht an oben genannte E-Mail-Adresse verschickt wird.\u003cbr\u003e\u003c/br\u003eDeine Daten werden selbstverständlich vertraulich behandelt. Eine Abmeldung vom Newsletter ist jederzeit möglich."},"RegistrationBtn":"Jetzt registrieren","CheckoutStep":{"Headline":"Deine Daten","Subline":"Nächster Schritt: Zahlarten \u0026 Versand"},"buttonDisabledText":"Deine Registrierung wird durchgeführt. Bitte warte einen kurzen Moment.","ToLoginBtn":"Direkt zur Anmeldung"},"SearchPage":{"Empty":{"AdditionalHelp":{"Headline":"Du benötigst Beratung?","Opening":"Beratungs- und Bestell-Hotline","Subline":"Gerne kannst du uns auch anrufen (aus Deutschland zum Nulltarif), wir beantworten deine Fragen und helfen dir weiter.","at":{"Hotline":"\u003ca\u003e[text=0800 / 44 88 88]||[class=boldText]\u003c/a\u003e","Opening":"Mo. - Fr. von 8:00 Uhr - 16:00 Uhr\u003cbr\u003e\u003c/br\u003eSa. von 9:00 - 18:00 Uhr"},"ch":{"Hotline":"\u003ca\u003e[text=0848 / 80 70 70]||[class=boldText]\u003c/a\u003e","Opening":"Mo. - Fr. von 7:30 Uhr - 20:00 Uhr\u003cbr\u003e\u003c/br\u003eSa. von 7:30 - 16:00 Uhr"},"de":{"Hotline":"\u003ca\u003e[text=06033 / 181 33 33]||[href=tel: +4960331813333]\u003c/a\u003e","Opening":"Mo. - So. von 7:00 Uhr - 23:00 Uhr"}},"Headline":"Hoppla - wir haben den Faden verloren","Hints":"\u003cli\u003eVersuche es doch mit einem anderen Begriff.\u003c/li\u003e\u003cli\u003eÜberprüfe die Schreibweise auf Tippfehler (Beispiel: „Jeans” statt „Jaens”)\u003c/li\u003e\u003cli\u003eVersuche es mit ähnlichen oder allgemeineren Begriffen und nutze bei Bedarf anschließend die Filterfunktionen um die Ergebnisse einzugrenzen.\u003c/li\u003e","Recommendation":{"Headline":"Vielleicht ist hier etwas passendes dabei?"}},"Meta":{"Description":"Suchergebnisse für {0} zu hessnatur {1}","Title":"Suchen {0} - hessnatur {1}"},"SearchBox":{"SearchInputPlaceholder":"Best.-Nr. / Suchbegriff","SubTitle":"für deine Suche nach:","Title":{"Footer":"Nichts gefunden?","Header":"{0} Treffer"}},"SearchSlot":{"Title":{"Primary":"{0} Treffer","Secondary":"Nichts gefunden?"}}},"MyAccountPage":{"Title":"Dein Konto","LastOrder":"Letzte Bestellung","GoToOrderLink":"Details ansehen","Navigation":{"Greeting":"Hallo {0}","Overview":"Übersicht","OrderHistory":"Meine Bestellungen","HessnaturFriends":"hessnatur friends","PersonalData":"Persönliche Daten","Wishlist":"Merkzettel","Newsletter":"Newsletter","Logout":"Abmelden"}},"OrderHistoryPage":{"Title":"Meine Bestellungen","TitleEmptyOrders":"Du hast noch keine Bestellung","TextEmptyOrders":"Entdecke unser ganzes Sortiment und mach deine erste Bestellung.","DiscoverNowButton":"Jetzt entdecken","BackButton":"Mein Konto","LoadMoreButton":"Mehr laden","Order":{"CodeLabel":"Bestellnummer","DateLabel":"Bestelldatum","PriceLabel":"Bestellsumme","DeliveryStatusLabel":"Lieferstatus","GoToOrderLink":"Bestellung ansehen"}},"PersonalDataPage":{"Title":"Persönliche Daten","PersonalData":{"Headline":"Benutzerdaten","UserName":"Name","Firstname":"Vorname","Lastname":"Nachname","CustomerId":"Kundennummer","Salutation":"Anrede","BirthDate":"Geburtsdatum","UserMail":"E-Mail-Adresse","Password":"Passwort","Language":"Sprache","ChangePassword":"Um dein Passwort zu ändern, nutze bitte die \u003ca\u003e[text=Passwort vergessen]||[href=/{0}/login/pw/request]\u003c/a\u003e Funktion.","Messages":{"HintPassword":"Bitte gib dein ein Passwort an.","HintSalutation":"Bitte gib deine Anrede an.","HintBirthdate":"Bitte gib ein Geburtsdatum (tt.mm.jjjj) an.","HintBirthdateInvalid":"Bitte gib ein gültiges Geburtsdatum an.","HintEmail":"Bitte kontaktiere unseren Kunden Service, um deine E-Mail zu ändern.","HintFirstname":"Bitte gebe deinen Vornamen an","MissingLastname":"Bitte gib einen Nachnamen an.","HintIBANInvalid":"Bitte gib eine valide IBAN ein."},"Button":{"Edit":"Daten bearbeiten","Save":"Daten speichern","Cancel":"Abbrechen","AddAddress":"Adresse hinzufügen"}},"PaymentAddress":{"Headline":"Rechnungsadresse","EditHeadline":"Rechnungsadresse bearbeiten","CreateHeadline":"Rechnungsadresse hinzufügen","Address":"Adresse","MobilePhoneNumber":"Mobil","TelephoneNumber":"Telefonnummer","NoAddressText":"Du hast noch keine Rechnungsadresse hinterlegt.","DefaultDeliveryAddress":"Standard-Lieferadresse"},"DeliveryAddresses":{"Headline":"Lieferadressen","EditHeadline":"Lieferadresse bearbeiten","NoAddressesText":"Du hast noch keine Lieferadresse hinterlegt.","DefaultDeliveryAddress":"Standard-Lieferadresse"},"AddDeliveryAddress":{"Headline":"Lieferadresse hinzufügen","Name":"Name","OpeningHours":"Öffnungszeiten","CopyText":"Bei Lieferung in unsere Filiale wirst du per Rechnungsschreiben über den Versand der Bestellung informiert. Bitte hole das Paket innerhalb der nächsten 14 Tage in der Filiale ab und bringe dazu deine Rechnung mit."},"PaymentModes":{"Headline":"Zahlungsarten","Empty":"Es sind noch keine Zahlarten hinterlegt. Mit dem ersten Kauf werden Zahlarten in deinem persönlichen Bereich gespeichert. ","Standard":"Standard-Zahlung","Button":{"Edit":"Bearbeiten","Save":"Daten speichern","Cancel":"Abbrechen"},"ClearData":{"Headline":"Daten löschen","EditHeadline":"Kreditkartendaten löschen?","Text":"Möchtest du diese Kreditkartendaten wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.","Confirm":"Bestätigen"},"Details":{"creditcard":"Kreditkarte","invoice":"Rechnung","unzer_invoice":"Rechnung","unzer_debitentry":"Bankeinzug","unzer_installment":"Ratenkauf","amazon_pay":"Amazon Pay","paypal":"PayPal","debitentry":"Bankeinzug"},"DebitEntryEditHeadline":"Bankeinzugdaten bearbeiten","UnzerInvoice":{"Label":"Geburtsdatum","Hint":"Um dir den Kauf auf Rechnung anbieten zu können, benötigen wir dein Geburtsdatum.","Errors":{"Birthdate":{"ToLow":"Du musst über 16 Jahre alt sein, um diese Zahlungsart nutzen zu können."}}},"UnzerDebitentry":{"Birthday":{"Label":"Geburtsdatum","Hint":"Um dir den Kauf per Bankeinzug  anbieten zu können, benötigen wir dein Geburtsdatum.","Errors":{"Birthdate":{"ToLow":"Du musst über 16 Jahre alt sein, um diese Zahlungsart nutzen zu können."}}},"BankAccountHolder":"Kontoinhaber","IBAN":"IBAN"},"Paypal":{"VaultDescription":"PayPal ist als bevorzugte Zahlart in deinem Kundenkonto gespeichert"}},"Disable":{"Headline":"Kundenkonto löschen","Friends":"hessnatur friends deaktivieren","UserName":"Name","UserMail":"E-Mail-Adresse","Button":{"Edit":"Daten bearbeiten","Save":"Daten speichern","Cancel":"Abbrechen"},"Edit":{"Subline":"Kundenkonto löschen","Text":"Solltest du dein Onlinekundenkonto nicht weiter nutzen wollen, kannst du es an dieser Stelle deaktivieren. Solltest du in Zukunft wieder ein Onlinekonto wünschen, kannst du ein neues Konto über den Registrierungsprozess eröffnen. Aus Sicherheitsgründen ist es nicht möglich die bereits verwendete E-Mail Adresse ein weiteres Mal zu nutzen.","DisableAction":"Kundenkonto löschen","LoyaltyHeadline":"hessnatur friends deaktivieren","LoyaltySubPreText":"Wenn Du nicht mehr am hessnatur friends Programm teilnehmen möchtest, dann kannst du es ","LoyaltySubActionText":"hier","LoyaltySubPostText":" deaktivieren."},"Confirmation":{"Headline":"Kundenkonto löschen","Subline":"Möchtest du dein Kundenkonto wirklich unwiderruflich löschen?","Button":"Trotzdem löschen","LoyaltyHeadline":"hessnatur friends Abmeldung","LoyaltySubline":"Bitte beachte, dass mit deiner Abmeldung bereits gesammelte und nicht eingelöste EcoPoints ersatzlos verfallen. Dies kann nicht rückgängig gemacht werden.","LoyaltyButton":"Trotzdem abmelden"}},"Invoice":"Rechnung"},"OrderDetailsPage":{"Title":"Bestellung Detail","BackButton":"Bestellübersicht","Article":"Artikel {0}","OrderNumber":"Bestellnummer: {0}","OrderDate":"Bestelldatum: ","PaymentMethod":"Zahlungsart: ","TrackingLink":"Bestellung verfolgen","DeliveryStatus":"Lieferstatus: ","ReturnInfo":"Retoure empfangen am: ","Color":"Farbe: ","Size":"Größe: ","Value":"Wert","Quantity":"Anzahl: ","IncludedVAT":"Inkl. MwSt.","Grandtotal":"Gesamtsumme","Total":"Summe","Subtotal":"Zwischensumme:","Voucher":"Gutschein:","Shipping":"Versand:","VAT":"MwSt.","EcoPoints":"Eco Points","EcoPointsLink":"\u003ca\u003e[text=Details]||[href=/{0}/hessnatur-friends]||[target=_blank]\u003c/a\u003e","DeliveryAddress":"Lieferadresse","BillingAddress":"Rechnungsadresse","StorePickup":"In Verkaufsstelle ahholen:","Store":"Store","YouPay":"Du zahlst"},"CartPage":{"Title":"Dein Warenkorb","Subline":"Artikel im Warenkorb werden nicht reserviert.","NoArticles":"Es befinden sich noch keine Produkte in deinem Warenkorb","ContinueBrowsing":"Weiter stöbern","Article":"Artikel","Color":"Farbe:","Size":"Größe","Quantity":"Menge","Amount":"Wert","LastLowestPrice":"Letzter niedrigster Preis: {0}","OriginalPrice":"Ursprünglicher: {0}","AddToWishlist":"Auf den Merkzettel verschieben","DeleteEntry":"Entfernen","Edit":"Bearbeiten","Cart":{"CartEntry":{"LoyaltyEcoPoints":"{0} Eco Points"}},"Plus":"*zzgl.","ShippingCosts":"Versandkosten","AcceptedPaymentMethods":"Akzeptierte Zahlarten","ToCheckoutBtn":"Zur Kasse","Coupon":{"Code":"Code: {0}","RedeemHint":"Gutscheincode hier einlösen (optional)","RedeemButton":"Anwenden","RedeemError":"Bitte einen Gutscheincode eingeben."}},"WishlistPage":{"Title":"Dein Merkzettel","Subline":"Artikel auf dem Merkzettel werden nicht reserviert.","NoArticles":"Es befinden sich noch keine Produkte auf deinem Merkzettel.","ContinueBrowsing":"Weiter stöbern","Article":"Artikel","Color":"Farbe","Size":"Größe","AddToCart":"In den Warenkorb verschieben","SelectSize":"Größe wählen","DisabledMessage":"Dieses Produkt ist leider vergriffen.","Errors":{"ProductAlreadyExist":"Der Artikel ist bereits auf deinem Merkzettel.","ProductNotFound":"Artikel existiert nicht","ProductNotDeleted":"Artikel konnte nicht von deinem Merkzettel gelöscht werden."},"AddedSuccessful":"Der Artikel wurde zum Merkzettel hinzugefügt.","RemovedSuccessfully":"Der Artikel wurde vom Merkzettel entfernt.","Disabled":{"Title":"Die Merkzettel-Funktion steht aktuell nicht zur Verfügung.","Content":"Diese wird gerade optimiert, um dir in Zukunft ein noch besseres Einkaufserlebnis zu bieten.\u003cbr /\u003e\u003cbr /\u003eWir arbeiten mit Hochdruck daran, die Verbesserungen so schnell wie möglich abzuschließen, und bitten in der Zwischenzeit um  dein Verständnis. Notiere dir deine gewünschten Artikel bitte anderweitig, damit du sie später leichter wiederfinden kannst.\u003cbr /\u003e\u003cbr /\u003eBei Fragen oder weiteren Anliegen steht dir unser Kundenservice jederzeit gerne zur Verfügung.\u003cbr /\u003e\u003cbr /\u003eVielen Dank für deine Geduld und dein Verständnis."},"SizeSelector":{"title":"Schnellansicht","chooseSize":"Wähle eine Größe aus:","size":"Größe","choosenColor":"Farbe ausgewählt:"},"AddedToCart":"Der Artikel wurde in den Warenkorb gelegt."},"LoginCheckoutPage":{"OrderAsGuest":"Als Gast bestellen","OrderAsGuestBtn":"Als Gast zur Kasse","ForgottenPassword":"Hast Du Dein Passwort vergessen?","PayWith":"Zahlen mit"},"GuestUpdatePage":{"CheckoutStep":{"Headline":"Deine Daten","Subline":"Nächster Schritt: Zahlarten \u0026 Versand"},"Headline":"Gastbestellung","SubmitBtn":"Weiter"},"CustomerPage":{"CheckoutStep":{"Headline":"Deine Daten","Subline":"Nächster Schritt: Zahlarten \u0026 Versand"},"Headline":"Kundenbestellung","SubmitBtn":"Weiter"},"CheckoutPaymentPage":{"CheckoutStep":{"Headline":"Zahlarten \u0026 Versand","Subline":"Nächster Schritt: Bestätigung "},"Payment":{"Paymentmode":"Zahlungsarten"},"BillingAddress":{"Title":"Rechnungsadresse","Subtitle":"Adresse"},"DeliveryAddress":{"Title":{"DE":"Lieferadresse/ Packstation/ Store","AT":"Lieferadresse","CH":"Lieferadresse/ Pickpost"},"Text":"Entspricht der Rechnungsadresse","VoucherMail":"Wird an die Email Adresse \u003cstrong\u003e{0}\u003c/strong\u003e versandt"},"DeliveryMode":{"Title":"Versandart","Modes":{"standard-gross":"Standardversand","dhl":"DHL","dhl-express":"DHL Express","pickup":"Ladenabholung","free-standard-shipping":"Kostenloser Versand"}},"EditAddressBtn":"Daten bearbeiten","EditDeliveryModeBtn":"Daten bearbeiten","AddNewDeliveryAddressBtn":"Neue Adresse hinzufügen","SaveAddressBtn":"Adresse bestätigen","SubmitBtn":"Weiter","BackBtn":"Zurück","CartEntries":{"Headline":"Dein Einkauf"}},"CheckoutSummaryPage":{"CheckoutStep":{"Headline":"Bestellung überprüfen"},"Payment":{"Paymentmode":"Zahlungsart"},"SubmitBtn":"Zahlungspflichtig bestellen","AGB":"Mit Absenden der Bestellung erkläre ich mich mit den \u003ca\u003e[text=Datenschutzbedingungen]||[href=/{0}/datenschutz]||[target=_blank]\u003c/a\u003e und \u003ca\u003e[text=AGB]||[href=/{0}/agb]||[target=_blank]\u003c/a\u003e einverstanden.","CartEntries":{"Headline":"Dein Einkauf"},"OrderConfirmation":{"Title":"Bestellbestätigung","Headline":"Deine Bestellung war erfolgreich. Vielen Dank für deinen Einkauf.","OrderNumber":"Deine Bestellung wird bei uns unter der Nummer \u003cstrong\u003e[text={0}]||[aria-label=Bestellnummer]\u003c/strong\u003e geführt.","PointsUser":"Herzlichen Glückwunsch - mit dieser Bestellung hast du \u003cstrong\u003e{0} Eco Points\u003c/strong\u003e gesammelt. Bitte beachte, dass die Eco Points deinem Kundenkonto nach 45 Tagen gutgeschrieben werden.","PointsGuest":"Nicht verfallen lassen: Sichere dir \u003cstrong\u003e{0} Eco Points\u003c/strong\u003e auf deinen Einkauf. Lege dafür noch schnell ein Kundenkonto an und du bist automatisch Teil des hessnatur friends Programm."},"Loading":{"Title":"Bitte warten","Copy":"Deine Bestellung wird gerade geprüft. Dies kann einige Sekunden dauern. Vielen Dank für deine Geduld.","CTA":"Schließen"}},"CommonCheckout":{"Error":{"generic":{"error":"Beim Bearbeiten der Anfrage ist ein Fehler aufgetreten. Allgemeiner Systemfehler. Warte kurz und versuche es dann erneut.","hint":"Deine ausgewählten Daten wurden geändert, weil Zahlungsart, Lieferadresse oder Versandart in dieser Kombination nicht möglich ist. Bitte überprüfe die angepassten Angaben."},"checkout":{"multi":{"deliveryAddress":{"notprovided":"Du musst eine Lieferadresse angeben, um zum nächsten Schritt zu wechseln."},"paymentDetails":{"notprovided":"Du musst Zahlungsdetails angeben, um zum nächsten Schritt zu wechseln.","notvalid":"Die zuvor gewählte Zahlungsart ist ungültig, bitte ändere diese."},"deliveryMethod":{"notprovided":"Du musst eine Versandart angeben, um zum nächsten Schritt zu wechseln.","notvalid":"Die Versandart ist ungültig, bitte ändere diese."}},"placeOrder":{"unzerInvoice":{"failed":"Diese Zahlung konnte nicht durchgeführt werden. Dies kann diverse Gründe haben, wie etwa fehlerhafte Eingabedaten, eine unbekannte Adresse, oder ein vorübergehendes technisches Problem. Bitte überprüfe die angegebenen Daten oder wähle eine andere Zahlungsart."},"unzerDebitEntry":{"failed":"Diese Zahlung konnte nicht durchgeführt werden. Dies kann diverse Gründe haben, wie etwa fehlerhafte Eingabedaten, eine unbekannte Adresse, oder ein vorübergehendes technisches Problem. Bitte überprüfe die angegebenen Daten oder wähle eine andere Zahlungsart."}}},"payment":{"paypal":{"notsuccessful":"Der Bezahlvorgang mit PayPal war nicht erfolgreich, die Bestellung ist nicht erfolgt und dein Konto wurde nicht belastet."},"creditcard":{"notsuccessful":"Der Bezahlvorgang mit der Kreditkarte war nicht erfolgreich."}}}},"DigitalVoucherPage":{"PriceSelectionHeader":"Wie hoch soll der Betrag sein?","Amount":"Betrag","Choose":"Bitte wählen"},"StorePage":{"Contact":"Kontakt","Phone":"Telefon:","Email":"E-Mail:","Directions":"Ausführliche Wegbeschreibung:","RoutePlan":"Routenplaner starten","Info":"Um Ware direkt in den Store deiner Wahl liefern zu lassen, lege diese in den Warenkorb. Im Kaufprozess kannst du als „Abweichende Lieferadresse“ unsere Stores auswählen.","StoresHighlight":"Stores im Überblick"},"Footer":{"Benefits":{"Secure":"Sicher Einkaufen","Invoice":"Kauf auf Rechnung","Retoure":"Einfache Retoure","Friends":"hessnatur friends"},"Newsletter":{"Headline":"Newsletter","Subheadline":"Trends \u0026 Styles","Content":"Jetzt anmelden und \u003cstrong\u003e{0}\u003c/strong\u003e bei deinem nächsten Einkauf auf alles sparen (ab {1} Mindestbestellwert, Geschenk-Gutscheine ausgenommen, 30 Tage gültig ab Erhalt).","Voucher":"Gutschein","Discount":{"eur":"20 Euro","chf":"20 CHF"},"MinOrderValue":{"eur":"99,- €","chf":"CHF 99.--"},"DataProtection":"Ich habe die \u003ca\u003e[text=Datenschutz-Information]||[href=/{0}/datenschutz]||[target=_blank]\u003c/a\u003e gelesen und stimme zu, dass zur Bestätigung meiner Angaben eine Nachricht an unten genannte E-Mail-Adresse verschickt wird.","Form":{"Label":"E-Mail","Hint":"Bitte gib eine E-Mail Adresse an.","Invalid":"Dies ist keine gültige E-Mail Adresse. E-Mail Adressen dürfen keine Umlaute enthalten.","Error":"Beim Bearbeiten der Anfrage ist ein Fehler aufgetreten. Warte kurz und versuche es dann erneut.","CTA":"Anmelden"}},"Contact":{"Headline":"Wir sind für dich da!","Subheadline":"Service \u0026 Beratung","Content":{"de":"Du erreichst unser Beratungsteam von Montag bis Sonntag, von 7:00 bis 23:00 Uhr.","at":"Du erreichst unser Beratungsteam von Montag bis Freitag von 8:00 bis 18:00 Uhr, am Samstag von 09:00 bis 18:00 Uhr.","ch":"Du erreichst unser Beratungsteam von Montag bis Freitag von 7:30 bis 20:00 Uhr, am Samstag von 07:30 bis 16:00 Uhr."},"Phonenumber":{"de":{"text":"06033 / 181 33 33","link":"+4960331813333"},"at":{"text":"0800 / 44 88 88","link":"+43800448888"},"ch":{"text":"0848 / 80 70 70","link":"+41848807070"}}},"Stores":{"Headline":"hessnatur Stores","Subheadline":"hessnatur hautnah erleben","Content":"Unsere Mode und Materialien in entspannter Atmosphäre hautnah erleben, anprobieren und kombinieren.\u003cbr\u003e\u003c/br\u003e\u003cbr\u003e\u003c/br\u003eNutze die kompetente Beratung, attraktive Angebote, Aktionen und Shopping-Events.","default":"Store auswählen"}},"FooterNavigation":{"Informations":{"title":"Informationen","service":"Hilfe \u0026 Kontakt","faq":"FAQ","contact":"Kontakt","newsletter":"Newsletter","agb":"AGB","privacy":"Datenschutz","privacySettings":"Datenschutz-Einstellungen","imprint":"Impressum","returns":"Retoure"},"Service":{"title":"Service","voucher":"Geschenkgutscheine","friends":"hessnatur friends","sizes":"Größentabelle","textile":"Textillexikon"},"SocialMedia":{"title":"Social Media","facebook":"hessnatur bei Facebook","instagram":"hessnatur bei Instagram","pinterest":"hessnatur bei Pinterest","x":"hessnatur bei X.com","youtube":"Zum hessnatur Youtube Kanal","magazine":"Magazin"},"About":{"title":"Über uns","company":"Unternehmen","career":"Jobs","press":"Presse","stores":"Unsere Stores"},"Payment":{"title":"Bezahlarten","invoice":"Rechnung","amazon":"Amazon Pay","paypal":"Paypal","mastercard":"Mastercard","visa":"VISA","diners":"Diners / Discover"},"Security":{"title":"Vertrauen \u0026 Sicherheit","invoice":"Invoice","amazon":"Amazon Pay"},"Awards":{"title":"Kooperationen \u0026 Awards","invoice":"Invoice","amazon":"Amazon Pay","paypal":"Paypal","mastercard":"Mastercard","visa":"VISA","diners":"Diners / Discover"},"trust":"Vertrauen \u0026 Sicherheit","cooperations":"Kooperationen \u0026 Awards","StoreSelectorDescription":"Öffnen der Länder- und Sprachauswahl","CountryAndLanguage":"Gewähltes Land und Sprache:"},"StoreSelector":{"description":"Länder- und Sprachauswahl","Welcome":"Willkommen im hessnatur Online Shop","Language":"Sprache (Language)","DeliveryDynamicText":{"to":"Nach {0} liefern wir aus {1}.","into":"In die {0} liefern wir aus {1}."},"DeliveryText":{"to":"Lieferung nach (Delivery to)","into":"Lieferung in die (Delivery to)"},"NoDelivery":"In nicht aufgeführte Länder können wir leider aktuell nicht liefern.","CTA":"Jetzt shoppen"},"ServicePage":{"Title":"Support - Fragen und Antworten"}},"pageType":"cartPage"},"__N_SSP":true},"page":"/cart","query":{},"buildId":"sMWoaCGJABPRzGETS5zGJ","isFallback":false,"isExperimentalCompile":false,"dynamicIds":[56902,72410,13116],"gssp":true,"locale":"de","locales":["default","de","at","ch","en-DE"],"defaultLocale":"default","scriptLoader":[]}</script><next-route-announcer><p aria-live="assertive" id="__next-route-announcer__" role="alert" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; top: 0px; width: 1px; white-space: nowrap; overflow-wrap: normal;"></p></next-route-announcer><script id="matomo-script" data-testid="matomo-script" data-nscript="afterInteractive">            
+            var _paq = window._paq = window._paq || [];   
+            
+            //do not use cookies
+            _paq.push(['disableBrowserFeatureDetection']);
+            _paq.push(['requireCookieConsent']);
+                     
+            (function() {
+              var u="https://matomo.hessnatur.com/";
+              _paq.push(['setTrackerUrl', u+'matomo.php']);
+              _paq.push(['setSiteId', '2']);
+              var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+              g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+            })();
+          </script><script src="https://web.cmp.usercentrics.eu/ui/loader.js" id="usercentrics-cmp" data-settings-id="RMUp5xq8z" data-testid="user-centrics-script" data-nscript="afterInteractive"></script><iframe style="display: none;" id="uc-cross-domain-consent-sharing-bridge" src="https://web.cmp.usercentrics.eu/cdcs/v/1.0.0/index.html"></iframe><script src="https://l.ecn-ldr.de/loader/loader.js" defer="true" type="text/javascript" client-key="00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f" container-id="2013" data-testid="econda-script" data-nscript="lazyOnload"></script><script type="text/javascript" id="gtm" data-usercentrics="Google Tag Manager" data-testid="gtm-script" data-nscript="lazyOnload">            
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-9TR7J');
+          </script><script src="https://www.google.com/recaptcha/enterprise.js?render=6LeG3WQrAAAAANPLV5g_2ghFmEhG8rbN5oD7eFDP" data-testid="recaptcha-script" type="text/javascript" data-nscript="lazyOnload"></script><script src="/_next/static/chunks/3068-bf6f8409ba1fcce8.js"></script><script src="/_next/static/chunks/9387-30c3490ffd83b755.js"></script><script src="/_next/static/chunks/pages/login-f7ed55343eacf8b9.js"></script><script src="/_next/static/chunks/5940-2fdb635583a36c6e.js"></script><script src="/_next/static/chunks/3215-d9e39e50b884078a.js"></script><script src="/_next/static/chunks/1734-c003c3342ee5e294.js"></script><script src="/_next/static/chunks/pages/cms/%5Bslug%5D-1d963e6212857a02.js"></script><script src="/_next/static/chunks/pages/merkzettel-3bc34ec73c11a963.js"></script><div style="position: absolute !important; top: 0px !important; left: 0px !important; height: 0px !important; width: 0px !important; display: initial !important;" data-lastpass-root=""></div><script type="text/javascript" id="" charset="">document.addEventListener("visibilitychange",function(a){(a=localStorage.getItem("ucData"))&&a.indexOf('{"name":"Google Analytics 4","consent":true}')!==-1&&(a="o:"+window.google_tag_manager[google_tag_manager["rm"]["163855"](16)].dataLayer.get("gtm.oldUrl")+"|n:"+window.google_tag_manager[google_tag_manager["rm"]["163855"](17)].dataLayer.get("gtm.newUrl")+"|l:"+window.location.pathname+"|r:"+document.referrer,dataLayer.push({event:"custom_event",event_name:"visibility_change",page_visibility:window.document.visibilityState,hn_debug_info:sessionStorage.getItem("gtm_url_debug")||
+"x"}),sessionStorage.setItem("gtm_url_debug",a))});</script><div><div class="grecaptcha-badge" data-style="bottomright" style="width: 256px; height: 60px; display: block; transition: right 0.3s; position: fixed; bottom: 14px; right: -186px; box-shadow: gray 0px 0px 5px; border-radius: 2px; overflow: hidden;"><div class="grecaptcha-logo"><iframe title="reCAPTCHA" width="256" height="60" role="presentation" name="a-i8hvdlt9x35f" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" src="https://www.google.com/recaptcha/enterprise/anchor?ar=1&amp;k=6LeG3WQrAAAAANPLV5g_2ghFmEhG8rbN5oD7eFDP&amp;co=aHR0cHM6Ly93d3cuaGVzc25hdHVyLmNvbTo0NDM.&amp;hl=de&amp;v=7gg7H51Q-naNfhmCP3_R47ho&amp;size=invisible&amp;anchor-ms=20000&amp;execute-ms=15000&amp;cb=ul457shk2baj"></iframe></div><div class="grecaptcha-error"></div><textarea id="g-recaptcha-response-100000" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none; display: none;"></textarea></div><iframe style="display: none;"></iframe></div><script type="text/javascript" id="" charset="">var ScarabQueue=ScarabQueue||[];
+(function(){ScarabQueue.push(["availabilityZone",google_tag_manager["rm"]["163855"](171)]);var a=google_tag_manager["rm"]["163855"](172)||google_tag_manager["rm"]["163855"](173)||google_tag_manager["rm"]["163855"](174);a&&ScarabQueue.push(["setCustomerId",a]);var e=!1;a="gtm_cart";var b=[];if(google_tag_manager["rm"]["163855"](175)==="Ecommerce - view_cart"&&google_tag_manager["rm"]["163855"](176))b=google_tag_manager["rm"]["163855"](177).map(function(c){return{item:c.item_id.slice(0,7),price:c.price,quantity:c.quantity}}),sessionStorage.setItem(a,JSON.stringify(b));else if(google_tag_manager["rm"]["163855"](178)==="Ecommerce - add_to_cart"&&
+google_tag_manager["rm"]["163855"](179)){var d=sessionStorage.getItem(a);d&&(b=JSON.parse(d));d=google_tag_manager["rm"]["163855"](180).map(function(c){return{item:c.item_id.slice(0,7),price:c.price,quantity:c.quantity}});b.push(d[0]);sessionStorage.setItem(a,JSON.stringify(b))}else if(google_tag_manager["rm"]["163855"](181)==="Ecommerce - purchase"&&google_tag_manager["rm"]["163855"](182)){if(e=google_tag_manager["rm"]["163855"](183))e=e.map(function(c){return{item:c.item_id.slice(0,7),price:c.price,quantity:c.quantity}}),ScarabQueue.push(["purchase",{orderId:google_tag_manager["rm"]["163855"](184),
+items:e}]);sessionStorage.removeItem(a);e=!0}else if(google_tag_manager["rm"]["163855"](186)==="pdp"){var f=google_tag_manager["rm"]["163855"](187);f&&f.length?d=f[0].item_id.slice(0,7):(f=window.location.pathname)&&f.indexOf("/p/")>-1&&(f=f.match(/\/p\/([0-9]{7})/))&&(d=f[1]);d&&ScarabQueue.push(["view",d])}else google_tag_manager["rm"]["163855"](189)==="category"?ScarabQueue.push(["category",google_tag_manager["rm"]["163855"](192)]):google_tag_manager["rm"]["163855"](194)==="search"&&google_tag_manager["rm"]["163855"](195)?ScarabQueue.push(["searchTerm",google_tag_manager["rm"]["163855"](196)]):google_tag_manager["rm"]["163855"](198)===
+"magazine"?ScarabQueue.push(["view","magazin"]):google_tag_manager["rm"]["163855"](200)==="corporate"&&ScarabQueue.push(["view","corporate"]);e||(b.length||(d=sessionStorage.getItem(a))&&(b=JSON.parse(d)),ScarabQueue.push(["cart",b||[]]))})();ScarabQueue.push(["go"]);
+(function(a,e){if(!document.getElementById(e)){var b=document.createElement("script");b.id=e;b.src=a+".scarabresearch.com/js/1507AF8E95303CD3/scarab-v2.js";a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a)}})("https:"==document.location.protocol?"https://recommender":"http://cdn","scarab-js-api");</script><iframe height="0" width="0" style="display: none; visibility: hidden;"></iframe><script src="https://static-eu.payments-amazon.com/checkout.js" data-testid="amazon-pay-script" id="amazon-pay-script" type="text/javascript" data-nscript="afterInteractive"></script><script src="/_next/static/chunks/477-584e44a5fe9d7240.js"></script><script src="/_next/static/chunks/6259-230decb2b9cb919c.js"></script><script src="/_next/static/chunks/pages/c/%5BcategoryCode%5D-ecf013c8531efed8.js"></script><script src="/_next/static/chunks/pages/%5Bslug%5D/p/%5BproductCode%5D-8797c10e57cc97d4.js"></script></body></html>
