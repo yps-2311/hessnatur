@@ -11,8 +11,8 @@
  * @name Variation 00
  * @description
  */
-(function (KEK) {
-  "use strict";
+// (function (KEK) {
+//   "use strict";
 
 
-})(new window.KEK());
+// })(new window.KEK());

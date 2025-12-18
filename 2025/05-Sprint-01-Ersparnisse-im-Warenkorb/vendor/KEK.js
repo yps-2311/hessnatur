@@ -187,20 +187,20 @@
      */
 
 
-        window.KEK.prototype.cookieGet = function(name){
+        // window.KEK.prototype.cookieGet = function(name){
             
-            const cookies = document.cookie.split(";");
+        //     const cookies = document.cookie.split(";");
             
-            for(let i = 0; i < cookies.length; i++){
+        //     for(let i = 0; i < cookies.length; i++){
                 
-                if(cookies[i].substring(0, cookies[i].indexOf("=")).replace(/^\s+|\s+$/g,"") === name){
+        //         if(cookies[i].substring(0, cookies[i].indexOf("=")).replace(/^\s+|\s+$/g,"") === name){
                     
-                    return decodeURIComponent(cookies[i].substring(cookies[i].indexOf("=") + 1));
-                }
-            }
+        //             return decodeURIComponent(cookies[i].substring(cookies[i].indexOf("=") + 1));
+        //         }
+        //     }
             
-            return false;
-        };
+        //     return false;
+        // };
     //*/
 
     /**
@@ -216,14 +216,14 @@
      */
 
 
-        window.KEK.prototype.cookieSet = function(name, value, domain, session){
+        // window.KEK.prototype.cookieSet = function(name, value, domain, session){
             
-            const exdate = new Date();
+        //     const exdate = new Date();
             
-            exdate.setDate(exdate.getDate() + 365);
+        //     exdate.setDate(exdate.getDate() + 365);
             
-            document.cookie = name + "=" + encodeURIComponent(value) + ";" + (!session ? "expires=" + exdate.toUTCString() + ";" : "") + "domain=" + domain + ";path=/; SameSite=None; Secure";
-        };
+        //     document.cookie = name + "=" + encodeURIComponent(value) + ";" + (!session ? "expires=" + exdate.toUTCString() + ";" : "") + "domain=" + domain + ";path=/; SameSite=None; Secure";
+        // };
     //*/
 
     /**
@@ -324,31 +324,31 @@
      */
 
     //*
-        window.KEK.prototype.exclude = function(width, callback){
+        // window.KEK.prototype.exclude = function(width, callback){
 
-            let exclude = false;
+        //     let exclude = false;
             
-            function _checkWidth() {
+        //     function _checkWidth() {
                 
-                const current = window.innerWidth || document.body.clientWidth;
+        //         const current = window.innerWidth || document.body.clientWidth;
                 
-                if(current <= width && !exclude){
+        //         if(current <= width && !exclude){
                     
-                    exclude = true;
+        //             exclude = true;
                     
-                    callback();
-                }
-            }
+        //             callback();
+        //         }
+        //     }
             
-            _checkWidth();
+        //     _checkWidth();
             
-            if(typeof callback === "function"){
+        //     if(typeof callback === "function"){
                 
-                window.addEventListener('resize', () => {
-                    _checkWidth();
-                });
-            }
-        };
+        //         window.addEventListener('resize', () => {
+        //             _checkWidth();
+        //         });
+        //     }
+        // };
     //*/
 
     /**
@@ -376,7 +376,7 @@
      * @author Lukas Dziambor
      */
 
-    //*
+    // *
         window.KEK.prototype.reload = function() {
             window.location.reload();
             window.location.href=location.href.split('#')[0];

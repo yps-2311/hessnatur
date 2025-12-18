@@ -12,138 +12,318 @@
 (function (KEK) {
 	"use strict";
 
-	fetch('https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app/api/graphql', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			operationName: 'getAllAvailabilities',
-			variables: {
-			code: '56322',
-			lang: 'de',
-			country: 'de'
+	const getProductFromEconda = () => {
+		const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&widgetdetails=true&csize=20&start=0';
+		return fetch(url)
+			.then(res => res.json())
+			.then(data => {
+				console.log('Econda Produkte:', data.items);
+				return data.items;
+			})
+			.catch(error => {
+				console.error('Econda Fehler:', error);
+				return [];
+			});
+	}
+
+	const getCookie = (name) => {
+		const cookies = document.cookie.split(';');
+		for (let i = 0; i < cookies.length; i++) {
+			let cookie = cookies[i].trim();
+			if (cookie.startsWith(name + '=')) {
+				return cookie.substring(name.length + 1);
+			}
+		}
+		return null;
+	}
+
+	const addProductToCart = (exactProductID9) => {
+		fetch('https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app/api/graphql', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
 			},
+			body: JSON.stringify({
+				operationName: "updateCartEntry",
+				variables: {
+					country: "de",
+					guid: getCookie('HessnaturDESite-cart'),
+					cartEntry: {
+						quantity: 1,
+						product: {
+							code: exactProductID9 //"572838834"
+						}
+					}
+				},
+				query: "mutation updateCartEntry($country: String!, $token: String, $guid: String, $expirationTime: String, $cartEntry: UpdateCartEntry!) {\n  updateCartEntry(country: $country, token: $token, guid: $guid, expirationTime: $expirationTime, cartEntry: $cartEntry) {\n    __typename\n    ... on CartModification {\n      guid\n      quantity\n      quantityAdded\n      statusCode\n      entry {\n        quantity\n        entryNumber\n        totalPrice {\n          formattedValue\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    ... on GenericOCCResponse {\n      success\n      invalidFields\n      __typename\n    }\n  }\n}\n"
+			})
+		})
+		.then(response => response.json())
+		.then(data => {
+			console.log('Erfolg:', data);
+			// Reload
+			KEK.reload();
+		})
+		.catch(error => {
+			console.error('Fehler:', error);
+		});
+	};
+
+	// Haupt-Funktion die alles koordiniert
+	const initializeCartAddOn = (econdaProducts) => {
+		
+		setTimeout(() => {
+			let saveMoney = 0;
+
+			KEK.qsa('[class*="PriceLabel_priceRow__"]').forEach((item) => {
+				const strikePrice = KEK.qs('[class*="PriceLabel_priceRow__priceLabel--striked__"]', item);
+				const reducePrice = KEK.qs('[class*="PriceLabel_priceRow__priceLabel--discounted__"]', item);
+				if(strikePrice && reducePrice) {
+					const strikePriceValue = parseFloat(strikePrice.textContent.replace(/[^\d,.]/g, '').replace('.', '').replace(',', '.'));
+					const reducePriceValue = parseFloat(reducePrice.textContent.replace(/[^\d,.]/g, '').replace('.', '').replace(',', '.'));
+					const savings = strikePriceValue - reducePriceValue;
+					saveMoney += savings;
+				}
+			});
+			console.log('saveMoney: ', saveMoney);
+
+			// Finde ein Produkt aus Econda dessen Preis kleiner ist als saveMoney
+			const selectedEcondaProduct = econdaProducts.find(product => {
+				const productPrice = parseFloat(product.price.replace(/[^\d,]/g, '').replace(',', '.'));
+				return productPrice < saveMoney;
+			});
+
+			if (!selectedEcondaProduct) {
+				console.log('Kein passendes Econda-Produkt gefunden');
+				return;
+			}
+
+			console.log('Ausgewähltes Econda-Produkt:', selectedEcondaProduct);
+			const productID = selectedEcondaProduct.sku7;
+
+			// GraphQL Request mit dem ausgewählten Produkt
+			fetchProductDetails(productID, selectedEcondaProduct, saveMoney);
+
+		}, 1000);
+	};
+
+	const fetchProductDetails = (productID, econdaProduct, saveMoney) => {
+		
+		fetch('https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app/api/graphql', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				operationName: 'getAllAvailabilities',
+				variables: {
+					code: productID,
+					lang: 'de',
+					country: 'de'
+				},
 			query: `query getAllAvailabilities($code: String!, $lang: String!, $country: String!) {
 				allAvailabilities(code: $code, lang: $lang, country: $country) {
 					id
 					styles {
-					id
-					name
-					imgUrl
-					sizes {
 						id
 						name
-						availabilityIndex
-						deliveryTime
-						price {
-						formattedValue
-						currencyIso
-						netValue
-						__typename
+						imgUrl
+						sizes {
+							id
+							name
+							availabilityIndex
+							deliveryTime
+							price {
+								formattedValue
+								currencyIso
+								netValue
+								__typename
+							}
+							__typename
 						}
 						__typename
 					}
 					__typename
-					}
-					__typename
 				}
-				}
-				`
+			}`
+			})
 		})
-	})
-	.then(response => response.json())
-	.then(responseData => {
-		console.log(responseData);
+		.then(response => response.json())
+		.then(responseData => {
+			console.log('GraphQL Response:', responseData);
 
-		const produktData = responseData.data.allAvailabilities.styles[0];
-
-		setTimeout(() => {
+			const produktData = responseData.data.allAvailabilities.styles[0];
+			console.log('produktData: ', produktData);
 
 			KEK.elem('[data-testid="cartPage"] [class*="cart_cart-page__wrapper__cart-entries-list_"]', (cartWrapper) => {
 				if(cartWrapper){
 					console.log('cartWrapper: ', cartWrapper);
+					cartWrapper = cartWrapper[0];
 					
-					KEK.insert(cartWrapper[0], 'beforeend', `<div class="CartEntry_cartEntry__detailsWrapper__ufzUb">
-						<div class="CartEntry_cartEntry__detailsWrapper__image__3y1VY">
-							<div>
-								<a href="/de/strick-pullover-relaxed-aus-alpaka-mit-bio-baumwolle/p/5709717S">
-									<div class="Media_media__xv333" data-testid="media">
-										<figure>
-											<div class="Media_wrapper__nAZUr">
-												<img alt="${produktData.name}" 
-													loading="lazy" 
-													decoding="async" 
-													data-nimg="fill" 
-													class="Media_element__Q1DDR Media_fill__eMe2a" 
-													style="position: absolute; height: 100%; width: 100%; inset: 0px; color: transparent;" 
-													src="${produktData.imgUrl.replace("{{format}}", "webshop_product-small")}">
-											</div>
-										</figure>
-									</div>
-								</a>
+					// Funktion zum Berechnen der Eco Points (Preis aufgerundet)
+					const calculateEcoPoints = (formattedPrice) => {
+						const price = parseFloat(formattedPrice.replace(/[^\d,]/g, '').replace(',', '.'));
+						return Math.ceil(price);
+					};
+					
+					// Funktion zum Ermitteln der CSS-Klasse basierend auf Lieferzeit
+					const getDeliveryClass = (deliveryTime) => {
+						if (deliveryTime && deliveryTime.includes('Woche')) {
+							return 'ProductAvailability_soonAvailable__G_otz';
+						}
+						return 'ProductAvailability_available__zjuhf';
+					};
+					
+					// Größen-Dropdown dynamisch erstellen
+					const sizeOptionsHTML = produktData.sizes.map(size => {
+						return '<option value="'+size.id+'" data-price="'+size.price.formattedValue+'" data-delivery="'+size.deliveryTime+'">'+size.name+'</option>';
+					}).join('');
+					
+					// Preis-HTML basierend auf reduziert/nicht reduziert
+					const isReduced = econdaProduct.reduced === "true";
+					let priceHTML = '';
+					
+					if (isReduced) {
+						priceHTML = `
+							<span class="sr-only">Erhältlich für ${econdaProduct.price} anstatt ${econdaProduct.oldprice}</span>
+							<div class="PriceLabel_priceRow__priceLabel--cartEntry__kJU_x PriceLabel_priceRow__priceLabel--discounted__rpPhy PriceLabel_priceRow__priceLabel--discounted--bold__0yqY5">
+								<span id="kk_product_price" aria-hidden="true" data-testid="price-label-discounted">
+									<div>${produktData.sizes[0]?.price.formattedValue}</div>
+								</span>
 							</div>
-						</div>
-						<div class="CartEntry_cartEntry__detailsWrapper__details__IFwWE">
-							<div class="CartEntry_cartEntry__headline__JQKsM">
-								Wollsocke aus reiner Bio-Merinowolle
+							<div class="PriceLabel_priceRow__priceLabel--cartEntry__kJU_x PriceLabel_priceRow__priceLabel--striked__F_I_p PriceLabel_priceRow__priceLabel--striked--cartEntry__wXUbx">
+								<span aria-hidden="true" data-testid="price-label-striked" id="kk_product_oldprice">${econdaProduct.oldprice}</span>
 							</div>
-							<div class="CartEntry_cartEntry__detailsWrapper__details__subline__dnLuO">
-								<div class="CartEntry_cartEntry__subline__JAHeL">Artikel 57097</div>
-								<div class="CartEntry_cartEntry__detailsWrapper__details--detail__BsQu1">Farbe: Marine</div>
+							<div class="PriceLabel_priceRow__priceInfo--cartEntry__Rh3lR"></div>
+						`;
+					} else {
+						priceHTML = `
+							<div class="PriceLabel_priceRow__priceLabel--cartEntry__kJU_x">
+								<span aria-hidden="true" data-testid="price-label" id="kk_product_price">${produktData.sizes[0]?.price.formattedValue}</span>
 							</div>
-							<div class="CartEntry_cartEntry__detailsWrapper__details__availability__UPqPX">
-								<span class="ProductAvailability_available__zjuhf" data-testid="product-availability-deliveryTime-available">3-5 Werktage</span>
-							</div>
-							<div class="CartEntry_cartEntry__detailsWrapper__details__box__H2ZF2">
-								<div class="CartEntry_cartEntry__detailsWrapper__details__size__zOaRA">
-									Größe 
-									<p>
-										<select id="cart-entry-size-1" class="Select_special__bJJJ0">
-											<option value="XS">XS</option>
-											<option value="S">S</option>
-											<option value="M">M</option>
-											<option value="L">L</option>
-											<option value="XL">XL</option>
-											<option value="XXL">XXL</option>
-										</select>
-									</p>
-								</div>
-							</div>
-							<div class="CartEntry_cartEntry__detailsWrapper__details__price__oo_cN">
-								<div class="PriceLabel_priceRow__1sb0z">
-									<span class="sr-only">Erhältlich für 167,99&nbsp;€ anstatt 239,99&nbsp;€</span>
-									<div class="PriceLabel_priceRow__priceLabel--cartEntry__kJU_x PriceLabel_priceRow__priceLabel--discounted__rpPhy PriceLabel_priceRow__priceLabel--discounted--bold__0yqY5">
-										<span aria-hidden="true" data-testid="price-label-discounted">
-											<div>167,99&nbsp;€</div>
-										</span>
-									</div>
-									<div class="PriceLabel_priceRow__priceLabel--cartEntry__kJU_x PriceLabel_priceRow__priceLabel--striked__F_I_p PriceLabel_priceRow__priceLabel--striked--cartEntry__wXUbx">
-										<span aria-hidden="true" data-testid="price-label-striked">239,99&nbsp;€</span>
-									</div>
-									<div class="PriceLabel_priceRow__priceInfo--cartEntry__Rh3lR"></div>
-								</div>
-							</div>
-							<div class="CartEntry_cartEntry__detailsWrapper__details__ecoPoints__lteLs">168 Eco Points</div>
-						</div>
-					</div>`);
+							<div class="PriceLabel_priceRow__priceInfo--cartEntry__Rh3lR"></div>
+						`;
+					}
 
+					const productImage = econdaProduct.iconurl.replace("feeds_pic_mid", "webshop_product-small");
 
+					
+					
+					KEK.insert(cartWrapper, 'beforeend', 
+						`<div id="kk_addon" class="CartEntry_cartEntry__detailsWrapper__ufzUb">
+							<div class="kk_leftgreen"><b>Glückwunsch! Du sparst <span>${saveMoney.toFixed(2).replace('.', ',').replace(',00', '')} €</span></b><p>Nutze deine Ersparnis:<br>Füge den Artikel hinzu und freu dich über ein schönes Extra.</p></div>
+							<div class="kk_imageprod" style="background-image:url(${productImage})">
+							</div>
+							<div class="CartEntry_cartEntry__detailsWrapper__details__IFwWE">
+								<img class="kk_mobileimage" src="${productImage}" />
+								<div class="CartEntry_cartEntry__headline__JQKsM">
+									${econdaProduct.name}
+								</div>
+								<div class="CartEntry_cartEntry__detailsWrapper__details__subline__dnLuO">
+									<div class="CartEntry_cartEntry__subline__JAHeL">Artikel ${productID.slice(0, 5)}</div>
+									<div class="CartEntry_cartEntry__detailsWrapper__details--detail__BsQu1">Farbe: ${produktData.name.charAt(0).toUpperCase() + produktData.name.slice(1)}</div>
+								</div>
+								<div class="CartEntry_cartEntry__detailsWrapper__details__availability__UPqPX">
+									<span class="${getDeliveryClass(produktData.sizes[0]?.deliveryTime)}" data-testid="product-availability-deliveryTime-available" id="kk_delivery_time">${produktData.sizes[0]?.deliveryTime}</span>
+								</div>
+								<div class="CartEntry_cartEntry__detailsWrapper__details__box__H2ZF2">
+									<div class="CartEntry_cartEntry__detailsWrapper__details__size__zOaRA">
+										Größe 
+										<p>
+											<select class="Select_special__bJJJ0" id="kk_size_select">
+												${sizeOptionsHTML}
+											</select>
+										</p>
+									</div>
+								</div>
+								<div class="CartEntry_cartEntry__detailsWrapper__details__price__oo_cN">
+									<div class="PriceLabel_priceRow__1sb0z">
+										${priceHTML}
+									</div>
+								</div>
+								<button id="kk_add_to_cart_btn" class="btn-primary">Hinzufügen</button>
+								<div class="CartEntry_cartEntry__detailsWrapper__details__ecoPoints__lteLs" id="kk_eco_points">${calculateEcoPoints(produktData.sizes[0]?.price.formattedValue)} Eco Points</div>
+							</div>
+						</div>`);
+
+					// Event Listener für Größenauswahl - Preis, Eco Points und Lieferzeit aktualisieren
+					const sizeSelect = KEK.qs('#kk_size_select', cartWrapper);
+					const priceLabel = KEK.qs('#kk_product_price', cartWrapper);
+					const ecoPointsLabel = KEK.qs('#kk_eco_points', cartWrapper);
+					const deliveryTimeLabel = KEK.qs('#kk_delivery_time', cartWrapper);
+					
+					if (sizeSelect && priceLabel && ecoPointsLabel && deliveryTimeLabel) {
+						KEK.eventElem(sizeSelect, 'change', (e) => {
+							const selectedOption = e.currentTarget.options[e.currentTarget.selectedIndex];
+							const newPrice = selectedOption.getAttribute('data-price');
+							const newDeliveryTime = selectedOption.getAttribute('data-delivery');
+							
+							if (newPrice) {
+								// Preis aktualisieren - unterschiedlich je nach reduziert/nicht reduziert
+								if (isReduced) {
+									// Bei reduzierten Produkten: Preis in div innerhalb des span
+									const priceDiv = priceLabel.querySelector('div');
+									if (priceDiv) {
+										priceDiv.textContent = newPrice;
+									}
+								} else {
+									// Bei normalen Produkten: direkt im span
+									priceLabel.textContent = newPrice;
+								}
+								
+								const newEcoPoints = calculateEcoPoints(newPrice);
+								ecoPointsLabel.textContent = newEcoPoints + ' Eco Points';
+							}
+							
+							if (newDeliveryTime) {
+								deliveryTimeLabel.textContent = newDeliveryTime;
+								// CSS-Klasse basierend auf Lieferzeit aktualisieren
+								deliveryTimeLabel.className = getDeliveryClass(newDeliveryTime);
+							}
+						});
+					}
+
+					// Event Listener für "Hinzufügen"-Button
+					const addToCartBtn = KEK.qs('#kk_add_to_cart_btn', cartWrapper);
+					if (addToCartBtn) {
+						KEK.eventElem(addToCartBtn, 'click', (e) => {
+							e.preventDefault();
+							
+							// Prüfen ob eine Größe ausgewählt wurde
+							const selectedSizeId = sizeSelect.value;
+							if (!selectedSizeId) {
+								alert('Bitte wähle eine Größe aus.');
+								return;
+							}
+							
+							// Zusammengesetzte Produkt-ID erstellen: productID + produktData.id + selectedSizeId
+							console.log('productID: ', productID.slice(0, 5));
+							console.log('produktData.id: ', produktData.id);
+							console.log('selectedSizeId: ', selectedSizeId);
+
+							const fullProductID = productID.slice(0, 5) + produktData.id + selectedSizeId;
+							console.log('Full Product ID:', fullProductID);
+							
+							// Funktion aufrufen
+							addProductToCart(fullProductID);
+						});
+					}
 
 
 
 				}
 			});
+		})
+		.catch(error => console.error('GraphQL Error:', error));
+	};
 
-
-		}, 1000);
-
-
-	})
-	.catch(error => console.error('Error:', error)); 
-
-
-
-	
+	// Initial: Econda-Produkte laden
+	getProductFromEconda().then(econdaProducts => {
+		if (econdaProducts && econdaProducts.length > 0) {
+			initializeCartAddOn(econdaProducts);
+		} else {
+			console.log('Keine Econda-Produkte gefunden');
+		}
+	});
 
 })(new window.KEK());

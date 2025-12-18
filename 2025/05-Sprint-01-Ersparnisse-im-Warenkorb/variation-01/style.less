@@ -2,3 +2,308 @@
 
 
 
+#kk_addon {
+   margin-top: 30px;
+   background-color: #fff;
+   border-radius: 0 8px 8px 0;
+   display: flex;
+   align-items: stretch;
+   > .kk_imageprod {
+      width: 197px;
+      flex: 25% 1;
+      min-height: 290px;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: #E7E2E1;
+   }
+   > [class*="CartEntry_cartEntry__detailsWrapper__details__"] {
+      padding: 27px 38px;
+      position: relative;
+      flex: 50% 1;
+   }
+}
+.kk_leftgreen {
+   flex: 25% 1;
+   // min-width: 234px;
+   padding: 30px 16px;
+   background-color: #314342;
+   color: #ECF2D9;
+   font-size: 14px;
+   line-height: 20px;
+   border-radius: 8px 0 0 8px;
+   b {
+      margin-bottom: 28px;
+      font-size: 26px;
+      line-height: 26.4px;
+      display: block;
+      span {
+         white-space: nowrap;
+      }
+   }
+   p {
+      margin: 0;
+   }
+}
+#kk_add_to_cart_btn {
+   // position: absolute;
+   // right: 38px;
+   // bottom: 27px;
+   position: relative;
+   float: right;
+   width: 152px;
+   height: 44px;
+   background: #F5F5F5;
+   border: 1px solid #959595;
+   border-radius: 3px;
+   padding: 14px 24px;
+   font-weight: 700;
+   cursor: pointer;
+   padding-left: 54px;
+   color: #393939;
+
+   &::before {
+      content: "";
+      background-color: #393939;
+      width: 15px;
+      height: 1px;
+      position: absolute;
+      top: 21px;
+      left: 24px;
+   }
+   &::after {
+      content: "";
+      background-color: #393939;
+      width: 1px;
+      height: 15px;
+      position: absolute;
+      top: 14px;
+      left: 31px;
+   }
+   &:hover {
+      background-color: #959595;
+   }
+}
+#kk_eco_points {
+   width: fit-content;
+}
+.kk_mobileimage {
+   display: none;
+}
+
+
+// @media screen and (min-width: 642px) and (max-width: 1024px) {
+//    #kk_addon {
+//       > [class*="CartEntry_cartEntry__detailsWrapper__details__"] {
+//          display: grid;
+//          grid-template-columns: 85px 1fr 1fr;
+//          grid-template-rows: auto auto auto auto auto;
+//          gap: 8px 12px;
+//          padding: 16px;
+//       }
+//    }
+   
+//    .kk_mobileimage {
+//       display: block;
+//       grid-column: 1;
+//       grid-row: 1 / 6;
+//       max-width: 85px;
+//       align-self: start;
+//    }
+   
+//    [class*="CartEntry_cartEntry__headline__"] {
+//       grid-column: 2 / 4;
+//       grid-row: 1;
+//    }
+   
+//    [class*="CartEntry_cartEntry__detailsWrapper__details__subline__"] {
+//       grid-column: 2 / 4;
+//       grid-row: 2;
+//       display: flex;
+//       gap: 15px;
+//    }
+   
+//    [class*="CartEntry_cartEntry__detailsWrapper__details__availability__"] {
+//       grid-column: 2 / 4;
+//       grid-row: 3;
+//    }
+   
+//    [class*="CartEntry_cartEntry__detailsWrapper__details__box__"] {
+//       grid-column: 2;
+//       grid-row: 4;
+//    }
+   
+//    [class*="CartEntry_cartEntry__detailsWrapper__details__price__"] {
+//       grid-column: 3;
+//       grid-row: 4;
+//       display: flex;
+//       flex-direction: column;
+//       align-items: flex-end;
+//    }
+   
+//    #kk_eco_points {
+//       grid-column: 3;
+//       grid-row: 5;
+//       text-align: right;
+//    }
+   
+//    #kk_add_to_cart_btn {
+//       grid-column: 2 / 4;
+//       grid-row: 6;
+//       float: none;
+//       justify-self: center;
+//       margin-top: 8px;
+//    }
+   
+//    .kk_imageprod {
+//       display: none;
+//    }
+   
+//    .kk_leftgreen {
+//       flex: 100%;
+//       width: 100%;
+//       padding: 16px 24px;
+//       br {
+//          display: none;
+//       }
+//    }
+// }
+ 
+@media screen and (max-width: 641px) {
+
+   // #kk_addon {
+   //    flex-wrap: wrap;
+   //    > [class*="CartEntry_cartEntry__detailsWrapper__details__"] {
+   //       padding: 16px 10px;
+
+   //       display: grid;
+
+
+         
+
+   //    }
+   // }
+   // [class*="CartEntry_cartEntry__detailsWrapper__details__subline__"] {
+   //    display: flex;
+   //    flex-direction: row;
+   //    flex-wrap: nowrap;
+   //    gap: 15px;
+      
+   // }
+   // .kk_leftgreen {
+   //    width: 100%;
+   //    flex: 100%;
+   //    border-radius: 8px 8px 0 0;
+   //    padding: 12px 24px;
+   //    b {
+   //       margin-bottom: 8px;
+   //    }
+   //    br {
+   //       display: none;
+   //    }
+   // }
+   // .kk_imageprod {
+   //    display: none;
+   // }
+   // .kk_mobileimage {
+   //    display: block;
+   //    max-width: 85px;
+   // }
+
+
+
+   #kk_addon {
+      flex-wrap: wrap;
+      border-radius: 0 0 8px 8px;
+      > [class*="CartEntry_cartEntry__detailsWrapper__details__"] {
+         display: grid;
+         grid-template-columns: 85px 1fr 1fr;
+         grid-template-rows: auto auto auto auto auto;
+         gap: 0 12px;
+         padding: 16px;
+      }
+
+      [class*="CartEntry_cartEntry__headline__"] {
+         grid-column: 2 / 4;
+         grid-row: 1;
+         font-size: 16px;
+         line-height: 22.4px;
+      }
+      
+      [class*="CartEntry_cartEntry__detailsWrapper__details__subline__"] {
+         grid-column: 2 / 4;
+         grid-row: 2;
+         display: flex;
+         gap: 15px;
+         & > div {
+            margin-bottom: 4px;
+         }
+      }
+      
+      [class*="CartEntry_cartEntry__detailsWrapper__details__availability__"] {
+         grid-column: 2 / 4;
+         grid-row: 3;
+         margin-bottom: 6px;
+      }
+      
+      [class*="CartEntry_cartEntry__detailsWrapper__details__box__"] {
+         grid-column: 2;
+         grid-row: 4;
+         margin: 0;
+      }
+      
+      [class*="CartEntry_cartEntry__detailsWrapper__details__price__"] {
+         grid-column: 3;
+         grid-row: 4;
+         display: flex;
+         flex-direction: column;
+         align-items: flex-end;
+      }
+   }
+   
+   .kk_mobileimage {
+      display: block;
+      grid-column: 1;
+      grid-row: 1 / 6;
+      max-width: 85px;
+      align-self: start;
+   }
+   
+   #kk_eco_points {
+      grid-column: 3;
+      grid-row: 5;
+      text-align: right;
+   }
+   
+   #kk_add_to_cart_btn {
+      grid-column: 1 / 4;
+      grid-row: 6;
+      float: none;
+      justify-self: center;
+      margin-top: 8px;
+      width: 100%;
+   }
+   
+   .kk_imageprod {
+      display: none;
+   }
+   
+   .kk_leftgreen {
+      flex: 100%;
+      width: 100%;
+      padding: 16px 24px;
+      border-radius: 8px 8px 0 0;
+      br {
+         display: none;
+      }
+      b {
+         margin-bottom: 8px;
+      }
+   }
+
+
+
+
+}
+
+
