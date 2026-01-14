@@ -1,0 +1,64 @@
+# Sprint 10 – „Warenkorb Layer Mobile“
+
+Umsetzung – was fix zu beachten ist (alles verabschiedet)
+
+1) Basis: bestehendes Overlay nutzen (wichtig!)
+	•	Es existiert bereits ein Warenkorb-Overlay / Off-Canvas / Sidebar bei hessnatur.
+	•	Dieses Element wird weiterverwendet, nicht neu gebaut.
+	•	Anpassungen:
+	•	Optische Anpassung (unser Overlay-Design anwenden)
+	•	Funktionale Erweiterung um „Complete the Look“
+	•	Grundverhalten bleibt unverändert:
+	•	Beim Add-to-Cart wird das Overlay kurz angezeigt und verschwindet automatisch wieder.
+	•	Nur bei manuellem Öffnen bleibt das Overlay stehen.
+	•	Manuelles Schließen bleibt wie bisher.
+
+2) Design & CTA
+	•	Overlay-Design kommt von uns (Layout, Farben, Struktur).
+	•	CTA-Button bleibt optisch wie im Original (kein neues Button-Design).
+	•	CTA-Position bleibt im sticky Footer.
+
+3) Overlay-Verhalten (Backdrop + Layer)
+	•	Overlay ist ein echter Layer:
+	•	Backdrop / Abdunkelung der Seite im Hintergrund.
+	•	Weißer Layer fährt über den Content.
+	•	Kein simples „Einblenden ohne Kontext“.
+
+4) Sticky Layout im Overlay
+	•	Header im Overlay sticky (Titel / Warenkorb-Info).
+	•	Footer im Overlay sticky (Summe, CTA).
+	•	Nur der mittlere Bereich scrollt:
+	•	Warenkorb-Produkte
+	•	„Complete the Look“-Module
+
+5) „Complete the Look“ – Datenquelle
+	•	Reco ist manuell gepflegt, PDP-spezifisch, keine Engine.
+	•	Die Inhalte stammen von der jeweiligen Produktdetailseite.
+	•	Benötigte Daten:
+	•	Produktname
+	•	Preis
+	•	Weitere Attribute sind im ersten Step nicht nötig.
+
+6) Merken der Reco-Daten
+	•	„Complete the Look“-Daten werden beim PDP-Besuch gespeichert (z. B. Session Storage).
+	•	Zweck:
+	•	Reco auch im Warenkorb-Overlay verfügbar machen
+	•	keine zusätzlichen Requests auf alte PDPs notwendig
+
+7) Platzierung & Verhalten der Reco im Warenkorb
+	•	„Complete the Look“ wird direkt unter dem jeweiligen Produkt angezeigt
+→ zwischen den Warenkorb-Produkten.
+	•	Reco ist standardmäßig zugeklappt.
+	•	Nutzer kann die Reco manuell aufklappen.
+
+8) Reco-Inhalte & UI-Constraints
+	•	Maximal 3 Reco-Produkte anzeigen.
+	•	Produktname:
+	•	maximal 2 Zeilen
+	•	danach hart abschneiden (truncate).
+	•	Darstellung ist bewusst kompakt (kleiner Layer, kein Vollprodukt-View).
+
+9) Explizit nicht Teil von Sprint 10
+	•	Kein „Hinzufügen“-CTA in der Reco (wegen Varianten/Größen).
+	•	Keine Abkürzungen wie „Direkt zur Kasse“.
+	•	Keine Änderung der Warenkorb-Logik oder Reihenfolge – nur visuell + Reco-Erweiterung.
