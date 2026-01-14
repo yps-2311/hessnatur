@@ -16,7 +16,7 @@
 
 	const getProductFromEconda = (productIDs) => {
 
-		const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&widgetdetails=true&csize=20&start=0' + (productIDs ? '&pid='+productIDs : '');
+		const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&widgetdetails=true&csize=20&start=0' + (productIDs ? '&pid='+productIDs[0].slice(0, 7) : '');
 
 		return fetch(url)
 			.then(res => res.json())
@@ -100,27 +100,43 @@
 				return;
 			}
 
-			// Finde ein Produkt aus Econda dessen Preis kleiner ist als saveMoney
-			const selectedEcondaProduct = econdaProducts.find(product => {
-				const productPrice = priceToFloat(product.price); //parseFloat(product.price.replace(/[^\d,]/g, '').replace(',', '.')); // Hier vielleicht auch priceToFloat
+			// Finde alle Produkte aus Econda deren Preis kleiner ist als saveMoney
+			let matchingProducts = econdaProducts.filter(product => {
+				const productPrice = priceToFloat(product.price);
 				return productPrice < saveMoney;
 			});
 
-			if (!selectedEcondaProduct) {
+			if (matchingProducts.length === 0) {
 				console.log('Kein passendes Econda-Produkt gefunden');
 				return;
 			}
 
-			console.log('Ausgewähltes Econda-Produkt:', selectedEcondaProduct);
-			const productID = selectedEcondaProduct.sku7;
+			// Sortiere nach Preis (günstigste zuerst)
+			matchingProducts.sort((a, b) => {
+				const priceA = priceToFloat(a.price);
+				const priceB = priceToFloat(b.price);
+				return priceA - priceB;
+			});
 
-			// GraphQL Request mit dem ausgewählten Produkt
-			fetchProductDetails(productID, selectedEcondaProduct, saveMoney);
+			console.log('Passende Econda-Produkte:', matchingProducts.length);
+
+			// Starte mit dem ersten Produkt
+			fetchProductDetails(matchingProducts, 0, saveMoney);
 
 		}, 1000);
 	};
 
-	const fetchProductDetails = (productID, econdaProduct, saveMoney) => {
+	const fetchProductDetails = (matchingProducts, currentIndex, saveMoney) => {
+		
+		// Prüfe ob wir noch Produkte zum Testen haben
+		if (currentIndex >= matchingProducts.length) {
+			console.log('Kein Produkt mit mindestens 2 Größen gefunden');
+			return;
+		}
+
+		const econdaProduct = matchingProducts[currentIndex];
+		const productID = econdaProduct.sku7;
+		console.log('Teste Produkt ' + (currentIndex + 1) + '/' + matchingProducts.length + ':', productID);
 		
 		fetch('https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app/api/graphql', {
 			method: 'POST',
@@ -167,6 +183,15 @@
 
 			const produktData = responseData.data.allAvailabilities.styles[0];
 			console.log('produktData: ', produktData);
+
+			// Prüfe ob mindestens 2 Größen verfügbar sind
+			if (!produktData.sizes || produktData.sizes.length < 2) {
+				console.log('Produkt hat nur ' + (produktData.sizes?.length || 0) + ' Größe(n) - versuche nächstes Produkt');
+				fetchProductDetails(matchingProducts, currentIndex + 1, saveMoney);
+				return;
+			}
+
+			console.log('✓ Produkt hat ' + produktData.sizes.length + ' Größen - zeige Produkt an');
 
 			KEK.elem('[data-testid="cartPage"] [class*="cart_cart-page__wrapper__cart-entries-list_"]', (cartWrapper) => {
 				if(cartWrapper){
@@ -320,39 +345,39 @@
 
 
 							// Goal
-							window.datalayer.push({
-								"event": "Ecommerce - add_to_cart",
-								"event_name": "add_to_cart",
-								"ecommerce": {
-									"currency": "EUR",
-									"value": priceToFloat(productPrice),
-									"items": [
-										{
-											"item_id": productID.slice(0, 5) + produktData.id,
-											"item_name": econdaProduct.name,
-											// "affiliation": "hessnatur",
-											"currency": "EUR",
-											"index": 0,
-											// "item_brand": "hessnatur",
-											// "item_category": "damen",
-											// "item_category2": "bekleidung",
-											// "item_category3": "Materialien",
-											"item_variant": fullProductID,
-											"price": priceToFloat(productPrice),
-											"quantity": 1,
-											"item_model": productID.slice(0, 5),
-											"item_size": selectedSizeId,
-											// "item_color": "cognac",
-											// "item_rating": "5",
-											// "item_icons": "Sale::Sustainable",
-											"item_discounted": econdaProduct.reduced1
-											// "item_wtr": "WT-ZGH hw2025 e-shop sale",
-											// "item_sortiment": "SO-001 Damen",
-											// "item_warengruppe": "WG-30 pullover"
-										}
-									]
-								}
-							});
+							// window.datalayer.push({
+							// 	"event": "Ecommerce - add_to_cart",
+							// 	"event_name": "add_to_cart",
+							// 	"ecommerce": {
+							// 		"currency": "EUR",
+							// 		"value": priceToFloat(productPrice),
+							// 		"items": [
+							// 			{
+							// 				"item_id": productID.slice(0, 5) + produktData.id,
+							// 				"item_name": econdaProduct.name,
+							// 				// "affiliation": "hessnatur",
+							// 				"currency": "EUR",
+							// 				"index": 0,
+							// 				// "item_brand": "hessnatur",
+							// 				// "item_category": "damen",
+							// 				// "item_category2": "bekleidung",
+							// 				// "item_category3": "Materialien",
+							// 				"item_variant": fullProductID,
+							// 				"price": priceToFloat(productPrice),
+							// 				"quantity": 1,
+							// 				"item_model": productID.slice(0, 5),
+							// 				"item_size": selectedSizeId,
+							// 				// "item_color": "cognac",
+							// 				// "item_rating": "5",
+							// 				// "item_icons": "Sale::Sustainable",
+							// 				"item_discounted": econdaProduct.reduced1
+							// 				// "item_wtr": "WT-ZGH hw2025 e-shop sale",
+							// 				// "item_sortiment": "SO-001 Damen",
+							// 				// "item_warengruppe": "WG-30 pullover"
+							// 			}
+							// 		]
+							// 	}
+							// });
 
 
 							console.log("aaaaaa", {
