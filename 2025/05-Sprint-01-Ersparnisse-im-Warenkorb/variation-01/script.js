@@ -136,7 +136,7 @@
 
 		const econdaProduct = matchingProducts[currentIndex];
 		const productID = econdaProduct.sku7;
-		console.log('Teste Produkt ' + (currentIndex + 1) + '/' + matchingProducts.length + ':', productID);
+		console.log('->>. Teste Produkt ' + (currentIndex + 1) + '/' + matchingProducts.length + ':', productID);
 		
 		fetch('https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app/api/graphql', {
 			method: 'POST',
@@ -181,11 +181,13 @@
 		.then(responseData => {
 			console.log('GraphQL Response:', responseData);
 
-			const produktData = responseData.data.allAvailabilities.styles[0];
+			const matchingStyle = responseData.data.allAvailabilities.styles.find(style => style.id === productID.slice(5, 7));
+			const produktData = matchingStyle || responseData.data.allAvailabilities.styles[0];
+			
 			console.log('produktData: ', produktData);
 
 			// Prüfe ob mindestens 2 Größen verfügbar sind
-			if (!produktData.sizes || produktData.sizes.length < 2) {
+			if (!produktData.sizes || produktData.sizes.length < 1) { // TODO: Hier kann angepasst werden wieviel Größen es geben muss
 				console.log('Produkt hat nur ' + (produktData.sizes?.length || 0) + ' Größe(n) - versuche nächstes Produkt');
 				fetchProductDetails(matchingProducts, currentIndex + 1, saveMoney);
 				return;
@@ -242,9 +244,12 @@
 								'<div class="PriceLabel_priceRow__priceInfo--cartEntry__Rh3lR"></div>';
 					}
 
+					console.log('econdaProduct: ', econdaProduct);
+					console.log('econdaProduct.iconurl: ', econdaProduct.iconurl);
+					console.log('produktData: ', produktData);
+
 					const productImage = econdaProduct.iconurl.replace("feeds_pic_mid", "webshop_product-small");
 					const ecoPoints = calculateEcoPoints(productPrice);
-					
 					
 					KEK.insert(cartWrapper, 'beforeend', 
 						'<div id="kk_addon" class="CartEntry_cartEntry__detailsWrapper__ufzUb">' +
@@ -324,7 +329,7 @@
 					// Event Listener für "Hinzufügen"-Button
 					const addToCartBtn = KEK.qs('#kk_add_to_cart_btn', cartWrapper);
 					if (addToCartBtn) {
-						console.log('produktData: ', produktData);
+						// console.log('produktData: ', produktData);
 
 
 						KEK.eventElem(addToCartBtn, 'click', (e) => {
