@@ -15,8 +15,7 @@
 	let productsInCart = [];
 
 	const getProductFromEconda = (productIDs) => {
-
-		const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&widgetdetails=true&csize=20&start=0' + (productIDs ? '&pid='+productIDs[0].slice(0, 7) : '');
+		const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&widgetdetails=true&start=0' + (productIDs ? '&pid='+productIDs[0].slice(0, 7) : ''); // &csize=20    +'&pid='+productIDs[1].slice(0, 7)
 
 		return fetch(url)
 			.then(res => res.json())
@@ -42,6 +41,7 @@
 	}
 
 	const addProductToCart = (exactProductID9) => {
+		console.log('exactProductID9: ', exactProductID9);
 		fetch('https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app/api/graphql', {
 			method: 'POST',
 			headers: {
@@ -77,22 +77,31 @@
 		return parseFloat(oldPrice.replace(/[^\d,.]/g, '').replace('.', '').replace(',', '.'))
 	};
 
-	// Haupt-Funktion die alles koordiniert
-	const initializeCartAddOn = (econdaProducts) => {
-		
-		setTimeout(() => {
-			let saveMoney = 0;
+	const getPriceToDisplay = (thisPrice) => {
+		return thisPrice.toFixed(2).replace('.', ',').replace(',00', '');
+	}
 
-			KEK.qsa('[class*="PriceLabel_priceRow__"]').forEach((item) => {
-				const strikePrice = KEK.qs('[class*="PriceLabel_priceRow__priceLabel--striked__"]', item);
-				const reducePrice = KEK.qs('[class*="PriceLabel_priceRow__priceLabel--discounted__"]', item);
-				if(strikePrice && reducePrice) {
-					const strikePriceValue = priceToFloat(strikePrice.textContent); // parseFloat(strikePrice.textContent.replace(/[^\d,.]/g, '').replace('.', '').replace(',', '.'));
-					const reducePriceValue = priceToFloat(reducePrice.textContent); // parseFloat(reducePrice.textContent.replace(/[^\d,.]/g, '').replace('.', '').replace(',', '.'));
-					const savings = strikePriceValue - reducePriceValue;
-					saveMoney += savings;
-				}
-			});
+	const getSavedMoney = () => {
+		let saveMoney = 0;
+		KEK.qsa('[class*="cart_cart-page__wrapper__cart-entries-list__"] > div:first-child [class*="PriceLabel_priceRow__"]').forEach((item) => {
+			const strikePrice = KEK.qs('[class*="PriceLabel_priceRow__priceLabel--striked__"]', item);
+			const reducePrice = KEK.qs('[class*="PriceLabel_priceRow__priceLabel--discounted__"]', item);
+			if(strikePrice && reducePrice) {
+				const strikePriceValue = priceToFloat(strikePrice.textContent); // parseFloat(strikePrice.textContent.replace(/[^\d,.]/g, '').replace('.', '').replace(',', '.'));
+				const reducePriceValue = priceToFloat(reducePrice.textContent); // parseFloat(reducePrice.textContent.replace(/[^\d,.]/g, '').replace('.', '').replace(',', '.'));
+				const savings = strikePriceValue - reducePriceValue;
+				saveMoney += savings;
+			}
+		});
+		return saveMoney;
+	}
+
+	// Haupt-Funktion die alles koordiniert
+	const initializeCartAddOn = (econdaProducts, productsStayInCart) => {
+		
+		setTimeout(() => { // TODO: ist diese nötig?
+			const saveMoney = getSavedMoney();
+			
 			console.log('saveMoney: ', saveMoney);
 
 			// Mindestens 20€ muss die Ersparnis sein
@@ -101,10 +110,21 @@
 			}
 
 			// Finde alle Produkte aus Econda deren Preis kleiner ist als saveMoney
+			// Und es werden nur Produkte die direkt die korrekte Größe haben weitergegeben
 			let matchingProducts = econdaProducts.filter(product => {
 				const productPrice = priceToFloat(product.price);
-				return productPrice < saveMoney;
+				console.log('product.sku.slice(7, 11): ', product.sku.slice(7, 11), productsStayInCart[0].slice(7, 11));
+				return productPrice < saveMoney && product.sku.slice(7, 11) === productsStayInCart[0].slice(7, 11);
 			});
+
+			// Fallback
+			if (matchingProducts.length === 0) {
+				console.log("fallback", matchingProducts);
+				matchingProducts = econdaProducts.filter(product => {
+					const productPrice = priceToFloat(product.price);
+					return productPrice < saveMoney;
+				});
+			}
 
 			if (matchingProducts.length === 0) {
 				console.log('Kein passendes Econda-Produkt gefunden');
@@ -118,21 +138,21 @@
 				return priceA - priceB;
 			});
 
-			console.log('Passende Econda-Produkte:', matchingProducts.length);
+			console.log('Passende Econda-Produkte:', matchingProducts);
 
 			// Starte mit dem ersten Produkt
 			fetchProductDetails(matchingProducts, 0, saveMoney);
 
-		}, 1000);
+		}, 500);
 	};
 
 	const fetchProductDetails = (matchingProducts, currentIndex, saveMoney) => {
 		
 		// Prüfe ob wir noch Produkte zum Testen haben
-		if (currentIndex >= matchingProducts.length) {
-			console.log('Kein Produkt mit mindestens 2 Größen gefunden');
-			return;
-		}
+		// if (currentIndex >= matchingProducts.length) {
+		// 	console.log('Kein Produkt mit mindestens 2 Größen gefunden');
+		// 	return;
+		// }
 
 		const econdaProduct = matchingProducts[currentIndex];
 		const productID = econdaProduct.sku7;
@@ -150,32 +170,7 @@
 					lang: 'de',
 					country: 'de'
 				},
-			query: `query getAllAvailabilities($code: String!, $lang: String!, $country: String!) {
-				allAvailabilities(code: $code, lang: $lang, country: $country) {
-					id
-					styles {
-						id
-						name
-						imgUrl
-						sizes {
-							id
-							name
-							availabilityIndex
-							deliveryTime
-							price {
-								formattedValue
-								currencyIso
-								netValue
-								__typename
-							}
-							__typename
-						}
-						__typename
-					}
-					__typename
-				}
-			}`
-			})
+			query: `query getAllAvailabilities($code: String!, $lang: String!, $country: String!) { allAvailabilities(code: $code, lang: $lang, country: $country) {id styles { id name imgUrl sizes { id name availabilityIndex deliveryTime price { formattedValue currencyIso netValue __typename } __typename } __typename } __typename } }`})
 		})
 		.then(response => response.json())
 		.then(responseData => {
@@ -186,17 +181,8 @@
 			
 			console.log('produktData: ', produktData);
 
-			// Prüfe ob mindestens 2 Größen verfügbar sind
-			if (!produktData.sizes || produktData.sizes.length < 1) { // TODO: Hier kann angepasst werden wieviel Größen es geben muss
-				console.log('Produkt hat nur ' + (produktData.sizes?.length || 0) + ' Größe(n) - versuche nächstes Produkt');
-				fetchProductDetails(matchingProducts, currentIndex + 1, saveMoney);
-				return;
-			}
-
-			console.log('✓ Produkt hat ' + produktData.sizes.length + ' Größen - zeige Produkt an');
-
 			KEK.elem('[data-testid="cartPage"] [class*="cart_cart-page__wrapper__cart-entries-list_"]', (cartWrapper) => {
-				if(cartWrapper){
+				if(cartWrapper && !KEK.qs('#kk_addon')){
 					console.log('cartWrapper: ', cartWrapper);
 					cartWrapper = cartWrapper[0];
 					
@@ -216,7 +202,7 @@
 					
 					// Größen-Dropdown dynamisch erstellen
 					const sizeOptionsHTML = produktData.sizes.map(size => {
-						return '<option value="'+size.id+'" data-price="'+size.price.formattedValue+'" data-delivery="'+size.deliveryTime+'">'+size.name+'</option>';
+						return '<option '+(KEK.qs('#cart-entry-size-0')?.value === size.id ? 'selected' : '')+' value="'+size.id+'" data-price="'+size.price.formattedValue+'" data-delivery="'+size.deliveryTime+'">'+size.name+'</option>';
 					}).join('');
 					
 					// Preis-HTML basierend auf reduziert/nicht reduziert
@@ -253,7 +239,7 @@
 					
 					KEK.insert(cartWrapper, 'beforeend', 
 						'<div id="kk_addon" class="CartEntry_cartEntry__detailsWrapper__ufzUb">' +
-							'<div class="kk_leftgreen"><b>Glückwunsch! Du sparst <span>' + saveMoney.toFixed(2).replace('.', ',').replace(',00', '') + ' €</span></b><p>Nutze deine Ersparnis:<br>Füge den Artikel hinzu und freu dich über ein schönes Extra.</p></div>' +
+							'<div class="kk_leftgreen"><b>Glückwunsch! Du sparst <span>' + getPriceToDisplay(saveMoney) + ' €</span></b><p>Nutze deine Ersparnis:<br>Füge den Artikel hinzu und freu dich über ein schönes Extra.</p></div>' +
 							'<div class="kk_imageprod" style="background-image:url(' + productImage + ')">' +
 							'</div>' +
 							'<div class="CartEntry_cartEntry__detailsWrapper__details__IFwWE">' +
@@ -423,12 +409,38 @@
 							// Funktion aufrufen
 							addProductToCart(fullProductID);
 						});
-
-
-						
-
-
 					}
+
+
+
+					// Callback function to execute when mutations are observed
+					const callback = (mutationList) => {
+						for (const mutation of mutationList) {
+							// if (mutation.type === "childList") {
+							// 	console.log("A child node has been added or removed.");
+							// } else if (mutation.type === "attributes") {
+							// 	console.log(`The ${mutation.attributeName} attribute was modified.`);
+							// }
+							// mutation.type
+							if (mutation.type === "attributes"){
+
+								KEK.qs('.kk_leftgreen span', cartWrapper).innerHTML = getPriceToDisplay(getSavedMoney()) + ' €';
+							}
+						}
+					};
+
+					// Create an observer instance linked to the callback function
+					const observer = new MutationObserver(callback);
+
+					// Start observing the target node for configured mutations
+					observer.observe(KEK.qs('div', cartWrapper), { attributes: true, childList: true, subtree: true });
+
+					// Later, you can stop observing
+					// observer.disconnect();
+
+
+
+
 				}
 			});
 		})
@@ -457,7 +469,7 @@
 			// Initial: Econda-Produkte laden
 			getProductFromEconda(productsInCart).then(econdaProducts => {
 				if (econdaProducts && econdaProducts.length > 0) {
-					initializeCartAddOn(econdaProducts);
+					initializeCartAddOn(econdaProducts, productsInCart);
 				} else {
 					console.log('Keine Econda-Produkte gefunden');
 				}
@@ -467,9 +479,5 @@
 
 })(new window.KEK());
 
-// TODO: 
-// initiale größe soll lieferbar sein - OK
-// &pid= array produktIDs übergeben - OK
-// Testausspielen erst ab 20€ ersparnis - OK
-// Nach dem hinzufügen des Reco Produktes -> wird es nicht mehr angezeigt bis es wieder aus dem WK entfernt wurde - OK
+// TODO:
 // AddtoCart Goal einbauen

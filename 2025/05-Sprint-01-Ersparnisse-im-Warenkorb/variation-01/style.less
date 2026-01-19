@@ -81,7 +81,13 @@
       left: 31px;
    }
    &:hover {
-      background-color: #959595;
+      background-color: #45ad2a;
+      border-color: #45ad2a;
+      color: #fff;
+      &::before,
+      &::after {
+         background-color: #fff;
+      }
    }
    & + .kk_eco_points {
       display: block;
@@ -221,6 +227,7 @@
       }
       b {
          margin-bottom: 8px;
+         font-size: 22px;
       }
    }
 
