@@ -27,7 +27,7 @@
      * @param { function } callback - Wird bei jedem Erscheinen des Elements ausgeführt
      * @return { MutationObserver } - Observer-Instanz (zum Disconnecten)
      */
-    KEK.prototype.observe = function(selector, callback) {
+    KEK.prototype.observeElement = function(selector, callback) {
         const _self = this;
         const observer = new MutationObserver(function() {
             const el = _self.qs(selector);

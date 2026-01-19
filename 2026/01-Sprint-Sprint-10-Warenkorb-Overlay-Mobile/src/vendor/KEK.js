@@ -260,7 +260,6 @@
      * @param { string | boolean } overwriteOrRemove - specify the new css-class which should replace the old one, or handover a true if the old one hast to be removed
      */
 
-    /*
 		window.KEK.prototype.defineClass = function(element, selector, overwriteOrRemove) {
 			const c_list = element && element.classList;
 
@@ -281,7 +280,6 @@
 
             return c_list;
 		};
-    //*/
 
     /**
      * @function eventElem

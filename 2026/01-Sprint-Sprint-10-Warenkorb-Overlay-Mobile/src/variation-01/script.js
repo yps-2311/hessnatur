@@ -9,7 +9,7 @@
  * @name Variation 01
  * @description Sprint 10 – Warenkorb Layer Mobile
  */
-(function(KEK) {
+(function(KEK, win) {
     "use strict";
 
     // =========================================================================
@@ -74,8 +74,8 @@
 
     // DataLayer Event: Collapsible geöffnet (view_promotion)
     function trackCollapsibleExpand(parentProductName, entryIndex) {
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
+        win.dataLayer = win.dataLayer || [];
+        win.dataLayer.push({
             event: 'Ecommerce - view_promotion',
             event_name: 'view_promotion',
             ecommerce: {
@@ -88,8 +88,8 @@
 
     // DataLayer Event: Reco-Produkt angeklickt (select_promotion)
     function trackRecoClick(parentProductName, recoIndex) {
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
+        win.dataLayer = win.dataLayer || [];
+        win.dataLayer.push({
             event: 'Ecommerce - select_promotion',
             event_name: 'select_promotion',
             ecommerce: {
@@ -207,11 +207,11 @@
     }
 
     // =========================================================================
-    // ADD-TO-CART LISTENER (PDP) - via KEK.observe für SPA-Kompatibilität
+    // ADD-TO-CART LISTENER (PDP) - via KEK.observeElement für SPA-Kompatibilität
     // =========================================================================
 
     // Wenn Add-to-Cart Button erscheint/sich ändert (z.B. nach Größenwahl), Listener initialisieren
-    KEK.observe('[data-testid="add-to-cart-button"]', function(btn) {
+    KEK.observeElement('[data-testid="add-to-cart-button"]', function(btn) {
         // Prüfen ob bereits Listener (via data-Attribut)
         if (btn.dataset.kkListener) return;
         btn.dataset.kkListener = 'true';
@@ -264,7 +264,7 @@
         removeAllCollapsibles();
 
         const entries = KEK.qsa('[class*="miniCart__entryWrapper"] > [class*="miniCartEntry__"]');
-        if (!entries) return;
+        if (!entries || entries.length === 0) return;
 
         entries.forEach(function(entry, entryIndex) {
             // Produktname aus Entry-Title holen
@@ -288,32 +288,22 @@
                 });
             }
 
-            // Click-Handler für Reco-Produkte (Tracking)
-            const recoLinks = KEK.qsa('.kk-reco__item', collapsible);
-            if (recoLinks) {
-                recoLinks.forEach(function(link, recoIndex) {
-                    link.addEventListener('click', function() {
-                        trackRecoClick(productName, recoIndex);
-                    });
+            // Event Delegation für Reco-Produkte (Tracking)
+            const recoContainer = KEK.qs('.kk-reco', collapsible);
+            if (recoContainer) {
+                recoContainer.addEventListener('click', function(e) {
+                    const link = e.target.closest('.kk-reco__item');
+                    if (!link) return;
+                    const recoItems = KEK.qsa('.kk-reco__item', recoContainer);
+                    const recoIndex = Array.prototype.indexOf.call(recoItems, link);
+                    trackRecoClick(productName, recoIndex);
                 });
             }
         });
     }
 
-    // Helper: Remove-Button Listener hinzufügen (nur noch für Headline-Update, Collapsibles werden via Observer gehandelt)
-    function initRemoveListeners() {
-        const removeBtns = KEK.qsa('[data-testid="mincart-entry-remove-button"]');
-        if (!removeBtns) return;
-
-        removeBtns.forEach(function(btn) {
-            if (btn.dataset.kkListener) return;
-            btn.dataset.kkListener = 'true';
-            // Kein Click-Handler mehr nötig - MutationObserver übernimmt
-        });
-    }
-
     // 1. Headline anpassen
-    KEK.observe('[data-testid="minicart"]', function(minicart) {
+    KEK.observeElement('[data-testid="minicart"]', function(minicart) {
         // Auf Headline warten
         KEK.elem('[class*="miniCart__headline"]', function(headlines) {
             if (!headlines) return;
@@ -345,7 +335,6 @@
 
             // Initial: Collapsibles aufbauen
             initCollapsibles();
-            initRemoveListeners();
 
             // Aktuelle Entry-Anzahl tracken
             let lastEntryCount = KEK.qsa('[class*="miniCart__entryWrapper"] > [class*="miniCartEntry__"]')?.length || 0;
@@ -358,7 +347,6 @@
                 if (currentEntryCount !== lastEntryCount) {
                     lastEntryCount = currentEntryCount;
                     initCollapsibles();
-                    initRemoveListeners();
                     updateHeadlineCount();
                 }
             });
@@ -367,4 +355,4 @@
         });
     });
 
-})(new window.KEK());
+})(new window.KEK(), window);
