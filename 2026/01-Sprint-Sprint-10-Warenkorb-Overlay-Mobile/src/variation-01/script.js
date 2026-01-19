@@ -69,6 +69,60 @@
     }
 
     // =========================================================================
+    // TRACKING HELPERS
+    // =========================================================================
+
+    // Preis-String in Float umwandeln
+    function parsePrice(priceString) {
+        if (!priceString) return null;
+        const cleaned = priceString.replace(/[^\d,\.]/g, '').replace(',', '.');
+        const num = parseFloat(cleaned);
+        return isNaN(num) ? null : num;
+    }
+
+    // DataLayer Event: Collapsible geöffnet
+    function trackCollapsibleExpand(parentProductName) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: 'kk_complete_look_expand',
+            item_list_name: 'Complete the Look',
+            interaction_type: 'expand',
+            parent_product: parentProductName
+        });
+    }
+
+    // DataLayer Event: Reco-Produkt angeklickt
+    function trackRecoClick(product, index, parentProductName) {
+        window.dataLayer = window.dataLayer || [];
+        const priceFloat = parsePrice(product.price);
+
+        const item = {
+            item_name: product.name || '',
+            index: index,
+            currency: 'EUR'
+        };
+
+        if (priceFloat !== null) {
+            item.price = priceFloat;
+        }
+
+        const eventData = {
+            event: 'kk_complete_look_click',
+            item_list_name: 'Complete the Look',
+            interaction_type: 'click',
+            parent_product: parentProductName,
+            items: [item]
+        };
+
+        if (priceFloat !== null) {
+            eventData.value = priceFloat;
+            eventData.currency = 'EUR';
+        }
+
+        window.dataLayer.push(eventData);
+    }
+
+    // =========================================================================
     // RECO EXTRACTION (PDP)
     // =========================================================================
 
@@ -154,7 +208,7 @@
     // COLLAPSIBLE TOGGLE
     // =========================================================================
 
-    function toggleCollapsible(header) {
+    function toggleCollapsible(header, parentProductName) {
         const collapsible = header.parentElement;
         const isOpen = KEK.qs('.kk-collapsible--open') === collapsible;
         const textEl = KEK.qs('.kk-collapsible__text', header);
@@ -167,6 +221,10 @@
             KEK.defineClass(collapsible, 'kk-collapsible--open');
             header.setAttribute('aria-expanded', 'true');
             if (textEl) textEl.textContent = 'Den ganzen Look einklappen';
+            // Tracking: Collapsible geöffnet
+            if (parentProductName) {
+                trackCollapsibleExpand(parentProductName);
+            }
         }
     }
 
@@ -248,7 +306,17 @@
             const header = KEK.qs('.kk-collapsible__header', collapsible);
             if (header) {
                 header.addEventListener('click', function() {
-                    toggleCollapsible(header);
+                    toggleCollapsible(header, productName);
+                });
+            }
+
+            // Click-Handler für Reco-Produkte (Tracking)
+            const recoLinks = KEK.qsa('.kk-reco__item', collapsible);
+            if (recoLinks) {
+                recoLinks.forEach(function(link, index) {
+                    link.addEventListener('click', function() {
+                        trackRecoClick(recoProducts[index], index, productName);
+                    });
                 });
             }
         });
