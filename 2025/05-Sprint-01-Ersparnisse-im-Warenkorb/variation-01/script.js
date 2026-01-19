@@ -14,8 +14,10 @@
 
 	let productsInCart = [];
 
+	// TODO: Entweder Econda anpassen dass es bei Produkten verschiendener Kategorien arbeiten kann, oder halt nur ein Produkt übergeben was die höchste relevanz hat
+
 	const getProductFromEconda = (productIDs) => {
-		const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&widgetdetails=true&start=0' + (productIDs ? '&pid='+productIDs[0].slice(0, 7) : ''); // &csize=20    +'&pid='+productIDs[1].slice(0, 7)
+		const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&widgetdetails=true&start=0' + (productIDs ? '&pid='+productIDs[0].slice(0, 7) +'&pid='+productIDs[1].slice(0, 7) : ''); // &csize=20    +'&pid='+productIDs[1].slice(0, 7)
 
 		return fetch(url)
 			.then(res => res.json())
@@ -113,8 +115,16 @@
 			// Und es werden nur Produkte die direkt die korrekte Größe haben weitergegeben
 			let matchingProducts = econdaProducts.filter(product => {
 				const productPrice = priceToFloat(product.price);
-				console.log('product.sku.slice(7, 11): ', product.sku.slice(7, 11), productsStayInCart[0].slice(7, 11));
-				return productPrice < saveMoney && product.sku.slice(7, 11) === productsStayInCart[0].slice(7, 11);
+				// console.log('product.sku.slice(7, 11): ', product.sku.slice(7, 11), productsStayInCart[0].slice(7, 11));
+				// return productPrice < saveMoney && product.sku.slice(7, 11) === productsStayInCart[0].slice(7, 11);
+				let foundMatch = false;
+				for (let j = 0; j < productsStayInCart.length && !foundMatch; j++) {
+					console.log('product.sku.slice(7, 11): ', product.sku.slice(7, 11), productsStayInCart[j].slice(7, 11));
+					if (product.sku.slice(7, 11) === productsStayInCart[j].slice(7, 11)) {
+						foundMatch = true;
+					}
+				}
+				return productPrice < saveMoney && foundMatch;
 			});
 
 			// Fallback
