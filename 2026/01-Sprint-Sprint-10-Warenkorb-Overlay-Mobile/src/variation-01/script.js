@@ -72,54 +72,32 @@
     // TRACKING HELPERS
     // =========================================================================
 
-    // Preis-String in Float umwandeln
-    function parsePrice(priceString) {
-        if (!priceString) return null;
-        const cleaned = priceString.replace(/[^\d,\.]/g, '').replace(',', '.');
-        const num = parseFloat(cleaned);
-        return isNaN(num) ? null : num;
-    }
-
-    // DataLayer Event: Collapsible geöffnet
-    function trackCollapsibleExpand(parentProductName) {
+    // DataLayer Event: Collapsible geöffnet (view_promotion)
+    function trackCollapsibleExpand(parentProductName, entryIndex) {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
-            event: 'kk_complete_look_expand',
-            item_list_name: 'Complete the Look',
-            interaction_type: 'expand',
-            parent_product: parentProductName
+            event: 'Ecommerce - view_promotion',
+            event_name: 'view_promotion',
+            ecommerce: {
+                creative_name: 'kk_shop_the_look_' + parentProductName,
+                creative_slot: 'add_to_cart_layer_' + entryIndex,
+                promotion_name: 'kk_shop_the_look_add_to_cart_layer'
+            }
         });
     }
 
-    // DataLayer Event: Reco-Produkt angeklickt
-    function trackRecoClick(product, index, parentProductName) {
+    // DataLayer Event: Reco-Produkt angeklickt (select_promotion)
+    function trackRecoClick(parentProductName, recoIndex) {
         window.dataLayer = window.dataLayer || [];
-        const priceFloat = parsePrice(product.price);
-
-        const item = {
-            item_name: product.name || '',
-            index: index,
-            currency: 'EUR'
-        };
-
-        if (priceFloat !== null) {
-            item.price = priceFloat;
-        }
-
-        const eventData = {
-            event: 'kk_complete_look_click',
-            item_list_name: 'Complete the Look',
-            interaction_type: 'click',
-            parent_product: parentProductName,
-            items: [item]
-        };
-
-        if (priceFloat !== null) {
-            eventData.value = priceFloat;
-            eventData.currency = 'EUR';
-        }
-
-        window.dataLayer.push(eventData);
+        window.dataLayer.push({
+            event: 'Ecommerce - select_promotion',
+            event_name: 'select_promotion',
+            ecommerce: {
+                creative_name: 'kk_shop_the_look_' + parentProductName,
+                creative_slot: 'add_to_cart_layer_reco_' + recoIndex,
+                promotion_name: 'kk_shop_the_look_add_to_cart_layer'
+            }
+        });
     }
 
     // =========================================================================
@@ -208,7 +186,7 @@
     // COLLAPSIBLE TOGGLE
     // =========================================================================
 
-    function toggleCollapsible(header, parentProductName) {
+    function toggleCollapsible(header, parentProductName, entryIndex) {
         const collapsible = header.parentElement;
         const isOpen = KEK.qs('.kk-collapsible--open') === collapsible;
         const textEl = KEK.qs('.kk-collapsible__text', header);
@@ -223,7 +201,7 @@
             if (textEl) textEl.textContent = 'Den ganzen Look einklappen';
             // Tracking: Collapsible geöffnet
             if (parentProductName) {
-                trackCollapsibleExpand(parentProductName);
+                trackCollapsibleExpand(parentProductName, entryIndex);
             }
         }
     }
@@ -288,7 +266,7 @@
         const entries = KEK.qsa('[class*="miniCart__entryWrapper"] > [class*="miniCartEntry__"]');
         if (!entries) return;
 
-        entries.forEach(function(entry) {
+        entries.forEach(function(entry, entryIndex) {
             // Produktname aus Entry-Title holen
             const titleEl = KEK.qs('[class*="miniCartEntry__title"] p', entry);
             if (!titleEl) return;
@@ -306,16 +284,16 @@
             const header = KEK.qs('.kk-collapsible__header', collapsible);
             if (header) {
                 header.addEventListener('click', function() {
-                    toggleCollapsible(header, productName);
+                    toggleCollapsible(header, productName, entryIndex);
                 });
             }
 
             // Click-Handler für Reco-Produkte (Tracking)
             const recoLinks = KEK.qsa('.kk-reco__item', collapsible);
             if (recoLinks) {
-                recoLinks.forEach(function(link, index) {
+                recoLinks.forEach(function(link, recoIndex) {
                     link.addEventListener('click', function() {
-                        trackRecoClick(recoProducts[index], index, productName);
+                        trackRecoClick(productName, recoIndex);
                     });
                 });
             }
