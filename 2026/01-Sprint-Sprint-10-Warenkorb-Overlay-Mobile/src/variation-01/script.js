@@ -147,7 +147,7 @@
     function getNudgeHtml() {
         return '<div class="kk-nudge">' +
             '<span class="kk-nudge__icon">' + checkSvg + '</span>' +
-            '<span class="kk-nudge__text"><b>Gute Wahl</b>, der Artikel liegt in Ihrem Warenkorb.</span>' +
+            '<span class="kk-nudge__text"><b>Gute Wahl</b>, der Artikel liegt in deinem Warenkorb.</span>' +
         '</div>';
     }
 
