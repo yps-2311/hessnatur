@@ -14,10 +14,10 @@
 
 	let productsInCart = [];
 
-	// TODO: Entweder Econda anpassen dass es bei Produkten verschiendener Kategorien arbeiten kann, oder halt nur ein Produkt übergeben was die höchste relevanz hat
-
 	const getProductFromEconda = (productIDs) => {
-		const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&widgetdetails=true&start=0' + (productIDs ? '&pid='+productIDs[0].slice(0, 7) +'&pid='+productIDs[1].slice(0, 7) : ''); // &csize=20    +'&pid='+productIDs[1].slice(0, 7)
+
+		const pidParams = productIDs.map(id => `&pid=${id.slice(0, 7)}`).join('');
+    	const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&widgetdetails=true&start=0' + (productIDs ? pidParams : ''); // &csize=20
 
 		return fetch(url)
 			.then(res => res.json())
@@ -127,12 +127,19 @@
 				return productPrice < saveMoney && foundMatch;
 			});
 
-			// Fallback
+			// Fallback 1 -> größe ONE ist ein Produkt dass es sowieso nur in einer Größe gibt
 			if (matchingProducts.length === 0) {
-				console.log("fallback", matchingProducts);
+				console.log("fallback1 ", matchingProducts);
 				matchingProducts = econdaProducts.filter(product => {
-					const productPrice = priceToFloat(product.price);
-					return productPrice < saveMoney;
+					return priceToFloat(product.price) < saveMoney && product.sku.slice(7, 11) === "ONE";
+				});
+			}
+
+			// Fallback 2 -> Hauptsache das Produkt ist günstiger als die Ersparniss im Warenkorb
+			if (matchingProducts.length === 0) {
+				console.log("fallback2 ", matchingProducts);
+				matchingProducts = econdaProducts.filter(product => {
+					return priceToFloat(product.price) < saveMoney;
 				});
 			}
 
