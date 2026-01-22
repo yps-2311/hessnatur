@@ -85,9 +85,12 @@
 
 	const getSavedMoney = () => {
 		let saveMoney = 0;
-		KEK.qsa('[class*="cart_cart-page__wrapper__cart-entries-list__"] > div:first-child [class*="PriceLabel_priceRow__"]').forEach((item) => {
+		KEK.qsa('[class*="cart_cart-page__wrapper__cart-entries-list__"] > div:first-child [class*="CartEntry_cartEntry__detailsWrapper__details__price__"]').forEach((item) => {
+			console.log('item: ', item);
 			const strikePrice = KEK.qs('[class*="PriceLabel_priceRow__priceLabel--striked__"]', item);
+			console.log('strikePrice: ', strikePrice);
 			const reducePrice = KEK.qs('[class*="PriceLabel_priceRow__priceLabel--discounted__"]', item);
+			console.log('reducePrice: ', reducePrice);
 			if(strikePrice && reducePrice) {
 				const strikePriceValue = priceToFloat(strikePrice.textContent); // parseFloat(strikePrice.textContent.replace(/[^\d,.]/g, '').replace('.', '').replace(',', '.'));
 				const reducePriceValue = priceToFloat(reducePrice.textContent); // parseFloat(reducePrice.textContent.replace(/[^\d,.]/g, '').replace('.', '').replace(',', '.'));
@@ -101,66 +104,78 @@
 	// Haupt-Funktion die alles koordiniert
 	const initializeCartAddOn = (econdaProducts, productsStayInCart) => {
 		
-		setTimeout(() => { // TODO: ist diese nötig?
-			const saveMoney = getSavedMoney();
-			
-			console.log('saveMoney: ', saveMoney);
+		// setTimeout(() => { // TODO: ist diese nötig?
 
-			// Mindestens 20€ muss die Ersparnis sein
-			if(saveMoney < 20) {
-				return;
-			}
+			KEK.elem(() => {
+				const saveMoney = getSavedMoney();
+				console.log('aaaaa: ', saveMoney);
+				return saveMoney >= 20 && saveMoney;
+			}, (saveMoney) => {
+				if(saveMoney){
 
-			// Finde alle Produkte aus Econda deren Preis kleiner ist als saveMoney
-			// Und es werden nur Produkte die direkt die korrekte Größe haben weitergegeben
-			let matchingProducts = econdaProducts.filter(product => {
-				const productPrice = priceToFloat(product.price);
-				// console.log('product.sku.slice(7, 11): ', product.sku.slice(7, 11), productsStayInCart[0].slice(7, 11));
-				// return productPrice < saveMoney && product.sku.slice(7, 11) === productsStayInCart[0].slice(7, 11);
-				let foundMatch = false;
-				for (let j = 0; j < productsStayInCart.length && !foundMatch; j++) {
-					console.log('product.sku.slice(7, 11): ', product.sku.slice(7, 11), productsStayInCart[j].slice(7, 11));
-					if (product.sku.slice(7, 11) === productsStayInCart[j].slice(7, 11)) {
-						foundMatch = true;
+					console.log('saveMoney>: ', saveMoney);
+
+					// Mindestens 20€ muss die Ersparnis sein
+					// if(saveMoney < 20) {
+					// 	return;
+					// }
+
+					// Finde alle Produkte aus Econda deren Preis kleiner ist als saveMoney
+					// Und es werden nur Produkte die direkt die korrekte Größe haben weitergegeben
+					let matchingProducts = econdaProducts.filter(product => {
+						const productPrice = priceToFloat(product.price);
+						// console.log('product.sku.slice(7, 11): ', product.sku.slice(7, 11), productsStayInCart[0].slice(7, 11));
+						// return productPrice < saveMoney && product.sku.slice(7, 11) === productsStayInCart[0].slice(7, 11);
+						let foundMatch = false;
+						for (let j = 0; j < productsStayInCart.length && !foundMatch; j++) {
+							console.log('product.sku.slice(7, 11): ', product.sku.slice(7, 11), productsStayInCart[j].slice(7, 11));
+							if (product.sku.slice(7, 11) === productsStayInCart[j].slice(7, 11)) {
+								foundMatch = true;
+							}
+						}
+						return productPrice < saveMoney && foundMatch;
+					});
+
+					// Fallback 1 -> größe ONE ist ein Produkt dass es sowieso nur in einer Größe gibt
+					if (matchingProducts.length === 0) {
+						console.log("fallback1 ", matchingProducts);
+						matchingProducts = econdaProducts.filter(product => {
+							return priceToFloat(product.price) < saveMoney && product.sku.slice(7, 11) === "ONE";
+						});
 					}
+
+					// Fallback 2 -> Hauptsache das Produkt ist günstiger als die Ersparniss im Warenkorb
+					if (matchingProducts.length === 0) {
+						console.log("fallback2 ", matchingProducts);
+						matchingProducts = econdaProducts.filter(product => {
+							return priceToFloat(product.price) < saveMoney;
+						});
+					}
+
+					if (matchingProducts.length === 0) {
+						console.log('Kein passendes Econda-Produkt gefunden');
+						return;
+					}
+
+					// Sortiere nach Preis (günstigste zuerst)
+					matchingProducts.sort((a, b) => {
+						const priceA = priceToFloat(a.price);
+						const priceB = priceToFloat(b.price);
+						return priceA - priceB;
+					});
+
+					console.log('Passende Econda-Produkte:', matchingProducts);
+
+					// Starte mit dem ersten Produkt
+					fetchProductDetails(matchingProducts, 0, saveMoney);
+
+
 				}
-				return productPrice < saveMoney && foundMatch;
 			});
+			
+			
 
-			// Fallback 1 -> größe ONE ist ein Produkt dass es sowieso nur in einer Größe gibt
-			if (matchingProducts.length === 0) {
-				console.log("fallback1 ", matchingProducts);
-				matchingProducts = econdaProducts.filter(product => {
-					return priceToFloat(product.price) < saveMoney && product.sku.slice(7, 11) === "ONE";
-				});
-			}
-
-			// Fallback 2 -> Hauptsache das Produkt ist günstiger als die Ersparniss im Warenkorb
-			if (matchingProducts.length === 0) {
-				console.log("fallback2 ", matchingProducts);
-				matchingProducts = econdaProducts.filter(product => {
-					return priceToFloat(product.price) < saveMoney;
-				});
-			}
-
-			if (matchingProducts.length === 0) {
-				console.log('Kein passendes Econda-Produkt gefunden');
-				return;
-			}
-
-			// Sortiere nach Preis (günstigste zuerst)
-			matchingProducts.sort((a, b) => {
-				const priceA = priceToFloat(a.price);
-				const priceB = priceToFloat(b.price);
-				return priceA - priceB;
-			});
-
-			console.log('Passende Econda-Produkte:', matchingProducts);
-
-			// Starte mit dem ersten Produkt
-			fetchProductDetails(matchingProducts, 0, saveMoney);
-
-		}, 500);
+		// }, 500);
 	};
 
 	const fetchProductDetails = (matchingProducts, currentIndex, saveMoney) => {
