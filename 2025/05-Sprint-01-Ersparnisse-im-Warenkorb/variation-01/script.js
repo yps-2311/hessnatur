@@ -254,12 +254,12 @@
 								'<span aria-hidden="true" data-testid="price-label-striked" id="kk_product_oldprice">' + econdaProduct.oldprice + '</span>' +
 							'</div>' +
 							'<div class="PriceLabel_priceRow__priceInfo--cartEntry__Rh3lR"></div>';
-						} else {
-							priceHTML = 
-								'<div class="PriceLabel_priceRow__priceLabel--cartEntry__kJU_x">' +
-									'<span aria-hidden="true" data-testid="price-label" id="kk_product_price">' + productPrice + '</span>' +
-								'</div>' +
-								'<div class="PriceLabel_priceRow__priceInfo--cartEntry__Rh3lR"></div>';
+					} else {
+						priceHTML = 
+							'<div class="PriceLabel_priceRow__priceLabel--cartEntry__kJU_x">' +
+								'<span aria-hidden="true" data-testid="price-label" id="kk_product_price">' + productPrice + '</span>' +
+							'</div>' +
+							'<div class="PriceLabel_priceRow__priceInfo--cartEntry__Rh3lR"></div>';
 					}
 
 					console.log('econdaProduct: ', econdaProduct);
@@ -368,39 +368,39 @@
 
 
 							// Goal
-							// window.datalayer.push({
-							// 	"event": "Ecommerce - add_to_cart",
-							// 	"event_name": "add_to_cart",
-							// 	"ecommerce": {
-							// 		"currency": "EUR",
-							// 		"value": priceToFloat(productPrice),
-							// 		"items": [
-							// 			{
-							// 				"item_id": productID.slice(0, 5) + produktData.id,
-							// 				"item_name": econdaProduct.name,
-							// 				// "affiliation": "hessnatur",
-							// 				"currency": "EUR",
-							// 				"index": 0,
-							// 				// "item_brand": "hessnatur",
-							// 				// "item_category": "damen",
-							// 				// "item_category2": "bekleidung",
-							// 				// "item_category3": "Materialien",
-							// 				"item_variant": fullProductID,
-							// 				"price": priceToFloat(productPrice),
-							// 				"quantity": 1,
-							// 				"item_model": productID.slice(0, 5),
-							// 				"item_size": selectedSizeId,
-							// 				// "item_color": "cognac",
-							// 				// "item_rating": "5",
-							// 				// "item_icons": "Sale::Sustainable",
-							// 				"item_discounted": econdaProduct.reduced1
-							// 				// "item_wtr": "WT-ZGH hw2025 e-shop sale",
-							// 				// "item_sortiment": "SO-001 Damen",
-							// 				// "item_warengruppe": "WG-30 pullover"
-							// 			}
-							// 		]
-							// 	}
-							// });
+							window.datalayer.push({
+								"event": "Ecommerce - add_to_cart",
+								"event_name": "add_to_cart",
+								"ecommerce": {
+									"currency": "EUR",
+									"value": priceToFloat(productPrice),
+									"items": [
+										{
+											"item_id": productID.slice(0, 5) + produktData.id,
+											"item_name": econdaProduct.name,
+											// "affiliation": "hessnatur",
+											"currency": "EUR",
+											"index": 0,
+											// "item_brand": "hessnatur",
+											// "item_category": "damen",
+											// "item_category2": "bekleidung",
+											// "item_category3": "Materialien",
+											"item_variant": fullProductID,
+											"price": priceToFloat(productPrice),
+											"quantity": 1,
+											"item_model": productID.slice(0, 5),
+											"item_size": selectedSizeId,
+											// "item_color": "cognac",
+											// "item_rating": "5",
+											// "item_icons": "Sale::Sustainable",
+											"item_discounted": econdaProduct.reduced1
+											// "item_wtr": "WT-ZGH hw2025 e-shop sale",
+											// "item_sortiment": "SO-001 Damen",
+											// "item_warengruppe": "WG-30 pullover"
+										}
+									]
+								}
+							});
 
 
 							console.log("aaaaaa", {
