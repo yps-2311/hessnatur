@@ -13,7 +13,10 @@
 (function(KEK, win) {
     "use strict";
 
-    // === DEVICE DETECTION ===
+    // =========================================================================
+    // DEVICE DETECTION
+    // Erkennt Mobile vs Desktop anhand Viewport-Breite und User Agent
+    // =========================================================================
     function isMobile() {
         const ua = navigator.userAgent;
         const isSmallScreen = win.innerWidth < 640;
@@ -22,7 +25,11 @@
         return isSmallScreen || isAndroidMobile || isIPhone;
     }
 
-    // === PAGE TYPE DETECTION via DOM ===
+    // =========================================================================
+    // PAGE TYPE DETECTION
+    // Ermittelt Seitentyp (homepage/category/pdp) anhand DOM-Struktur
+    // =========================================================================
+
     function getPageTypeFromDOM() {
         const header = document.querySelector('[data-testid="header"]');
         if (!header) return null;
@@ -36,6 +43,11 @@
         if (testId === 'productPage') return 'pdp';
         return null;
     }
+
+    // =========================================================================
+    // INSERTION LOGIC
+    // Fügt USP-Box je nach Seitentyp an der richtigen Stelle ein
+    // =========================================================================
 
     let lastPageType = null;
 
@@ -52,10 +64,11 @@
                 initEvents();
             });
         } else if (pageType === 'category') {
-            // Category: nach dem 3. product-list-card, volle Breite (2 Spalten)
+            // Category: Desktop nach 2. Produkt (3-Spalten-Grid), Mobile nach 3. Produkt (2-Spalten-Grid)
             KEK.elem('[data-testid="product-list-card"]', function(els) {
                 if (!els) return;
-                const targetIndex = els.length >= 3 ? 2 : els.length - 1;
+                const minProducts = mobile ? 3 : 2;
+                const targetIndex = els.length >= minProducts ? (minProducts - 1) : els.length - 1;
                 KEK.insert(els[targetIndex], 'afterend', html);
                 initEvents();
             });
@@ -81,7 +94,11 @@
         insertUSPBox(pageType);
     }
 
-    // SPA Navigation Detection via MutationObserver
+    // =========================================================================
+    // SPA NAVIGATION
+    // MutationObserver erkennt Seitenwechsel in der Single Page App
+    // =========================================================================
+
     function initPageChangeListener() {
         KEK.elem('[data-testid="header"]', function(els) {
             if (!els) return;
@@ -107,6 +124,11 @@
     }
 
     initPageChangeListener();
+
+    // =========================================================================
+    // USP DATA
+    // Inhalte der drei USP-Karten (Qualität, Nachhaltigkeit, Service)
+    // =========================================================================
 
     const USP_DATA = [
         {
@@ -147,7 +169,12 @@
         }
     ];
 
-    var STORAGE_KEY = 'kk-usp-slide-index';
+    // =========================================================================
+    // SESSION STORAGE
+    // Speichert Slide-Index für Rotation zwischen Seitenwechseln
+    // =========================================================================
+
+    const STORAGE_KEY = 'kk-usp-slide-index';
 
     function getStoredSlideIndex() {
         try {
@@ -169,6 +196,11 @@
         const current = getStoredSlideIndex();
         return (current + 1) % USP_DATA.length;
     }
+
+    // =========================================================================
+    // DRAWER (Slide-in Panel)
+    // Zeigt Detail-Infos zu einem USP beim Klick auf Karte/Link
+    // =========================================================================
 
     let isOpen = false;
 
@@ -256,6 +288,11 @@
         if (drawer) KEK.defineClass(drawer, 'kk-usp-drawer--open', true);
     }
 
+    // =========================================================================
+    // SHARED ASSETS
+    // Icon-SVG und HTML-Builder für Cards (DRY: Mobile + Desktop nutzen diese)
+    // =========================================================================
+
     const ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37">' +
         '<path d="M25.31 33.68c-4.07 2.75-9.32 2.77-13.41.28-2.06-1.25-3.28-3.17-3.65-5.49-2.43-.41-4.36-1.72-5.57-3.82-2.21-3.84-2.24-8.71-.04-12.54C3.87 9.97 5.79 8.6 8.27 8.22c.43-2.63 1.97-4.69 4.38-5.89 5.73-2.86 14.67-1.2 15.86 5.87 2.38.37 4.34 1.66 5.59 3.79 2.3 3.91 2.28 8.85-.04 12.76-1.23 2.08-3.18 3.33-5.52 3.72-.34 2.12-1.33 3.92-3.22 5.2Zm1.89-5.17c-3.7-.4-7.11-2.58-8.13-6.22-.29-1.02-.04-2.19.62-2.78s1.78-.81 2.68-.47c3.42 1.28 5.79 4.44 6.19 8.13 6.04-1.2 7.13-9.27 4.69-14.03-.98-1.91-2.61-3.29-4.71-3.56-.38 3.69-2.54 7-6.08 8.09-1.05.32-2.27.1-2.88-.56s-.78-1.84-.47-2.8c1.11-3.48 4.34-5.68 8.07-6.1-.29-2.01-1.56-3.62-3.37-4.58C18.8.95 10.67 2.32 9.65 8.21c3.72.44 6.87 2.58 8.03 6.01.33.98.18 2.16-.34 2.78-.67.79-1.87 1.07-2.89.7-3.5-1.25-5.48-4.47-6.19-8.1-1.93.24-3.48 1.44-4.47 3.16C.95 17.67 2.2 26.05 8.25 27.18c.42-3.74 2.61-6.97 6.1-8.07 1.04-.33 2.26-.15 2.93.59.56.63.74 1.79.44 2.76-1.09 3.55-4.4 5.7-8.09 6.08.34 2.23 1.83 3.95 3.89 4.9 4.7 2.15 12.56 1.12 13.7-4.89ZM9.61 9.56c.25 3.11 4.99 8.31 6.57 6.72s-2.89-6.95-6.57-6.72m17.58.01c-3.08.2-5.95 2.16-6.88 5.16-.14.46-.04 1.24.22 1.49 1.6 1.56 6.79-2.61 6.66-6.66ZM16.11 20.43c-2.31-1.58-6.71 3.51-6.49 6.73 5.03-.09 8.39-5.43 6.49-6.73m11.08 6.66c-.29-3.32-4.86-8.4-6.59-6.81s2.76 7.11 6.59 6.81"/>' +
     '</svg>';
@@ -296,6 +333,11 @@
         return html;
     }
 
+    // =========================================================================
+    // MOBILE: CAROUSEL
+    // Swipebares Karussell mit Clone-Slides für Infinite Loop
+    // =========================================================================
+
     function createCarousel() {
         if (KEK.qs('.kk-usp-carousel')) return;
 
@@ -311,6 +353,11 @@
         return carouselHTML;
     }
 
+    // =========================================================================
+    // DESKTOP: TILES
+    // Statische 3-Spalten Kacheln ohne Swipe
+    // =========================================================================
+
     function createDesktopTiles() {
         if (KEK.qs('.kk-usp-tiles')) return;
 
@@ -323,6 +370,11 @@
         tilesHTML += '</div>';
         return tilesHTML;
     }
+
+    // =========================================================================
+    // CAROUSEL LOGIC
+    // Slide-Navigation, Position-Update, Infinite-Loop mit Clones
+    // =========================================================================
 
     function getSlideWidth() {
         const slide = KEK.qs('.kk-usp-carousel__slide');
@@ -380,6 +432,11 @@
             updateSlidePosition(animate);
         }
     }
+
+    // =========================================================================
+    // EVENT HANDLERS
+    // Touch/Swipe für Carousel, Click für Drawer-Öffnung
+    // =========================================================================
 
     function initCarouselEvents() {
         let startX = 0;
@@ -474,19 +531,26 @@
                     const isClone = this.classList.contains('kk-usp-carousel__slide--clone');
                     const uspId = this.getAttribute('data-usp-id');
                     
+                    // Ermittle den Index dieser Slide
+                    let clickedIndex = -1;
                     if (isClone) {
+                        // Clone: finde den echten Index anhand der uspId
                         for (let j = 0; j < USP_DATA.length; j++) {
                             if (USP_DATA[j].id === uspId) {
-                                goToSlide(j);
+                                clickedIndex = j;
                                 break;
                             }
                         }
                     } else {
                         const realSlides = KEK.qsa('.kk-usp-carousel__slide:not(.kk-usp-carousel__slide--clone)');
-                        const slideIndex = Array.prototype.indexOf.call(realSlides, this);
-                        if (slideIndex >= 0 && slideIndex !== currentSlide) {
-                            goToSlide(slideIndex);
-                        }
+                        clickedIndex = Array.prototype.indexOf.call(realSlides, this);
+                    }
+                    
+                    // Aktive Slide → Drawer öffnen, sonst Slide wechseln
+                    if (clickedIndex === currentSlide) {
+                        openDrawer(uspId);
+                    } else if (clickedIndex >= 0) {
+                        goToSlide(clickedIndex);
                     }
                 });
             }
@@ -522,10 +586,10 @@
         });
     }
 
-    function init() {
-        createDrawer();
-    }
+    // =========================================================================
+    // INIT
+    // =========================================================================
 
-    init();
+    createDrawer();
 
 })(new window.KEK(), window);
