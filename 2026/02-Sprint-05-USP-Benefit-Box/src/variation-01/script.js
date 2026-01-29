@@ -13,6 +13,15 @@
 (function(KEK, win) {
     "use strict";
 
+    // === DEVICE DETECTION ===
+    function isMobile() {
+        const ua = navigator.userAgent;
+        const isSmallScreen = win.innerWidth < 640;
+        const isAndroidMobile = ua.indexOf('Android') > -1 && ua.indexOf('Mobile') > -1;
+        const isIPhone = ua.indexOf('iPhone') > -1;
+        return isSmallScreen || isAndroidMobile || isIPhone;
+    }
+
     // === PAGE TYPE DETECTION via DOM ===
     function getPageTypeFromDOM() {
         const header = document.querySelector('[data-testid="header"]');
@@ -30,31 +39,33 @@
 
     let lastPageType = null;
 
-    function insertCarousel(pageType) {
-        const carouselHTML = createCarousel();
+    function insertUSPBox(pageType) {
+        const mobile = isMobile();
+        const html = mobile ? createCarousel() : createDesktopTiles();
+        const initEvents = mobile ? initCarouselEvents : initTileEvents;
 
         if (pageType === 'homepage') {
-            // Home: vor cms-recommendation
-            KEK.elem('[data-testid="cms-recommendation"]', function(els) {
+            // Home: nach hero-teaser-slider
+            KEK.elem('[data-testid="hero-teaser-slider"]', function(els) {
                 if (!els) return;
-                KEK.insert(els[0], 'beforebegin', carouselHTML);
-                initCarouselEvents();
+                KEK.insert(els[0], 'afterend', html);
+                initEvents();
             });
         } else if (pageType === 'category') {
             // Category: nach dem 3. product-list-card, volle Breite (2 Spalten)
             KEK.elem('[data-testid="product-list-card"]', function(els) {
                 if (!els) return;
                 const targetIndex = els.length >= 3 ? 2 : els.length - 1;
-                KEK.insert(els[targetIndex], 'afterend', carouselHTML);
-                initCarouselEvents();
+                KEK.insert(els[targetIndex], 'afterend', html);
+                initEvents();
             });
         } else if (pageType === 'pdp') {
             // PDP: vor story-telling ODER vor retraced-story (Fallback)
             KEK.elem('[data-testid="story-telling"], [data-totalretracedstory]', function(els) {
                 if (!els) return;
-                KEK.insert(els[0], 'beforebegin', carouselHTML);
+                KEK.insert(els[0], 'beforebegin', html);
                 els[0].parentNode.removeChild(els[0]);
-                initCarouselEvents();
+                initEvents();
             });
         }
     }
@@ -67,7 +78,7 @@
         if (pageType === lastPageType) return;
         lastPageType = pageType;
         
-        insertCarousel(pageType);
+        insertUSPBox(pageType);
     }
 
     // SPA Navigation Detection via MutationObserver
@@ -251,13 +262,18 @@
 
     let currentSlide = 0;
 
+    // Shared Card HTML Builder
+    function buildCardHTML(usp) {
+        return '<div class="kk-usp-card__icon">' + ICON_SVG + '</div>' +
+            '<h3 class="kk-usp-card__headline">' + usp.headline + '</h3>' +
+            '<p class="kk-usp-card__subline">' + usp.subline + '</p>' +
+            '<a href="#" class="kk-usp-card__link" data-usp-id="' + usp.id + '">Mehr erfahren</a>';
+    }
+
     function buildSlideHTML(usp, isClone) {
         const cloneClass = isClone ? ' kk-usp-carousel__slide--clone' : '';
-        return '<div class="kk-usp-carousel__slide' + cloneClass + '" data-usp-id="' + usp.id + '">' +
-            '<div class="kk-usp-carousel__icon">' + ICON_SVG + '</div>' +
-            '<h3 class="kk-usp-carousel__headline">' + usp.headline + '</h3>' +
-            '<p class="kk-usp-carousel__subline">' + usp.subline + '</p>' +
-            '<a href="#" class="kk-usp-carousel__link" data-usp-id="' + usp.id + '">Mehr erfahren</a>' +
+        return '<div class="kk-usp-carousel__slide kk-usp-card' + cloneClass + '" data-usp-id="' + usp.id + '">' +
+            buildCardHTML(usp) +
         '</div>';
     }
 
@@ -293,6 +309,19 @@
         '</div>';
 
         return carouselHTML;
+    }
+
+    function createDesktopTiles() {
+        if (KEK.qs('.kk-usp-tiles')) return;
+
+        let tilesHTML = '<div class="kk-usp-tiles">';
+        for (let i = 0; i < USP_DATA.length; i++) {
+            tilesHTML += '<div class="kk-usp-card" data-usp-id="' + USP_DATA[i].id + '">' +
+                buildCardHTML(USP_DATA[i]) +
+            '</div>';
+        }
+        tilesHTML += '</div>';
+        return tilesHTML;
     }
 
     function getSlideWidth() {
@@ -376,7 +405,7 @@
             }
         });
 
-        KEK.elem('.kk-usp-carousel__link', function(links) {
+        KEK.elem('.kk-usp-carousel .kk-usp-card__link', function(links) {
             if (!links) return;
             for (let i = 0; i < links.length; i++) {
                 links[i].addEventListener('click', function(e) {
@@ -440,7 +469,7 @@
             for (let i = 0; i < slides.length; i++) {
                 slides[i].addEventListener('click', function(e) {
                     if (hasMoved) return;
-                    if (e.target.closest('.kk-usp-carousel__link')) return;
+                    if (e.target.closest('.kk-usp-card__link')) return;
                     
                     const isClone = this.classList.contains('kk-usp-carousel__slide--clone');
                     const uspId = this.getAttribute('data-usp-id');
@@ -467,6 +496,30 @@
         currentSlide = getNextSlideIndex();
         saveSlideIndex(currentSlide);
         updateSlidePosition(false);
+    }
+
+    function initTileEvents() {
+        KEK.elem('.kk-usp-tiles .kk-usp-card__link', function(links) {
+            if (!links) return;
+            for (let i = 0; i < links.length; i++) {
+                links[i].addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const uspId = this.getAttribute('data-usp-id');
+                    openDrawer(uspId);
+                });
+            }
+        });
+
+        KEK.elem('.kk-usp-tiles .kk-usp-card', function(tiles) {
+            if (!tiles) return;
+            for (let i = 0; i < tiles.length; i++) {
+                tiles[i].addEventListener('click', function(e) {
+                    if (e.target.closest('.kk-usp-card__link')) return;
+                    const uspId = this.getAttribute('data-usp-id');
+                    openDrawer(uspId);
+                });
+            }
+        });
     }
 
     function init() {
