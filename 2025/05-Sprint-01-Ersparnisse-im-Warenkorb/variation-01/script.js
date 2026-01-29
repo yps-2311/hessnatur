@@ -368,7 +368,7 @@
 
 
 							// Goal
-							window.datalayer.push({
+							window.dataLayer.push({
 								"event": "Ecommerce - add_to_cart",
 								"event_name": "add_to_cart",
 								"ecommerce": {
