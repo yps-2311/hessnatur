@@ -15,15 +15,12 @@
 
     // =========================================================================
     // DEVICE DETECTION
-    // Erkennt Mobile vs Desktop anhand Viewport-Breite und User Agent
+    // Erkennt Mobile vs Desktop NUR anhand Viewport-Breite (640px Breakpoint)
+    // User-Agent wird NICHT mehr verwendet - matchMedia ist zuverlässiger
     // =========================================================================
-    function isMobile() {
-        const ua = navigator.userAgent;
-        const isSmallScreen = win.innerWidth < 640;
-        const isAndroidMobile = ua.indexOf('Android') > -1 && ua.indexOf('Mobile') > -1;
-        const isIPhone = ua.indexOf('iPhone') > -1;
-        return isSmallScreen || isAndroidMobile || isIPhone;
-    }
+    
+    // Aktueller Device-Typ basierend auf Viewport (NICHT User-Agent!)
+    let currentDeviceType = win.innerWidth < 640 ? 'mobile' : 'desktop';
 
     // =========================================================================
     // PAGE TYPE DETECTION
@@ -52,7 +49,12 @@
     let lastPageType = null;
 
     function insertUSPBox(pageType) {
-        const mobile = isMobile();
+        // Guard: Bereits eingefügt? → Skip
+        if (KEK.qs('.kk-usp-carousel') || KEK.qs('.kk-usp-tiles')) return;
+        
+        // currentDeviceType verwenden (wird von matchMedia aktualisiert)
+        // NICHT isMobile() - das prüft UA und ignoriert Viewport-Änderungen
+        const mobile = currentDeviceType === 'mobile';
         const html = mobile ? createCarousel() : createDesktopTiles();
         const initEvents = mobile ? initCarouselEvents : initTileEvents;
 
@@ -60,6 +62,7 @@
             // Home: nach hero-teaser-slider
             KEK.elem('[data-testid="hero-teaser-slider"]', function(els) {
                 if (!els) return;
+                if (KEK.qs('.kk-usp-carousel') || KEK.qs('.kk-usp-tiles')) return;
                 KEK.insert(els[0], 'afterend', html);
                 initEvents();
             });
@@ -67,6 +70,7 @@
             // Category: Desktop nach 2. Produkt (3-Spalten-Grid), Mobile nach 3. Produkt (2-Spalten-Grid)
             KEK.elem('[data-testid="product-list-card"]', function(els) {
                 if (!els) return;
+                if (KEK.qs('.kk-usp-carousel') || KEK.qs('.kk-usp-tiles')) return;
                 const minProducts = mobile ? 3 : 2;
                 const targetIndex = els.length >= minProducts ? (minProducts - 1) : els.length - 1;
                 KEK.insert(els[targetIndex], 'afterend', html);
@@ -76,6 +80,7 @@
             // PDP: vor story-telling ODER vor retraced-story (Fallback)
             KEK.elem('[data-testid="story-telling"], [data-totalretracedstory]', function(els) {
                 if (!els) return;
+                if (KEK.qs('.kk-usp-carousel') || KEK.qs('.kk-usp-tiles')) return;
                 KEK.insert(els[0], 'beforebegin', html);
                 els[0].parentNode.removeChild(els[0]);
                 initEvents();
@@ -100,30 +105,26 @@
     // =========================================================================
 
     function initPageChangeListener() {
-        KEK.elem('[data-testid="header"]', function(els) {
+        // Direkt auf das Page-Container-Element warten (nicht auf Header)
+        // Löst Race Condition beim Cold Load
+        KEK.elem('[data-testid="contentPage"], [data-testid="categoryPage"], [data-testid="productPage"]', function(els) {
             if (!els) return;
-            const header = els[0];
-            const sibling = header.nextElementSibling;
+            const pageContainer = els[0];
             
-            // Initial check
+            // Initial: Seite gefunden → direkt einfügen
             onPageChange();
             
-            if (!sibling) return;
-            
-            // Observer direkt auf das Sibling (contentPage/productPage/categoryPage)
+            // Observer für SPA-Navigation (wenn sich data-testid ändert)
             const observer = new MutationObserver(function() {
                 onPageChange();
             });
             
-            // Beobachte Attribut-Änderungen am Sibling selbst
-            observer.observe(sibling, { 
+            observer.observe(pageContainer, { 
                 attributes: true,
                 attributeFilter: ['data-testid']
             });
         });
     }
-
-    initPageChangeListener();
 
     // =========================================================================
     // USP DATA
@@ -587,9 +588,44 @@
     }
 
     // =========================================================================
+    // VIEWPORT CHANGE HANDLING
+    // Reagiert auf Device-Rotation (Portrait ↔ Landscape)
+    // =========================================================================
+
+    function handleViewportChange(isMobileNow) {
+        const newDeviceType = isMobileNow ? 'mobile' : 'desktop';
+        
+        // Nur reagieren wenn sich der Device-Typ ändert
+        if (newDeviceType === currentDeviceType) return;
+        currentDeviceType = newDeviceType;
+        
+        // Altes Element entfernen
+        const oldCarousel = KEK.qs('.kk-usp-carousel');
+        const oldTiles = KEK.qs('.kk-usp-tiles');
+        if (oldCarousel) oldCarousel.parentNode.removeChild(oldCarousel);
+        if (oldTiles) oldTiles.parentNode.removeChild(oldTiles);
+        
+        // Neu einfügen mit aktuellem Layout
+        const pageType = getPageTypeFromDOM();
+        if (pageType) {
+            lastPageType = null; // Reset damit insertUSPBox neu feuert
+            insertUSPBox(pageType);
+        }
+    }
+
+    function initViewportChangeListener() {
+        const mobileBreakpoint = win.matchMedia('(max-width: 639px)');
+        mobileBreakpoint.addEventListener('change', function(e) {
+            handleViewportChange(e.matches);
+        });
+    }
+
+    // =========================================================================
     // INIT
     // =========================================================================
 
     createDrawer();
+    initPageChangeListener();
+    initViewportChangeListener();
 
 })(new window.KEK(), window);
