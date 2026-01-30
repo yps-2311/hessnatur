@@ -1,0 +1,34 @@
+/* DEFINE VARIATION CSS */
+
+.kk-colors-visible {
+    // CSS übernimmt Kontrolle – React kann nichts überschreiben
+    display: block !important;
+
+    // Single variant: unsichtbar aber Layout erhalten
+    &.kk-single-variant {
+        visibility: hidden !important;
+    }
+
+    ul {
+        // Scrollbar verstecken
+        scrollbar-width: none; // Firefox
+        -ms-overflow-style: none; // IE/Edge
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        gap: 9px;
+        padding: 3px !important; // Platz für skalierte Elemente
+
+        &::-webkit-scrollbar {
+            display: none; // Chrome/Safari
+        }
+    }
+
+    li {
+        flex-shrink: 0 !important;
+
+        // Farbpunkte 20% größer
+        > a > div {
+            transform: scale(1.2);
+        }
+    }
+}

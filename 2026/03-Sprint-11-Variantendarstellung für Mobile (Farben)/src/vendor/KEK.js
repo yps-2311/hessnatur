@@ -40,6 +40,53 @@
         return _status === true ? callback(_result) : setTimeout(_self.elem.bind(null, waitFor, callback, timeout, _self, _time), timeout || 20);
     };
 
+    /**
+     * @function qs
+     * @memberOf KEK
+     *
+     * @author Max Vith, Timo Ott
+     *
+     * @param { string } selector - CSS Selector des zu findenden DOM Elements
+     * @param { node } parent - CSS Selector des zu findenden DOM Elements
+     */
+    window.KEK.prototype.qs = function (selector, parent) {
 
+        return (parent ? parent : document).querySelector(selector);
+
+    };
+
+    /**
+     * @function qsa
+     * @memberOf KEK
+     *
+     * @param { string } selector - CSS Selector
+     * @param { node } parent - Parent Element (optional)
+     */
+    window.KEK.prototype.qsa = function (selector, parent) {
+
+        return (parent ? parent : document).querySelectorAll(selector);
+
+    };
+
+    /**
+     * @function defineClass
+     * @memberOf KEK
+     *
+     * @param { node } el - DOM Element
+     * @param { string } cla - Klasse hinzufügen/entfernen
+     * @param { boolean|string } rep - true = entfernen, string = ersetzen
+     */
+    window.KEK.prototype.defineClass = function (el, cla, rep) {
+
+        if (rep === true) {
+            el.classList.remove(cla);
+        } else if (typeof rep === "string") {
+            el.classList.remove(cla);
+            el.classList.add(rep);
+        } else {
+            el.classList.add(cla);
+        }
+
+    };
 
 })(window, document);
