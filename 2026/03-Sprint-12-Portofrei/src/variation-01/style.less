@@ -1,0 +1,129 @@
+@import "../global/vars.less";
+@import "../global/global.less";
+
+// ======================
+// Anti-Flicker: Hide original elements until JS modifies them
+// ======================
+[data-testid="actionbar"]:not(.v1-portofrei-banner) {
+    visibility: hidden !important;
+}
+
+[data-testid="product-grid-action-banner-teaser"]:not(.v1-portofrei-teaser) {
+    visibility: hidden !important;
+}
+
+// ======================
+// Header Bar Customization
+// ======================
+[data-testid="actionbar"].v1-portofrei-banner {
+    visibility: visible !important;
+    background-color: @color-bg !important;
+    color: @color-text !important;
+    font-family: @font-outfit;
+
+    .Actionbar_actionbar__text__tWGLT {
+        font-weight: 500;
+    }
+
+    .Actionbar_actionbar__promocode__zMR9E {
+        svg path {
+            fill: @color-text;
+        }
+    }
+
+    .Actionbar_actionbar__link__Itd2h {
+        color: @color-text;
+        text-decoration: underline;
+        text-decoration-color: @color-text;
+        
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+
+    #v1-flyout-toggle {
+        .v1-chevron {
+            transition: transform 0.2s ease;
+        }
+    }
+}
+
+// Flyout Wrapper
+.v1-flyout-wrapper {
+    display: none;
+    
+    &.Actionbar_actionbar-flyout-wrapper--show__OZhnc {
+        display: block;
+    }
+
+    .Actionbar_actionbar-flyout__He_fy {
+        padding: 12px 16px;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+}
+
+// ======================
+// PLP Teaser Customization
+// ======================
+.v1-portofrei-teaser {
+    visibility: visible !important;
+    
+    .v1-teaser-inner {
+        font-family: @font-outfit;
+        padding-right: 32px; // Extra Abstand zum rechten Rand
+    }
+
+    .v1-teaser-headline {
+        font-size: clamp(20px, 4vw, 48px); // Fluid Typography: skaliert schneller runter
+        font-weight: 700;
+        line-height: 1.1;
+        color: @color-text;
+        white-space: nowrap; // Verhindert Umbruch
+    }
+
+    .v1-teaser-bottom {
+        margin-top: auto;
+    }
+
+    .v1-teaser-subline {
+        font-size: clamp(14px, 2.5vw, 20px); // Fluid Typography
+        font-weight: 400;
+        color: @color-text;
+        white-space: nowrap; // Verhindert Umbruch
+    }
+
+    .v1-teaser-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #fff;
+        border: 1px solid @color-text;
+        border-radius: 4px;
+        padding: clamp(8px, 1.2vw, 10px) clamp(12px, 2vw, 16px); // Responsive Padding
+        font-family: @font-outfit;
+        font-size: clamp(14px, 2vw, 16px); // Fluid Typography
+        font-weight: 700;
+        color: @color-text;
+        cursor: pointer;
+        transition: background 0.2s ease;
+
+        &:hover {
+            background: darken(#fff, 5%);
+        }
+
+        svg {
+            flex-shrink: 0;
+            width: clamp(14px, 2vw, 16px); // Icon skaliert mit
+            height: clamp(14px, 2vw, 16px);
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .v1-portofrei-teaser {
+        .v1-teaser-inner {
+            padding-right: 24px; // Weniger Padding auf Mobile
+        }
+    }
+}

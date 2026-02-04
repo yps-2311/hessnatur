@@ -1,0 +1,36 @@
+@import "vars.less";
+
+.v1-copy-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    cursor: pointer;
+    vertical-align: middle;
+
+    svg {
+        width: 14px;
+        height: 14px;
+        fill: currentColor;
+    }
+}
+
+.v1-copied-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: @color-text;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-family: @font-outfit;
+    font-size: 14px;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    &.visible {
+        opacity: 1;
+    }
+}
