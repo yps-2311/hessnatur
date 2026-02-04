@@ -1,0 +1,35 @@
+@import "../global/vars.less";
+@import "../global/global.less";
+
+/* VARIATION 01 - Sticky Filter & Sortierung auf Mobile PLPs/SRPs */
+
+/* Sticky Filter/Sortier-Tab-Wrapper */
+.plp_filterSortTabsWrapper__LkAYd {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: #fff;
+}
+
+/* Filter-Panel schwebt über den Produkten (nicht Inhalte verschieben) */
+.FilterSortTabs_filterSortTabs__panel__MjrDK {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 101;
+    background-color: #fff;
+    overflow-y: auto;
+}
+
+/* Media Query: Filter verschwindet ab 640px */
+@media (min-width: 640px) {
+    .plp_filterSortTabsWrapper__LkAYd {
+        position: static;
+    }
+    
+    .FilterSortTabs_filterSortTabs__panel__MjrDK {
+        position: static;
+    }
+}

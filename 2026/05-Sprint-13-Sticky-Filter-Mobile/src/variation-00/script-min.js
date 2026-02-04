@@ -1,0 +1,1 @@
+!function(e,t){"use strict";void 0===e.KEK&&(e.KEK=function(){}),e.KEK.prototype.elem=function(e,n,o,i,l){let u,K=this||i,r=l||Date.now(),w=!1;return Date.now()-r>1e4?(n(!1),!1):("string"==typeof e?(u=t.querySelectorAll(e),w=u.length>0):(u=e()||!1,w=!!u),!0===w?n(u):setTimeout(K.elem.bind(null,e,n,o,K,r),o||20))}}(window,document),new window.KEK;
