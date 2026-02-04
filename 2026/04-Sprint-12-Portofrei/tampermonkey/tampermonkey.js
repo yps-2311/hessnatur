@@ -15,7 +15,7 @@
     'use strict';
     console.log('[TM Debug] Script started on:', window.location.href);
 
-    const baseUrl = 'https://local-dev.konversionskraft.de/hessnatur/2026/03-Sprint-12-Portofrei/src';
+    const baseUrl = 'https://local-dev.konversionskraft.de/hessnatur/2026/04-Sprint-12-Portofrei/src';
     const cacheBuster = '?v=' + Date.now();
 
     // Inject CSS
