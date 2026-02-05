@@ -67,13 +67,26 @@
                 initEvents();
             });
         } else if (pageType === 'category') {
-            // Category: Desktop nach 2. Produkt (3-Spalten-Grid), Mobile nach 3. Produkt (2-Spalten-Grid)
+            // Category: Mobile=3, Desktop=2, DesktopLarge=3
             KEK.elem('[data-testid="product-list-card"]', function(els) {
                 if (!els) return;
                 if (KEK.qs('.kk-usp-carousel') || KEK.qs('.kk-usp-tiles')) return;
-                const minProducts = mobile ? 3 : 2;
+                
+                // 4-Spalten-Grid Detection (Sale-Seite hat --large Modifier)
+                const productGrid = KEK.qs('[data-testid="product-grid"]');
+                const isLargeGrid = !mobile && productGrid && productGrid.className.includes('--large');
+                
+                // Mobile=3, Desktop=2, DesktopLarge=3 (+1)
+                const minProducts = mobile ? 3 : (isLargeGrid ? 3 : 2);
                 const targetIndex = els.length >= minProducts ? (minProducts - 1) : els.length - 1;
                 KEK.insert(els[targetIndex], 'afterend', html);
+                
+                // 4-Spalten-Grid: Modifier-Klasse für CSS span
+                if (isLargeGrid) {
+                    const tiles = KEK.qs('.kk-usp-tiles');
+                    if (tiles) KEK.defineClass(tiles, 'kk-usp-tiles--large-grid');
+                }
+                
                 initEvents();
             });
         } else if (pageType === 'pdp') {
@@ -240,9 +253,10 @@
     function createDrawer() {
         if (KEK.qs('.kk-usp-drawer')) return;
 
-        KEK.insert(document.body, 'beforeend', '<div class="kk-usp-backdrop"></div>');
+        // Inline-Styles verhindern Flash bevor CSS geladen (Kameleoon-Timing)
+        KEK.insert(document.body, 'beforeend', '<div class="kk-usp-backdrop" style="opacity:0;visibility:hidden"></div>');
         KEK.insert(document.body, 'beforeend',
-            '<div class="kk-usp-drawer">' +
+            '<div class="kk-usp-drawer" style="transform:translateX(100%)">' +
                 '<div class="kk-usp-drawer__header">' +
                     '<button class="kk-usp-drawer__close" aria-label="Schließen">' +
                         '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">' +
@@ -342,7 +356,8 @@
     function createCarousel() {
         if (KEK.qs('.kk-usp-carousel')) return;
 
-        const carouselHTML = '<div class="kk-usp-carousel">' +
+        // Inline display:none verhindert FOUC bevor CSS geladen
+        const carouselHTML = '<div class="kk-usp-carousel" style="display:none">' +
             '<div class="kk-usp-carousel__track">' +
                 buildCarouselSlides() +
             '</div>' +
@@ -362,7 +377,8 @@
     function createDesktopTiles() {
         if (KEK.qs('.kk-usp-tiles')) return;
 
-        let tilesHTML = '<div class="kk-usp-tiles">';
+        // Inline display:none verhindert FOUC bevor CSS geladen
+        let tilesHTML = '<div class="kk-usp-tiles" style="display:none">';
         for (let i = 0; i < USP_DATA.length; i++) {
             tilesHTML += '<div class="kk-usp-card" data-usp-id="' + USP_DATA[i].id + '">' +
                 buildCardHTML(USP_DATA[i]) +

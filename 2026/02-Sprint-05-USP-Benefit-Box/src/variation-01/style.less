@@ -58,6 +58,7 @@
 // Mobile: Carousel
 // ======================
 .kk-usp-carousel {
+    display: block !important; // Override inline display:none (FOUC prevention)
     position: relative;
     width: 100%;
     padding: 16px 0;
@@ -127,9 +128,9 @@ div[data-testid="categoryPage"] .kk-usp-carousel {
 // Desktop: Tiles Grid
 // ======================
 .kk-usp-tiles {
-    display: flex;
+    display: flex !important; // Override inline display:none (FOUC prevention)
     gap: 24px;
-    padding: 24px 0;
+    padding: 24px 38px;
     width: 100%;
     max-inline-size: 1920px;
     margin-inline-end: auto;
@@ -143,9 +144,15 @@ div[data-testid="categoryPage"] .kk-usp-carousel {
 // Category Desktop Tiles Anpassung
 div[data-testid="categoryPage"] .kk-usp-tiles {
     position: relative;
+    padding: 24px 0px;
     left: 0;
     width: 100%;
     grid-column: span 3;
+    
+    // 4-Spalten-Grid (z.B. Sale-Übersicht)
+    &.kk-usp-tiles--large-grid {
+        grid-column: span 4;
+    }
 }
 
 // ======================
@@ -166,8 +173,8 @@ div[data-testid="categoryPage"] .kk-usp-tiles {
     transition: opacity 0.3s ease, visibility 0.3s ease;
 
     &--active {
-        opacity: 1;
-        visibility: visible;
+        opacity: 1 !important;
+        visibility: visible !important;
     }
 }
 
@@ -187,7 +194,7 @@ div[data-testid="categoryPage"] .kk-usp-tiles {
     flex-direction: column;
 
     &--open {
-        transform: translateX(0);
+        transform: translateX(0) !important;
     }
 
     &__header {
