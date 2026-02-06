@@ -13,12 +13,12 @@
     "use strict";
 
     // Tracking Helper
-    const trackFilterClick = (action, category) => {
+    const trackClick = (eventName, action, category) => {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
-            event_name: 'filter_click',
+            event_name: eventName,
             filter_action: action,
-            filter_category: category
+            filter_category: category || ''
         });
     };
 
@@ -30,10 +30,11 @@
 
             triggers.forEach((trigger, index) => {
                 const isFilterTab = index === 0;
+                const eventName = isFilterTab ? 'filter_click' : 'sort_click';
                 const action = isFilterTab ? 'Clicke Filter' : 'Clicke Sortieren';
 
                 trigger.addEventListener('click', () => {
-                    trackFilterClick(action, '');
+                    trackClick(eventName, action, '');
                 });
             });
         });
@@ -45,7 +46,7 @@
             categoryButtons.forEach((btn) => {
                 btn.addEventListener('click', () => {
                     const categoryName = btn.textContent.trim();
-                    trackFilterClick('Clicke Filter', categoryName);
+                    trackClick('filter_click', 'Clicke Filter', categoryName);
                 });
             });
         });
@@ -55,7 +56,7 @@
             if (!closeBtns) return;
 
             closeBtns[0].addEventListener('click', () => {
-                trackFilterClick('Clicke Filter', 'Schließen');
+                trackClick('filter_click', 'Clicke Filter', 'Schließen');
             });
         });
     };

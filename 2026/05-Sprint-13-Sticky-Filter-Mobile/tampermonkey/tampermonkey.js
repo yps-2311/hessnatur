@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Hessnatur Sprint 13 - Sticky Filter Mobile
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  A/B Test Sticky Filter auf Mobile PLPs/SRPs (Inline Version)
 // @author       Manuel Brückmann
 // @match        https://www.hessnatur.com/*
@@ -22,7 +22,7 @@
 
     // ==================== CSS ====================
     GM_addStyle(`
-        /* Sticky Filter/Sortier-Tab-Wrapper */
+        /* Sticky Filter/Sortier-Tab-Wrapper - wird zum positioning context */
         .plp_filterSortTabsWrapper__LkAYd,
         div[class*="plp_filterSortTabsWrapper"] {
             position: -webkit-sticky !important;
@@ -32,17 +32,29 @@
             background-color: #fff !important;
         }
 
-        /* Filter-Panel schwebt über den Produkten */
+        /* Filter-Panel schwebt direkt unter den Buttons */
         .FilterSortTabs_filterSortTabs__panel__MjrDK,
         div[role="tabpanel"][class*="FilterSortTabs"] {
-            position: fixed !important;
-            top: 0 !important;
+            position: absolute !important;
+            top: 100% !important;
             left: 0 !important;
             right: 0 !important;
-            bottom: 0 !important;
+            bottom: auto !important;
+            max-height: 70vh !important;
             z-index: 101 !important;
             background-color: #fff !important;
             overflow-y: auto !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        /* Fix: Schließen-Button nicht aufblähen */
+        .FilterSortTabs_filterSortTabs__close-all-button__X7GUA {
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
+            height: auto !important;
+            min-height: unset !important;
+            padding: 16px 24px !important;
+            margin: 16px !important;
         }
     `);
     console.log('[Sprint 13] CSS injected.');
@@ -78,14 +90,14 @@
     const KEK = new window.KEK();
 
     // Tracking Helper
-    const trackFilterClick = (action, category) => {
+    const trackClick = (eventName, action, category) => {
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
-            event_name: 'filter_click',
+            event_name: eventName,
             filter_action: action,
-            filter_category: category
+            filter_category: category || ''
         });
-        console.log('[Sprint 13] Tracked:', { action, category });
+        console.log('[Sprint 13] Tracked:', { event_name: eventName, filter_action: action, filter_category: category });
     };
 
     // Init Tracking
@@ -96,10 +108,11 @@
 
             triggers.forEach((trigger, index) => {
                 const isFilterTab = index === 0;
+                const eventName = isFilterTab ? 'filter_click' : 'sort_click';
                 const action = isFilterTab ? 'Clicke Filter' : 'Clicke Sortieren';
 
                 trigger.addEventListener('click', () => {
-                    trackFilterClick(action, '');
+                    trackClick(eventName, action, '');
                 });
             });
             console.log('[Sprint 13] Tab click tracking initialized.');
@@ -112,7 +125,7 @@
             categoryButtons.forEach((btn) => {
                 btn.addEventListener('click', () => {
                     const categoryName = btn.textContent.trim();
-                    trackFilterClick('Clicke Filter', categoryName);
+                    trackClick('filter_click', 'Clicke Filter', categoryName);
                 });
             });
             console.log('[Sprint 13] Category click tracking initialized.');
@@ -123,7 +136,7 @@
             if (!closeBtns) return;
 
             closeBtns[0].addEventListener('click', () => {
-                trackFilterClick('Clicke Filter', 'Schließen');
+                trackClick('filter_click', 'Clicke Filter', 'Schließen');
             });
             console.log('[Sprint 13] Close button tracking initialized.');
         });
