@@ -1,16 +1,7 @@
 @import "../global/vars.less";
 @import "../global/global.less";
 
-// ======================
-// Anti-Flicker: Hide original elements until JS modifies them
-// ======================
-[data-testid="actionbar"]:not(.v1-portofrei-banner) {
-    visibility: hidden !important;
-}
-
-[data-testid="product-grid-action-banner-teaser"]:not(.v1-portofrei-teaser) {
-    visibility: hidden !important;
-}
+// Anti-Flicker: now injected via JS (script.js) for Kameleoon compatibility
 
 // ======================
 // Header Bar Customization
@@ -44,6 +35,35 @@
     #v1-flyout-toggle {
         .v1-chevron {
             transition: transform 0.2s ease;
+        }
+    }
+}
+
+// ======================
+// Mobile Header: Button neben Text, Link in Zeile 2
+// ======================
+@media (max-width: 640px) {
+    [data-testid="actionbar"].v1-portofrei-banner {
+        flex-wrap: wrap;
+
+        .v1-header-text {
+            order: 0;
+        }
+
+        .v1-header-copy-wrap {
+            order: 1;
+        }
+
+        #v1-flyout-toggle {
+            order: 2;
+            margin-left: auto;
+        }
+
+        .v1-header-link-wrap {
+            order: 3;
+            flex-basis: 100%;
+            text-align: left;
+            padding-top: 2px;
         }
     }
 }

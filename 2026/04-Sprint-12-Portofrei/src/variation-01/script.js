@@ -7,6 +7,14 @@
 
 // CodeKit: @codekit-prepend "../global/global.js";
 
+// Anti-Flicker: inject CSS via JS (Kameleoon loads JS before CSS)
+if (!document.getElementById('v1-anti-flicker')) {
+    var s = document.createElement('style');
+    s.id = 'v1-anti-flicker';
+    s.textContent = '[data-testid="actionbar"]:not(.v1-portofrei-banner){visibility:hidden!important}[data-testid="product-grid-action-banner-teaser"]:not(.v1-portofrei-teaser){visibility:hidden!important}';
+    document.head.appendChild(s);
+}
+
 (function (KEK) {
     "use strict";
 
@@ -28,19 +36,17 @@
         actionbar.style.backgroundColor = BG_COLOR;
         actionbar.style.color = TEXT_COLOR;
 
-        // Replace ENTIRE actionbar innerHTML
+        // Replace ENTIRE actionbar innerHTML (flat structure for CSS flex reordering on mobile)
         actionbar.innerHTML = 
-            '<span class="Actionbar_actionbar__text__tWGLT">' + HEADER_TEXT + '</span>' +
-            '<div class="Actionbar_actionbar__interaction__okoV1">' +
-                '<div class="Actionbar_actionbar__promocode_container__fm3AR">' +
-                    '<button class="Actionbar_actionbar__promocode__zMR9E Actionbar_actionbar-button__gm_b1 Actionbar_actionbar-button--border__nvWzI" id="v1-header-copy">' +
-                        '<svg viewBox="0 0 1792 1896.0833" xmlns="http://www.w3.org/2000/svg" width="16"><path fill="' + TEXT_COLOR + '" d="M1696 384q40 0 68 28t28 68v1216q0 40-28 68t-68 28H736q-40 0-68-28t-28-68v-288H96q-40 0-68-28t-28-68V640q0-40 20-88t48-76L476 68q28-28 76-48t88-20h416q40 0 68 28t28 68v328q68-40 128-40h416zm-544 213L853 896h299V597zM512 213L213 512h299V213zm196 647l316-316V128H640v416q0 40-28 68t-68 28H128v640h512v-256q0-40 20-88t48-76zm956 804V512h-384v416q0 40-28 68t-68 28H768v640h896z"></path></svg>' +
-                        '<span class="Actionbar_actionbar-button__label__Nw8oa" translate="no">' + CODE + '</span>' +
-                    '</button>' +
-                '</div>' +
-                '<div class="Actionbar_actionbar__link__wrapper__uvxXl">' +
-                    '<a class="Actionbar_actionbar__link__Itd2h" href="' + LINK_URL + '" style="text-decoration-color: ' + TEXT_COLOR + ';">' + LINK_TEXT + '</a>' +
-                '</div>' +
+            '<span class="Actionbar_actionbar__text__tWGLT v1-header-text">' + HEADER_TEXT + '</span>' +
+            '<div class="Actionbar_actionbar__promocode_container__fm3AR v1-header-copy-wrap">' +
+                '<button class="Actionbar_actionbar__promocode__zMR9E Actionbar_actionbar-button__gm_b1 Actionbar_actionbar-button--border__nvWzI" id="v1-header-copy">' +
+                    '<svg viewBox="0 0 1792 1896.0833" xmlns="http://www.w3.org/2000/svg" width="16"><path fill="' + TEXT_COLOR + '" d="M1696 384q40 0 68 28t28 68v1216q0 40-28 68t-68 28H736q-40 0-68-28t-28-68v-288H96q-40 0-68-28t-28-68V640q0-40 20-88t48-76L476 68q28-28 76-48t88-20h416q40 0 68 28t28 68v328q68-40 128-40h416zm-544 213L853 896h299V597zM512 213L213 512h299V213zm196 647l316-316V128H640v416q0 40-28 68t-68 28H128v640h512v-256q0-40 20-88t48-76zm956 804V512h-384v416q0 40-28 68t-68 28H768v640h896z"></path></svg>' +
+                    '<span class="Actionbar_actionbar-button__label__Nw8oa" translate="no">' + CODE + '</span>' +
+                '</button>' +
+            '</div>' +
+            '<div class="Actionbar_actionbar__link__wrapper__uvxXl v1-header-link-wrap">' +
+                '<a class="Actionbar_actionbar__link__Itd2h" href="' + LINK_URL + '" style="text-decoration-color: ' + TEXT_COLOR + ';">' + LINK_TEXT + '</a>' +
             '</div>' +
             '<button class="Actionbar_actionbar-button__gm_b1 Actionbar_actionbar-show-flyout-button__TzY4X" id="v1-flyout-toggle">' +
                 '<span class="sr-only">Mehr anzeigen</span>' +
