@@ -14,10 +14,52 @@
 
 	let productsInCart = [];
 
+	// Hilfsfunktion um die passende productSize zu ermitteln
+	const getProductSize = (ids) => {
+		// Reguläre Kleidungsgrößen (XS bis XXXL)
+		const clothingSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'ONE'];
+		// Regex für zweistellige Größen (z.B. 36, 38, 40)
+		const twoDigitSizeRegex = /^\d{2}$/;
+		// Regex für vierstellige Hosengrößen (z.B. 3432)
+		const fourDigitSizeRegex = /^\d{4}$/;
+
+		let fourDigitFallback = null;
+
+		for (let i = 0; i < ids.length; i++) {
+			const size = ids[i].slice(7, 11).trim();
+			
+			// Priorität 1: Standard-Kleidungsgrößen (XS, S, M, L, XL, XXL, XXXL, ONE)
+			if (clothingSizes.includes(size) || clothingSizes.includes(size.trim())) {
+				return size;
+			}
+			
+			// Priorität 2: Zweistellige Größen (z.B. 36, 38)
+			if (twoDigitSizeRegex.test(size.trim())) {
+				return size;
+			}
+			
+			// Merke erste vierstellige Hosengröße als Fallback
+			if (!fourDigitFallback && fourDigitSizeRegex.test(size)) {
+				fourDigitFallback = size;
+			}
+		}
+
+		// Priorität 3: Vierstellige Hosengröße falls vorhanden
+		if (fourDigitFallback) {
+			return fourDigitFallback;
+		}
+
+		// Priorität 4: Letztes Fallback - erstes Produkt
+		return ids[0].slice(7, 11);
+	};
+
 	const getProductFromEconda = (productIDs) => {
+		console.log('productIDs: ', productIDs);
 
 		const pidParams = productIDs.map(id => `&pid=${id.slice(0, 7)}`).join('');
-    	const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&widgetdetails=true&start=0' + (productIDs ? pidParams : ''); // &csize=20
+		console.log('pidParams: ', pidParams);
+		console.log('getProductSize(productIDs): ', getProductSize(productIDs));
+    	const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&widgetdetails=true&start=0&ctxcustom.size=' + getProductSize(productIDs) + (productIDs ? pidParams : ''); // &csize=20
 
 		return fetch(url)
 			.then(res => res.json())
@@ -26,7 +68,7 @@
 				return data.items;
 			})
 			.catch(error => {
-				console.error('Econda Fehler:', error);
+				// console.error('Econda Fehler:', error);
 				return [];
 			});
 	}
@@ -43,7 +85,7 @@
 	}
 
 	const addProductToCart = (exactProductID9) => {
-		console.log('exactProductID9: ', exactProductID9);
+		// console.log('exactProductID9: ', exactProductID9);
 		fetch('https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app/api/graphql', {
 			method: 'POST',
 			headers: {
@@ -66,12 +108,12 @@
 		})
 		.then(response => response.json())
 		.then(data => {
-			console.log('Erfolg:', data);
+			// console.log('Erfolg:', data);
 			// Reload
 			KEK.reload();
 		})
 		.catch(error => {
-			console.error('Fehler:', error);
+			// console.error('Fehler:', error);
 		});
 	};
 
@@ -86,11 +128,11 @@
 	const getSavedMoney = () => {
 		let saveMoney = 0;
 		KEK.qsa('[class*="cart_cart-page__wrapper__cart-entries-list__"] > div:first-child [class*="CartEntry_cartEntry__detailsWrapper__details__price__"]').forEach((item) => {
-			console.log('item: ', item);
+			// console.log('item: ', item);
 			const strikePrice = KEK.qs('[class*="PriceLabel_priceRow__priceLabel--striked__"]', item);
-			console.log('strikePrice: ', strikePrice);
+			// console.log('strikePrice: ', strikePrice);
 			const reducePrice = KEK.qs('[class*="PriceLabel_priceRow__priceLabel--discounted__"]', item);
-			console.log('reducePrice: ', reducePrice);
+			// console.log('reducePrice: ', reducePrice);
 			if(strikePrice && reducePrice) {
 				const strikePriceValue = priceToFloat(strikePrice.textContent); // parseFloat(strikePrice.textContent.replace(/[^\d,.]/g, '').replace('.', '').replace(',', '.'));
 				const reducePriceValue = priceToFloat(reducePrice.textContent); // parseFloat(reducePrice.textContent.replace(/[^\d,.]/g, '').replace('.', '').replace(',', '.'));
@@ -103,79 +145,72 @@
 
 	// Haupt-Funktion die alles koordiniert
 	const initializeCartAddOn = (econdaProducts, productsStayInCart) => {
-		
-		// setTimeout(() => { // TODO: ist diese nötig?
 
-			KEK.elem(() => {
-				const saveMoney = getSavedMoney();
-				console.log('aaaaa: ', saveMoney);
-				return saveMoney >= 20 && saveMoney;
-			}, (saveMoney) => {
-				if(saveMoney){
+		KEK.elem(() => {
+			const saveMoney = getSavedMoney();
+			return saveMoney >= 20 && saveMoney;
+		}, (saveMoney) => {
+			if(saveMoney){
 
-					console.log('saveMoney>: ', saveMoney);
+				// console.log('saveMoney>: ', saveMoney);
 
-					// Mindestens 20€ muss die Ersparnis sein
-					// if(saveMoney < 20) {
-					// 	return;
-					// }
+				// Mindestens 20€ muss die Ersparnis sein
+				// if(saveMoney < 20) {
+				// 	return;
+				// }
 
-					// Finde alle Produkte aus Econda deren Preis kleiner ist als saveMoney
-					// Und es werden nur Produkte die direkt die korrekte Größe haben weitergegeben
-					let matchingProducts = econdaProducts.filter(product => {
-						const productPrice = priceToFloat(product.price);
-						// console.log('product.sku.slice(7, 11): ', product.sku.slice(7, 11), productsStayInCart[0].slice(7, 11));
-						// return productPrice < saveMoney && product.sku.slice(7, 11) === productsStayInCart[0].slice(7, 11);
-						let foundMatch = false;
-						for (let j = 0; j < productsStayInCart.length && !foundMatch; j++) {
-							console.log('product.sku.slice(7, 11): ', product.sku.slice(7, 11), productsStayInCart[j].slice(7, 11));
-							if (product.sku.slice(7, 11) === productsStayInCart[j].slice(7, 11)) {
-								foundMatch = true;
-							}
+				// Finde alle Produkte aus Econda deren Preis kleiner ist als saveMoney
+				// Und es werden nur Produkte die direkt die korrekte Größe haben weitergegeben
+				let matchingProducts = econdaProducts.filter(product => {
+					const productPrice = priceToFloat(product.price);
+					// console.log('product.sku.slice(7, 11): ', product.sku.slice(7, 11), productsStayInCart[0].slice(7, 11));
+					// return productPrice < saveMoney && product.sku.slice(7, 11) === productsStayInCart[0].slice(7, 11);
+					let foundMatch = false;
+					for (let j = 0; j < productsStayInCart.length && !foundMatch; j++) {
+						// console.log('product.sku.slice(7, 11): ', product.sku.slice(7, 11), productsStayInCart[j].slice(7, 11));
+						if (product.sku.slice(7, 11) === productsStayInCart[j].slice(7, 11)) {
+							foundMatch = true;
 						}
-						return productPrice < saveMoney && foundMatch;
+					}
+					return productPrice < saveMoney && foundMatch;
+				});
+
+				// Fallback 1 -> größe ONE ist ein Produkt dass es sowieso nur in einer Größe gibt
+				if (matchingProducts.length === 0) {
+					// console.log("fallback1 ", matchingProducts);
+					matchingProducts = econdaProducts.filter(product => {
+						return priceToFloat(product.price) < saveMoney && product.sku.slice(7, 11) === "ONE";
 					});
-
-					// Fallback 1 -> größe ONE ist ein Produkt dass es sowieso nur in einer Größe gibt
-					if (matchingProducts.length === 0) {
-						console.log("fallback1 ", matchingProducts);
-						matchingProducts = econdaProducts.filter(product => {
-							return priceToFloat(product.price) < saveMoney && product.sku.slice(7, 11) === "ONE";
-						});
-					}
-
-					// Fallback 2 -> Hauptsache das Produkt ist günstiger als die Ersparniss im Warenkorb
-					if (matchingProducts.length === 0) {
-						console.log("fallback2 ", matchingProducts);
-						matchingProducts = econdaProducts.filter(product => {
-							return priceToFloat(product.price) < saveMoney;
-						});
-					}
-
-					if (matchingProducts.length === 0) {
-						console.log('Kein passendes Econda-Produkt gefunden');
-						return;
-					}
-
-					// Sortiere nach Preis (günstigste zuerst)
-					matchingProducts.sort((a, b) => {
-						const priceA = priceToFloat(a.price);
-						const priceB = priceToFloat(b.price);
-						return priceA - priceB;
-					});
-
-					console.log('Passende Econda-Produkte:', matchingProducts);
-
-					// Starte mit dem ersten Produkt
-					fetchProductDetails(matchingProducts, 0, saveMoney);
-
-
 				}
-			});
-			
-			
 
-		// }, 500);
+				// Fallback 2 -> Hauptsache das Produkt ist günstiger als die Ersparniss im Warenkorb
+				if (matchingProducts.length === 0) {
+					// console.log("fallback2 ", matchingProducts);
+					matchingProducts = econdaProducts.filter(product => {
+						return priceToFloat(product.price) < saveMoney;
+					});
+				}
+
+				if (matchingProducts.length === 0) {
+					// console.log('Kein passendes Econda-Produkt gefunden');
+					return;
+				}
+
+				// Sortiere nach Preis (günstigste zuerst)
+				matchingProducts.sort((a, b) => {
+					const priceA = priceToFloat(a.price);
+					const priceB = priceToFloat(b.price);
+					return priceA - priceB;
+				});
+
+				// console.log('Passende Econda-Produkte:', matchingProducts);
+
+				// Starte mit dem ersten Produkt
+				fetchProductDetails(matchingProducts, 0, saveMoney);
+
+
+			}
+		});
 	};
 
 	const fetchProductDetails = (matchingProducts, currentIndex, saveMoney) => {
@@ -188,7 +223,7 @@
 
 		const econdaProduct = matchingProducts[currentIndex];
 		const productID = econdaProduct.sku7;
-		console.log('->>. Teste Produkt ' + (currentIndex + 1) + '/' + matchingProducts.length + ':', productID);
+		// console.log('->>. Teste Produkt ' + (currentIndex + 1) + '/' + matchingProducts.length + ':', productID);
 		
 		fetch('https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app/api/graphql', {
 			method: 'POST',
@@ -206,7 +241,7 @@
 		})
 		.then(response => response.json())
 		.then(responseData => {
-			console.log('GraphQL Response:', responseData);
+			// console.log('GraphQL Response:', responseData);
 
 			const matchingStyle = responseData.data.allAvailabilities.styles.find(style => style.id === productID.slice(5, 7));
 			const produktData = matchingStyle || responseData.data.allAvailabilities.styles[0];
@@ -215,7 +250,7 @@
 
 			KEK.elem('[data-testid="cartPage"] [class*="cart_cart-page__wrapper__cart-entries-list_"]', (cartWrapper) => {
 				if(cartWrapper && !KEK.qs('#kk_addon')){
-					console.log('cartWrapper: ', cartWrapper);
+					// console.log('cartWrapper: ', cartWrapper);
 					cartWrapper = cartWrapper[0];
 					
 					// Funktion zum Berechnen der Eco Points (Preis aufgerundet)
@@ -231,10 +266,15 @@
 						}
 						return 'ProductAvailability_available__zjuhf';
 					};
+
+					// getProductSize(productID)
+					// console.log('productID: ', econdaProduct.sku.slice(7,11));
+					// console.log('getProductSize(productID): ', getProductSize(econdaProduct.sku));
 					
 					// Größen-Dropdown dynamisch erstellen
 					const sizeOptionsHTML = produktData.sizes.map(size => {
-						return '<option '+(KEK.qs('#cart-entry-size-0')?.value === size.id ? 'selected' : '')+' value="'+size.id+'" data-price="'+size.price.formattedValue+'" data-delivery="'+size.deliveryTime+'">'+size.name+'</option>';
+						// KEK.qs('#cart-entry-size-0')?.value
+						return '<option '+(econdaProduct.sku.slice(7,11) === size.id ? 'selected' : '')+' value="'+size.id+'" data-price="'+size.price.formattedValue+'" data-delivery="'+size.deliveryTime+'">'+size.name+'</option>';
 					}).join('');
 					
 					// Preis-HTML basierend auf reduziert/nicht reduziert
@@ -262,16 +302,16 @@
 							'<div class="PriceLabel_priceRow__priceInfo--cartEntry__Rh3lR"></div>';
 					}
 
-					console.log('econdaProduct: ', econdaProduct);
-					console.log('econdaProduct.iconurl: ', econdaProduct.iconurl);
-					console.log('produktData: ', produktData);
+					// console.log('econdaProduct: ', econdaProduct);
+					// console.log('econdaProduct.iconurl: ', econdaProduct.iconurl);
+					// console.log('produktData: ', produktData);
 
 					const productImage = econdaProduct.iconurl.replace("feeds_pic_mid", "webshop_product-small");
 					const ecoPoints = calculateEcoPoints(productPrice);
 					
 					KEK.insert(cartWrapper, 'beforeend', 
 						'<div id="kk_addon" class="CartEntry_cartEntry__detailsWrapper__ufzUb">' +
-							'<div class="kk_leftgreen"><b>Glückwunsch! Du sparst <span>' + getPriceToDisplay(saveMoney) + ' €</span></b><p>Nutze deine Ersparnis:<br>Füge den Artikel hinzu und freu dich über ein schönes Extra.</p></div>' +
+							'<div class="kk_leftgreen"><b>Glückwunsch! Du sparst <span>' + getPriceToDisplay(saveMoney) + ' €</span></b><p>Nutze deine Ersparnis:&nbsp;<br>Füge den Artikel hinzu und freu dich über ein schönes Extra.</p></div>' +
 							'<div class="kk_imageprod" style="background-image:url(' + productImage + ')">' +
 							'</div>' +
 							'<div class="CartEntry_cartEntry__detailsWrapper__details__IFwWE">' +
@@ -356,12 +396,12 @@
 							const selectedSizeId = sizeSelect.value;
 
 							// Zusammengesetzte Produkt-ID erstellen: productID + produktData.id + selectedSizeId
-							console.log('productID: ', productID.slice(0, 5));
-							console.log('produktData.id: ', produktData.id);
-							console.log('selectedSizeId: ', selectedSizeId);
+							// console.log('productID: ', productID.slice(0, 5));
+							// console.log('produktData.id: ', produktData.id);
+							// console.log('selectedSizeId: ', selectedSizeId);
 
 							const fullProductID = productID.slice(0, 5) + produktData.id + selectedSizeId;
-							console.log('Full Product ID:', fullProductID);
+							// console.log('Full Product ID:', fullProductID);
 							
 							// SessionStorage setzen - Produkt-ID des hinzugefügten Produktes speichern
 							sessionStorage.setItem('kk_added_reco_product', fullProductID);
@@ -403,39 +443,39 @@
 							});
 
 
-							console.log("aaaaaa", {
-									"event": "Ecommerce - add_to_cart",
-									"event_name": "add_to_cart",
-									"ecommerce": {
-										"currency": "EUR",
-										"value": priceToFloat(productPrice),
-										"items": [
-											{
-												"item_id": productID.slice(0, 5) + produktData.id,
-												"item_name": econdaProduct.name,
-												// "affiliation": "hessnatur",
-												"currency": "EUR",
-												"index": 0,
-												// "item_brand": "hessnatur",
-												// "item_category": "damen",
-												// "item_category2": "bekleidung",
-												// "item_category3": "Materialien",
-												"item_variant": fullProductID,
-												"price": priceToFloat(productPrice),
-												"quantity": 1,
-												"item_model": productID.slice(0, 5),
-												"item_size": selectedSizeId,
-												// "item_color": "cognac",
-												// "item_rating": "5",
-												// "item_icons": "Sale::Sustainable",
-												"item_discounted": econdaProduct.reduced1
-												// "item_wtr": "WT-ZGH hw2025 e-shop sale",
-												// "item_sortiment": "SO-001 Damen",
-												// "item_warengruppe": "WG-30 pullover"
-											}
-										]
-									}
-								});
+							// console.log("aaaaaa", {
+							// 		"event": "Ecommerce - add_to_cart",
+							// 		"event_name": "add_to_cart",
+							// 		"ecommerce": {
+							// 			"currency": "EUR",
+							// 			"value": priceToFloat(productPrice),
+							// 			"items": [
+							// 				{
+							// 					"item_id": productID.slice(0, 5) + produktData.id,
+							// 					"item_name": econdaProduct.name,
+							// 					// "affiliation": "hessnatur",
+							// 					"currency": "EUR",
+							// 					"index": 0,
+							// 					// "item_brand": "hessnatur",
+							// 					// "item_category": "damen",
+							// 					// "item_category2": "bekleidung",
+							// 					// "item_category3": "Materialien",
+							// 					"item_variant": fullProductID,
+							// 					"price": priceToFloat(productPrice),
+							// 					"quantity": 1,
+							// 					"item_model": productID.slice(0, 5),
+							// 					"item_size": selectedSizeId,
+							// 					// "item_color": "cognac",
+							// 					// "item_rating": "5",
+							// 					// "item_icons": "Sale::Sustainable",
+							// 					"item_discounted": econdaProduct.reduced1
+							// 					// "item_wtr": "WT-ZGH hw2025 e-shop sale",
+							// 					// "item_sortiment": "SO-001 Damen",
+							// 					// "item_warengruppe": "WG-30 pullover"
+							// 				}
+							// 			]
+							// 		}
+							// 	});
 
 							
 							// Funktion aufrufen
@@ -475,8 +515,8 @@
 
 				}
 			});
-		})
-		.catch(error => console.error('GraphQL Error:', error));
+		});
+		// .catch(error => console.error('GraphQL Error:', error));
 	};
 
 	KEK.elem(() => {
@@ -496,15 +536,16 @@
 				}
 			}
 			
-			console.log('productsInCart: ', productsInCart);
+			// console.log('productsInCart: ', productsInCart);
 
 			// Initial: Econda-Produkte laden
 			getProductFromEconda(productsInCart).then(econdaProducts => {
 				if (econdaProducts && econdaProducts.length > 0) {
 					initializeCartAddOn(econdaProducts, productsInCart);
-				} else {
-					console.log('Keine Econda-Produkte gefunden');
-				}
+				} 
+				// else {
+				// 	console.log('Keine Econda-Produkte gefunden');
+				// }
 			});
 		}
 	});
