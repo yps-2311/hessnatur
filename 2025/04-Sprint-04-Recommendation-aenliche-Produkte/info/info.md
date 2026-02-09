@@ -34,9 +34,10 @@ widget.render();
 - Bei manchen Referenz Produkten kommt von Econda nicht genug zurück 
 
 ## OFFEN / TODO:
-- **Wishlist-Button funktioniert nicht:** Die GUID für die Wishlist-API wird nicht korrekt ermittelt. Muss geprüft werden wo hessnatur die GUID speichert (Cookie, localStorage, sessionStorage, __NEXT_DATA__). Aktuell wird eine neue GUID generiert, aber die API akzeptiert diese möglicherweise nicht.
+- Keine offenen Punkte
 
 ## ERLEDIGT:
+- ✅ **Wishlist-Button** - Nutzt jetzt Hessnatur Custom Event `hessnatur:addToWishlist` statt eigener GraphQL-API
 - ✅ **DataLayer Tracking** (`select_item_from_list` Event) für Produkt-Klicks und Wishlist-Button implementiert
 - ✅ **Streichpreis Farbe** - Bug gefixt, Streichpreis wird jetzt explizit rot (#c00) mit line-through gestylt
 

@@ -30,30 +30,18 @@
         accountId: '00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1',
         widgetId: '202',
         baseUrl: 'https://widgets.crosssell.info/eps/crosssell/recommendations/',
-        graphqlEndpoint: 'https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app//api/graphql',
         csize: 20
     };
 
-    /** CSS für Wishlist-Hover, Fade-Transition und Toast */
+    /** CSS für Wishlist-Hover und Fade-Transition */
     function addRecoStyles() {
         if (document.querySelector('#ec-reco-styles')) return;
         
         var style = document.createElement('style');
         style.id = 'ec-reco-styles';
         style.textContent = [
-            '.ec-reco-updated .ec-wishlist-btn:hover svg { color: #c00 !important; }',
             '.ec-reco-fade { transition: opacity 0.1s ease-out; }',
-            '.ec-reco-fade.ec-fading { opacity: 0; }',
-            '.ec-hn-toast { box-sizing:border-box;position:fixed;z-index:9999;width:320px;padding:4px;top:1em;right:1em; }',
-            '.ec-hn-toast .Toastify__toast { position:relative;min-height:64px;box-sizing:border-box;margin-bottom:1rem;padding:8px;border-radius:4px;box-shadow:0 1px 10px 0 rgba(0,0,0,.1),0 2px 15px 0 rgba(0,0,0,.05);display:flex;justify-content:space-between;max-height:800px;overflow:hidden;cursor:pointer;background:#fff;color:#757575; }',
-            '.ec-hn-toast .Toastify__toast-icon { margin-inline-end:10px;width:20px;flex-shrink:0;display:flex; }',
-            '.ec-hn-toast .Toastify__toast-body { margin:auto 0;flex:1 1 auto;padding:6px;display:flex;align-items:center; }',
-            '.ec-hn-toast .Toastify__close-button { color:#000;background:transparent;outline:none;border:none;padding:0;cursor:pointer;opacity:.7;transition:.3s ease;align-self:flex-start; }',
-            '.ec-hn-toast .Toastify__progress-bar { position:absolute;bottom:0;left:0;width:100%;height:5px;z-index:9999;opacity:.7;transform-origin:left;animation:Toastify__trackProgress 5000ms linear forwards; }',
-            '.ec-hn-toast .ec-toast-success { fill:#8faf80; }',
-            '.ec-hn-toast .ec-toast-warning { fill:#e6b84d; }',
-            '.ec-hn-toast .ec-progress-success { background:#8faf80; }',
-            '.ec-hn-toast .ec-progress-warning { background:#e6b84d; }'
+            '.ec-reco-fade.ec-fading { opacity: 0; }'
         ].join('\n');
         (document.head || document.documentElement).appendChild(style);
     }
@@ -85,10 +73,9 @@
         wishlistButton: '[data-testid="add-to-wishlist-button"]'
     };
 
-    // Cache für Template, GUID und Request-Tracking
+    // Cache für Template und Request-Tracking
     var cache = {
         template: null,
-        guid: null,
         lastRenderedUrl: null,
         wrapper: null,
         isLoading: false,
@@ -96,8 +83,51 @@
     };
 
     var STORAGE_KEY = 'econda_reco_cache';
+    var WISHLIST_STORAGE_KEY = 'econda_reco_wishlist';
     var CACHE_TTL = 30 * 60 * 1000; // 30 Minuten
     var DOM_STABLE_DELAY = 400; // Warte 400ms bis DOM stabil ist (React fertig)
+    
+    /** SKU zur lokalen Wishlist-Tracking hinzufügen */
+    function addToLocalWishlist(sku) {
+        try {
+            var stored = sessionStorage.getItem(WISHLIST_STORAGE_KEY);
+            var list = stored ? JSON.parse(stored) : [];
+            if (list.indexOf(sku) === -1) {
+                list.push(sku);
+                sessionStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(list));
+                log('SKU zur lokalen Wishlist hinzugefügt:', sku);
+            }
+        } catch (e) {
+            warn('Wishlist Storage Fehler:', e);
+        }
+    }
+    
+    /** Prüfen ob SKU in lokaler Wishlist ist */
+    function isInLocalWishlist(sku) {
+        try {
+            var stored = sessionStorage.getItem(WISHLIST_STORAGE_KEY);
+            if (!stored) return false;
+            var list = JSON.parse(stored);
+            return list.indexOf(sku) !== -1;
+        } catch (e) {
+            return false;
+        }
+    }
+    
+    /** Wishlist-Button als 'added' markieren (rotes gefülltes Herz) */
+    function markButtonAsWishlisted(btn) {
+        if (!btn) return;
+        btn.classList.add('AddToWishlistButton_added__X4ouM');
+        var svg = btn.querySelector('svg');
+        if (svg) {
+            svg.setAttribute('data-prefix', 'fas');
+            svg.setAttribute('data-icon', 'heart');
+            var path = svg.querySelector('path');
+            if (path) {
+                path.setAttribute('d', 'M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z');
+            }
+        }
+    }
     
     /** Reco-Container verstecken (Anti-Flicker) */
     function hideReco(element) {
@@ -225,116 +255,20 @@
         return window.location.pathname;
     }
 
-    /** GUID aus Hessnatur Wishlist-Cookie holen */
-    function getGuid() {
-        if (cache.guid) return cache.guid;
-        var m = document.cookie.match(/Hessnatur[A-Z]{2}Site-wishlist=([^;]+)/);
-        if (m) { cache.guid = m[1]; log('GUID gefunden:', cache.guid); return cache.guid; }
-        warn('Keine Wishlist-GUID gefunden');
-        return null;
-    }
-
-    /** Wishlist-Klick behandeln */
+    /** Wishlist-Klick behandeln - nutzt Hessnatur Custom Event */
     function addToWishlist(productCode, product, btn) {
-        var guid = getGuid();
-        log('Wishlist Add:', productCode, 'GUID:', guid);
+        log('Wishlist Add via Custom Event:', productCode);
         
-        if (!guid) {
-            warn('Keine GUID - leite zur PDP weiter');
-            var productId = product && product.id ? product.id : productCode.replace(/[A-Z0-9]+$/, '');
-            window.location.href = 'https://www.hessnatur.com/' + getCountry() + '/p/' + productId;
-            return;
-        }
-
-        // API-Call OHNE credentials (kein Preflight nötig)
-        fetch(CONFIG.graphqlEndpoint, {
-            method: 'POST',
-            headers: {
-                'accept': '*/*',
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                operationName: 'updateWishlistEntry',
-                variables: {
-                    country: getCountry(),
-                    guid: guid,
-                    code: productCode
-                },
-                query: 'mutation updateWishlistEntry($country: String!, $code: String!, $guid: String, $token: String) { updateWishlistEntry(country: $country, code: $code, guid: $guid, token: $token) { __typename ... on WishlistModification { quantity quantityAdded statusCode guid __typename } ... on GenericOCCResponse { success invalidFields __typename } } }'
-            })
-        })
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
-            log('Wishlist Response:', data);
-            var entry = data.data && data.data.updateWishlistEntry;
-            
-            if (entry) {
-                var isAlreadyOnList = entry.invalidFields && entry.invalidFields.indexOf('wishlist.entry.already.present') !== -1;
-                var isSuccess = entry.quantityAdded !== undefined || entry.success || isAlreadyOnList;
-                
-                if (isSuccess) {
-                    log('✅ Wishlist erfolgreich!');
-                    
-                    // Toast anzeigen (Hessnatur-Style mit Warning für "bereits vorhanden")
-                    var message = isAlreadyOnList 
-                        ? 'Der Artikel ist bereits auf deinem Merkzettel.' 
-                        : 'Der Artikel wurde zum Merkzettel hinzugefügt.';
-                    showHessnaturToast(message, isAlreadyOnList);
-                }
-            }
-        })
-        .catch(function(err) {
-            err('Wishlist Error:', err);
-            // Bei Fehler zur PDP weiterleiten
-            var productId = product && product.id ? product.id : productCode.replace(/[A-Z0-9]+$/, '');
-            window.location.href = 'https://www.hessnatur.com/' + getCountry() + '/p/' + productId;
-        });
-    }
-
-    /** Hessnatur Toast anzeigen */
-    function showHessnaturToast(message, isWarning) {
-        log('Toast anzeigen:', message, 'isWarning:', isWarning);
-        addRecoStyles(); // Sicherstellen dass CSS geladen ist
+        // Hessnatur Custom Event dispatchen - Toast wird von Hessnatur gehandhabt
+        window.dispatchEvent(new CustomEvent('hessnatur:addToWishlist', {
+            detail: { productCode: productCode }
+        }));
         
-        var container = document.querySelector('.Toastify');
-        if (!container) {
-            container = document.createElement('div');
-            container.className = 'Toastify';
-            document.body.appendChild(container);
-        }
+        // SKU in lokaler Wishlist speichern (für Persistenz nach Reload)
+        addToLocalWishlist(productCode);
         
-        var existing = container.querySelector('.ec-hn-toast');
-        if (existing) existing.remove();
-        
-        var colorClass = isWarning ? 'ec-toast-warning' : 'ec-toast-success';
-        var progressClass = isWarning ? 'ec-progress-warning' : 'ec-progress-success';
-        var iconSvg = isWarning 
-            ? '<svg viewBox="0 0 24 24" width="100%" height="100%" class="' + colorClass + '"><path d="M23.32 17.191L15.438 2.184C14.728.833 13.416 0 11.996 0c-1.42 0-2.733.833-3.443 2.184L.533 17.448a4.744 4.744 0 000 4.368C1.243 23.167 2.555 24 3.975 24h16.05C22.22 24 24 22.044 24 19.632c0-.904-.251-1.746-.68-2.44zm-9.622 1.46c0 1.033-.724 1.823-1.698 1.823s-1.698-.79-1.698-1.822v-.043c0-1.028.724-1.822 1.698-1.822s1.698.79 1.698 1.822v.043zm.039-12.285l-.84 8.06c-.057.581-.408.943-.897.943-.49 0-.84-.367-.896-.942l-.84-8.065c-.057-.624.25-1.095.779-1.095h1.91c.528.005.84.476.784 1.1z"></path></svg>'
-            : '<svg viewBox="0 0 24 24" width="100%" height="100%" class="' + colorClass + '"><path d="M12 0a12 12 0 1012 12A12.014 12.014 0 0012 0zm6.927 8.2l-6.845 9.289a1.011 1.011 0 01-1.43.188l-4.888-3.908a1 1 0 111.25-1.562l4.076 3.261 6.227-8.451a1 1 0 111.61 1.183z"></path></svg>';
-        
-        var toastContainer = document.createElement('div');
-        toastContainer.className = 'Toastify__toast-container Toastify__toast-container--top-right ec-hn-toast';
-        toastContainer.innerHTML = '<div class="Toastify__toast Toastify__toast-theme--light" role="alert">' +
-            '<div class="Toastify__toast-icon">' + iconSvg + '</div>' +
-            '<div class="Toastify__toast-body">' + message + '</div>' +
-            '<button class="Toastify__close-button Toastify__close-button--light" type="button" aria-label="close"><svg aria-hidden="true" viewBox="0 0 14 16" style="width:14px;height:16px;fill:currentColor"><path fill-rule="evenodd" d="M7.71 8.23l3.75 3.75-1.48 1.48-3.75-3.75-3.75 3.75L1 11.98l3.75-3.75L1 4.48 2.48 3l3.75 3.75L9.98 3l1.48 1.48-3.75 3.75z"></path></svg></button>' +
-            '<div class="Toastify__progress-bar ' + progressClass + '"></div></div>';
-        
-        var toast = toastContainer.querySelector('.Toastify__toast');
-        toastContainer.querySelector('.Toastify__close-button').addEventListener('click', function(e) {
-            e.stopPropagation();
-            toastContainer.remove();
-        });
-        
-        container.appendChild(toastContainer);
-        toast.style.animation = 'Toastify__bounceInRight 0.7s';
-        
-        setTimeout(function() {
-            if (toastContainer.parentNode) {
-                toast.style.animation = 'Toastify__bounceOutRight 0.7s forwards';
-                setTimeout(function() { if (toastContainer.parentNode) toastContainer.remove(); }, 700);
-            }
-        }, 5000);
+        // Visuelles Feedback: Button als "added" markieren
+        markButtonAsWishlisted(btn);
     }
 
     /** Preis-String in Float umwandeln */
@@ -500,6 +434,12 @@
             newBtn.setAttribute('data-code', wishlistCode);
             newBtn.setAttribute('data-reco-index', index);
             newBtn.classList.add('ec-wishlist-btn');
+            
+            // Prüfen ob Produkt bereits auf Wishlist ist (nach Page Reload)
+            if (isInLocalWishlist(wishlistCode)) {
+                log('Produkt bereits auf Wishlist:', wishlistCode);
+                markButtonAsWishlisted(newBtn);
+            }
             
             // Handler DIREKT binden (nicht später in bindWishlistButtons)
             var wishlistHandler = function(e) {
