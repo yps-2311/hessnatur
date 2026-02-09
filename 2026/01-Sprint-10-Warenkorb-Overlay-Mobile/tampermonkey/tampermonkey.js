@@ -17,12 +17,12 @@
     const css = document.createElement('link');
     css.rel = 'stylesheet';
     css.type = 'text/css';
-    css.href = 'https://local-dev.konversionskraft.de/hessnatur/2026/01-Sprint-Sprint-10-Warenkorb-Overlay-Mobile/src/variation-01/style.css?v=' + Date.now();
+    css.href = 'https://local-dev.konversionskraft.de/hessnatur/2026/01-Sprint-10-Warenkorb-Overlay-Mobile/src/variation-01/style.css?v=' + Date.now();
     (document.head || document.documentElement).appendChild(css);
 
     // Inject test script
     const script = document.createElement('script');
-    script.src = 'https://local-dev.konversionskraft.de/hessnatur/2026/01-Sprint-Sprint-10-Warenkorb-Overlay-Mobile/src/variation-01/script.min.js?v=' + Date.now();
+    script.src = 'https://local-dev.konversionskraft.de/hessnatur/2026/01-Sprint-10-Warenkorb-Overlay-Mobile/src/variation-01/script.min.js?v=' + Date.now();
     script.type = 'text/javascript';
     script.async = false;
 

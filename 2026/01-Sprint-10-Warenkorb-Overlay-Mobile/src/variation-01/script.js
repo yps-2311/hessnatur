@@ -18,6 +18,9 @@
 
     const STORAGE_KEY = 'kk-reco';
 
+    // Minicart Auto-Close deaktivieren (React-Schnittstelle)
+    win.disableMiniCartAutoCloseAddCart = true;
+
     // Flag: Nudge nur anzeigen wenn Add-to-Cart geklickt wurde
     let showNudge = false;
 

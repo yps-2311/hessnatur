@@ -21,6 +21,11 @@ div[data-testid="minicart"] {
     background: #fff;
 }
 
+// Nur wenn Nudge existiert: max-height für EntryWrapper anpassen
+[data-testid="minicart"]:has(.kk-nudge) [class*="miniCart__entryWrapper"] {
+    max-height: calc(100vh - 80px - 175px);
+}
+
 // Minicart EntryWrapper: Scrollbar mit max-height
 [class*="miniCart__entryWrapper"] {
     overflow-y: auto !important;
