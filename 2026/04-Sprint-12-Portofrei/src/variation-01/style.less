@@ -100,6 +100,7 @@
         line-height: 1.1;
         color: @color-text;
         white-space: nowrap; // Verhindert Umbruch
+        margin-top: auto; // Headline nach unten zum Bottom-Bereich schieben
     }
 
     .v1-teaser-bottom {
@@ -144,6 +145,25 @@
     .v1-portofrei-teaser {
         .v1-teaser-inner {
             padding-right: 24px; // Weniger Padding auf Mobile
+        }
+    }
+}
+
+@media (max-width: 640px) {
+    .v1-portofrei-teaser {
+        .v1-teaser-headline {
+            font-size: 28px;
+            white-space: normal; // Umbruch erlauben
+        }
+
+        .v1-teaser-subline {
+            font-size: 16px;
+            white-space: normal;
+        }
+
+        .v1-teaser-btn {
+            font-size: 15px;
+            padding: 8px 14px;
         }
     }
 }

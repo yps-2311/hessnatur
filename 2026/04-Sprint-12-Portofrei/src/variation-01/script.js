@@ -74,7 +74,7 @@ if (!document.getElementById('v1-anti-flicker')) {
                 e.preventDefault();
                 KEK.copyToClipboard(CODE);
                 KEK.trackEvent('header');
-                KEK.showToast('Code kopiert!');
+                KEK.showToast('Code wurde in deine Zwischenablage kopiert.');
             });
         }
         
@@ -152,7 +152,7 @@ if (!document.getElementById('v1-anti-flicker')) {
             teaserBtn.addEventListener('click', () => {
                 KEK.copyToClipboard(CODE);
                 KEK.trackEvent('plp-kachel');
-                KEK.showToast('Code kopiert!');
+                KEK.showToast('Code wurde in deine Zwischenablage kopiert.');
             });
         }
         
