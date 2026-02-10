@@ -4,13 +4,23 @@
 
 /**
  * @project 05-Sprint-13-Sticky-Filter-Mobile
- * @author Manuel Brückmann
+ * @author Anton Müller
  * @date 4. Februar 2026
  * @variation 01
  * @description Sticky Filter/Sortierung auf mobilen PLPs & SRPs mit Event-Tracking für Filter-Tabs und Kategorien
  */
 (function(KEK) {
     "use strict";
+
+    console.log('[Sprint 13] Script loaded, viewport:', window.innerWidth);
+
+    // Nur auf Mobile (< 640px)
+    if (window.innerWidth >= 640) {
+        console.log('[Sprint 13] Desktop detected, aborting.');
+        return;
+    }
+
+    console.log('[Sprint 13] Mobile detected, initializing...');
 
     // Tracking Helper
     const trackClick = (eventName, action, category) => {
@@ -20,51 +30,63 @@
             filter_action: action,
             filter_category: category || ''
         });
+        console.log('[Sprint 13] Tracked:', { event_name: eventName, filter_action: action, filter_category: category });
     };
 
-    // Init Tracking
-    const initTracking = () => {
-        // Track Filter/Sortieren Tab Clicks
-        KEK.elem('.FilterSortTabs_filterSortTabs__trigger__Hjs7L', (triggers) => {
-            if (!triggers) return;
+    // Init Tracking mit Event Delegation (erfasst auch dynamisch geladene Elemente)
+    const initTracking = (wrapper) => {
+        console.log('[Sprint 13] Wrapper found, attaching event delegation.');
+        wrapper.addEventListener('click', (e) => {
+            const target = e.target;
 
-            triggers.forEach((trigger, index) => {
-                const isFilterTab = index === 0;
-                const eventName = isFilterTab ? 'filter_click' : 'sort_click';
-                const action = isFilterTab ? 'Clicke Filter' : 'Clicke Sortieren';
+            // Filter/Sortieren Tab Clicks
+            const tabTrigger = target.closest('.FilterSortTabs_filterSortTabs__trigger__Hjs7L');
+            if (tabTrigger) {
+                const triggers = wrapper.querySelectorAll('.FilterSortTabs_filterSortTabs__trigger__Hjs7L');
+                const index = Array.from(triggers).indexOf(tabTrigger);
+                const action = index === 0 ? 'Clicke Filter' : 'Clicke Sortieren';
+                trackClick('filter_click', action, '');
+                return;
+            }
 
-                trigger.addEventListener('click', () => {
-                    trackClick(eventName, action, '');
-                });
-            });
-        });
+            // Filter-Kategorie Clicks
+            const categoryBtn = target.closest('.FilterElement_filterAccordionItem__header__fALCo button');
+            if (categoryBtn) {
+                const categoryName = categoryBtn.textContent.trim();
+                trackClick('filter_click', 'Clicke Filter', categoryName);
+                return;
+            }
 
-        // Track Filter-Kategorie Clicks (h3 > button)
-        KEK.elem('.FilterElement_filterAccordionItem__header__fALCo button', (categoryButtons) => {
-            if (!categoryButtons) return;
+            // Sortier-Optionen Clicks
+            const sortBtn = target.closest('.SortBy_sortBy__item__4ELSR');
+            if (sortBtn) {
+                const optionName = sortBtn.textContent.trim();
+                trackClick('filter_click', 'Clicke Sortieren', optionName);
+                return;
+            }
 
-            categoryButtons.forEach((btn) => {
-                btn.addEventListener('click', () => {
-                    const categoryName = btn.textContent.trim();
-                    trackClick('filter_click', 'Clicke Filter', categoryName);
-                });
-            });
-        });
-
-        // Track Schließen-Button Click
-        KEK.elem('.FilterSortTabs_filterSortTabs__close-all-button__X7GUA', (closeBtns) => {
-            if (!closeBtns) return;
-
-            closeBtns[0].addEventListener('click', () => {
-                trackClick('filter_click', 'Clicke Filter', 'Schließen');
-            });
+            // Schließen-Button Clicks
+            const closeBtn = target.closest('.FilterSortTabs_filterSortTabs__close-all-button__X7GUA');
+            if (closeBtn) {
+                const panel = closeBtn.closest('[role="tabpanel"]');
+                const panels = wrapper.querySelectorAll('[role="tabpanel"]');
+                const panelIndex = Array.from(panels).indexOf(panel);
+                const action = panelIndex === 0 ? 'Clicke Filter' : 'Clicke Sortieren';
+                trackClick('filter_click', action, 'Schließen');
+                return;
+            }
         });
     };
 
     // Init Test (SPA-safe mit KEK.elem Polling)
-    KEK.elem('.plp_filterSortTabsWrapper__LkAYd', (wrapper) => {
-        if (!wrapper) return;
-        initTracking();
+    console.log('[Sprint 13] Starting KEK.elem polling for wrapper...');
+    KEK.elem('.plp_filterSortTabsWrapper__LkAYd', (wrappers) => {
+        if (!wrappers) {
+            console.log('[Sprint 13] Wrapper NOT found (timeout).');
+            return;
+        }
+        console.log('[Sprint 13] Wrapper found:', wrappers[0]);
+        initTracking(wrappers[0]);
     });
 
 })(new window.KEK());

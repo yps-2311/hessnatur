@@ -38,3 +38,11 @@ Beispiel URL:
 https://products.hessnatur.com/products/20051012
 Sollte es keine Infos geben, ist die ProduktID nicht ausführlich genug. Meist erst ab einer 7stelligen ID gib es Infos.
 Hierbei stehen die ersten 5 Ziffern für das Produkt, die 6+7 für die Farbe/Typ und sollte es 8+9 geben stehen die Ziffern für die Größe.
+
+## addToWishlist (Custom Event)
+Hessnatur stellt ein Custom Event bereit, um Produkte zur Wishlist hinzuzufügen. Das Event wird auf `window` dispatched und Hessnatur handhabt die komplette Logik (API-Call, Toast, Counter-Update, Error-Handling).
+
+```javascript
+window.dispatchEvent(new CustomEvent('hessnatur:addToWishlist', {
+    detail: { productCode: '<SKU CODE>' }
+}));
