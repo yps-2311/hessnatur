@@ -12,60 +12,131 @@
 (function (KEK) {
 	"use strict";
 
-	let productsInCart = [];
+	// let productsInCart = [];
 
-	// Hilfsfunktion um die passende productSize zu ermitteln
-	const getProductSize = (ids) => {
-		// Reguläre Kleidungsgrößen (XS bis XXXL)
-		const clothingSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'ONE'];
-		// Regex für zweistellige Größen (z.B. 36, 38, 40)
-		const twoDigitSizeRegex = /^\d{2}$/;
-		// Regex für vierstellige Hosengrößen (z.B. 3432)
-		const fourDigitSizeRegex = /^\d{4}$/;
+	// Konstanten für Produkt-ID-Slices (Magic Numbers vermeiden)
+	const SKU_MODEL_END = 5;        // slice(0, 5) = Modell-ID (z.B. "57283")
+	const SKU_STYLE_START = 5;      // slice(5, 7) = Style-ID (z.B. "88")
+	const SKU_STYLE_END = 7;
+	const SKU_WITH_COLOR_END = 7;   // slice(0, 7) = Modell + Style (z.B. "5728388")
+	const SKU_SIZE_START = 7;       // slice(7, 11) = Größen-ID (z.B. "34")
+	const SKU_SIZE_END = 11;
 
-		let fourDigitFallback = null;
-
-		for (let i = 0; i < ids.length; i++) {
-			const size = ids[i].slice(7, 11).trim();
-			
-			// Priorität 1: Standard-Kleidungsgrößen (XS, S, M, L, XL, XXL, XXXL, ONE)
-			if (clothingSizes.includes(size) || clothingSizes.includes(size.trim())) {
-				return size;
-			}
-			
-			// Priorität 2: Zweistellige Größen (z.B. 36, 38)
-			if (twoDigitSizeRegex.test(size.trim())) {
-				return size;
-			}
-			
-			// Merke erste vierstellige Hosengröße als Fallback
-			if (!fourDigitFallback && fourDigitSizeRegex.test(size)) {
-				fourDigitFallback = size;
-			}
-		}
-
-		// Priorität 3: Vierstellige Hosengröße falls vorhanden
-		if (fourDigitFallback) {
-			return fourDigitFallback;
-		}
-
-		// Priorität 4: Letztes Fallback - erstes Produkt
-		return ids[0].slice(7, 11);
+	// Mapping Tabelle für Konvertierung Kleidergröße → Zahlengröße
+	const sizeMapping = {
+		damen: { 'XS': '32', 'S': '36', 'M': '40', 'L': '44', 'XL': '48', 'XXL': '52', 'XXXL': '56' },
+		herren: { 'XS': '44', 'S': '48', 'M': '52', 'L': '56', 'XL': '60', 'XXL': '64', 'XXXL': '68' }
 	};
 
-	const getProductFromEconda = (productIDs) => {
-		console.log('productIDs: ', productIDs);
+	const alternativProdukt = [{
+		id: "5552501",
+		price: "29,99 €",
+		sku: "555250140,",
+		sku7: "5552501",
+		iconurl: "https://images.hessnatur.com/images/2825924/webshop_product-xlarge/product-shop/Socke_im_2er_Pack_aus_reiner_Bio_Baumwolle-55525_01_7.webp",
+		reduced1: "false",
+		name: "Socke im 2er-Pack aus reiner Bio-Baumwolle"
+	}];
 
-		const pidParams = productIDs.map(id => `&pid=${id.slice(0, 7)}`).join('');
-		console.log('pidParams: ', pidParams);
-		console.log('getProductSize(productIDs): ', getProductSize(productIDs));
-    	const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&widgetdetails=true&start=0&ctxcustom.size=' + getProductSize(productIDs) + (productIDs ? pidParams : ''); // &csize=20
+	let savedSizes = new Set();
+
+	// Hilfsfunktion um die passende productSize zu ermitteln
+	const getProductSize = (products) => {
+		console.log('products: ', products);
+		const clothingSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'ONE'];
+		const twoDigitSizeRegex = /^\d{2}$/;
+		
+		let size = '';
+		let size2 = '';
+		let firstProduct = null;
+		let secondProduct = null;
+		
+		// Durchsuche alle Produkte nach gültigen Größen
+		for (let i = 0; i < products.length; i++) {
+			const itemSize = products[i].item_size;
+			
+			// Prüfe ob Größe den Kriterien entspricht (Prio 1 & 2)
+			if (clothingSizes.includes(itemSize) || twoDigitSizeRegex.test(itemSize)) {
+				if (!firstProduct) {
+					firstProduct = products[i];
+					size = itemSize;
+				} else if (!secondProduct) {
+					secondProduct = products[i];
+					size2 = itemSize;
+					break; // Beide gefunden, fertig
+				}
+			}
+		}
+		
+		// Wenn size2 leer ist, versuche Mapping basierend auf Kategorie
+		if (size && !size2 && firstProduct) {
+			const category = firstProduct.item_category?.toLowerCase();
+			
+			// Mapping in beide Richtungen: XL -> 48 und 48 -> XL
+			if (sizeMapping[category]?.[size]) {
+				// Buchstaben → Zahl (z.B. XL -> 48)
+				size2 = sizeMapping[category][size];
+			} else if (sizeMapping[category]) {
+				// Zahl → Buchstaben (z.B. 48 -> XL) - Reverse Lookup
+				const reverseMatch = Object.entries(sizeMapping[category]).find(([key, val]) => val === size);
+				if (reverseMatch) {
+					size2 = reverseMatch[0]; // Der Key ist die Buchstaben-Größe
+				}
+			}
+		}
+		
+		// Baue den String zusammen
+		let result = '';
+		console.log('size: ', size);
+		if (size) {
+			result += '&ctxcustom.size=' + size;
+			savedSizes.add(size);
+		}
+		console.log('size2: ', size2);
+		if (size2) {
+			result += '&ctxcustom.size2=' + size2;
+			savedSizes.add(size2);
+		}
+		
+		// console.log('result: ', result);
+		return result;
+	};
+
+	const getProductFromEconda = (productDatas) => {
+		// console.log('productIDs: ', productIDs);
+
+		// const productDatas = window.dataLayer && window.dataLayer.find(entry => entry.event === "Ecommerce - view_cart").ecommerce.items;
+		console.log('productDatas: ', productDatas);
+		
+
+		// const pidParams = productIDs.map(id => `&pid=${id.slice(0, 7)}`).join('');
+		// console.log('pidParams: ', pidParams);
+		// console.log('getProductSize(productIDs): ', getProductSize(productIDs));
+    	// const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&widgetdetails=true&start=0&ctxcustom.size=' + getProductSize(productIDs) + (productIDs ? pidParams : ''); // &csize=20
+
+
+		const pidParams = productDatas.map(prod => `&pid=${prod.item_variant.slice(0, SKU_WITH_COLOR_END)}`).join('');
+		const productSizes = getProductSize(productDatas);
+
+		// console.log('pidParams: ', pidParams);
+		// console.log('productSizes: ', productSizes);
+
+		// Wenn es aus den Produkten im Warenkorb keine nutzbare Größe zu extrahieren gibt (zb Decken oder Schaals) dann wird direkt auf das 
+		// alternativ Produkt gewechselt statt einen Request gegen Econda zu machen, da kein sinnvolles Ergebniss zu erwarten ist, ohne mitgesendete Größe
+		if(productSizes === ""){
+			return Promise.resolve(alternativProdukt);
+		}
+
+		// Request gegen Econda für eine Reco mit sinnvollen Produkten
+    	const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&'+
+					'widgetdetails=true&csize=20&start=0' + productSizes + (productDatas ? pidParams : ''); // &ctxcustom.size=
 
 		return fetch(url)
 			.then(res => res.json())
 			.then(data => {
 				console.log('Econda Produkte:', data.items);
-				return data.items;
+				
+				return data.items.length === 0 ? alternativProdukt : data.items;
 			})
 			.catch(error => {
 				// console.error('Econda Fehler:', error);
@@ -99,22 +170,18 @@
 					cartEntry: {
 						quantity: 1,
 						product: {
-							code: exactProductID9 //"572838834"
+							code: exactProductID9
 						}
 					}
 				},
 				query: "mutation updateCartEntry($country: String!, $token: String, $guid: String, $expirationTime: String, $cartEntry: UpdateCartEntry!) {\n  updateCartEntry(country: $country, token: $token, guid: $guid, expirationTime: $expirationTime, cartEntry: $cartEntry) {\n    __typename\n    ... on CartModification {\n      guid\n      quantity\n      quantityAdded\n      statusCode\n      entry {\n        quantity\n        entryNumber\n        totalPrice {\n          formattedValue\n          __typename\n        }\n        __typename\n      }\n      __typename\n    }\n    ... on GenericOCCResponse {\n      success\n      invalidFields\n      __typename\n    }\n  }\n}\n"
 			})
 		})
-		.then(response => response.json())
-		.then(data => {
-			// console.log('Erfolg:', data);
-			// Reload
-			KEK.reload();
-		})
-		.catch(error => {
-			// console.error('Fehler:', error);
-		});
+		// .then(response => response.json())
+		.then(KEK.reload);
+		// .catch(error => {
+		// 	// console.error('Fehler:', error);
+		// });
 	};
 
 	const priceToFloat = (oldPrice) => {
@@ -140,11 +207,17 @@
 				saveMoney += savings;
 			}
 		});
+		const amount_voucher = KEK.qs('[class*="AmountBox_voucher__"] div:last-child');
+		if(amount_voucher){{
+			saveMoney += priceToFloat(amount_voucher.textContent.replace('-',''));
+		}}
+
 		return saveMoney;
 	}
 
 	// Haupt-Funktion die alles koordiniert
 	const initializeCartAddOn = (econdaProducts, productsStayInCart) => {
+		// console.log('productsStayInCart: ', productsStayInCart);
 
 		KEK.elem(() => {
 			const saveMoney = getSavedMoney();
@@ -162,13 +235,15 @@
 				// Finde alle Produkte aus Econda deren Preis kleiner ist als saveMoney
 				// Und es werden nur Produkte die direkt die korrekte Größe haben weitergegeben
 				let matchingProducts = econdaProducts.filter(product => {
+					// console.log('product: ', product);
 					const productPrice = priceToFloat(product.price);
 					// console.log('product.sku.slice(7, 11): ', product.sku.slice(7, 11), productsStayInCart[0].slice(7, 11));
 					// return productPrice < saveMoney && product.sku.slice(7, 11) === productsStayInCart[0].slice(7, 11);
+					const productSizeId = product.sku.slice(SKU_SIZE_START, SKU_SIZE_END);
 					let foundMatch = false;
 					for (let j = 0; j < productsStayInCart.length && !foundMatch; j++) {
 						// console.log('product.sku.slice(7, 11): ', product.sku.slice(7, 11), productsStayInCart[j].slice(7, 11));
-						if (product.sku.slice(7, 11) === productsStayInCart[j].slice(7, 11)) {
+						if (productSizeId === productsStayInCart[j].item_id.slice(SKU_SIZE_START, SKU_SIZE_END)) {
 							foundMatch = true;
 						}
 					}
@@ -179,7 +254,7 @@
 				if (matchingProducts.length === 0) {
 					// console.log("fallback1 ", matchingProducts);
 					matchingProducts = econdaProducts.filter(product => {
-						return priceToFloat(product.price) < saveMoney && product.sku.slice(7, 11) === "ONE";
+						return priceToFloat(product.price) < saveMoney && product.sku.slice(SKU_SIZE_START, SKU_SIZE_END) === "ONE";
 					});
 				}
 
@@ -190,6 +265,7 @@
 						return priceToFloat(product.price) < saveMoney;
 					});
 				}
+				// console.log('matchingProducts: ', matchingProducts);
 
 				if (matchingProducts.length === 0) {
 					// console.log('Kein passendes Econda-Produkt gefunden');
@@ -222,7 +298,9 @@
 		// }
 
 		const econdaProduct = matchingProducts[currentIndex];
+		// console.log('econdaProduct: ', econdaProduct);
 		const productID = econdaProduct.sku7;
+		const productModelID = productID.slice(0, SKU_MODEL_END);  // Cache für mehrfache Verwendung
 		// console.log('->>. Teste Produkt ' + (currentIndex + 1) + '/' + matchingProducts.length + ':', productID);
 		
 		fetch('https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app/api/graphql', {
@@ -243,10 +321,10 @@
 		.then(responseData => {
 			// console.log('GraphQL Response:', responseData);
 
-			const matchingStyle = responseData.data.allAvailabilities.styles.find(style => style.id === productID.slice(5, 7));
+			const matchingStyle = responseData.data.allAvailabilities.styles.find(style => style.id === productID.slice(SKU_STYLE_START, SKU_STYLE_END));
 			const produktData = matchingStyle || responseData.data.allAvailabilities.styles[0];
 			
-			console.log('produktData: ', produktData);
+			// console.log('produktData: ', produktData);
 
 			KEK.elem('[data-testid="cartPage"] [class*="cart_cart-page__wrapper__cart-entries-list_"]', (cartWrapper) => {
 				if(cartWrapper && !KEK.qs('#kk_addon')){
@@ -270,12 +348,23 @@
 					// getProductSize(productID)
 					// console.log('productID: ', econdaProduct.sku.slice(7,11));
 					// console.log('getProductSize(productID): ', getProductSize(econdaProduct.sku));
+
+
+
+
+					// if (sizeMapping[category]?.[size]) {
+					// 	size2 = sizeMapping[category][size];
+					// }
+
 					
 					// Größen-Dropdown dynamisch erstellen
 					const sizeOptionsHTML = produktData.sizes.map(size => {
-						// KEK.qs('#cart-entry-size-0')?.value
-						return '<option '+(econdaProduct.sku.slice(7,11) === size.id ? 'selected' : '')+' value="'+size.id+'" data-price="'+size.price.formattedValue+'" data-delivery="'+size.deliveryTime+'">'+size.name+'</option>';
+						const selectedCorrectSize = savedSizes.has(size.id) ? 'selected' : '';
+
+						return '<option '+selectedCorrectSize+' value="'+size.id+'" data-price="'+size.price.formattedValue+'" data-delivery="'+size.deliveryTime+'">'+size.name+'</option>';
 					}).join('');
+
+					// console.log('sizeOptionsHTML: ', sizeOptionsHTML);
 					
 					// Preis-HTML basierend auf reduziert/nicht reduziert
 					const isReduced = econdaProduct.reduced === "true";
@@ -306,6 +395,7 @@
 					// console.log('econdaProduct.iconurl: ', econdaProduct.iconurl);
 					// console.log('produktData: ', produktData);
 
+					// console.log('econdaProduct: ', econdaProduct);
 					const productImage = econdaProduct.iconurl.replace("feeds_pic_mid", "webshop_product-small");
 					const ecoPoints = calculateEcoPoints(productPrice);
 					
@@ -320,7 +410,7 @@
 									econdaProduct.name +
 								'</div>' +
 								'<div class="CartEntry_cartEntry__detailsWrapper__details__subline__dnLuO">' +
-									'<div class="CartEntry_cartEntry__subline__JAHeL">Artikel ' + productID.slice(0, 5) + '</div>' +
+									'<div class="CartEntry_cartEntry__subline__JAHeL">Artikel ' + productModelID + '</div>' +
 									'<div class="CartEntry_cartEntry__detailsWrapper__details--detail__BsQu1">Farbe: ' + (produktData.name.charAt(0).toUpperCase() + produktData.name.slice(1)) + '</div>' +
 								'</div>' +
 								'<div class="CartEntry_cartEntry__detailsWrapper__details__availability__UPqPX">' +
@@ -400,7 +490,7 @@
 							// console.log('produktData.id: ', produktData.id);
 							// console.log('selectedSizeId: ', selectedSizeId);
 
-							const fullProductID = productID.slice(0, 5) + produktData.id + selectedSizeId;
+							const fullProductID = productModelID + produktData.id + selectedSizeId;
 							// console.log('Full Product ID:', fullProductID);
 							
 							// SessionStorage setzen - Produkt-ID des hinzugefügten Produktes speichern
@@ -416,7 +506,7 @@
 									"value": priceToFloat(productPrice),
 									"items": [
 										{
-											"item_id": productID.slice(0, 5) + produktData.id,
+											"item_id": productModelID + produktData.id,
 											"item_name": econdaProduct.name,
 											// "affiliation": "hessnatur",
 											"currency": "EUR",
@@ -428,7 +518,7 @@
 											"item_variant": fullProductID,
 											"price": priceToFloat(productPrice),
 											"quantity": 1,
-											"item_model": productID.slice(0, 5),
+											"item_model": productModelID,
 											"item_size": selectedSizeId,
 											// "item_color": "cognac",
 											// "item_rating": "5",
@@ -441,7 +531,6 @@
 									]
 								}
 							});
-
 
 							// console.log("aaaaaa", {
 							// 		"event": "Ecommerce - add_to_cart",
@@ -529,7 +618,7 @@
 
 			for (let i = 0; i < items.length; i++) {
 				
-				productsInCart.push(items[i].item_id);
+				// productsInCart.push(items[i].item_id);
 
 				if(getSessionStorage && (items[i].item_id.substring(0,5) === getSessionStorage.substring(0,5))){
 					return;
@@ -539,18 +628,25 @@
 			// console.log('productsInCart: ', productsInCart);
 
 			// Initial: Econda-Produkte laden
-			getProductFromEconda(productsInCart).then(econdaProducts => {
+			getProductFromEconda(items).then(econdaProducts => {
+				console.log('econdaProducts: ', econdaProducts);
 				if (econdaProducts && econdaProducts.length > 0) {
-					initializeCartAddOn(econdaProducts, productsInCart);
-				} 
+					initializeCartAddOn(econdaProducts, items);
+				}
 				// else {
-				// 	console.log('Keine Econda-Produkte gefunden');
+				// 	console.log('Keine Econda-Produkte gefunden, Alterantiv Socken eingebaut');
+				// 	initializeCartAddOn([{
+				// 		id: "5552501",
+				// 		price: "29,99 €",
+				// 		sku: "555250140,",
+				// 		sku7: "5552501",
+				// 		iconurl: "https://images.hessnatur.com/images/2825924/webshop_product-xlarge/product-shop/Socke_im_2er_Pack_aus_reiner_Bio_Baumwolle-55525_01_7.webp",
+				// 		reduced1: "false",
+				// 		name: "Socke im 2er-Pack aus reiner Bio-Baumwolle"
+				// 	}], items);
 				// }
 			});
 		}
 	});
 
 })(new window.KEK());
-
-// TODO:
-// AddtoCart Goal einbauen
