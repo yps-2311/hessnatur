@@ -22,10 +22,10 @@
         const ul = KEK.qs('ul', box);
         if (!ul) return;
 
-        // Bei nur 1 Variante: unsichtbar aber Layout erhalten (kein Shift)
-        if (ul.children.length === 1) {
-            KEK.defineClass(box, 'kk-single-variant');
-        }
+        // Bei mehr als 5 Varianten: Scroll-Indikator (Fade) anzeigen
+        if (ul.children.length > 5) {
+            KEK.defineClass(box, 'kk-scrollable');
+        }        
     }
 
     function processAllBoxes() {
@@ -49,7 +49,12 @@
         grid.addEventListener('click', function(e) {
             const link = e.target.closest('[class*="ProductListCard_productListCard__colorsBox"] a');
             if (!link) return;
+            
+            // Navigation verhindern
             e.preventDefault();
+            
+            // Hover-Event triggern (Hessnatur wechselt Produktbild bei mouseover)
+            link.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
         });
 
         // Observer für SPA-Rerenders mit Disconnect-Pattern (verhindert Loops)
@@ -59,6 +64,7 @@
             observer.observe(grid, observerConfig);
         });
         observer.observe(grid, observerConfig);
+
     });
 
 })(new window.KEK());
