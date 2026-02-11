@@ -12,15 +12,15 @@
 (function(KEK) {
     "use strict";
 
-    console.log('[Sprint 13] Script loaded, viewport:', window.innerWidth);
+    //console.log('[Sprint 13] Script loaded, viewport:', window.innerWidth);
 
     // Nur auf Mobile (< 640px)
     if (window.innerWidth >= 640) {
-        console.log('[Sprint 13] Desktop detected, aborting.');
+        //console.log('[Sprint 13] Desktop detected, aborting.');
         return;
     }
 
-    console.log('[Sprint 13] Mobile detected, initializing...');
+    //console.log('[Sprint 13] Mobile detected, initializing...');
 
     // Tracking Helper
     const trackClick = (eventName, action, category) => {
@@ -30,12 +30,12 @@
             filter_action: action,
             filter_category: category || ''
         });
-        console.log('[Sprint 13] Tracked:', { event_name: eventName, filter_action: action, filter_category: category });
+        //console.log('[Sprint 13] Tracked:', { event_name: eventName, filter_action: action, filter_category: category });
     };
 
     // Init Tracking mit Event Delegation (erfasst auch dynamisch geladene Elemente)
     const initTracking = (wrapper) => {
-        console.log('[Sprint 13] Wrapper found, attaching event delegation.');
+        //console.log('[Sprint 13] Wrapper found, attaching event delegation.');
         wrapper.addEventListener('click', (e) => {
             const target = e.target;
 
@@ -79,10 +79,10 @@
     };
 
     // Init Test (SPA-safe mit KEK.elem Polling)
-    console.log('[Sprint 13] Starting KEK.elem polling for wrapper...');
+    // console.log('[Sprint 13] Starting KEK.elem polling for wrapper...');
     KEK.elem('.plp_filterSortTabsWrapper__LkAYd', (wrappers) => {
         if (!wrappers) {
-            console.log('[Sprint 13] Wrapper NOT found (timeout).');
+            // console.log('[Sprint 13] Wrapper NOT found (timeout).');
             return;
         }
         console.log('[Sprint 13] Wrapper found:', wrappers[0]);
