@@ -40,7 +40,7 @@
 
 	// Hilfsfunktion um die passende productSize zu ermitteln
 	const getProductSize = (products) => {
-		console.log('products: ', products);
+		// console.log('products: ', products);
 		const clothingSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'ONE'];
 		const twoDigitSizeRegex = /^\d{2}$/;
 		
@@ -67,16 +67,21 @@
 		}
 		
 		// Wenn size2 leer ist, versuche Mapping basierend auf Kategorie
+		// console.log('firstProduct: ', firstProduct);
 		if (size && !size2 && firstProduct) {
 			const category = firstProduct.item_category?.toLowerCase();
+			// console.log('category: ', category);
 			
 			// Mapping in beide Richtungen: XL -> 48 und 48 -> XL
+			// console.log('sizeMapping[category]?.[size]: ', sizeMapping[category]?.[size]);
 			if (sizeMapping[category]?.[size]) {
 				// Buchstaben → Zahl (z.B. XL -> 48)
 				size2 = sizeMapping[category][size];
 			} else if (sizeMapping[category]) {
+				// console.log('sizeMapping[category]: ', sizeMapping[category]);
 				// Zahl → Buchstaben (z.B. 48 -> XL) - Reverse Lookup
-				const reverseMatch = Object.entries(sizeMapping[category]).find(([key, val]) => val === size);
+				const reverseMatch = Object.entries(sizeMapping[category]).find(([key, val]) => (val === size || String(parseInt(val)+2) === size));
+				// console.log('reverseMatch: ', reverseMatch);
 				if (reverseMatch) {
 					size2 = reverseMatch[0]; // Der Key ist die Buchstaben-Größe
 				}
@@ -85,12 +90,13 @@
 		
 		// Baue den String zusammen
 		let result = '';
-		console.log('size: ', size);
+		// console.log('size: ', size);
 		if (size) {
 			result += '&ctxcustom.size=' + size;
 			savedSizes.add(size);
 		}
-		console.log('size2: ', size2);
+
+		// console.log('size2: ', size2);
 		if (size2) {
 			result += '&ctxcustom.size2=' + size2;
 			savedSizes.add(size2);
@@ -268,8 +274,24 @@
 		})
 		.then(response => response.json())
 		.then(responseData => {
+
 			const matchingStyle = responseData.data.allAvailabilities.styles.find(style => style.id === productID.slice(SKU_STYLE_START, SKU_STYLE_END));
 			const produktData = matchingStyle || responseData.data.allAvailabilities.styles[0];
+			// console.log('produktData: ', produktData);
+
+			// Prüfe ob alle Größen ausverkauft sind
+			const allSoldOut = produktData.sizes.every(size => size.deliveryTime === "Ausverkauft");
+			if (allSoldOut) {
+				// console.log('Alle Größen ausverkauft, versuche nächstes Produkt...');
+				const nextIndex = currentIndex + 1;
+				if (nextIndex < matchingProducts.length) {
+					fetchProductDetails(matchingProducts, nextIndex, saveMoney);
+				} else if (matchingProducts !== alternativProdukt) {
+					// Fallback auf alternativProdukt wenn keine matchingProducts mehr übrig
+					fetchProductDetails(alternativProdukt, 0, saveMoney);
+				}
+				return;
+			}
 
 			KEK.elem('[data-testid="cartPage"] [class*="cart_cart-page__wrapper__cart-entries-list_"]', (cartWrapper) => {
 				if(cartWrapper && !KEK.qs('#kk_addon')){
@@ -284,7 +306,7 @@
 					
 					// Funktion zum Ermitteln der CSS-Klasse basierend auf Lieferzeit
 					const getDeliveryClass = (deliveryTime) => {
-						if (deliveryTime && deliveryTime.includes('Woche')) {
+						if (deliveryTime && (deliveryTime.includes('Woche') || deliveryTime.includes('Ausverkauft'))) {
 							return 'ProductAvailability_soonAvailable__G_otz';
 						}
 						return 'ProductAvailability_available__zjuhf';
@@ -455,23 +477,6 @@
 							addProductToCart(fullProductID);
 						});
 					}
-
-
-
-					// Callback function to execute when mutations are observed
-					const callback = (mutationList) => {
-						for (const mutation of mutationList) {
-							if (mutation.type === "attributes"){
-								KEK.qs('.kk_leftgreen span', cartWrapper).innerHTML = getPriceToDisplay(getSavedMoney()) + ' €';
-							}
-						}
-					};
-
-					// Create an observer instance linked to the callback function
-					const observer = new MutationObserver(callback);
-
-					// Start observing the target node for configured mutations
-					observer.observe(KEK.qs('div', cartWrapper), { attributes: true, childList: true, subtree: true });
 				}
 			});
 		});
@@ -493,11 +498,49 @@
 
 			// Initial: Econda-Produkte laden
 			getProductFromEconda(items).then(econdaProducts => {
-				console.log('econdaProducts: ', econdaProducts);
+				// console.log('econdaProducts: ', econdaProducts);
 				if (econdaProducts && econdaProducts.length > 0) {
 					initializeCartAddOn(econdaProducts, items);
+
+					KEK.elem('[data-testid="cartPage"] [class*="cart_cart-page__wrapper__cart-entries-list_"]', (cartWrapper) => {
+						if(cartWrapper){
+							cartWrapper = cartWrapper[0];
+
+							// Callback function to execute when mutations are observed
+							const callback = (mutationList) => {
+								// console.log('mutationList: ', mutationList);
+								// console.log('getSavedMoney(): ', getSavedMoney());
+								for (const mutation of mutationList) {
+									if(mutation.type === "attributes"){
+										const leftGreen = KEK.qs('.kk_leftgreen span', cartWrapper);
+										if (leftGreen){
+											// Update des ErsparnisTextes - Reco schon vorhanden in der Seite
+											leftGreen.innerHTML = getPriceToDisplay(getSavedMoney()) + ' €';
+										}else{
+											// Neue Reco - Reco neu in die Seite einbauen
+											initializeCartAddOn(econdaProducts, items);
+										}
+									}
+								}
+							};
+
+							// Create an observer instance linked to the callback function
+							const observer = new MutationObserver(callback);
+
+							// Start observing the target node for configured mutations
+							observer.observe(cartWrapper.parentNode, { attributes: true, childList: true, subtree: true });
+
+						}
+					});
+
 				}
+
+				
 			});
+
+			
+
+			
 		}
 	});
 
