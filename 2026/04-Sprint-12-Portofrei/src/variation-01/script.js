@@ -139,7 +139,7 @@ if (!document.getElementById('v1-anti-flicker')) {
             '<div class="v1-teaser-inner" style="background-color: ' + BG_COLOR + '; width: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 24px; min-height: 100%; box-sizing: border-box;">' +
                 '<div class="v1-teaser-headline" style="color: ' + TEXT_COLOR + ';">Portofrei<br>bestellen</div>' +
                 '<div class="v1-teaser-bottom">' +
-                    '<div class="v1-teaser-subline" style="color: ' + TEXT_COLOR + '; margin-bottom: 8px;">mit dem Code</div>' +
+                    '<div class="v1-teaser-subline" style="color: ' + TEXT_COLOR + '; margin-bottom: 8px;">mit dem Code*</div>' +
                     '<button class="Actionbar_actionbar__promocode__zMR9E Actionbar_actionbar-button__gm_b1 Actionbar_actionbar-button--border__nvWzI v1-teaser-btn" id="v1-teaser-copy">' +
                         '<svg viewBox="0 0 1792 1896.0833" xmlns="http://www.w3.org/2000/svg" width="16"><path fill="' + TEXT_COLOR + '" d="M1696 384q40 0 68 28t28 68v1216q0 40-28 68t-68 28H736q-40 0-68-28t-28-68v-288H96q-40 0-68-28t-28-68V640q0-40 20-88t48-76L476 68q28-28 76-48t88-20h416q40 0 68 28t28 68v328q68-40 128-40h416zm-544 213L853 896h299V597zM512 213L213 512h299V213zm196 647l316-316V128H640v416q0 40-28 68t-68 28H128v640h512v-256q0-40 20-88t48-76zm956 804V512h-384v416q0 40-28 68t-68 28H768v640h896z"></path></svg>' +
                         '<span class="Actionbar_actionbar-button__label__Nw8oa" translate="no">' + CODE + '</span>' +
