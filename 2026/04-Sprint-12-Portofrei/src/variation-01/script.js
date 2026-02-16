@@ -1,5 +1,5 @@
 /**
- * Test: 03-Sprint-12-Portofrei
+ * Test: 04-Sprint-12-Portofrei
  * Variation: 01 (Test)
  * Author: Manuel Brückmann
  * Description: Portofrei Header-Banner + PLP-Teaser mit Copy-Funktion und Tracking
@@ -9,7 +9,7 @@
 
 // Anti-Flicker: inject CSS via JS (Kameleoon loads JS before CSS)
 if (!document.getElementById('v1-anti-flicker')) {
-    var s = document.createElement('style');
+    const s = document.createElement('style');
     s.id = 'v1-anti-flicker';
     s.textContent = '[data-testid="actionbar"]:not(.v1-portofrei-banner){visibility:hidden!important}[data-testid="product-grid-action-banner-teaser"]:not(.v1-portofrei-teaser){visibility:hidden!important}';
     document.head.appendChild(s);
