@@ -26,12 +26,12 @@ if (!document.getElementById('v1-anti-flicker')) {
     const BG_COLOR = "#ECF2D9";
     const TEXT_COLOR = "#24282B";
 
-    console.log('[KEK] Script initialized. Code:', CODE);
+    // console.log('[KEK] Script initialized. Code:', CODE);
 
     function initHeader(actionbar) {
         if (!actionbar || actionbar.classList.contains('v1-portofrei-banner')) return;
 
-        console.log('[KEK] Initializing Header Bar');
+        // console.log('[KEK] Initializing Header Bar');
         actionbar.classList.add('v1-portofrei-banner');
         actionbar.style.backgroundColor = BG_COLOR;
         actionbar.style.color = TEXT_COLOR;
@@ -129,7 +129,7 @@ if (!document.getElementById('v1-anti-flicker')) {
         const existingBanner = KEK.qs('[data-testid="product-grid-action-banner-teaser"]');
         if (!existingBanner) return;
 
-        console.log('[KEK] Initializing PLP Teaser (replacing existing banner)');
+        // console.log('[KEK] Initializing PLP Teaser (replacing existing banner)');
         
         // Mark as initialized
         existingBanner.classList.add('v1-portofrei-teaser');
@@ -174,7 +174,7 @@ if (!document.getElementById('v1-anti-flicker')) {
         if (teaserInitialized || KEK.qs('.v1-portofrei-teaser') || attemptCount >= maxAttempts) {
             clearInterval(teaserInterval);
             if (attemptCount >= maxAttempts && !KEK.qs('.v1-portofrei-teaser')) {
-                console.warn('[KEK] Teaser initialization timeout after', maxAttempts, 'attempts');
+                // console.warn('[KEK] Teaser initialization timeout after', maxAttempts, 'attempts');
             }
             return;
         }
@@ -192,7 +192,7 @@ if (!document.getElementById('v1-anti-flicker')) {
     const observer = new MutationObserver(function () {
         if (location.href !== lastUrl) {
             lastUrl = location.href;
-            console.log('[KEK] URL change detected:', lastUrl);
+            // console.log('[KEK] URL change detected:', lastUrl);
             setTimeout(() => {
                 KEK.waitForElement('[data-testid="actionbar"]', initHeader);
                 initTeaser();

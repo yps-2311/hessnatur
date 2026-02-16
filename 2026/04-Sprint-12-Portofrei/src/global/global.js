@@ -66,7 +66,6 @@ window.KEK = window.KEK || {};
             event: "coupon_copy_porto_frei",
             position: position
         });
-        console.log('[KEK] Event tracked:', position);
     };
 
     KEK.showToast = function (message) {
