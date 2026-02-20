@@ -7,7 +7,12 @@
  * @author Manuel Brückmann
  * @namespace V1
  * @name Variation 01
- * @description USP-Benefit-Box Karussell unter Header (Mobile)
+ * @description USP-Benefit-Box: 3 USP-Karten (Qualität, Nachhaltigkeit, Service)
+ *   - Mobile: Swipe-Karussell mit Infinite-Loop (Clone-Slides)
+ *   - Desktop: 3 statische Tiles im Produkt-Grid
+ *   - Klick auf Karte → Drawer mit Detail-Infos
+ *   - Karussell rotiert zwischen Seitenaufrufen via SessionStorage
+ *   - Category: MutationObserver re-positioniert Tiles nach Sort/Filter
  */
 
 (function(KEK, win) {
@@ -15,18 +20,17 @@
 
     // =========================================================================
     // DEVICE DETECTION
-    // Erkennt Mobile vs Desktop NUR anhand Viewport-Breite (640px Breakpoint)
-    // User-Agent wird NICHT mehr verwendet - matchMedia ist zuverlässiger
     // =========================================================================
-    
-    // Aktueller Device-Typ basierend auf Viewport (NICHT User-Agent!)
+
+    // matchMedia-basiert (640px Breakpoint), wird von initViewportChangeListener aktualisiert
     let currentDeviceType = win.innerWidth < 640 ? 'mobile' : 'desktop';
 
     // =========================================================================
     // PAGE TYPE DETECTION
-    // Ermittelt Seitentyp (homepage/category/pdp) anhand DOM-Struktur
     // =========================================================================
 
+    // Leitet Seitentyp aus data-testid des ersten Siblings nach dem Header ab.
+    // hessnatur SPA nutzt ein einziges Container-Element, dessen testid den Typ bestimmt.
     function getPageTypeFromDOM() {
         const header = document.querySelector('[data-testid="header"]');
         if (!header) return null;
@@ -43,54 +47,130 @@
 
     // =========================================================================
     // INSERTION LOGIC
-    // Fügt USP-Box je nach Seitentyp an der richtigen Stelle ein
     // =========================================================================
 
     let lastPageType = null;
+    let categoryGridObserver = null;
 
+    // =========================================================================
+    // CATEGORY GRID: Sort/Filter-Reaktivität (DOM-Flag Ansatz)
+    //
+    // Problem: React ersetzt Product Cards bei Sort/Filter komplett.
+    //          Unsere Tiles (Fremdkörper im React-DOM) werden dabei verschoben.
+    //
+    // Lösung:  data-kk-processed auf erste Product Card setzen.
+    //          React ersetzt Cards → Marker verschwindet → Observer triggert
+    //          → Tiles cleanup + re-insert an korrekter Position.
+    //          Eigene Inserts berühren keine Cards → Marker bleibt → kein Loop.
+    // =========================================================================
+
+    function cleanupCategoryTiles() {
+        const existingCarousel = KEK.qs('.kk-usp-carousel');
+        const existingTiles = KEK.qs('.kk-usp-tiles');
+        if (existingCarousel) existingCarousel.remove();
+        if (existingTiles) existingTiles.remove();
+    }
+
+    // Positioniert Tiles nach dem n-ten Produkt im Grid.
+    // Guard: data-kk-processed auf erster Card verhindert Re-Insert (→ kein Observer-Loop).
+    function positionTilesInGrid() {
+        const cards = document.querySelectorAll('[data-testid="product-list-card"]');
+        if (!cards || cards.length === 0) return;
+
+        if (cards[0].hasAttribute('data-kk-processed')) return;
+
+        cleanupCategoryTiles();
+
+        const mobile = currentDeviceType === 'mobile';
+        const html = mobile ? createCarousel() : createDesktopTiles();
+        const initEvents = mobile ? initCarouselEvents : initTileEvents;
+
+        // Sale-Seiten haben 4-Spalten-Grid (--large Modifier am Klassennamen)
+        const productGrid = KEK.qs('[data-testid="product-grid"]');
+        const isLargeGrid = !mobile && productGrid && productGrid.className.includes('--large');
+
+        // Insert-Position: Mobile nach 3., Desktop nach 2., Large Grid nach 3. Produkt
+        const minProducts = mobile ? 3 : (isLargeGrid ? 3 : 2);
+        const targetIndex = cards.length >= minProducts ? (minProducts - 1) : cards.length - 1;
+        KEK.insert(cards[targetIndex], 'afterend', html);
+
+        // 4-Spalten-Grid: Modifier-Klasse für CSS grid-column: span 4
+        if (isLargeGrid) {
+            const tiles = KEK.qs('.kk-usp-tiles');
+            if (tiles) KEK.defineClass(tiles, 'kk-usp-tiles--large-grid');
+        }
+
+        initEvents();
+
+        // DOM-Flag setzen – React entfernt es beim nächsten Re-Render
+        cards[0].setAttribute('data-kk-processed', '');
+    }
+
+    // MutationObserver auf Grid + Wrapper:
+    // - Grid (childList): React tauscht Cards bei Sort/Filter → Observer feuert
+    // - Wrapper (childList): React könnte Grid-Node komplett ersetzen
+    // positionTilesInGrid() hat Guard → nur Aktion wenn Marker fehlt
+    function startCategoryGridObserver() {
+        if (categoryGridObserver) return;
+
+        const grid = KEK.qs('[data-testid="product-grid"]');
+        if (!grid) return;
+
+        categoryGridObserver = new MutationObserver(function() {
+            positionTilesInGrid();
+
+            // Grid-Node könnte durch React ersetzt worden sein → neu observen
+            const currentGrid = KEK.qs('[data-testid="product-grid"]');
+            if (currentGrid) categoryGridObserver.observe(currentGrid, { childList: true });
+        });
+
+        categoryGridObserver.observe(grid, { childList: true });
+
+        if (grid.parentElement) {
+            categoryGridObserver.observe(grid.parentElement, { childList: true });
+        }
+    }
+
+    function stopCategoryGridObserver() {
+        if (categoryGridObserver) {
+            categoryGridObserver.disconnect();
+            categoryGridObserver = null;
+        }
+    }
+
+    function insertCategoryUSP() {
+        KEK.elem('[data-testid="product-list-card"]', function(els) {
+            if (!els) return;
+            positionTilesInGrid();
+            startCategoryGridObserver();
+        });
+    }
+
+    // Routing: Leitet an die richtige Insert-Logik je nach Seitentyp weiter.
+    // Category hat eigenen Flow (Observer), Homepage/PDP sind One-Shot-Inserts.
     function insertUSPBox(pageType) {
-        // Guard: Bereits eingefügt? → Skip
         if (KEK.qs('.kk-usp-carousel') || KEK.qs('.kk-usp-tiles')) return;
-        
-        // currentDeviceType verwenden (wird von matchMedia aktualisiert)
-        // NICHT isMobile() - das prüft UA und ignoriert Viewport-Änderungen
+
+        if (pageType === 'category') {
+            insertCategoryUSP();
+            return;
+        } else {
+            stopCategoryGridObserver();
+        }
+
         const mobile = currentDeviceType === 'mobile';
         const html = mobile ? createCarousel() : createDesktopTiles();
         const initEvents = mobile ? initCarouselEvents : initTileEvents;
 
         if (pageType === 'homepage') {
-            // Home: nach hero-teaser-slider
             KEK.elem('[data-testid="hero-teaser-slider"]', function(els) {
                 if (!els) return;
                 if (KEK.qs('.kk-usp-carousel') || KEK.qs('.kk-usp-tiles')) return;
                 KEK.insert(els[0], 'afterend', html);
                 initEvents();
             });
-        } else if (pageType === 'category') {
-            // Category: Mobile=3, Desktop=2, DesktopLarge=3
-            KEK.elem('[data-testid="product-list-card"]', function(els) {
-                if (!els) return;
-                if (KEK.qs('.kk-usp-carousel') || KEK.qs('.kk-usp-tiles')) return;
-                
-                // 4-Spalten-Grid Detection (Sale-Seite hat --large Modifier)
-                const productGrid = KEK.qs('[data-testid="product-grid"]');
-                const isLargeGrid = !mobile && productGrid && productGrid.className.includes('--large');
-                
-                // Mobile=3, Desktop=2, DesktopLarge=3 (+1)
-                const minProducts = mobile ? 3 : (isLargeGrid ? 3 : 2);
-                const targetIndex = els.length >= minProducts ? (minProducts - 1) : els.length - 1;
-                KEK.insert(els[targetIndex], 'afterend', html);
-                
-                // 4-Spalten-Grid: Modifier-Klasse für CSS span
-                if (isLargeGrid) {
-                    const tiles = KEK.qs('.kk-usp-tiles');
-                    if (tiles) KEK.defineClass(tiles, 'kk-usp-tiles--large-grid');
-                }
-                
-                initEvents();
-            });
         } else if (pageType === 'pdp') {
-            // PDP: vor story-telling ODER vor retraced-story (Fallback)
+            // Ersetzt story-telling/retraced-story durch USP-Box
             KEK.elem('[data-testid="story-telling"], [data-totalretracedstory]', function(els) {
                 if (!els) return;
                 if (KEK.qs('.kk-usp-carousel') || KEK.qs('.kk-usp-tiles')) return;
@@ -101,47 +181,36 @@
         }
     }
 
+    // Dedupliziert aufeinanderfolgende Aufrufe mit gleichem Seitentyp
     function onPageChange() {
         const pageType = getPageTypeFromDOM();
         if (!pageType) return;
-        
-        // Nur feuern wenn sich der PageType tatsächlich geändert hat
         if (pageType === lastPageType) return;
         lastPageType = pageType;
-        
         insertUSPBox(pageType);
     }
 
     // =========================================================================
     // SPA NAVIGATION
-    // MutationObserver erkennt Seitenwechsel in der Single Page App
     // =========================================================================
 
+    // hessnatur SPA ändert data-testid am Page-Container bei Navigation.
+    // Observer darauf erkennt Seitenwechsel ohne URL-Polling.
     function initPageChangeListener() {
-        // Direkt auf das Page-Container-Element warten (nicht auf Header)
-        // Löst Race Condition beim Cold Load
         KEK.elem('[data-testid="contentPage"], [data-testid="categoryPage"], [data-testid="productPage"]', function(els) {
             if (!els) return;
-            const pageContainer = els[0];
             
-            // Initial: Seite gefunden → direkt einfügen
             onPageChange();
             
-            // Observer für SPA-Navigation (wenn sich data-testid ändert)
             const observer = new MutationObserver(function() {
                 onPageChange();
             });
-            
-            observer.observe(pageContainer, { 
-                attributes: true,
-                attributeFilter: ['data-testid']
-            });
+            observer.observe(els[0], { attributes: true, attributeFilter: ['data-testid'] });
         });
     }
 
     // =========================================================================
-    // USP DATA
-    // Inhalte der drei USP-Karten (Qualität, Nachhaltigkeit, Service)
+    // USP DATA – Inhalte der 3 USP-Karten
     // =========================================================================
 
     const USP_DATA = [
@@ -184,8 +253,8 @@
     ];
 
     // =========================================================================
-    // SESSION STORAGE
-    // Speichert Slide-Index für Rotation zwischen Seitenwechseln
+    // SESSION STORAGE – Slide-Rotation zwischen Seitenaufrufen
+    // Bei jedem Load wird der nächste Slide angezeigt (0 → 1 → 2 → 0 …)
     // =========================================================================
 
     const STORAGE_KEY = 'kk-usp-slide-index';
@@ -212,8 +281,8 @@
     }
 
     // =========================================================================
-    // DRAWER (Slide-in Panel)
-    // Zeigt Detail-Infos zu einem USP beim Klick auf Karte/Link
+    // DRAWER – Slide-in Panel mit Detail-Infos pro USP
+    // Öffnet von rechts, Backdrop schließt bei Klick
     // =========================================================================
 
     let isOpen = false;
@@ -250,10 +319,11 @@
         buildBulletList(usp.bullets);
     }
 
+    // Drawer + Backdrop werden einmalig am Body-Ende eingefügt.
+    // Inline-Styles verhindern FOUC falls CSS noch nicht geladen (Kameleoon-Timing).
     function createDrawer() {
         if (KEK.qs('.kk-usp-drawer')) return;
 
-        // Inline-Styles verhindern Flash bevor CSS geladen (Kameleoon-Timing)
         KEK.insert(document.body, 'beforeend', '<div class="kk-usp-backdrop" style="opacity:0;visibility:hidden"></div>');
         KEK.insert(document.body, 'beforeend',
             '<div class="kk-usp-drawer" style="transform:translateX(100%)">' +
@@ -304,8 +374,7 @@
     }
 
     // =========================================================================
-    // SHARED ASSETS
-    // Icon-SVG und HTML-Builder für Cards (DRY: Mobile + Desktop nutzen diese)
+    // SHARED ASSETS – Icon + Card-HTML-Builder (Mobile + Desktop)
     // =========================================================================
 
     const ICON_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 37 37">' +
@@ -314,7 +383,6 @@
 
     let currentSlide = 0;
 
-    // Shared Card HTML Builder
     function buildCardHTML(usp) {
         return '<div class="kk-usp-card__icon">' + ICON_SVG + '</div>' +
             '<h3 class="kk-usp-card__headline">' + usp.headline + '</h3>' +
@@ -329,6 +397,7 @@
         '</div>';
     }
 
+    // Clone am Anfang (letzter Slide) + am Ende (erster Slide) für Infinite-Loop-Effekt
     function buildCarouselSlides() {
         let html = '';
         html += buildSlideHTML(USP_DATA[USP_DATA.length - 1], true);
@@ -349,14 +418,13 @@
     }
 
     // =========================================================================
-    // MOBILE: CAROUSEL
-    // Swipebares Karussell mit Clone-Slides für Infinite Loop
+    // MOBILE: CAROUSEL (Swipe + Infinite Loop via Clones)
     // =========================================================================
 
+    // display:none inline → CSS Override mit display:flex!important verhindert FOUC
     function createCarousel() {
         if (KEK.qs('.kk-usp-carousel')) return;
 
-        // Inline display:none verhindert FOUC bevor CSS geladen
         const carouselHTML = '<div class="kk-usp-carousel" style="display:none">' +
             '<div class="kk-usp-carousel__track">' +
                 buildCarouselSlides() +
@@ -370,14 +438,12 @@
     }
 
     // =========================================================================
-    // DESKTOP: TILES
-    // Statische 3-Spalten Kacheln ohne Swipe
+    // DESKTOP: TILES (3 statische Kacheln)
     // =========================================================================
 
     function createDesktopTiles() {
         if (KEK.qs('.kk-usp-tiles')) return;
 
-        // Inline display:none verhindert FOUC bevor CSS geladen
         let tilesHTML = '<div class="kk-usp-tiles" style="display:none">';
         for (let i = 0; i < USP_DATA.length; i++) {
             tilesHTML += '<div class="kk-usp-card" data-usp-id="' + USP_DATA[i].id + '">' +
@@ -389,8 +455,9 @@
     }
 
     // =========================================================================
-    // CAROUSEL LOGIC
-    // Slide-Navigation, Position-Update, Infinite-Loop mit Clones
+    // CAROUSEL LOGIC – Slide-Navigation + Infinite-Loop
+    // Track-Offset = (currentSlide + 1) wegen Clone am Anfang.
+    // Bei Über-/Unterlauf: animiert zum Clone, dann ohne Transition zurücksetzen.
     // =========================================================================
 
     function getSlideWidth() {
@@ -451,8 +518,8 @@
     }
 
     // =========================================================================
-    // EVENT HANDLERS
-    // Touch/Swipe für Carousel, Click für Drawer-Öffnung
+    // EVENT HANDLERS – Touch/Swipe + Click → Drawer
+    // hasMoved Flag unterscheidet Tap von Swipe (verhindert Drawer-Open bei Swipe)
     // =========================================================================
 
     function initCarouselEvents() {
@@ -464,9 +531,7 @@
 
         function getCurrentOffset() {
             const slideWidth = getSlideWidth();
-            const gap = 30;
-            const trackIndex = currentSlide + 1;
-            return trackIndex * (slideWidth + gap);
+            return (currentSlide + 1) * (slideWidth + 30);
         }
 
         KEK.elem('.kk-usp-carousel__dot', function(dots) {
@@ -548,10 +613,9 @@
                     const isClone = this.classList.contains('kk-usp-carousel__slide--clone');
                     const uspId = this.getAttribute('data-usp-id');
                     
-                    // Ermittle den Index dieser Slide
+                    // Clone-Slides haben keinen Array-Index → anhand uspId auflösen
                     let clickedIndex = -1;
                     if (isClone) {
-                        // Clone: finde den echten Index anhand der uspId
                         for (let j = 0; j < USP_DATA.length; j++) {
                             if (USP_DATA[j].id === uspId) {
                                 clickedIndex = j;
@@ -563,7 +627,6 @@
                         clickedIndex = Array.prototype.indexOf.call(realSlides, this);
                     }
                     
-                    // Aktive Slide → Drawer öffnen, sonst Slide wechseln
                     if (clickedIndex === currentSlide) {
                         openDrawer(uspId);
                     } else if (clickedIndex >= 0) {
@@ -573,7 +636,7 @@
             }
         });
 
-        // Nächsten Slide aus SessionStorage holen und setzen
+        // Rotation: Nächsten Slide aus SessionStorage anzeigen
         currentSlide = getNextSlideIndex();
         saveSlideIndex(currentSlide);
         updateSlidePosition(false);
@@ -604,34 +667,29 @@
     }
 
     // =========================================================================
-    // VIEWPORT CHANGE HANDLING
-    // Reagiert auf Device-Rotation (Portrait ↔ Landscape)
+    // VIEWPORT CHANGE – Carousel ↔ Tiles bei Breakpoint-Wechsel
     // =========================================================================
 
+    // Entfernt aktuelles Layout, setzt lastPageType zurück → insertUSPBox baut neu
     function handleViewportChange(isMobileNow) {
         const newDeviceType = isMobileNow ? 'mobile' : 'desktop';
-        
-        // Nur reagieren wenn sich der Device-Typ ändert
         if (newDeviceType === currentDeviceType) return;
         currentDeviceType = newDeviceType;
         
-        // Altes Element entfernen
         const oldCarousel = KEK.qs('.kk-usp-carousel');
         const oldTiles = KEK.qs('.kk-usp-tiles');
         if (oldCarousel) oldCarousel.parentNode.removeChild(oldCarousel);
         if (oldTiles) oldTiles.parentNode.removeChild(oldTiles);
         
-        // Neu einfügen mit aktuellem Layout
         const pageType = getPageTypeFromDOM();
         if (pageType) {
-            lastPageType = null; // Reset damit insertUSPBox neu feuert
+            lastPageType = null;
             insertUSPBox(pageType);
         }
     }
 
     function initViewportChangeListener() {
-        const mobileBreakpoint = win.matchMedia('(max-width: 639px)');
-        mobileBreakpoint.addEventListener('change', function(e) {
+        win.matchMedia('(max-width: 639px)').addEventListener('change', function(e) {
             handleViewportChange(e.matches);
         });
     }
