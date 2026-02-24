@@ -83,37 +83,82 @@
     };
 
     var STORAGE_KEY = 'econda_reco_cache';
-    var WISHLIST_STORAGE_KEY = 'econda_reco_wishlist';
     var CACHE_TTL = 30 * 60 * 1000; // 30 Minuten
     var DOM_STABLE_DELAY = 400; // Warte 400ms bis DOM stabil ist (React fertig)
-    
-    /** SKU zur lokalen Wishlist-Tracking hinzufügen */
-    function addToLocalWishlist(sku) {
-        try {
-            var stored = sessionStorage.getItem(WISHLIST_STORAGE_KEY);
-            var list = stored ? JSON.parse(stored) : [];
-            if (list.indexOf(sku) === -1) {
-                list.push(sku);
-                sessionStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(list));
-                log('SKU zur lokalen Wishlist hinzugefügt:', sku);
-            }
-        } catch (e) {
-            warn('Wishlist Storage Fehler:', e);
-        }
+    var WISHLIST_SYNC_DELAY = 1000; // Delay nach Add bevor API re-fetched wird
+    var COUNTER_DEBOUNCE = 500; // Debounce für Counter-Observer
+
+    /** Wishlist-GUID aus Cookie lesen */
+    function getWishlistCookie() {
+        var match = document.cookie.match(/(?:^|;\s*)HessnaturDESite-wishlist=([^;]+)/);
+        return match ? match[1] : null;
     }
-    
-    /** Prüfen ob SKU in lokaler Wishlist ist */
-    function isInLocalWishlist(sku) {
-        try {
-            var stored = sessionStorage.getItem(WISHLIST_STORAGE_KEY);
-            if (!stored) return false;
-            var list = JSON.parse(stored);
-            return list.indexOf(sku) !== -1;
-        } catch (e) {
-            return false;
+
+    /** Wishlist-SKUs via GraphQL API laden */
+    function fetchWishlistSKUs() {
+        var guid = getWishlistCookie();
+        if (!guid) {
+            log('Kein Wishlist-Cookie - leeres Set');
+            return Promise.resolve(new Set());
         }
+
+        var country = getCountry();
+        var body = JSON.stringify({
+            query: 'query getWishlist($country: String!, $lang: String!, $guid: String) { wishlist(country: $country, lang: $lang, guid: $guid) { code entries { entryNumber product { code name baseProduct } } } }',
+            variables: { country: country.toUpperCase(), lang: country, guid: guid }
+        });
+
+        return fetch('/api/graphql', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: body
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            var entries = data && data.data && data.data.wishlist && data.data.wishlist.entries;
+            if (!entries) return new Set();
+            var codes = new Set();
+            entries.forEach(function(entry) {
+                if (entry.product && entry.product.code) {
+                    codes.add(entry.product.code);
+                }
+            });
+            log('Wishlist geladen:', codes.size, 'Einträge');
+            return codes;
+        })
+        .catch(function(e) {
+            warn('Wishlist API Fehler:', e);
+            return new Set();
+        });
     }
-    
+
+    /** Alle Reco-Wishlist-Buttons mit echtem Wishlist-State synchronisieren */
+    function syncWishlistButtons() {
+        fetchWishlistSKUs().then(function(wishlistCodes) {
+            var slides = document.querySelectorAll('[data-ec-product]');
+            if (!slides.length) return;
+
+            slides.forEach(function(slide) {
+                var econdaId = slide.getAttribute('data-ec-product');
+                var btn = slide.querySelector('.ec-wishlist-btn');
+                if (!btn || !econdaId) return;
+
+                // Matching: Wishlist code beginnt mit econda Product-ID (7 Digits)
+                var isOnWishlist = false;
+                wishlistCodes.forEach(function(code) {
+                    if (code.indexOf(econdaId) === 0) isOnWishlist = true;
+                });
+
+                if (isOnWishlist) {
+                    markButtonAsWishlisted(btn);
+                } else {
+                    unmarkButtonAsWishlisted(btn);
+                }
+            });
+            log('Wishlist-Buttons synchronisiert');
+        });
+    }
+
     /** Wishlist-Button als 'added' markieren (rotes gefülltes Herz) */
     function markButtonAsWishlisted(btn) {
         if (!btn) return;
@@ -125,6 +170,21 @@
             var path = svg.querySelector('path');
             if (path) {
                 path.setAttribute('d', 'M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z');
+            }
+        }
+    }
+
+    /** Wishlist-Button als 'not added' zurücksetzen (Outline-Herz) */
+    function unmarkButtonAsWishlisted(btn) {
+        if (!btn) return;
+        btn.classList.remove('AddToWishlistButton_added__X4ouM');
+        var svg = btn.querySelector('svg');
+        if (svg) {
+            svg.setAttribute('data-prefix', 'far');
+            svg.setAttribute('data-icon', 'heart');
+            var path = svg.querySelector('path');
+            if (path) {
+                path.setAttribute('d', 'M225.8 468.2l-2.5-2.3L48.1 303.2C17.4 274.7 0 234.7 0 192.8l0-3.3c0-70.4 50-130.8 119.2-144C158.6 37.9 198.9 47 231 69.6c9 6.4 17.4 13.8 25 22.3c4.2-4.8 8.7-9.2 13.5-13.3c3.7-3.2 7.5-6.2 11.5-9c0 0 0 0 0 0C313.1 47 353.4 37.9 392.8 45.4C462 58.6 512 119.1 512 189.5l0 3.3c0 41.9-17.4 81.9-48.1 110.4L288.7 465.9l-2.5 2.3c-8.2 7.6-19 11.9-30.2 11.9s-22-4.2-30.2-11.9zM239.1 145c-.4-.3-.7-.7-1-1.1l-17.8-20-.1-.1s0 0 0 0c-23.1-25.9-58-37.7-92-31.2C81.6 101.5 48 142.1 48 189.5l0 3.3c0 28.5 11.9 55.8 32.8 75.2L256 430.7 431.2 268c20.9-19.4 32.8-46.7 32.8-75.2l0-3.3c0-47.3-33.6-88-80.1-96.9c-34-6.5-69 5.4-92 31.2c0 0 0 0-.1 .1s0 0-.1 .1l-17.8 20c-.3 .4-.7 .7-1 1.1c-4.5 4.5-10.6 7-16.9 7s-12.4-2.5-16.9-7z');
             }
         }
     }
@@ -264,11 +324,11 @@
             detail: { productCode: productCode }
         }));
         
-        // SKU in lokaler Wishlist speichern (für Persistenz nach Reload)
-        addToLocalWishlist(productCode);
-        
-        // Visuelles Feedback: Button als "added" markieren
+        // Optimistic UI: Button sofort als "added" markieren
         markButtonAsWishlisted(btn);
+        
+        // Nach Delay alle Buttons gegen echte Wishlist-API synchronisieren
+        setTimeout(syncWishlistButtons, WISHLIST_SYNC_DELAY);
     }
 
     /** Preis-String in Float umwandeln */
@@ -435,11 +495,7 @@
             newBtn.setAttribute('data-reco-index', index);
             newBtn.classList.add('ec-wishlist-btn');
             
-            // Prüfen ob Produkt bereits auf Wishlist ist (nach Page Reload)
-            if (isInLocalWishlist(wishlistCode)) {
-                log('Produkt bereits auf Wishlist:', wishlistCode);
-                markButtonAsWishlisted(newBtn);
-            }
+            // Wishlist-State wird nach Render via syncWishlistButtons() gesetzt
             
             // Handler DIREKT binden (nicht später in bindWishlistButtons)
             var wishlistHandler = function(e) {
@@ -566,6 +622,9 @@
             
             // Callback aufrufen (für showReco)
             if (onComplete) onComplete();
+            
+            // Wishlist-Buttons gegen echte API synchronisieren
+            syncWishlistButtons();
         }, fadeDelay);
     }
 
@@ -773,6 +832,22 @@
         
         // URL-Observer für Variantenwechsel
         observeUrlChanges();
+        
+        // Wishlist-Counter beobachten für Remove-Erkennung
+        var counterDebounceTimer = null;
+        KEK.elem('[data-testid="wishlist-counter"]', function(counters) {
+            if (!counters || !counters.length) return;
+            var counterEl = counters[0];
+            log('Wishlist-Counter gefunden, starte Observer');
+            var counterObserver = new MutationObserver(function() {
+                clearTimeout(counterDebounceTimer);
+                counterDebounceTimer = setTimeout(function() {
+                    log('Wishlist-Counter geändert - synchronisiere Buttons');
+                    syncWishlistButtons();
+                }, COUNTER_DEBOUNCE);
+            });
+            counterObserver.observe(counterEl, { characterData: true, subtree: true, childList: true });
+        });
         
         KEK.elem(selectors.oldReco, function(recos) {
             log('Element gefunden:', recos);

@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         Hessnatur YP-Test Script Injector
+// @name         Hessnatur Sprint 04 - Recommendation ähnliche Produkte
 // @namespace    http://tampermonkey.net/
 // @version      2025-12-08
 // @description  Inject Test Script for local development
-// @author       Yannick Preuss
+// @author       Anton Müller
 // @match        https://www.hessnatur.com/de
 // @match        https://www.hessnatur.com/de/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=hessnatur.com
@@ -21,7 +21,7 @@
     // Inject CSS via GM_xmlhttpRequest (bypasses CORS)
     GM_xmlhttpRequest({
         method: 'GET',
-        url: baseUrl + '/style.min.css' + cacheBuster,
+        url: baseUrl + '/style.css' + cacheBuster,
         onload: function(response) {
             if (response.status === 200) {
                 GM_addStyle(response.responseText);
@@ -38,7 +38,7 @@
     // Inject JS via GM_xmlhttpRequest (bypasses CORS)
     GM_xmlhttpRequest({
         method: 'GET',
-        url: baseUrl + '/script.min.js' + cacheBuster,
+        url: baseUrl + '/script-min.js' + cacheBuster,
         onload: function(response) {
             if (response.status === 200) {
                 // Execute the script in page context
