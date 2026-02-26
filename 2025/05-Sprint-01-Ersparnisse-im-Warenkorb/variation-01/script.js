@@ -12,6 +12,11 @@
 (function (KEK) {
 	"use strict";
 
+	if (window.kkSp01) {
+		return;
+	}
+	window.kkSp01 = true; 
+
 	// Konstanten für Produkt-ID-Slices (Magic Numbers vermeiden)
 	const SKU_MODEL_END = 5;        // slice(0, 5) = Modell-ID (z.B. "57283")
 	const SKU_STYLE_START = 5;      // slice(5, 7) = Style-ID (z.B. "88")
@@ -117,7 +122,7 @@
 		}
 
 		// Request gegen Econda für eine Reco mit sinnvollen Produkten
-    	const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&'+
+		const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&'+
 					'widgetdetails=true&csize=20&start=0' + productSizes + (productDatas ? pidParams : ''); // &ctxcustom.size=
 
 		return fetch(url)
@@ -294,9 +299,15 @@
 			}
 
 			KEK.elem('[data-testid="cartPage"] [class*="cart_cart-page__wrapper__cart-entries-list_"]', (cartWrapper) => {
-				if(cartWrapper && !KEK.qs('#kk_addon')){
+				if(cartWrapper){
 					// console.log('cartWrapper: ', cartWrapper);
 					cartWrapper = cartWrapper[0];
+
+					// Bestehendes kk_addon entfernen und neu aufbauen
+					const existingAddon = KEK.qs('#kk_addon');
+					if (existingAddon) {
+						existingAddon.remove();
+					}
 					
 					// Funktion zum Berechnen der Eco Points (Preis aufgerundet)
 					const calculateEcoPoints = (formattedPrice) => {
@@ -316,13 +327,14 @@
 					const sizeOptionsHTML = produktData.sizes.map(size => {
 						const selectedCorrectSize = savedSizes.has(size.id) ? 'selected' : '';
 
-						return '<option '+selectedCorrectSize+' value="'+size.id+'" data-price="'+size.price.formattedValue+'" data-delivery="'+size.deliveryTime+'">'+size.name+'</option>';
+						return '<option ' + selectedCorrectSize + ' value="' + size.id + '" data-price="' + size.price.formattedValue + '" data-delivery="' + size.deliveryTime + '">' + size.name + '</option>';
 					}).join('');
 					
 					// Preis-HTML basierend auf reduziert/nicht reduziert
 					const isReduced = econdaProduct.reduced === "true";
 					let priceHTML = '';
-					const productPrice = produktData.sizes[0]?.price.formattedValue;
+					const selectedSize = produktData.sizes.find(size => savedSizes.has(size.id)) || produktData.sizes[0];
+					const productPrice = selectedSize?.price.formattedValue;
 					
 					if (isReduced) {
 						priceHTML = 
@@ -362,7 +374,7 @@
 									'<div class="CartEntry_cartEntry__detailsWrapper__details--detail__BsQu1">Farbe: ' + (produktData.name.charAt(0).toUpperCase() + produktData.name.slice(1)) + '</div>' +
 								'</div>' +
 								'<div class="CartEntry_cartEntry__detailsWrapper__details__availability__UPqPX">' +
-									'<span class="' + getDeliveryClass(produktData.sizes[0]?.deliveryTime) + '" data-testid="product-availability-deliveryTime-available" id="kk_delivery_time">' + produktData.sizes[0]?.deliveryTime + '</span>' +
+									'<span class="' + getDeliveryClass(selectedSize?.deliveryTime) + '" data-testid="product-availability-deliveryTime-available" id="kk_delivery_time">' + selectedSize?.deliveryTime + '</span>' +
 								'</div>' +
 								'<div class="CartEntry_cartEntry__detailsWrapper__details__box__H2ZF2">' +
 									'<div class="CartEntry_cartEntry__detailsWrapper__details__size__zOaRA">' +
@@ -482,66 +494,98 @@
 		});
 	};
 
-	KEK.elem(() => {
-		const data = window.dataLayer && window.dataLayer.find(entry => entry.event === "Ecommerce - view_cart");
-		return data && data.ecommerce && data.ecommerce.items;
-	}, (items) => {
-		if(items){
+	let lastCallItems = [];
 
-			const getSessionStorage = sessionStorage.getItem('kk_added_reco_product');
+	const getNewReco = () => {
+		KEK.elem(() => {
+			const data = window.dataLayer && window.dataLayer.findLast(entry => entry.event === "Ecommerce - view_cart");
+			return data && data.ecommerce && data.ecommerce.items;
+		}, (items) => {
+			if(items && items !== lastCallItems){
+				// console.log('items: ', items);
 
-			for (let i = 0; i < items.length; i++) {
-				if(getSessionStorage && (items[i].item_id.substring(0,5) === getSessionStorage.substring(0,5))){
-					return;
+				lastCallItems = items;
+
+				const getSessionStorage = sessionStorage.getItem('kk_added_reco_product');
+
+				for (let i = 0; i < items.length; i++) {
+					if(getSessionStorage && (items[i].item_id.substring(0,5) === getSessionStorage.substring(0,5))){
+						return;
+					}
 				}
-			}
 
-			// Initial: Econda-Produkte laden
-			getProductFromEconda(items).then(econdaProducts => {
-				// console.log('econdaProducts: ', econdaProducts);
-				if (econdaProducts && econdaProducts.length > 0) {
-					initializeCartAddOn(econdaProducts, items);
+				// Initial: Econda-Produkte laden
+				getProductFromEconda(items).then(econdaProducts => {
+					// console.log('econdaProducts: ', econdaProducts);
+					if (econdaProducts && econdaProducts.length > 0) {
+						initializeCartAddOn(econdaProducts, items);
 
-					KEK.elem('[data-testid="cartPage"] [class*="cart_cart-page__wrapper__cart-entries-list_"]', (cartWrapper) => {
-						if(cartWrapper){
-							cartWrapper = cartWrapper[0];
+						KEK.elem('[data-testid="cartPage"] [class*="cart_cart-page__wrapper__cart-entries-list_"]', (cartWrapper) => {
+							if(cartWrapper){
+								cartWrapper = cartWrapper[0];
 
-							// Callback function to execute when mutations are observed
-							const callback = (mutationList) => {
-								// console.log('mutationList: ', mutationList);
-								// console.log('getSavedMoney(): ', getSavedMoney());
-								for (const mutation of mutationList) {
-									if(mutation.type === "attributes"){
-										const leftGreen = KEK.qs('.kk_leftgreen span', cartWrapper);
-										if (leftGreen){
-											// Update des ErsparnisTextes - Reco schon vorhanden in der Seite
-											leftGreen.innerHTML = getPriceToDisplay(getSavedMoney()) + ' €';
-										}else{
-											// Neue Reco - Reco neu in die Seite einbauen
-											initializeCartAddOn(econdaProducts, items);
+								// Callback function to execute when mutations are observed
+								const callback = (mutationList) => {
+									// console.log('getSavedMoney(): ', getSavedMoney());
+									for (const mutation of mutationList) {
+										if(mutation.type === "attributes"){
+											const leftGreen = KEK.qs('.kk_leftgreen span', cartWrapper);
+											if (leftGreen){
+												// Update des ErsparnisTextes - Reco schon vorhanden in der Seite
+												leftGreen.innerHTML = getPriceToDisplay(getSavedMoney()) + ' €';
+											}else{
+												// Neue Reco - Reco neu in die Seite einbauen
+												initializeCartAddOn(econdaProducts, items);
+											}
 										}
 									}
-								}
-							};
+								};
 
-							// Create an observer instance linked to the callback function
-							const observer = new MutationObserver(callback);
+								// Create an observer instance linked to the callback function
+								const observer = new MutationObserver(callback);
 
-							// Start observing the target node for configured mutations
-							observer.observe(cartWrapper.parentNode, { attributes: true, childList: true, subtree: true });
+								// Start observing the target node for configured mutations
+								observer.observe(cartWrapper.parentNode, { attributes: true, childList: true, subtree: true });
 
-						}
-					});
+							}
+						});
+					}
+				});
+			}
+		});
+	};
 
-				}
+	// init
+	if(window.location.pathname === "/de/cart") {
+		getNewReco();
+	}
 
-				
-			});
+	let locationNow = "";
 
-			
+	history.pushState = ( f => function pushState(){
+		var ret = f.apply(this, arguments);
+		window.dispatchEvent(new Event('locationchange'));
+		return ret;
+	})(history.pushState);
 
-			
+	history.replaceState = ( f => function replaceState(){
+		var ret = f.apply(this, arguments);
+		window.dispatchEvent(new Event('locationchange'));
+		return ret;
+	})(history.replaceState);
+
+	window.addEventListener('popstate',()=>{
+		window.dispatchEvent(new Event('locationchange'))
+	});
+
+	window.addEventListener('locationchange', function(){
+		const pathNameNow = window.location.pathname;
+		if(pathNameNow === "/de/cart" && locationNow !== pathNameNow){
+			setTimeout(() => {
+				getNewReco();
+			}, 500);
 		}
+		locationNow = pathNameNow;
 	});
 
 })(new window.KEK());
