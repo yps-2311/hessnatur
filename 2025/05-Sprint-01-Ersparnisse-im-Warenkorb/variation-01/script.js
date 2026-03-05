@@ -111,26 +111,31 @@
 	};
 
 	const getProductFromEconda = (productDatas) => {
+		console.log('productDatas: ', productDatas);
 
 		const pidParams = productDatas.map(prod => `&pid=${prod.item_variant.slice(0, SKU_WITH_COLOR_END)}`).join('');
 		const productSizes = getProductSize(productDatas);
 
 		// Wenn es aus den Produkten im Warenkorb keine nutzbare Größe zu extrahieren gibt (zb Decken oder Schaals) dann wird direkt auf das 
 		// alternativ Produkt gewechselt statt einen Request gegen Econda zu machen, da kein sinnvolles Ergebniss zu erwarten ist, ohne mitgesendete Größe
-		if(productSizes === ""){
-			return Promise.resolve(alternativProdukt);
-		}
+		// console.log('productSizes: ', productSizes);
+		// if(productSizes === ""){
+		// 	return Promise.resolve(alternativProdukt);
+		// }
 
 		// Request gegen Econda für eine Reco mit sinnvollen Produkten
 		const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&'+
 					'widgetdetails=true&csize=20&start=0' + productSizes + (productDatas ? pidParams : ''); // &ctxcustom.size=
 
+		console.log('url: ', url);
 		return fetch(url)
 			.then(res => res.json())
 			.then(data => {
+				console.log('data: ', data);
 				return data.items.length === 0 ? alternativProdukt : data.items;
 			})
 			.catch(error => {
+				console.log('error: ', error);
 				return [];
 			});
 	}
@@ -203,7 +208,9 @@
 
 	// Haupt-Funktion die alles koordiniert
 	const initializeCartAddOn = (econdaProducts, productsStayInCart) => {
-		// console.log('productsStayInCart: ', productsStayInCart);
+		console.log('econdaProducts: ', econdaProducts);
+		console.log('productsStayInCart: ', productsStayInCart);
+
 
 		KEK.elem(() => {
 			const saveMoney = getSavedMoney();
@@ -213,9 +220,19 @@
 
 				// Finde alle Produkte aus Econda deren Preis kleiner ist als saveMoney
 				// Und es werden nur Produkte die direkt die korrekte Größe haben weitergegeben
+				// Und die nicht bereits im Warenkorb sind (erste 5 Ziffern)
+				const cartSkus = productsStayInCart.map(p => p.item_id.slice(0, SKU_MODEL_END));
+				
 				let matchingProducts = econdaProducts.filter(product => {
 					const productPrice = priceToFloat(product.price);
 					const productSizeId = product.sku.slice(SKU_SIZE_START, SKU_SIZE_END);
+					const productModelId = product.sku.slice(0, SKU_MODEL_END);
+					
+					// Prüfe ob Produkt bereits im Warenkorb ist
+					if (cartSkus.includes(productModelId)) {
+						return false;
+					}
+					
 					let foundMatch = false;
 					for (let j = 0; j < productsStayInCart.length && !foundMatch; j++) {
 						if (productSizeId === productsStayInCart[j].item_id.slice(SKU_SIZE_START, SKU_SIZE_END)) {
@@ -228,14 +245,16 @@
 				// Fallback 1 -> größe ONE ist ein Produkt dass es sowieso nur in einer Größe gibt
 				if (matchingProducts.length === 0) {
 					matchingProducts = econdaProducts.filter(product => {
-						return priceToFloat(product.price) < saveMoney && product.sku.slice(SKU_SIZE_START, SKU_SIZE_END) === "ONE";
+						const productModelId = product.sku.slice(0, SKU_MODEL_END);
+						return priceToFloat(product.price) < saveMoney && product.sku.slice(SKU_SIZE_START, SKU_SIZE_END) === "ONE" && !cartSkus.includes(productModelId);
 					});
 				}
 
 				// Fallback 2 -> Hauptsache das Produkt ist günstiger als die Ersparniss im Warenkorb
 				if (matchingProducts.length === 0) {
 					matchingProducts = econdaProducts.filter(product => {
-						return priceToFloat(product.price) < saveMoney;
+						const productModelId = product.sku.slice(0, SKU_MODEL_END);
+						return priceToFloat(product.price) < saveMoney && !cartSkus.includes(productModelId);
 					});
 				}
 
@@ -322,18 +341,23 @@
 						}
 						return 'ProductAvailability_available__zjuhf';
 					};
+
+					// Wähle Größe: Priorität 1: savedSize die nicht ausverkauft ist, Priorität 2: erste nicht ausverkaufte Größe, Fallback: erste Größe
+					const selectedSize = produktData.sizes.find(size => savedSizes.has(size.id) && size.deliveryTime !== "Ausverkauft") 
+						|| produktData.sizes.find(size => size.deliveryTime !== "Ausverkauft")
+						|| produktData.sizes[0];
 					
 					// Größen-Dropdown dynamisch erstellen
 					const sizeOptionsHTML = produktData.sizes.map(size => {
-						const selectedCorrectSize = savedSizes.has(size.id) ? 'selected' : '';
+						const selectedCorrectSize = selectedSize && size.id === selectedSize.id ? 'selected' : '';
+						const isDisabled = size.deliveryTime === "Ausverkauft" ? 'disabled' : '';
 
-						return '<option ' + selectedCorrectSize + ' value="' + size.id + '" data-price="' + size.price.formattedValue + '" data-delivery="' + size.deliveryTime + '">' + size.name + '</option>';
+						return '<option ' + selectedCorrectSize + ' ' + isDisabled + ' value="' + size.id + '" data-price="' + size.price.formattedValue + '" data-delivery="' + size.deliveryTime + '">' + size.name + '</option>';
 					}).join('');
 					
 					// Preis-HTML basierend auf reduziert/nicht reduziert
 					const isReduced = econdaProduct.reduced === "true";
 					let priceHTML = '';
-					const selectedSize = produktData.sizes.find(size => savedSizes.has(size.id)) || produktData.sizes[0];
 					const productPrice = selectedSize?.price.formattedValue;
 					
 					if (isReduced) {
