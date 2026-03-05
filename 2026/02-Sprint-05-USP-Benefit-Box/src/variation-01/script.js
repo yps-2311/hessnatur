@@ -19,6 +19,19 @@
     "use strict";
 
     // =========================================================================
+    // WEBFONTS – Inter 300 (Sublines) + Tinos italic (Testimonials)
+    // Outfit (Headlines) wird von hessnatur nativ geladen.
+    // =========================================================================
+
+    if (!KEK.qs('link[href*="Inter"]')) {
+        KEK.insert(document.head, 'beforeend',
+            '<link rel="preconnect" href="https://fonts.googleapis.com">' +
+            '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
+            '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Tinos:ital@1&display=swap" rel="stylesheet">'
+        );
+    }
+
+    // =========================================================================
     // DEVICE DETECTION
     // =========================================================================
 
@@ -32,7 +45,7 @@
     // Leitet Seitentyp aus data-testid des ersten Siblings nach dem Header ab.
     // hessnatur SPA nutzt ein einziges Container-Element, dessen testid den Typ bestimmt.
     function getPageTypeFromDOM() {
-        const header = document.querySelector('[data-testid="header"]');
+        const header = KEK.qs('[data-testid="header"]');
         if (!header) return null;
         
         const sibling = header.nextElementSibling;
@@ -74,7 +87,7 @@
     // Positioniert Tiles nach dem n-ten Produkt im Grid.
     // Guard: data-kk-processed auf erster Card verhindert Re-Insert (→ kein Observer-Loop).
     function positionTilesInGrid() {
-        const cards = document.querySelectorAll('[data-testid="product-list-card"]');
+        const cards = KEK.qsa('[data-testid="product-list-card"]');
         if (!cards || cards.length === 0) return;
 
         if (cards[0].hasAttribute('data-kk-processed')) return;
@@ -89,8 +102,23 @@
         const productGrid = KEK.qs('[data-testid="product-grid"]');
         const isLargeGrid = !mobile && productGrid && productGrid.className.includes('--large');
 
+        // Promo-Erkennung: Erste 3 Grid-Kinder prüfen.
+        // Alle Produktkarten → kein Promo-Element → Position +1 verschieben.
+        // Mindestens 1 Nicht-Produkt → Promo vorhanden → bisherige Position.
+        const gridChildren = productGrid ? productGrid.children : [];
+        const checkCount = Math.min(3, gridChildren.length);
+        let allProducts = checkCount > 0;
+        for (let i = 0; i < checkCount; i++) {
+            if (gridChildren[i].getAttribute('data-testid') !== 'product-list-card') {
+                allProducts = false;
+                break;
+            }
+        }
+        const promoOffset = allProducts ? 1 : 0;
+
         // Insert-Position: Mobile nach 3., Desktop nach 2., Large Grid nach 3. Produkt
-        const minProducts = mobile ? 3 : (isLargeGrid ? 3 : 2);
+        // Ohne Promo-Element: +1 (Mobile nach 4., Desktop nach 3., Large Grid nach 4.)
+        const minProducts = (mobile ? 3 : (isLargeGrid ? 3 : 2)) + promoOffset;
         const targetIndex = cards.length >= minProducts ? (minProducts - 1) : cards.length - 1;
         KEK.insert(cards[targetIndex], 'afterend', html);
 
@@ -213,42 +241,48 @@
     // USP DATA – Inhalte der 3 USP-Karten
     // =========================================================================
 
-    const USP_DATA = [
+    const uspData = [
+        {
+            id: 'conscious',
+            headline: 'Bewusst, statt beliebig',
+            subline: 'Ehrlich gefertigt. Fair gedacht.',
+            text: 'Wir stehen für eine klare Haltung, nicht für flüchtige Trends. Weil wir seit 1976 beweisen, wie fest Mode und Verantwortung zusammengehören. Darum passen unsere Produkte nicht nur für eine Saison, sondern für ein ganzes Leben. Damit du eine bewusste Wahl treffen kannst.',
+            bullets: [
+                'Keine Kompromisse: Konsequentes Handeln im Einklang mit der Natur',
+                'Geprüft fair: Ausgezeichnet fair: Leader-Status bei der Fair Wear Foundation',
+                'Natürlich: schon 99,6% unserer Materialien sind natürlichen Ursprungs Kaufentscheidungen mit Weitblick für langfristige Zufriedenheit',
+                'Durchdacht: Vom Rohstoff bis zum Design Gestaltung mit Blick auf Nutzung statt kurzfristiger Neuheit'
+            ],
+            testimonialCite: 'Nachhaltig zu arbeiten ist möglich und hessnatur beweist das seit 50 Jahren.',
+            testimonialName: 'Patrick Götz,<br/> Chief Product & Sustainability Officer hessnatur'
+        },
         {
             id: 'quality',
             headline: 'Qualität, die bleibt',
             subline: 'Gemacht für viele Jahre.',
-            text: 'Für uns zeigt sich Qualität dort, wo Material, Verarbeitung und Nutzung zusammenkommen.',
+            text: 'Qualität ist für uns kein Zufall, sondern ein Versprechen. Mit 99,6% Materialien natürlichen Ursprungs und verbindlichen Standards stellen wir sicher, dass deine Kleidung nicht nur hautverträglich ist, sondern auch den Herausforderungen deines Alltags dauerhaft standhält. Damit du lange Freude an deinen Lieblingsstücken hast.',
             bullets: [
-                'robuste Naturmaterialien, die für regelmäßiges Tragen ausgelegt sind',
-                'saubere Verarbeitung und stabile Nähte, die auch nach vielen Waschgängen halten',
-                'Schnitte, die formstabil bleiben und nicht schnell altern',
-                'Produkte, die bewusst auf Langlebigkeit statt schnellen Ersatz ausgelegt sind'
-            ]
+                '99,6% Materialien natürlichen Ursprungs für unverfälschte Qualität ohne Kompromisse',
+                'Unabhängige Zertifikate wie der GOTS für geprüfte Produktionsstandards',
+                'Langjährige Partnerschaften für gleichbleibend hohe Qualität',
+                'Second Hand Shop für ein zweites Leben deiner Lieblingsstücke'
+            ],
+            testimonialCite: 'Mode ist für uns mehr als ein Produkt – sie ist eine Haltung. Jedes Stück steht für natürliche Materialien, präzise Schnitte und langlebige Qualität.',
+            testimonialName: 'Patrick Götz,<br/> Chief Product & Sustainability Officer hessnatur'
         },
         {
-            id: 'sustainability',
-            headline: 'Nachhaltigkeit',
-            subline: 'Platzhalter',
-            text: 'Wir setzen auf verantwortungsvolle Produktion und transparente Lieferketten.',
+            id: 'less-is-more',
+            headline: 'Weniger, aber besser',
+            subline: 'Achtsam kaufen. Lange tragen.',
+            text: 'Bewusster Konsum bedeutet nicht Verzicht, sondern Lebensqualität. Weil er deinen Kleiderschrank übersichtlicher und deinen Stil klarer/authentischer macht. Darum schaffen wir Kleidung, die bleibt. Lieblingsstücke, die sich mühelos kombinieren lassen. Und dir jeden Tag das gute Gefühl geben, nicht irgendetwas, sondern eine bewusste Entscheidung zu tragen.',
             bullets: [
-                'Bio-zertifizierte Materialien aus kontrolliertem Anbau',
-                'faire Arbeitsbedingungen in der gesamten Lieferkette',
-                'ressourcenschonende Produktionsprozesse',
-                'langlebige Produkte statt Fast Fashion'
-            ]
-        },
-        {
-            id: 'service',
-            headline: 'Service & Garantie',
-            subline: 'Platzhalter',
-            text: 'Wir stehen hinter unseren Produkten und bieten umfassenden Service.',
-            bullets: [
-                'kostenloser Versand ab 50€ Bestellwert',
-                'einfache Retoure innerhalb von 30 Tagen',
-                'persönliche Beratung per Telefon und E-Mail',
-                'Reparaturservice für ausgewählte Produkte'
-            ]
+                'Capsule Wardrobe: Dein Kleiderschrank aus wenigen, perfekt kombinierbaren Lieblingsstücken',
+                'Zeitloses Design: Essentials, die Trends überdauern',
+                'Langlebige Naturmaterialien: gemacht, um zu bleiben',
+                'Ressourcenschonend: Vom Anbau der Fasern bis zu unserem Second Hand Shop'
+            ],
+            testimonialCite: 'Es ist mir einfach wichtig, einer Marke vertrauen zu können. Ich weiß, bei hessnatur bin ich einfach gut aufgehoben.',
+            testimonialName: 'Maria Astor,<br/> Content Creator & Autorin'
         }
     ];
 
@@ -270,14 +304,31 @@
 
     function saveSlideIndex(index) {
         try {
-            const normalizedIndex = ((index % USP_DATA.length) + USP_DATA.length) % USP_DATA.length;
+            const normalizedIndex = ((index % uspData.length) + uspData.length) % uspData.length;
             sessionStorage.setItem(STORAGE_KEY, normalizedIndex);
         } catch (e) {}
     }
 
     function getNextSlideIndex() {
         const current = getStoredSlideIndex();
-        return (current + 1) % USP_DATA.length;
+        return (current + 1) % uspData.length;
+    }
+
+    // =========================================================================
+    // TRACKING
+    // =========================================================================
+
+    function trackUspInteraction(uspId, source) {
+        win.dataLayer = win.dataLayer || [];
+        win.dataLayer.push({
+            event: 'Ecommerce - select_promotion',
+            event_name: 'select_promotion',
+            ecommerce: {
+                creative_name: 'kk_usp_benefit_box_' + uspId,
+                creative_slot: source,
+                promotion_name: 'kk_usp_benefit_box'
+            }
+        });
     }
 
     // =========================================================================
@@ -286,15 +337,6 @@
     // =========================================================================
 
     let isOpen = false;
-
-    function getUspById(id) {
-        for (let i = 0; i < USP_DATA.length; i++) {
-            if (USP_DATA[i].id === id) {
-                return USP_DATA[i];
-            }
-        }
-        return USP_DATA[0];
-    }
 
     function buildBulletList(bullets) {
         let html = '<ul class="kk-usp-drawer__bullets">';
@@ -305,39 +347,67 @@
         return html;
     }
 
-    function updateDrawerContent(uspId) {
-        const usp = getUspById(uspId);
-        const contentEl = KEK.qs('.kk-usp-drawer__content');
-        
-        if (!contentEl || !usp) return;
+    // Baut das HTML für ein einzelnes Akkordeon-Item (Header + Body)
+    function buildAccordionItem(usp) {
+        return '<div class="kk-usp-drawer__accordion-item" data-usp-id="' + usp.id + '">' +
+            '<div class="kk-usp-drawer__accordion-header">' +
+                '<div class="kk-usp-drawer__icon">' + ICON_SVG + '</div>' +
+                '<div class="kk-usp-drawer__header-text">' +
+                    '<h2 class="kk-usp-drawer__headline">' + usp.headline + '</h2>' +
+                    '<p class="kk-usp-drawer__subline">' + usp.subline + '</p>' +
+                '</div>' +
+            '</div>' +
+            '<div class="kk-usp-drawer__accordion-body">' +
+                '<div class="kk-usp-drawer__accordion-body-inner">' +
+                    '<p class="kk-usp-drawer__text">' + usp.text + '</p>' +
+                    buildBulletList(usp.bullets) +
+                    '<blockquote class="kk-usp-drawer__testimonial">' +
+                        '<p class="kk-usp-drawer__testimonial-cite">' + usp.testimonialCite + '</p>' +
+                        '<footer class="kk-usp-drawer__testimonial-name">— ' + usp.testimonialName + '</footer>' +
+                    '</blockquote>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+    }
 
-        contentEl.innerHTML = '<div class="kk-usp-drawer__icon-headline-row">' +
-            '<div class="kk-usp-drawer__icon">' + ICON_SVG + '</div>' +
-            '<h2 class="kk-usp-drawer__headline">' + usp.headline + '</h2>' +
-        '</div>' +
-        '<p class="kk-usp-drawer__text">' + usp.text + '</p>' +
-        buildBulletList(usp.bullets);
+    // Klappt das gewählte Akkordeon-Item auf, alle anderen zu.
+    // Klick auf bereits aktives Item wird ignoriert (kein Toggle).
+    function activateAccordionItem(uspId) {
+        const items = KEK.qsa('.kk-usp-drawer__accordion-item');
+        if (!items) return;
+
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].getAttribute('data-usp-id') === uspId) {
+                KEK.defineClass(items[i], 'kk-usp-drawer__accordion-item--active');
+            } else {
+                KEK.defineClass(items[i], 'kk-usp-drawer__accordion-item--active', true);
+            }
+        }
     }
 
     // Drawer + Backdrop werden einmalig am Body-Ende eingefügt.
-    // Inline-Styles verhindern FOUC falls CSS noch nicht geladen (Kameleoon-Timing).
+    // Alle 3 USPs als Akkordeon-Items vorgerendert – kein späteres innerHTML nötig.
     function createDrawer() {
         if (KEK.qs('.kk-usp-drawer')) return;
+
+        let accordionHTML = '';
+        for (let i = 0; i < uspData.length; i++) {
+            accordionHTML += buildAccordionItem(uspData[i]);
+        }
 
         KEK.insert(document.body, 'beforeend', '<div class="kk-usp-backdrop" style="opacity:0;visibility:hidden"></div>');
         KEK.insert(document.body, 'beforeend',
             '<div class="kk-usp-drawer" style="transform:translateX(100%)">' +
-                '<div class="kk-usp-drawer__header">' +
-                    '<button class="kk-usp-drawer__close" aria-label="Schließen">' +
-                        '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-                            '<path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
-                        '</svg>' +
-                    '</button>' +
-                '</div>' +
-                '<div class="kk-usp-drawer__content"></div>' +
+                '<button class="kk-usp-drawer__close" aria-label="Schließen">' +
+                    '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                        '<path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
+                    '</svg>' +
+                '</button>' +
+                '<div class="kk-usp-drawer__content">' + accordionHTML + '</div>' +
             '</div>'
         );
 
+        // Close-Button + Backdrop schließen den Drawer
         KEK.elem('.kk-usp-drawer__close', function(els) {
             if (!els) return;
             els[0].addEventListener('click', closeDrawer);
@@ -347,12 +417,27 @@
             if (!els) return;
             els[0].addEventListener('click', closeDrawer);
         });
+
+        // Akkordeon-Header Click → inaktive Items aufklappen
+        KEK.elem('.kk-usp-drawer__accordion-header', function(headers) {
+            if (!headers) return;
+            for (let i = 0; i < headers.length; i++) {
+                headers[i].addEventListener('click', function() {
+                    const item = this.closest('.kk-usp-drawer__accordion-item');
+                    if (!item || item.classList.contains('kk-usp-drawer__accordion-item--active')) return;
+                    const accordionUspId = item.getAttribute('data-usp-id');
+                    activateAccordionItem(accordionUspId);
+                    trackUspInteraction(accordionUspId, 'accordion');
+                });
+            }
+        });
     }
 
     function openDrawer(uspId) {
         if (isOpen) return;
         
-        updateDrawerContent(uspId || 'quality');
+        activateAccordionItem(uspId || 'quality');
+        trackUspInteraction(uspId || 'quality', 'card');
         isOpen = true;
 
         const backdrop = KEK.qs('.kk-usp-backdrop');
@@ -400,17 +485,17 @@
     // Clone am Anfang (letzter Slide) + am Ende (erster Slide) für Infinite-Loop-Effekt
     function buildCarouselSlides() {
         let html = '';
-        html += buildSlideHTML(USP_DATA[USP_DATA.length - 1], true);
-        for (let i = 0; i < USP_DATA.length; i++) {
-            html += buildSlideHTML(USP_DATA[i], false);
+        html += buildSlideHTML(uspData[uspData.length - 1], true);
+        for (let i = 0; i < uspData.length; i++) {
+            html += buildSlideHTML(uspData[i], false);
         }
-        html += buildSlideHTML(USP_DATA[0], true);
+        html += buildSlideHTML(uspData[0], true);
         return html;
     }
 
     function buildDots() {
         let html = '';
-        for (let i = 0; i < USP_DATA.length; i++) {
+        for (let i = 0; i < uspData.length; i++) {
             const activeClass = i === 0 ? ' kk-usp-carousel__dot--active' : '';
             html += '<button class="kk-usp-carousel__dot' + activeClass + '" data-slide="' + i + '" aria-label="Slide ' + (i + 1) + '"></button>';
         }
@@ -445,9 +530,9 @@
         if (KEK.qs('.kk-usp-tiles')) return;
 
         let tilesHTML = '<div class="kk-usp-tiles" style="display:none">';
-        for (let i = 0; i < USP_DATA.length; i++) {
-            tilesHTML += '<div class="kk-usp-card" data-usp-id="' + USP_DATA[i].id + '">' +
-                buildCardHTML(USP_DATA[i]) +
+        for (let i = 0; i < uspData.length; i++) {
+            tilesHTML += '<div class="kk-usp-card" data-usp-id="' + uspData[i].id + '">' +
+                buildCardHTML(uspData[i]) +
             '</div>';
         }
         tilesHTML += '</div>';
@@ -483,7 +568,7 @@
 
         const dots = KEK.qsa('.kk-usp-carousel__dot');
         if (dots && dots.length > 0) {
-            const dotIndex = ((currentSlide % USP_DATA.length) + USP_DATA.length) % USP_DATA.length;
+            const dotIndex = ((currentSlide % uspData.length) + uspData.length) % uspData.length;
             for (let i = 0; i < dots.length; i++) {
                 KEK.defineClass(dots[i], 'kk-usp-carousel__dot--active', true);
             }
@@ -492,7 +577,7 @@
     }
 
     function goToSlide(index, animate) {
-        const total = USP_DATA.length;
+        const total = uspData.length;
         
         if (index < 0) {
             currentSlide = -1;
@@ -616,8 +701,8 @@
                     // Clone-Slides haben keinen Array-Index → anhand uspId auflösen
                     let clickedIndex = -1;
                     if (isClone) {
-                        for (let j = 0; j < USP_DATA.length; j++) {
-                            if (USP_DATA[j].id === uspId) {
+                        for (let j = 0; j < uspData.length; j++) {
+                            if (uspData[j].id === uspId) {
                                 clickedIndex = j;
                                 break;
                             }
@@ -676,10 +761,7 @@
         if (newDeviceType === currentDeviceType) return;
         currentDeviceType = newDeviceType;
         
-        const oldCarousel = KEK.qs('.kk-usp-carousel');
-        const oldTiles = KEK.qs('.kk-usp-tiles');
-        if (oldCarousel) oldCarousel.parentNode.removeChild(oldCarousel);
-        if (oldTiles) oldTiles.parentNode.removeChild(oldTiles);
+        cleanupCategoryTiles();
         
         const pageType = getPageTypeFromDOM();
         if (pageType) {

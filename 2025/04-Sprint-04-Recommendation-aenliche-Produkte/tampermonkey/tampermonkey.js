@@ -38,7 +38,7 @@
     // Inject JS via GM_xmlhttpRequest (bypasses CORS)
     GM_xmlhttpRequest({
         method: 'GET',
-        url: baseUrl + '/script-min.js' + cacheBuster,
+        url: baseUrl + '/script.js' + cacheBuster,
         onload: function(response) {
             if (response.status === 200) {
                 // Execute the script in page context
