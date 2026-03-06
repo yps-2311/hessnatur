@@ -60,10 +60,22 @@
     }
 
     // =========================================================================
+    // FALLBACK – Original-Reco wieder einblenden
+    // =========================================================================
+
+    function showOriginalReco() {
+        const antiFlicker = KEK.qs('#kk-reco-antiflicker');
+        if (antiFlicker) {
+            antiFlicker.remove();
+            warn('Fallback: Original-Reco wieder eingeblendet');
+        }
+    }
+
+    // =========================================================================
     // ANTI-FLICKER – sofort injizieren um native Reco zu verstecken
     // =========================================================================
 
-    (function injectAntiFlicker() {
+    function injectAntiFlicker() {
         if (KEK.qs('#kk-reco-antiflicker')) return;
         KEK.insert(
             document.head || document.documentElement,
@@ -74,7 +86,9 @@
                 '[data-testid="recommendation"] .swiper-wrapper.kk-slides-fadein { transition-property: opacity; transition-duration: 0.15s; transition-timing-function: ease-out; }' +
             '</style>'
         );
-    })();
+    }
+
+    injectAntiFlicker();
 
     // =========================================================================
     // STYLE INJECTION
@@ -975,6 +989,7 @@
 
                 if (!newProducts.length && !existingProducts.length) {
                     warn('Keine Produkte in Response - zeige Original-Reco');
+                    showOriginalReco();
                     cache.isLoading = false;
                     if (onComplete) onComplete();
                     return;
@@ -1008,11 +1023,13 @@
                     initEcondaReco(wrapper, uniqueProducts, onComplete);
                 } else {
                     warn('Keine unique Produkte gefunden');
+                    showOriginalReco();
                     if (onComplete) onComplete();
                 }
             })
             .catch((error) => {
                 err('API Error:', error);
+                showOriginalReco();
                 cache.isLoading = false;
                 if (onComplete) onComplete();
             });
@@ -1025,9 +1042,13 @@
     function refreshRecoIfNeeded() {
         if (!/\/p\/\d+/.test(win.location.pathname)) {
             log('Keine PDP - Skip refresh');
+            showOriginalReco();
             cache.lastRenderedUrl = null;
             return;
         }
+
+        // Anti-Flicker re-injizieren (z.B. nach Rückkehr von Wishlist-Seite)
+        injectAntiFlicker();
 
         const currentUrl = getProductUrl();
         log('Check refresh - current:', currentUrl, 'lastRendered:', cache.lastRenderedUrl);
