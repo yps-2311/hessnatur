@@ -102,19 +102,11 @@
         const productGrid = KEK.qs('[data-testid="product-grid"]');
         const isLargeGrid = !mobile && productGrid && productGrid.className.includes('--large');
 
-        // Promo-Erkennung: Erste 3 Grid-Kinder prüfen.
-        // Alle Produktkarten → kein Promo-Element → Position +1 verschieben.
-        // Mindestens 1 Nicht-Produkt → Promo vorhanden → bisherige Position.
-        const gridChildren = productGrid ? productGrid.children : [];
-        const checkCount = Math.min(3, gridChildren.length);
-        let allProducts = checkCount > 0;
-        for (let i = 0; i < checkCount; i++) {
-            if (gridChildren[i].getAttribute('data-testid') !== 'product-list-card') {
-                allProducts = false;
-                break;
-            }
-        }
-        const promoOffset = allProducts ? 1 : 0;
+        // Promo-Banner-Erkennung: Banner sitzt im DOM am Ende, wird aber via CSS Grid
+        // visuell an Row 1 / Col 2 platziert → verschiebt alle Produkte um 1.
+        // Kein Banner → Position +1 kompensieren.
+        const hasBanner = productGrid && KEK.qs('[data-testid="product-grid-action-banner-teaser"]', productGrid);
+        const promoOffset = hasBanner ? 0 : 1;
 
         // Insert-Position: Mobile nach 3., Desktop nach 2., Large Grid nach 3. Produkt
         // Ohne Promo-Element: +1 (Mobile nach 4., Desktop nach 3., Large Grid nach 4.)
@@ -203,7 +195,7 @@
                 if (!els) return;
                 if (KEK.qs('.kk-usp-carousel') || KEK.qs('.kk-usp-tiles')) return;
                 KEK.insert(els[0], 'beforebegin', html);
-                els[0].parentNode.removeChild(els[0]);
+                els[0].style.display = 'none';
                 initEvents();
             });
         }
@@ -336,8 +328,6 @@
     // Öffnet von rechts, Backdrop schließt bei Klick
     // =========================================================================
 
-    let isOpen = false;
-
     function buildBulletList(bullets) {
         let html = '<ul class="kk-usp-drawer__bullets">';
         for (let i = 0; i < bullets.length; i++) {
@@ -434,28 +424,29 @@
     }
 
     function openDrawer(uspId) {
-        if (isOpen) return;
+        const drawer = KEK.qs('.kk-usp-drawer');
+        if (drawer && drawer.classList.contains('kk-usp-drawer--open')) return;
         
         activateAccordionItem(uspId || 'quality');
         trackUspInteraction(uspId || 'quality', 'card');
-        isOpen = true;
 
         const backdrop = KEK.qs('.kk-usp-backdrop');
-        const drawer = KEK.qs('.kk-usp-drawer');
 
         if (backdrop) KEK.defineClass(backdrop, 'kk-usp-backdrop--active');
-        if (drawer) KEK.defineClass(drawer, 'kk-usp-drawer--open');
+        if (drawer) {
+            drawer.scrollTop = 0;
+            KEK.defineClass(drawer, 'kk-usp-drawer--open');
+        }
     }
 
     function closeDrawer() {
-        if (!isOpen) return;
-        isOpen = false;
+        const drawer = KEK.qs('.kk-usp-drawer');
+        if (!drawer || !drawer.classList.contains('kk-usp-drawer--open')) return;
 
         const backdrop = KEK.qs('.kk-usp-backdrop');
-        const drawer = KEK.qs('.kk-usp-drawer');
 
         if (backdrop) KEK.defineClass(backdrop, 'kk-usp-backdrop--active', true);
-        if (drawer) KEK.defineClass(drawer, 'kk-usp-drawer--open', true);
+        KEK.defineClass(drawer, 'kk-usp-drawer--open', true);
     }
 
     // =========================================================================
