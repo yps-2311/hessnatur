@@ -111,7 +111,7 @@
 	};
 
 	const getProductFromEconda = (productDatas) => {
-		console.log('productDatas: ', productDatas);
+		// console.log('productDatas: ', productDatas);
 
 		const pidParams = productDatas.map(prod => `&pid=${prod.item_variant.slice(0, SKU_WITH_COLOR_END)}`).join('');
 		const productSizes = getProductSize(productDatas);
@@ -127,7 +127,7 @@
 		const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&'+
 					'widgetdetails=true&csize=20&start=0' + productSizes + (productDatas ? pidParams : ''); // &ctxcustom.size=
 
-		console.log('url: ', url);
+		// console.log('url: ', url);
 		return fetch(url)
 			.then(res => res.json())
 			.then(data => {
@@ -174,7 +174,7 @@
 		})
 		.then(KEK.reload)
 		.catch(error => {
-			console.error('Fehler:', error);
+			// console.error('Fehler:', error);
 		});
 	};
 
@@ -208,8 +208,8 @@
 
 	// Haupt-Funktion die alles koordiniert
 	const initializeCartAddOn = (econdaProducts, productsStayInCart) => {
-		console.log('econdaProducts: ', econdaProducts);
-		console.log('productsStayInCart: ', productsStayInCart);
+		// console.log('econdaProducts: ', econdaProducts);
+		// console.log('productsStayInCart: ', productsStayInCart);
 
 
 		KEK.elem(() => {
@@ -271,6 +271,7 @@
 				});
 
 				// Starte mit dem ersten Produkt
+				// console.log('matchingProducts: ', matchingProducts);
 				fetchProductDetails(matchingProducts, 0, saveMoney);
 			}
 		});
@@ -301,7 +302,6 @@
 
 			const matchingStyle = responseData.data.allAvailabilities.styles.find(style => style.id === productID.slice(SKU_STYLE_START, SKU_STYLE_END));
 			const produktData = matchingStyle || responseData.data.allAvailabilities.styles[0];
-			// console.log('produktData: ', produktData);
 
 			// Prüfe ob alle Größen ausverkauft sind
 			const allSoldOut = produktData.sizes.every(size => size.deliveryTime === "Ausverkauft");
