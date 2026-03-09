@@ -67,4 +67,13 @@
 
     });
 
+    // Globaler Observer: fängt colorsBoxen ohne kk-colors-visible nach Browser-Back/SPA-Navigation
+    const bodyObserver = new MutationObserver(function() {
+        const unprocessed = KEK.qsa('[class*="ProductListCard_productListCard__colorsBox"]:not(.kk-colors-visible)');
+        if (unprocessed && unprocessed.length > 0) {
+            processAllBoxes();
+        }
+    });
+    bodyObserver.observe(document.body, { childList: true, subtree: true });
+
 })(new window.KEK());
