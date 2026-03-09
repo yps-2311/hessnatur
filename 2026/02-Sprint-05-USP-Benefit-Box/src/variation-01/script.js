@@ -84,13 +84,31 @@
         if (existingTiles) existingTiles.remove();
     }
 
+    // Fingerprint aus den ersten Product-Card-URLs – ändert sich bei Sort/Filter,
+    // bleibt identisch bei unserer eigenen DOM-Mutation → kein Observer-Loop.
+    function getGridFingerprint() {
+        const cards = KEK.qsa('[data-testid="product-list-card"]');
+        if (!cards || cards.length === 0) return '';
+        const count = Math.min(3, cards.length);
+        let fp = '';
+        for (let i = 0; i < count; i++) {
+            const link = KEK.qs('a', cards[i]);
+            fp += link ? link.pathname : i;
+        }
+        return fp;
+    }
+
     // Positioniert Tiles nach dem n-ten Produkt im Grid.
-    // Guard: data-kk-processed auf erster Card verhindert Re-Insert (→ kein Observer-Loop).
+    // Guard: Produkt-Fingerprint auf Grid-Node verhindert Re-Insert (→ kein Observer-Loop).
     function positionTilesInGrid() {
         const cards = KEK.qsa('[data-testid="product-list-card"]');
         if (!cards || cards.length === 0) return;
 
-        if (cards[0].hasAttribute('data-kk-processed')) return;
+        const productGrid = KEK.qs('[data-testid="product-grid"]');
+        if (!productGrid) return;
+
+        const fingerprint = getGridFingerprint();
+        if (productGrid.getAttribute('data-kk-state') === fingerprint) return;
 
         cleanupCategoryTiles();
 
@@ -99,13 +117,12 @@
         const initEvents = mobile ? initCarouselEvents : initTileEvents;
 
         // Sale-Seiten haben 4-Spalten-Grid (--large Modifier am Klassennamen)
-        const productGrid = KEK.qs('[data-testid="product-grid"]');
-        const isLargeGrid = !mobile && productGrid && productGrid.className.includes('--large');
+        const isLargeGrid = !mobile && productGrid.className.includes('--large');
 
         // Promo-Banner-Erkennung: Banner sitzt im DOM am Ende, wird aber via CSS Grid
         // visuell an Row 1 / Col 2 platziert → verschiebt alle Produkte um 1.
         // Kein Banner → Position +1 kompensieren.
-        const hasBanner = productGrid && KEK.qs('[data-testid="product-grid-action-banner-teaser"]', productGrid);
+        const hasBanner = KEK.qs('[data-testid="product-grid-action-banner-teaser"]', productGrid);
         const promoOffset = hasBanner ? 0 : 1;
 
         // Insert-Position: Mobile nach 3., Desktop nach 2., Large Grid nach 3. Produkt
@@ -122,14 +139,14 @@
 
         initEvents();
 
-        // DOM-Flag setzen – React entfernt es beim nächsten Re-Render
-        cards[0].setAttribute('data-kk-processed', '');
+        // Fingerprint auf Grid setzen – Grid-Node überlebt React-Reconciliation
+        productGrid.setAttribute('data-kk-state', fingerprint);
     }
 
     // MutationObserver auf Grid + Wrapper:
     // - Grid (childList): React tauscht Cards bei Sort/Filter → Observer feuert
     // - Wrapper (childList): React könnte Grid-Node komplett ersetzen
-    // positionTilesInGrid() hat Guard → nur Aktion wenn Marker fehlt
+    // positionTilesInGrid() hat Guard → nur Aktion wenn URL-State sich geändert hat
     function startCategoryGridObserver() {
         if (categoryGridObserver) return;
 
@@ -434,7 +451,8 @@
 
         if (backdrop) KEK.defineClass(backdrop, 'kk-usp-backdrop--active');
         if (drawer) {
-            drawer.scrollTop = 0;
+            const content = KEK.qs('.kk-usp-drawer__content', drawer);
+            if (content) content.scrollTop = 0;
             KEK.defineClass(drawer, 'kk-usp-drawer--open');
         }
     }
