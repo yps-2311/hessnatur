@@ -9,6 +9,8 @@
  * @description 
  */
 
+console.log("Sprint 01 a");
+
 (function (KEK) {
 	"use strict";
 
@@ -45,7 +47,7 @@
 
 	// Hilfsfunktion um die passende productSize zu ermitteln
 	const getProductSize = (products) => {
-		// console.log('products: ', products);
+		console.log('products: ', products);
 		const clothingSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'ONE'];
 		const twoDigitSizeRegex = /^\d{2}$/;
 		
@@ -59,7 +61,9 @@
 			const itemSize = products[i].item_size;
 			
 			// Prüfe ob Größe den Kriterien entspricht (Prio 1 & 2)
-			if (clothingSizes.includes(itemSize) || twoDigitSizeRegex.test(itemSize)) {
+			console.log('itemSize: ', itemSize);
+			console.log('twoDigitSizeRegex.test(itemSize): ', twoDigitSizeRegex.test(itemSize));
+			if (clothingSizes.includes(itemSize) || twoDigitSizeRegex.test(itemSize)) { //  || itemSize.indexOf("/") !== -1
 				if (!firstProduct) {
 					firstProduct = products[i];
 					size = itemSize;
@@ -126,8 +130,10 @@
 		// Request gegen Econda für eine Reco mit sinnvollen Produkten
 		const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&'+
 					'widgetdetails=true&csize=20&start=0' + productSizes + (productDatas ? pidParams : ''); // &ctxcustom.size=
+					
+		console.log('productSizes: ', productSizes);
+		console.log('url: ', url);
 
-		// console.log('url: ', url);
 		return fetch(url)
 			.then(res => res.json())
 			.then(data => {
@@ -270,8 +276,12 @@
 					return priceA - priceB;
 				});
 
-				// Starte mit dem ersten Produkt
-				// console.log('matchingProducts: ', matchingProducts);
+				// Filter out products whose name contains 'hut' or 'schuhe' (case-insensitive)
+				matchingProducts = matchingProducts.filter(product => {
+					const name = product.name ? product.name.toLowerCase() : '';
+					return !name.includes('hut') && !name.includes('schuhe');
+				});
+
 				fetchProductDetails(matchingProducts, 0, saveMoney);
 			}
 		});
@@ -518,19 +528,20 @@
 		});
 	};
 
-	let lastCallItems = [];
+	// let lastCallItems = [];
 
 	const getNewReco = () => {
 		KEK.elem(() => {
 			const data = window.dataLayer && window.dataLayer.findLast(entry => entry.event === "Ecommerce - view_cart");
 			return data && data.ecommerce && data.ecommerce.items;
 		}, (items) => {
-			if(items && items !== lastCallItems){
-				// console.log('items: ', items);
+			if(items){ //  &&) items !== lastCallItems
+				console.log('items: ', items);
 
-				lastCallItems = items;
+				// lastCallItems = items;
 
 				const getSessionStorage = sessionStorage.getItem('kk_added_reco_product');
+				console.log('getSessionStorage: ', getSessionStorage);
 
 				for (let i = 0; i < items.length; i++) {
 					if(getSessionStorage && (items[i].item_id.substring(0,5) === getSessionStorage.substring(0,5))){
@@ -540,7 +551,8 @@
 
 				// Initial: Econda-Produkte laden
 				getProductFromEconda(items).then(econdaProducts => {
-					// console.log('econdaProducts: ', econdaProducts);
+					console.log('econdaProducts: ', econdaProducts);
+
 					if (econdaProducts && econdaProducts.length > 0) {
 						initializeCartAddOn(econdaProducts, items);
 
@@ -550,7 +562,7 @@
 
 								// Callback function to execute when mutations are observed
 								const callback = (mutationList) => {
-									// console.log('getSavedMoney(): ', getSavedMoney());
+									console.log('getSavedMoney(): ', getSavedMoney());
 									for (const mutation of mutationList) {
 										if(mutation.type === "attributes"){
 											const leftGreen = KEK.qs('.kk_leftgreen span', cartWrapper);
@@ -584,7 +596,7 @@
 		getNewReco();
 	}
 
-	let locationNow = "";
+	// let locationNow = "";
 
 	history.pushState = ( f => function pushState(){
 		var ret = f.apply(this, arguments);
@@ -604,12 +616,15 @@
 
 	window.addEventListener('locationchange', function(){
 		const pathNameNow = window.location.pathname;
-		if(pathNameNow === "/de/cart" && locationNow !== pathNameNow){
+		console.log('pathNameNow: ', pathNameNow);
+
+		if(pathNameNow === "/de/cart"){ //  && locationNow !== pathNameNow
 			setTimeout(() => {
+				console.log("getNewReco");
 				getNewReco();
-			}, 500);
+			}, 1000);
 		}
-		locationNow = pathNameNow;
+		// locationNow = pathNameNow;
 	});
 
 })(new window.KEK());
