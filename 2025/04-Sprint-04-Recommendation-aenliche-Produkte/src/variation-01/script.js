@@ -84,6 +84,7 @@
             'beforeend',
             '<style id="kk-reco-antiflicker">' +
                 '[data-testid="recommendation"] .swiper-wrapper { opacity: 0 !important; }' +
+                '[data-testid="recommendation-wrapper"] ~ [data-testid="recommendation-wrapper"] .swiper-wrapper { opacity: 1 !important; }' +
                 '[data-testid="recommendation"] .swiper-wrapper.kk-slides-active { opacity: 1 !important; }' +
                 '[data-testid="recommendation"] .swiper-wrapper.kk-slides-fadein { transition-property: opacity; transition-duration: 0.15s; transition-timing-function: ease-out; }' +
             '</style>'
