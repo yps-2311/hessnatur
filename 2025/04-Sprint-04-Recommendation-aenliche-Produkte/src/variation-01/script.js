@@ -45,7 +45,8 @@
         lastRenderedUrl: null,
         wrapper: null,
         isLoading: false,
-        currentRequestToken: null
+        currentRequestToken: null,
+        isFallback: false
     };
 
     // Lokaler Wishlist-State (synchron verfügbar für fillProductCard)
@@ -64,6 +65,7 @@
     // =========================================================================
 
     function showOriginalReco() {
+        cache.isFallback = true;
         const antiFlicker = KEK.qs('#kk-reco-antiflicker');
         if (antiFlicker) {
             antiFlicker.remove();
@@ -1060,6 +1062,7 @@
         const domWasRecreated = oldReco && (!oldReco.classList.contains('kk-reco-updated') || !hasOurSlides);
 
         if ((currentUrl && currentUrl !== cache.lastRenderedUrl) || domWasRecreated) {
+            cache.isFallback = false;
             log('Refresh nötig:', currentUrl !== cache.lastRenderedUrl ? 'URL-Wechsel' : 'DOM recreated');
 
             // URL sofort setzen um Doppel-Rendering zu verhindern
@@ -1206,6 +1209,7 @@
             // 2. FAST CHECK (50ms): Klassen sofort entfernen wenn React unsere Slides zerstört hat
             clearTimeout(fastCheckTimer);
             fastCheckTimer = setTimeout(() => {
+                if (cache.isFallback) return;
                 const reco = KEK.qs(SEL_OLD_RECO);
                 if (!reco) return;
                 const sw = KEK.qs(SEL_SWIPER_WRAPPER, reco);
@@ -1222,6 +1226,7 @@
             reapplyTimer = setTimeout(() => {
                 if (!/\/p\/\d+/.test(win.location.pathname)) return;
                 if (cache.isLoading) return;
+                if (cache.isFallback) return;
 
                 const reco = KEK.qs(SEL_OLD_RECO);
                 if (!reco) return;
