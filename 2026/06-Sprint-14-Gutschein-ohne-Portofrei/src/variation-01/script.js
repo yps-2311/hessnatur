@@ -33,10 +33,13 @@
             voucherText.textContent = REPLACEMENT_CODE;
         }
 
-        // Gutscheincode im Fließtext (asterix_text > p > strong) ersetzen
+        // Gutscheincode im Fließtext: Original <strong> ausblenden, Span dahinter
         const asterixStrong = KEK.qs('[class*="asterix_text"] > p > strong', content);
-        if (asterixStrong) {
-            asterixStrong.textContent = REPLACEMENT_CODE;
+        if (asterixStrong && !asterixStrong.hasAttribute('data-kk-hidden')) {
+            asterixStrong.setAttribute('data-kk-hidden', 'true');
+            asterixStrong.style.display = 'none';
+            KEK.insert(asterixStrong, 'afterend',
+                '<span class="kk-voucher-code" style="font-weight:bold">' + REPLACEMENT_CODE + '</span>');
         }
 
         // Copy-Button: Original-Handler abfangen, neuen Code kopieren + Toast
