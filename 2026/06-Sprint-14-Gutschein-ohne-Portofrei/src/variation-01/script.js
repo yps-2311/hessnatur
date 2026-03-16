@@ -12,7 +12,7 @@
 (function(KEK) {
     "use strict";
 
-    const REPLACEMENT_CODE = 'PSM202603';
+    const REPLACEMENT_CODE = 'PSM26MAERZ20';
 
     const modifyLayer = (modal) => {
         const content = KEK.qs('[class*="onlineMarketingLayer__content__"]', modal);
