@@ -46,3 +46,26 @@ Hessnatur stellt ein Custom Event bereit, um Produkte zur Wishlist hinzuzufügen
 window.dispatchEvent(new CustomEvent('hessnatur:addToWishlist', {
     detail: { productCode: '<SKU CODE>' }
 }));
+```
+
+## Page Type Targeting in Kameleoon
+**Wichtig:** In Kameleoon gibt es unter Custom Types "Pagetype" (z.B. home, category, pdp), diese Custom Events triggern aber (teilweise) nicht rechtzeitig, so dass das Targeting in den A/B Tests während der Session (mal) fehlschlägt. Das passiert z.B., wenn per "Browser Back" und nicht über die Breadcrumb / SPA navigiert wird.
+
+Dafür muss dann zustäztlich ein Page URL Trigger definiert werden, der **ODER** neben dem Pagetype auch auf das URL Pattern prüft.
+
+Hier die RegExp für die verschiedenen Page Types:
+
+**Home:**
+```
+https://www.hessnatur.com/de
+```
+
+**Category / PLP:**
+```
+^https:\/\/www\.hessnatur\.com\/de\/($|.*\/c\/.*)
+```
+
+**Produkt / PDP / PDS:**
+```
+^https:\/\/www\.hessnatur\.com\/de\/($|.*\/p\/.*)
+```
