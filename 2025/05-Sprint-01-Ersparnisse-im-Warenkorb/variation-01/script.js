@@ -47,9 +47,10 @@ console.log("Sprint 01 a");
 
 	// Hilfsfunktion um die passende productSize zu ermitteln
 	const getProductSize = (products) => {
-		console.log('products: ', products);
+		// console.log('products: ', products);
 		const clothingSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'ONE'];
 		const twoDigitSizeRegex = /^\d{2}$/;
+		const slashSizeRegex = /^(\d+)\/\d+$/;
 		
 		let size = '';
 		let size2 = '';
@@ -60,16 +61,20 @@ console.log("Sprint 01 a");
 		for (let i = 0; i < products.length; i++) {
 			const itemSize = products[i].item_size;
 			
+			// Größen wie "86/92" → "86X" normalisieren
+			const slashMatch = slashSizeRegex.exec(itemSize);
+			const normalizedSize = slashMatch ? slashMatch[1] + 'X' : itemSize;
+
 			// Prüfe ob Größe den Kriterien entspricht (Prio 1 & 2)
-			console.log('itemSize: ', itemSize);
-			console.log('twoDigitSizeRegex.test(itemSize): ', twoDigitSizeRegex.test(itemSize));
-			if (clothingSizes.includes(itemSize) || twoDigitSizeRegex.test(itemSize)) { //  || itemSize.indexOf("/") !== -1
+			// console.log('itemSize: ', itemSize);
+			// console.log('twoDigitSizeRegex.test(normalizedSize): ', twoDigitSizeRegex.test(normalizedSize));
+			if (clothingSizes.includes(normalizedSize) || twoDigitSizeRegex.test(normalizedSize) || slashMatch) {
 				if (!firstProduct) {
 					firstProduct = products[i];
-					size = itemSize;
+					size = normalizedSize
 				} else if (!secondProduct) {
 					secondProduct = products[i];
-					size2 = itemSize;
+					size2 = normalizedSize
 					break; // Beide gefunden, fertig
 				}
 			}
@@ -99,15 +104,15 @@ console.log("Sprint 01 a");
 		
 		// Baue den String zusammen
 		let result = '';
-		// console.log('size: ', size);
+		console.log('size: ', size);
 		if (size) {
-			result += '&ctxcustom.size=' + size;
+			result += '&ctxcustom.size=' + size.replace("X", "").replace("x", "").replace(",", "");
 			savedSizes.add(size);
 		}
 
 		// console.log('size2: ', size2);
 		if (size2) {
-			result += '&ctxcustom.size2=' + size2;
+			result += '&ctxcustom.size2=' + size2.replace("X", "").replace("x", "").replace(",", "");
 			savedSizes.add(size2);
 		}
 		
@@ -131,17 +136,17 @@ console.log("Sprint 01 a");
 		const url = 'https://widgets.crosssell.info/eps/crosssell/recommendations/00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1.do?wid=205&type=cs&aid=00002762-7fbb585b-0c52-33a0-ad30-b2319526ea2f-1&'+
 					'widgetdetails=true&csize=20&start=0' + productSizes + (productDatas ? pidParams : ''); // &ctxcustom.size=
 					
-		console.log('productSizes: ', productSizes);
-		console.log('url: ', url);
+		// console.log('productSizes: ', productSizes);
+		// console.log('url: ', url);
 
 		return fetch(url)
 			.then(res => res.json())
 			.then(data => {
-				console.log('data: ', data);
+				// console.log('data: ', data);
 				return data.items.length === 0 ? alternativProdukt : data.items;
 			})
 			.catch(error => {
-				console.log('error: ', error);
+				// console.log('error: ', error);
 				return [];
 			});
 	}
@@ -290,6 +295,7 @@ console.log("Sprint 01 a");
 	const fetchProductDetails = (matchingProducts, currentIndex, saveMoney) => {
 
 		const econdaProduct = matchingProducts[currentIndex];
+		// console.log('econdaProduct: ', econdaProduct);
 		const productID = econdaProduct.sku7;
 		const productModelID = productID.slice(0, SKU_MODEL_END);  // Cache für mehrfache Verwendung
 		
@@ -352,18 +358,48 @@ console.log("Sprint 01 a");
 						return 'ProductAvailability_available__zjuhf';
 					};
 
-					// Wähle Größe: Priorität 1: savedSize die nicht ausverkauft ist, Priorität 2: erste nicht ausverkaufte Größe, Fallback: erste Größe
+					// Wähle Größe: Priorität 1: savedSize die nicht ausverkauft ist, Priorität 2: nächstgelegene savedSize, Priorität 3: erste nicht ausverkaufte Größe, Fallback: erste Größe
+					// console.log('produktData: ', produktData, savedSizes);
+
+					const findClosestSize = (sizes, saved) => {
+						const letterOrder = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+						const toNum = (id) => {
+							const n = parseFloat(id.replace(/X$/, '')); // "86X" → 86
+							if (!isNaN(n)) return n;
+							const idx = letterOrder.indexOf(id.toUpperCase());
+							return idx !== -1 ? (idx + 1) * 10 : null; // XS=10, S=20, M=30 …
+						};
+						const savedNums = [...saved].map(toNum).filter(n => n !== null);
+						if (!savedNums.length) return null;
+						let best = null, bestDist = Infinity;
+						for (const size of sizes) {
+							if (size.deliveryTime === "Ausverkauft") continue;
+							const n = toNum(size.id);
+							if (n === null) continue;
+							const dist = Math.min(...savedNums.map(s => Math.abs(n - s)));
+							if (dist < bestDist) { bestDist = dist; best = size; }
+						}
+						return best;
+					};
+
 					const selectedSize = produktData.sizes.find(size => savedSizes.has(size.id) && size.deliveryTime !== "Ausverkauft") 
+						|| findClosestSize(produktData.sizes, savedSizes)
 						|| produktData.sizes.find(size => size.deliveryTime !== "Ausverkauft")
 						|| produktData.sizes[0];
 					
 					// Größen-Dropdown dynamisch erstellen
 					const sizeOptionsHTML = produktData.sizes.map(size => {
+
+						// aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+						// console.log('size.id: ', size.id);
+						// console.log('selectedSize.id: ', selectedSize.id);
 						const selectedCorrectSize = selectedSize && size.id === selectedSize.id ? 'selected' : '';
 						const isDisabled = size.deliveryTime === "Ausverkauft" ? 'disabled' : '';
 
 						return '<option ' + selectedCorrectSize + ' ' + isDisabled + ' value="' + size.id + '" data-price="' + size.price.formattedValue + '" data-delivery="' + size.deliveryTime + '">' + size.name + '</option>';
 					}).join('');
+
+
 					
 					// Preis-HTML basierend auf reduziert/nicht reduziert
 					const isReduced = econdaProduct.reduced === "true";
@@ -536,12 +572,12 @@ console.log("Sprint 01 a");
 			return data && data.ecommerce && data.ecommerce.items;
 		}, (items) => {
 			if(items){ //  &&) items !== lastCallItems
-				console.log('items: ', items);
+				// console.log('items: ', items);
 
 				// lastCallItems = items;
 
 				const getSessionStorage = sessionStorage.getItem('kk_added_reco_product');
-				console.log('getSessionStorage: ', getSessionStorage);
+				// console.log('getSessionStorage: ', getSessionStorage);
 
 				for (let i = 0; i < items.length; i++) {
 					if(getSessionStorage && (items[i].item_id.substring(0,5) === getSessionStorage.substring(0,5))){
@@ -551,7 +587,7 @@ console.log("Sprint 01 a");
 
 				// Initial: Econda-Produkte laden
 				getProductFromEconda(items).then(econdaProducts => {
-					console.log('econdaProducts: ', econdaProducts);
+					// console.log('econdaProducts: ', econdaProducts);
 
 					if (econdaProducts && econdaProducts.length > 0) {
 						initializeCartAddOn(econdaProducts, items);
