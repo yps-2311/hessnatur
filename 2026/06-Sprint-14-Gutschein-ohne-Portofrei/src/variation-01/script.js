@@ -13,6 +13,16 @@
     "use strict";
 
     const REPLACEMENT_CODE = 'PSM26MAERZ20';
+    let originalCode = null;
+
+    // Clipboard-API patchen: alten Gutscheincode immer durch neuen ersetzen
+    const origWriteText = navigator.clipboard.writeText.bind(navigator.clipboard);
+    navigator.clipboard.writeText = (text) => {
+        if (originalCode && text === originalCode) {
+            return origWriteText(REPLACEMENT_CODE);
+        }
+        return origWriteText(text);
+    };
 
     const modifyLayer = (modal) => {
         const content = KEK.qs('[class*="onlineMarketingLayer__content__"]', modal);
@@ -30,6 +40,7 @@
         // Voucher-Code ersetzen
         const voucherText = KEK.qs('[class*="voucher__text"]', content);
         if (voucherText) {
+            if (!originalCode) originalCode = voucherText.textContent.trim();
             voucherText.textContent = REPLACEMENT_CODE;
         }
 
@@ -42,13 +53,10 @@
                 '<span class="kk-voucher-code" style="font-weight:bold">' + REPLACEMENT_CODE + '</span>');
         }
 
-        // Copy-Button: Original-Handler abfangen, neuen Code kopieren + Toast
+        // Copy-Button: Toast nachrüsten (Clipboard-Patch fängt den Code ab)
         const copyBtn = KEK.qs('[data-testid="copy-to-clipboard-button"]', content);
         if (copyBtn) {
-            copyBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                navigator.clipboard.writeText(REPLACEMENT_CODE);
+            copyBtn.addEventListener('click', () => {
                 showCopyToast();
             }, true);
         }
