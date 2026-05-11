@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+	<meta charset="utf-8"/>
+</head>
+<body>
+
+<h1 id="sprint23–highlightsmaterialpflegepdp">Sprint 23 – Highlights Material &amp; Pflege PDP</h1>
+
+<p><strong>Experiment:</strong> noch offen<br />
+<strong>Client:</strong> hessnatur<br />
+<strong>Scope:</strong> Produktdetailseiten; Mobile im Buybox-Kontext, Desktop unter den Produktbildern</p>
+
+<h2 id="ziel">Ziel</h2>
+
+<p>Passform, Material und Pflege sollen als nutzerorientierte Highlights sichtbar werden. Mobile sitzt das Modul im Buybox-Kontext vor den bestehenden Bullet-/Trust-Elementen. Desktop sitzt das Modul unter der Produktbild-Spalte. Die Variante nutzt bestehende PDP-Daten und ergänzt priorisierte Material- und Verarbeitungsnutzen.</p>
+
+<h2 id="insert-position">Insert-Position</h2>
+
+<ul>
+<li>Desktop-Ziel: direkt nach der Produktbild-Spalte innerhalb <code>[data-testid=&quot;buy-box&quot;]</code></li>
+<li>Desktop-Anker: direktes Buybox-Kind mit Klasse <code>BuyBox_buyBox__media...</code></li>
+<li>Mobile-Zielposition: innerhalb <code>[data-testid=&quot;buy-box-content&quot;]</code>, direkt vor <code>[data-testid=&quot;product-description-bullets&quot;]</code></li>
+<li>Mobile-Fallbacks:</li>
+<li> vor <code>[data-testid=&quot;product-benefit-list&quot;]</code></li>
+<li> vor <code>[data-testid=&quot;product-payment-option&quot;]</code></li>
+<li> nach <code>[data-testid=&quot;add-to-cart&quot;]</code></li>
+<li> nach <code>[data-testid=&quot;product-properties-wrapper&quot;]</code></li>
+</ul>
+
+<p>Damit sitzt das Modul auf Desktop unter den Produktbildern und auf Mobile oberhalb der relevanten Buybox-Inhalte.</p>
+
+<h2 id="datenquelle">Datenquelle</h2>
+
+<p>Die Variante liest Produktdaten aus:</p>
+
+<pre><code class="javascript">window.__NEXT_DATA__.props.pageProps.productResult.product
+</code></pre>
+
+<p>Genutzte Felder:</p>
+
+<ul>
+<li><code>product.badges</code></li>
+<li><code>product.informationBox.productDetails.bullets</code></li>
+<li><code>product.informationBox.productDetails.paragraphs</code></li>
+<li><code>product.informationBox.productFit</code></li>
+<li><code>product.informationBox.productMaterial</code></li>
+<li><code>product.informationBox.productCareLabel</code></li>
+</ul>
+
+<h2 id="ausspiel-logik">Ausspiel-Logik</h2>
+
+<p>Es werden maximal 3 Fakten gerendert.</p>
+
+<ol>
+<li>Passform-Fact</li>
+</ol>
+
+<ul>
+<li> genau ein relevanter Passform-Hinweis</li>
+<li> Quellen: <code>productFit</code>, Fallback aus <code>productDetails.bullets</code></li>
+</ul>
+
+<ol>
+<li>Material-Fact</li>
+</ol>
+
+<ul>
+<li> Hauptmaterial als Headline, besondere Materialien/Verarbeitungen wenn vorhanden direkt im Titel, z. B. <code>Bio-Denim aus 100% Baumwolle</code></li>
+<li> weitere Materialien klein darunter</li>
+<li> besondere Materialien/Verarbeitungen wie Musselin, Leinen, Bio-Denim, Nature Fleece, Slub oder Nature Shell werden priorisiert als Nutzentext herausgearbeitet</li>
+<li> Quelle: <code>productMaterial</code></li>
+</ul>
+
+<ol>
+<li>Pflege-Fact</li>
+</ol>
+
+<ul>
+<li> bevorzugt maschinenwaschbare Pflegehinweise</li>
+<li> Quelle: <code>productCareLabel</code></li>
+</ul>
+
+<p>Fallback-Regel:</p>
+
+<ul>
+<li>Wenn ein Slot leer bleibt, wird er nicht mit einem fachfremden Qualitäts- oder Proof-Fact aufgefüllt.</li>
+<li>Es werden nie mehr als 3 Fakten gezeigt.</li>
+</ul>
+
+<h2 id="dedupe-regeln">Dedupe-Regeln</h2>
+
+<p>Nicht erneut ausspielen, wenn der Inhalt schon sichtbar ist in:</p>
+
+<ul>
+<li>Produktname</li>
+<li>sichtbaren Badges</li>
+<li>den bereits oberhalb sichtbaren PDP-Teaser-Bullets</li>
+</ul>
+
+<p>Dadurch werden generische oder bereits sichtbare Aussagen wie <code>Nachhaltig</code>, <code>Vegan</code> oder die ersten Teaser nicht doppelt gezeigt.</p>
+
+<h2 id="kategorie-heuristiken">Kategorie-Heuristiken</h2>
+
+<ul>
+<li><code>Jeans/Basics</code>: Hauptmaterial plus Denim-/Verarbeitungsnutzen</li>
+<li><code>Outerwear</code>: Hauptmaterial plus Outdoor-/Verarbeitungsnutzen, z. B. Nature Shell oder Fleece</li>
+<li><code>Bedding/Matratze/Schuhe</code>: Hauptmaterial zuerst, weitere Material-Sektionen klein darunter</li>
+</ul>
+
+<h2 id="tracking">Tracking</h2>
+
+<p>Beim erfolgreichen Render wird ein DataLayer-Event gepusht:</p>
+
+<pre><code class="javascript">{
+  event: &quot;kk_product_info_module_rendered&quot;,
+  event_name: &quot;kk_product_info_module_rendered&quot;,
+  experiment_name: &quot;07-Sprint-23-Highlights-Material-Pflege&quot;,
+  product_code: &quot;...&quot;,
+  product_name: &quot;...&quot;,
+  product_info_facts: [&quot;Label: Text&quot;, ...]
+}
+</code></pre>
+
+<h2 id="dateien">Dateien</h2>
+
+<pre><code class="text">src/
+├── global/
+├── variation-00/
+├── variation-01/
+│   ├── script.js
+│   ├── script.min.js
+│   ├── style.less
+│   └── style.css
+└── vendor/
+tampermonkey/
+└── tampermonkey.js
+</code></pre>
+
+<h2 id="tampermonkey">Tampermonkey</h2>
+
+<p>Der Loader lädt lokal:</p>
+
+<ul>
+<li><code>src/vendor/KEK.js</code></li>
+<li><code>src/global/global.js</code></li>
+<li><code>src/variation-01/style.css</code></li>
+<li><code>src/variation-01/script.js</code></li>
+<li><code>assets/materialicon_passform.svg</code></li>
+<li><code>assets/materialicon_waschmaschine.svg</code></li>
+</ul>
+
+<p>über:</p>
+
+<pre><code class="text">https://local-dev.konversionskraft.de/hessnatur/2026/07-Sprint-23-Highlights-Material-Pflege/
+</code></pre>
+
+</body>
+</html>
+

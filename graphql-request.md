@@ -1,12 +1,14 @@
 # GraphQL Request - getAllAvailabilities
 
 ## Endpoint
+
 ```
 https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app/api/graphql
 ```
 
 ## Formatierter Request Body
-```json
+
+```JSON
 {
   "operationName": "getAllAvailabilities",
   "variables": {
@@ -19,6 +21,7 @@ https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app/api/graphql
 ```
 
 ## GraphQL Query (formatiert)
+
 ```graphql
 query getAllAvailabilities($code: String!, $lang: String!, $country: String!) {
   allAvailabilities(code: $code, lang: $lang, country: $country) {
@@ -47,10 +50,11 @@ query getAllAvailabilities($code: String!, $lang: String!, $country: String!) {
 }
 ```
 
----
+***
 
 ## cURL Befehl
-```bash
+
+```Shell
 curl -X POST \
   'https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app/api/graphql' \
   -H 'Content-Type: application/json' \
@@ -66,7 +70,8 @@ curl -X POST \
 ```
 
 ## JavaScript (fetch)
-```javascript
+
+```JavaScript
 fetch('https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app/api/graphql', {
   method: 'POST',
   headers: {
@@ -113,7 +118,8 @@ fetch('https://latest---hess-webshop-live-894b-spa-silmlw7nqq-ey.a.run.app/api/g
 ```
 
 ## Python (requests)
-```python
+
+```Python
 import requests
 import json
 
@@ -161,3 +167,4 @@ headers = {
 response = requests.post(url, json=payload, headers=headers)
 print(response.json())
 ```
+

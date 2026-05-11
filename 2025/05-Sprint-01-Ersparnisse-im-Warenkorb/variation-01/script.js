@@ -27,10 +27,10 @@ console.log("Sprint 01 a");
 	const SKU_SIZE_START = 7;       // slice(7, 11) = Größen-ID (z.B. "34")
 	const SKU_SIZE_END = 11;
 
-	// Mapping Tabelle für Konvertierung Kleidergröße → Zahlengröße
+	// Mapping Tabelle für Konvertierung Kleidergröße → Zahlengröße // YP Tabelle angepasst 
 	const sizeMapping = {
-		damen: { 'XS': '32', 'S': '36', 'M': '40', 'L': '44', 'XL': '48', 'XXL': '52', 'XXXL': '56' },
-		herren: { 'XS': '44', 'S': '48', 'M': '52', 'L': '56', 'XL': '60', 'XXL': '64', 'XXXL': '68' }
+		damen:{XS:"34",S:"36",M:"38",L:"40",XL:"42",XXL:"44",XXXL:"46"},
+		herren:{XS:"46",S:"48",M:"50",L:"52",XL:"54",XXL:"56",XXXL:"58"}
 	};
 
 	const alternativProdukt = [{
@@ -360,7 +360,6 @@ console.log("Sprint 01 a");
 
 					// Wähle Größe: Priorität 1: savedSize die nicht ausverkauft ist, Priorität 2: nächstgelegene savedSize, Priorität 3: erste nicht ausverkaufte Größe, Fallback: erste Größe
 					// console.log('produktData: ', produktData, savedSizes);
-
 					const findClosestSize = (sizes, saved) => {
 						const letterOrder = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
 						const toNum = (id) => {
